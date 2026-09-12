@@ -1,0 +1,89 @@
+services:
+  postgres:
+    image: pgvector/pgvector:pg17
+    env_file: .env
+    ports:
+      - "${POSTGRES_HOST_PORT:-5432}:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./docker/postgres/01-criar-db-superset.sh:/docker-entrypoint-initdb.d/01-criar-db-superset.sh:ro
+      - ./sql/criar_banco.sql:/docker-entrypoint-initdb.d/02-criar_banco.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  mongo:
+    image: mongo:8.2
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_USER}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_PASSWORD}
+    ports:
+      - "${MONGO_HOST_PORT:-27017}:27017"
+    volumes:
+      - mongo_data:/data/db
+    healthcheck:
+      test: ["CMD-SHELL", "mongosh --quiet --eval 'db.adminCommand(\"ping\").ok' | grep -q 1"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  superset-init:
+    build:
+      context: .
+      dockerfile: docker/superset.Dockerfile
+    image: desafio-superset
+    env_file: .env
+    environment:
+      SUPERSET_CONFIG_PATH: /app/superset_config.py
+    volumes:
+      - ./docker/superset/superset_config.py:/app/superset_config.py:ro
+      - superset_home:/app/superset_home
+    depends_on:
+      postgres:
+        condition: service_healthy
+    command:
+      - sh
+      - -c
+      - |
+        superset db upgrade &&
+        superset fab create-admin --username "$$SUPERSET_ADMIN_USER" --password "$$SUPERSET_ADMIN_PASSWORD" \
+          --firstname Admin --lastname Admin --email admin@desafio.local &&
+        superset init
+
+  superset:
+    image: desafio-superset
+    env_file: .env
+    environment:
+      SUPERSET_CONFIG_PATH: /app/superset_config.py
+    ports:
+      - "${SUPERSET_HOST_PORT:-8088}:8088"
+    volumes:
+      - ./docker/superset/superset_config.py:/app/superset_config.py:ro
+      - superset_home:/app/superset_home
+    depends_on:
+      superset-init:
+        condition: service_completed_successfully
+
+  # pipeline: docker compose run --rm app
+  app:
+    build:
+      context: .
+      dockerfile: docker/app.Dockerfile
+    env_file: .env
+    volumes:
+      - .:/app
+      - hf_cache:/root/.cache/huggingface
+    depends_on:
+      postgres:
+        condition: service_healthy
+      mongo:
+        condition: service_healthy
+    profiles: ["pipeline"]
+
+volumes:
+  postgres_data:
+  mongo_data:
+  superset_home:
+  hf_cache:

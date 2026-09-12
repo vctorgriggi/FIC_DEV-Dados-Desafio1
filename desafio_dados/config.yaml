@@ -1,0 +1,35 @@
+# ${VAR:padrao} le da variavel de ambiente; senhas so vem do .env
+arquivos:
+  catalogo: dados/brutos/catalogo.csv
+  interacoes: dados/brutos/interacoes.json
+  comentarios: dados/brutos/comentarios.json
+
+saida:
+  processados: dados/processados
+  resumo: dados/processados/resumo_ingestao.json
+  log: logs/execucao.log
+
+postgres:
+  host: ${POSTGRES_HOST:postgres}
+  port: ${POSTGRES_PORT:5432}
+  database: ${POSTGRES_DB:desafio}
+  user: ${POSTGRES_USER:desafio}
+  password: ${POSTGRES_PASSWORD}
+
+mongodb:
+  host: ${MONGO_HOST:mongo}
+  port: ${MONGO_PORT:27017}
+  database: desafio
+  user: ${MONGO_USER}
+  password: ${MONGO_PASSWORD}
+  colecao_comentarios: comentarios
+
+embeddings:
+  modelo: sentence-transformers/all-MiniLM-L6-v2
+  dimensao: 384
+
+busca:
+  top_k: 5
+
+recomendacao:
+  top_k: 10

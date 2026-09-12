@@ -1,0 +1,1 @@
+-- Consultas de apoio e views de KPI (RF12). Preencher.

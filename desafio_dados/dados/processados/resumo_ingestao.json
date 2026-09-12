@@ -1,0 +1,33 @@
+{
+  "inicio": "2026-09-12T14:47:13",
+  "ingestao": {
+    "registros_lidos": {
+      "catalogo": 0,
+      "interacoes": 0,
+      "comentarios": 0
+    },
+    "validos": 0,
+    "invalidos": 0,
+    "incompletos": 0,
+    "duplicados": 0,
+    "corrigidos": 0,
+    "carregados": {
+      "postgresql": 0,
+      "mongodb": 0
+    }
+  },
+  "mongodb": {},
+  "embeddings": {},
+  "recomendacao": {},
+  "metricas": {},
+  "tempos_etapas_s": {
+    "conexoes": 0.02,
+    "ingestao": 0.0,
+    "mongodb": 0.0,
+    "embeddings": 0.0,
+    "recomendacao": 0.0,
+    "metricas": 0.0
+  },
+  "tempo_total_s": 0.023,
+  "fim": "2026-09-12T14:47:13"
+}
