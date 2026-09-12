@@ -1,18 +1,46 @@
 {
-  "inicio": "2026-09-12T14:47:13",
+  "inicio": "2026-09-12T21:23:27",
   "ingestao": {
     "registros_lidos": {
-      "catalogo": 0,
-      "interacoes": 0,
-      "comentarios": 0
+      "catalogo": 1000,
+      "interacoes": 1000,
+      "comentarios": 1000
     },
-    "validos": 0,
+    "validos": 3000,
     "invalidos": 0,
     "incompletos": 0,
     "duplicados": 0,
-    "corrigidos": 0,
+    "corrigidos": 1000,
+    "detalhamento": {
+      "catalogo": {
+        "validos": 1000,
+        "invalidos": 0,
+        "incompletos": 0,
+        "duplicados": 0,
+        "corrigidos": 1000
+      },
+      "interacoes": {
+        "validos": 1000,
+        "invalidos": 0,
+        "incompletos": 0,
+        "duplicados": 0,
+        "corrigidos": 0
+      },
+      "comentarios": {
+        "validos": 1000,
+        "invalidos": 0,
+        "incompletos": 0,
+        "duplicados": 0,
+        "corrigidos": 0
+      }
+    },
     "carregados": {
-      "postgresql": 0,
+      "postgresql": {
+        "categorias": 8,
+        "usuarios": 150,
+        "conteudos": 1000,
+        "interacoes": 1000
+      },
       "mongodb": 0
     }
   },
@@ -21,13 +49,13 @@
   "recomendacao": {},
   "metricas": {},
   "tempos_etapas_s": {
-    "conexoes": 0.02,
-    "ingestao": 0.0,
-    "mongodb": 0.0,
-    "embeddings": 0.0,
-    "recomendacao": 0.0,
+    "conexoes": 0.267,
+    "ingestao": 1.481,
+    "mongodb": 0.001,
+    "embeddings": 0.001,
+    "recomendacao": 0.001,
     "metricas": 0.0
   },
-  "tempo_total_s": 0.023,
-  "fim": "2026-09-12T14:47:13"
+  "tempo_total_s": 1.769,
+  "fim": "2026-09-12T21:23:29"
 }
