@@ -31,6 +31,7 @@ def main() -> int:
         log.error("falha de conexão: %s", e)
         return 1
 
+    status = 1
     try:
         with logger.etapa(log, "ingestao", tempos):
             resumo["ingestao"] = ingestao.executar(cfg, pg)
@@ -45,18 +46,24 @@ def main() -> int:
             resumo["recomendacao"] = recomendacao.executar(cfg, pg)
         with logger.etapa(log, "metricas", tempos):
             resumo["metricas"] = metricas.executar(cfg, pg, resumo)
+        status = 0
     except Exception:
-        return 1
+        pass  # a etapa ja registrou o traceback
     finally:
         pg.close()
+        mongo.client.close()
+        resumo["status"] = "sucesso" if status == 0 else "falha"
         resumo["tempos_etapas_s"] = tempos
         resumo["tempo_total_s"] = round(time.perf_counter() - inicio, 3)
         resumo["fim"] = datetime.now().isoformat(timespec="seconds")
         salvar(Path(cfg["saida"]["resumo"]), resumo)
         log.info("resumo gravado em %s", cfg["saida"]["resumo"])
-        log.info("Término do processamento em %.3fs", resumo["tempo_total_s"])
+        if status == 0:
+            log.info("Término do processamento em %.3fs", resumo["tempo_total_s"])
+        else:
+            log.error("Processamento interrompido por falha após %.3fs", resumo["tempo_total_s"])
 
-    return 0
+    return status
 
 
 if __name__ == "__main__":
