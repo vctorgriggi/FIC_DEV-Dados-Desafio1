@@ -48,7 +48,7 @@ desafio_dados/
 ├── sql/                  criar_banco.sql (aplicado ao subir o Postgres), consultas.sql
 ├── dados/
 │   ├── brutos/           arquivos originais (não alterar)
-│   └── processados/      saída tratada + resumo_ingestao.json
+│   └── processados/      saída tratada, rejeitados, busca_semantica, recomendacoes, resumo_ingestao
 ├── logs/                 registro de execução (RF14)
 ├── dashboard/evidencias/ prints e export do Superset
 └── documentacao/         modelo_de_dados.pdf, arquitetura.pdf, kpis.md, uso_da_ia.md
@@ -57,7 +57,8 @@ desafio_dados/
 ## Decisões
 
 - Ingestão, validação e tratamento: [documentacao/ingestao.md](documentacao/ingestao.md)
-- _(preencher: escolha do MongoDB, modelo de embeddings, KPIs, limitações)_
+- MongoDB, embeddings, busca semântica e recomendação: [documentacao/recomendacao.md](documentacao/recomendacao.md)
+- _(preencher: KPIs e dashboard)_
 
 ## Uso de IA
 

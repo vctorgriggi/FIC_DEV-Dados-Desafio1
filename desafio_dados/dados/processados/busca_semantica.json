@@ -1,0 +1,137 @@
+[
+  {
+    "consulta": "Quero aprender os fundamentos de banco de dados para inteligência artificial.",
+    "resultados": [
+      {
+        "posicao": 1,
+        "conteudo_id": 762,
+        "titulo": "Curso Completo de Estruturas de Dados e Algoritmos Eficientes: Da Teoria à Prática",
+        "categoria": "Programação & Software",
+        "tipo": "Curso",
+        "similaridade": 0.6489
+      },
+      {
+        "posicao": 2,
+        "conteudo_id": 390,
+        "titulo": "Masterclass de Estruturas de Dados e Algoritmos Eficientes para Projetos Reais",
+        "categoria": "Programação & Software",
+        "tipo": "Curso",
+        "similaridade": 0.6354
+      },
+      {
+        "posicao": 3,
+        "conteudo_id": 502,
+        "titulo": "Especialização em Governança e Ética em Sistemas de IA com Projetos Práticos",
+        "categoria": "Inteligência Artificial",
+        "tipo": "Curso",
+        "similaridade": 0.6084
+      },
+      {
+        "posicao": 4,
+        "conteudo_id": 155,
+        "titulo": "Especialização em Governança de Dados para Aplicações de IA com Projetos Práticos",
+        "categoria": "Segurança & Governança",
+        "tipo": "Curso",
+        "similaridade": 0.6066
+      },
+      {
+        "posicao": 5,
+        "conteudo_id": 851,
+        "titulo": "Masterclass de Governança de Dados para Aplicações de IA para Projetos Reais",
+        "categoria": "Segurança & Governança",
+        "tipo": "Curso",
+        "similaridade": 0.6053
+      }
+    ]
+  },
+  {
+    "consulta": "Como proteger dados pessoais e atender à LGPD?",
+    "resultados": [
+      {
+        "posicao": 1,
+        "conteudo_id": 194,
+        "titulo": "Papo de Dados Ep. 39: Desvendando Adequação à LGPD e Proteção de Dados Pessoais",
+        "categoria": "Segurança & Governança",
+        "tipo": "Podcast",
+        "similaridade": 0.6691
+      },
+      {
+        "posicao": 2,
+        "conteudo_id": 660,
+        "titulo": "Deep Dive Ep. 32: Casos de Sucesso em Adequação à LGPD e Proteção de Dados Pessoais",
+        "categoria": "Segurança & Governança",
+        "tipo": "Podcast",
+        "similaridade": 0.5988
+      },
+      {
+        "posicao": 3,
+        "conteudo_id": 189,
+        "titulo": "Papo de Dados Ep. 108: Desvendando Prevenção contra Vazamentos e Segurança em APIs",
+        "categoria": "Segurança & Governança",
+        "tipo": "Podcast",
+        "similaridade": 0.5581
+      },
+      {
+        "posicao": 4,
+        "conteudo_id": 276,
+        "titulo": "Data Insights Ep. 82: Experiências Reais com Prevenção contra Vazamentos e Segurança em APIs",
+        "categoria": "Segurança & Governança",
+        "tipo": "Podcast",
+        "similaridade": 0.5565
+      },
+      {
+        "posicao": 5,
+        "conteudo_id": 205,
+        "titulo": "Curso Completo de Adequação à LGPD e Proteção de Dados Pessoais: Da Teoria à Prática",
+        "categoria": "Segurança & Governança",
+        "tipo": "Curso",
+        "similaridade": 0.5454
+      }
+    ]
+  },
+  {
+    "consulta": "Curso prático de deploy de aplicações na nuvem com containers",
+    "resultados": [
+      {
+        "posicao": 1,
+        "conteudo_id": 397,
+        "titulo": "Formação Prática em Escalabilidade e Gestão de Custos em Cloud: Fundamentos e Aplicação",
+        "categoria": "DevOps & Cloud",
+        "tipo": "Curso",
+        "similaridade": 0.7213
+      },
+      {
+        "posicao": 2,
+        "conteudo_id": 739,
+        "titulo": "Formação Prática em Escalabilidade e Gestão de Custos em Cloud: Fundamentos e Aplicação",
+        "categoria": "DevOps & Cloud",
+        "tipo": "Curso",
+        "similaridade": 0.7177
+      },
+      {
+        "posicao": 3,
+        "conteudo_id": 85,
+        "titulo": "Formação Prática em Escalabilidade e Gestão de Custos em Cloud: Fundamentos e Aplicação",
+        "categoria": "DevOps & Cloud",
+        "tipo": "Curso",
+        "similaridade": 0.7177
+      },
+      {
+        "posicao": 4,
+        "conteudo_id": 592,
+        "titulo": "Formação Prática em Escalabilidade e Gestão de Custos em Cloud: Fundamentos e Aplicação",
+        "categoria": "DevOps & Cloud",
+        "tipo": "Curso",
+        "similaridade": 0.7165
+      },
+      {
+        "posicao": 5,
+        "conteudo_id": 622,
+        "titulo": "Guia Rápido e Hands-on: Escalabilidade e Gestão de Custos em Cloud",
+        "categoria": "DevOps & Cloud",
+        "tipo": "Vídeo",
+        "similaridade": 0.7121
+      }
+    ]
+  }
+]
