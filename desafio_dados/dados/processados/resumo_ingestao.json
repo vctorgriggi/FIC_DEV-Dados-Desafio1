@@ -1,5 +1,5 @@
 {
-  "inicio": "2026-09-12T22:09:58",
+  "inicio": "2026-09-12T22:17:43",
   "ingestao": {
     "registros_lidos": {
       "catalogo": 1000,
@@ -69,19 +69,32 @@
       "positivo": 200,
       "estavel": 970
     },
-    "gerado_em": "2026-09-12T22:10:07",
+    "gerado_em": "2026-09-12T22:17:51",
     "arquivo": "dados/processados/recomendacoes.json"
   },
-  "metricas": {},
-  "tempos_etapas_s": {
-    "conexoes": 0.023,
-    "ingestao": 0.078,
-    "mongodb": 0.04,
-    "embeddings": 0.004,
-    "busca_semantica": 8.815,
-    "recomendacao": 0.244,
-    "metricas": 0.0
+  "metricas": {
+    "metricas": [
+      "M1_volume",
+      "M2_uso_mensal",
+      "M3_conteudos_populares"
+    ],
+    "kpis": [
+      "KPI1_taxa_conclusao",
+      "KPI2_qualidade",
+      "KPI3_retencao_mensal",
+      "KPI4_recomendacao"
+    ],
+    "arquivo": "dados/processados/kpis.json"
   },
-  "tempo_total_s": 9.206,
-  "fim": "2026-09-12T22:10:07"
+  "tempos_etapas_s": {
+    "conexoes": 0.028,
+    "ingestao": 0.077,
+    "mongodb": 0.038,
+    "embeddings": 0.004,
+    "busca_semantica": 8.544,
+    "recomendacao": 0.273,
+    "metricas": 0.016
+  },
+  "tempo_total_s": 8.982,
+  "fim": "2026-09-12T22:17:52"
 }

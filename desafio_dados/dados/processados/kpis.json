@@ -1,0 +1,310 @@
+{
+  "metricas": {
+    "M1_volume": [
+      {
+        "usuarios": 150,
+        "usuarios_ativos": 150,
+        "conteudos": 1000,
+        "interacoes": 1000,
+        "tempo_medio_min": "144.9",
+        "recomendacoes": 1170,
+        "cobertura_recomendacao_pct": "78.0",
+        "embeddings": 1000
+      }
+    ],
+    "M2_uso_mensal": [
+      {
+        "mes": "2026-01-01",
+        "interacoes": "123",
+        "visualizacoes": "49",
+        "usuarios_ativos": "122"
+      },
+      {
+        "mes": "2026-02-01",
+        "interacoes": "147",
+        "visualizacoes": "58",
+        "usuarios_ativos": "142"
+      },
+      {
+        "mes": "2026-03-01",
+        "interacoes": "124",
+        "visualizacoes": "41",
+        "usuarios_ativos": "124"
+      },
+      {
+        "mes": "2026-04-01",
+        "interacoes": "118",
+        "visualizacoes": "36",
+        "usuarios_ativos": "115"
+      },
+      {
+        "mes": "2026-05-01",
+        "interacoes": "139",
+        "visualizacoes": "50",
+        "usuarios_ativos": "136"
+      },
+      {
+        "mes": "2026-06-01",
+        "interacoes": "133",
+        "visualizacoes": "47",
+        "usuarios_ativos": "130"
+      },
+      {
+        "mes": "2026-07-01",
+        "interacoes": "119",
+        "visualizacoes": "45",
+        "usuarios_ativos": "119"
+      },
+      {
+        "mes": "2026-08-01",
+        "interacoes": "97",
+        "visualizacoes": "25",
+        "usuarios_ativos": "94"
+      }
+    ],
+    "M3_conteudos_populares": [
+      {
+        "conteudo_id": 624,
+        "titulo": "Especialização em Ingestão Eficiente de CSV, JSON e Parquet com Projetos Práticos",
+        "categoria": "Engenharia de Dados",
+        "visualizacoes": 3,
+        "avaliacao_media": "5.00"
+      },
+      {
+        "conteudo_id": 249,
+        "titulo": "Guia Definitivo e Boas Práticas sobre Conteinerização com Docker e Docker Compose",
+        "categoria": "DevOps & Cloud",
+        "visualizacoes": 3,
+        "avaliacao_media": "5.00"
+      },
+      {
+        "conteudo_id": 343,
+        "titulo": "Data Insights Ep. 12: Experiências Reais com Fundamentos de Deep Learning com PyTorch",
+        "categoria": "Inteligência Artificial",
+        "visualizacoes": 3,
+        "avaliacao_media": "5.00"
+      },
+      {
+        "conteudo_id": 550,
+        "titulo": "Como Implementar Arquitetura RAG e Recuperação Semântica Passo a Passo",
+        "categoria": "Inteligência Artificial",
+        "visualizacoes": 3,
+        "avaliacao_media": null
+      },
+      {
+        "conteudo_id": 276,
+        "titulo": "Data Insights Ep. 82: Experiências Reais com Prevenção contra Vazamentos e Segurança em APIs",
+        "categoria": "Segurança & Governança",
+        "visualizacoes": 3,
+        "avaliacao_media": null
+      },
+      {
+        "conteudo_id": 534,
+        "titulo": "Guia Definitivo e Boas Práticas sobre Design de Dashboards e Eliminação de Chartjunk",
+        "categoria": "Business Intelligence",
+        "visualizacoes": 2,
+        "avaliacao_media": null
+      },
+      {
+        "conteudo_id": 203,
+        "titulo": "Guia Rápido e Hands-on: Visualizações com Big Numbers e Gráficos Eficazes",
+        "categoria": "Business Intelligence",
+        "visualizacoes": 2,
+        "avaliacao_media": "5.00"
+      },
+      {
+        "conteudo_id": 173,
+        "titulo": "Como Implementar Modelagem e Agregações Analíticas no SQL Lab Passo a Passo",
+        "categoria": "Business Intelligence",
+        "visualizacoes": 2,
+        "avaliacao_media": "5.00"
+      },
+      {
+        "conteudo_id": 524,
+        "titulo": "Como Implementar Visualizações com Big Numbers e Gráficos Eficazes Passo a Passo",
+        "categoria": "Business Intelligence",
+        "visualizacoes": 2,
+        "avaliacao_media": "5.00"
+      },
+      {
+        "conteudo_id": 125,
+        "titulo": "Como Implementar Integração Híbrida PostgreSQL e NoSQL MongoDB Passo a Passo",
+        "categoria": "Banco de Dados",
+        "visualizacoes": 2,
+        "avaliacao_media": null
+      }
+    ]
+  },
+  "kpis": {
+    "KPI1_taxa_conclusao": [
+      {
+        "categoria": "DevOps & Cloud",
+        "consumos": "87",
+        "conclusoes": "26",
+        "taxa_conclusao_pct": "29.9"
+      },
+      {
+        "categoria": "Programação & Software",
+        "consumos": "78",
+        "conclusoes": "21",
+        "taxa_conclusao_pct": "26.9"
+      },
+      {
+        "categoria": "Banco de Dados",
+        "consumos": "92",
+        "conclusoes": "23",
+        "taxa_conclusao_pct": "25.0"
+      },
+      {
+        "categoria": "Inteligência Artificial",
+        "consumos": "78",
+        "conclusoes": "19",
+        "taxa_conclusao_pct": "24.4"
+      },
+      {
+        "categoria": "Ciência de Dados",
+        "consumos": "80",
+        "conclusoes": "17",
+        "taxa_conclusao_pct": "21.3"
+      },
+      {
+        "categoria": "Business Intelligence",
+        "consumos": "99",
+        "conclusoes": "21",
+        "taxa_conclusao_pct": "21.2"
+      },
+      {
+        "categoria": "Engenharia de Dados",
+        "consumos": "91",
+        "conclusoes": "17",
+        "taxa_conclusao_pct": "18.7"
+      },
+      {
+        "categoria": "Segurança & Governança",
+        "consumos": "86",
+        "conclusoes": "10",
+        "taxa_conclusao_pct": "11.6"
+      }
+    ],
+    "KPI2_qualidade": [
+      {
+        "categoria": "Engenharia de Dados",
+        "avaliacoes": "36",
+        "avaliacao_media": "4.75"
+      },
+      {
+        "categoria": "Segurança & Governança",
+        "avaliacoes": "26",
+        "avaliacao_media": "4.69"
+      },
+      {
+        "categoria": "Business Intelligence",
+        "avaliacoes": "44",
+        "avaliacao_media": "4.57"
+      },
+      {
+        "categoria": "Inteligência Artificial",
+        "avaliacoes": "54",
+        "avaliacao_media": "4.52"
+      },
+      {
+        "categoria": "Programação & Software",
+        "avaliacoes": "41",
+        "avaliacao_media": "4.44"
+      },
+      {
+        "categoria": "DevOps & Cloud",
+        "avaliacoes": "61",
+        "avaliacao_media": "4.39"
+      },
+      {
+        "categoria": "Ciência de Dados",
+        "avaliacoes": "46",
+        "avaliacao_media": "4.33"
+      },
+      {
+        "categoria": "Banco de Dados",
+        "avaliacoes": "48",
+        "avaliacao_media": "4.31"
+      }
+    ],
+    "KPI3_retencao_mensal": [
+      {
+        "mes": "2026-01-01",
+        "usuarios_ativos": 72,
+        "interacoes": "123",
+        "interacoes_por_usuario": "1.71",
+        "usuarios_retidos": 43,
+        "retencao_pct": "59.7"
+      },
+      {
+        "mes": "2026-02-01",
+        "usuarios_ativos": 92,
+        "interacoes": "147",
+        "interacoes_por_usuario": "1.60",
+        "usuarios_retidos": 57,
+        "retencao_pct": "62.0"
+      },
+      {
+        "mes": "2026-03-01",
+        "usuarios_ativos": 88,
+        "interacoes": "124",
+        "interacoes_por_usuario": "1.41",
+        "usuarios_retidos": 46,
+        "retencao_pct": "52.3"
+      },
+      {
+        "mes": "2026-04-01",
+        "usuarios_ativos": 79,
+        "interacoes": "118",
+        "interacoes_por_usuario": "1.49",
+        "usuarios_retidos": 50,
+        "retencao_pct": "63.3"
+      },
+      {
+        "mes": "2026-05-01",
+        "usuarios_ativos": 95,
+        "interacoes": "139",
+        "interacoes_por_usuario": "1.46",
+        "usuarios_retidos": 52,
+        "retencao_pct": "54.7"
+      },
+      {
+        "mes": "2026-06-01",
+        "usuarios_ativos": 84,
+        "interacoes": "133",
+        "interacoes_por_usuario": "1.58",
+        "usuarios_retidos": 44,
+        "retencao_pct": "52.4"
+      },
+      {
+        "mes": "2026-07-01",
+        "usuarios_ativos": 84,
+        "interacoes": "119",
+        "interacoes_por_usuario": "1.42",
+        "usuarios_retidos": 45,
+        "retencao_pct": "53.6"
+      },
+      {
+        "mes": "2026-08-01",
+        "usuarios_ativos": 71,
+        "interacoes": "97",
+        "interacoes_por_usuario": "1.37",
+        "usuarios_retidos": null,
+        "retencao_pct": null
+      }
+    ],
+    "KPI4_recomendacao": [
+      {
+        "classificacao": "estavel",
+        "recomendacoes": "970",
+        "pontuacao_media": "50.7"
+      },
+      {
+        "classificacao": "positivo",
+        "recomendacoes": "200",
+        "pontuacao_media": "80.0"
+      }
+    ]
+  }
+}

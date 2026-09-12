@@ -40,12 +40,12 @@ desafio_dados/
 ├── src/
 │   ├── main.py           orquestrador (python -m src.main)
 │   ├── config.py, logger.py, db.py
-│   └── metricas.py       métricas e KPIs (RF12)
+│   └── metricas.py       métricas e KPIs (RF12): garante as views, registra a execução, grava kpis.json
 ├── ingestao/             leitura, validação, tratamento, carga no PostgreSQL (RF02–RF06)
 ├── mongodb/              carga e consultas MongoDB (RF07) — comentarios.py, consultas.js
 ├── recomendacao/         embeddings e busca semântica (RF08–RF09), motor (RF10–RF11)
 ├── tests/                testes unitários (validação com registros sujos)
-├── sql/                  criar_banco.sql (aplicado ao subir o Postgres), consultas.sql
+├── sql/                  criar_banco.sql (tabelas + views de KPI, aplicado ao subir o Postgres), consultas.sql
 ├── dados/
 │   ├── brutos/           arquivos originais (não alterar)
 │   └── processados/      saída tratada, rejeitados, busca_semantica, recomendacoes, resumo_ingestao
@@ -58,7 +58,8 @@ desafio_dados/
 
 - Ingestão, validação e tratamento: [documentacao/ingestao.md](documentacao/ingestao.md)
 - MongoDB, embeddings, busca semântica e recomendação: [documentacao/recomendacao.md](documentacao/recomendacao.md)
-- _(preencher: KPIs e dashboard)_
+- Métricas e KPIs: [documentacao/kpis.md](documentacao/kpis.md)
+- _(preencher: dashboard — perguntas de negócio e justificativa dos gráficos)_
 
 ## Uso de IA
 
