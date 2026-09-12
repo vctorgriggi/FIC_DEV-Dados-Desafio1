@@ -100,7 +100,8 @@ O enunciado sugere `ingestao/` e `recomendacao/` na raiz e exige `python -m src.
 Detalhes em `documentacao/`. Resumo do que vale saber antes de avaliar:
 
 - **Campo a campo os dados são limpos; as rejeições vêm de regras cruzadas.** 77 interações e 52 comentários acontecem antes da data de publicação do conteúdo e são marcados inválidos com motivo (3000 lidos, 2871 válidos). As demais regras são demonstradas por testes com registros sujos (`tests/`). Não há fonte de usuários; a tabela `usuario` é derivada das interações e comentários. → `ingestao.md`
-- **Recarga reconcilia:** interações e comentários que deixem de ser válidos são removidos dos bancos na execução seguinte; conteúdos, embeddings e recomendações são preservados por upsert. → `ingestao.md`
+- **Recarga reconcilia:** o que deixa de existir ou de ser válido nas fontes é removido dos bancos na execução seguinte (interações, comentários, conteúdos, usuários, embeddings e recomendações órfãos); o que continua válido é preservado por upsert, sem regerar embeddings. → `ingestao.md`
+- **Falhas são explícitas:** conexão indisponível ou erro em qualquer etapa interrompe o pipeline com código de saída 1, traceback no log e `status: falha` no resumo, que registra até onde a execução chegou. → RF14
 - **MongoDB recebe os comentários** com `categoria`, `titulo` e `tipo` desnormalizados, o que permite agregar por categoria sem join. → `recomendacao.md`
 - **Modelo de embeddings multilíngue**, porque o catálogo é em português. → `recomendacao.md`
 - **Ivis e Icur usam a proporção por categoria**, não a similaridade vetorial. A vetorial foi testada e descartada: as descrições seguem o mesmo molde e a similaridade ficou entre 0,38 e 0,85, classificando tudo como "positivo". O pgvector é usado na busca semântica e no desempate. → `recomendacao.md`

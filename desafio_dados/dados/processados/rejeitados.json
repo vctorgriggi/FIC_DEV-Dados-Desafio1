@@ -3,774 +3,2091 @@
     "fonte": "interação",
     "linha": 16,
     "classe": "invalidos",
-    "motivo": "data_hora=2026-05-07T21:27:46 anterior à publicação (2026-05-21)"
+    "motivo": "data_hora=2026-05-07T21:27:46 anterior à publicação (2026-05-21)",
+    "registro": {
+      "usuario_id": 106,
+      "conteudo_id": 66,
+      "tipo_interacao": "curtida",
+      "data_hora": "2026-05-07T21:27:46",
+      "tempo_consumido": 67,
+      "percentual_conclusao": 64.6,
+      "avaliacao_atribuida": 5
+    }
   },
   {
     "fonte": "interação",
     "linha": 17,
     "classe": "invalidos",
-    "motivo": "data_hora=2026-02-10T22:43:28 anterior à publicação (2026-06-11)"
+    "motivo": "data_hora=2026-02-10T22:43:28 anterior à publicação (2026-06-11)",
+    "registro": {
+      "usuario_id": 95,
+      "conteudo_id": 689,
+      "tipo_interacao": "curtida",
+      "data_hora": "2026-02-10T22:43:28",
+      "tempo_consumido": 51,
+      "percentual_conclusao": 96.2,
+      "avaliacao_atribuida": 5
+    }
   },
   {
     "fonte": "interação",
     "linha": 18,
     "classe": "invalidos",
-    "motivo": "data_hora=2026-05-20T20:59:28 anterior à publicação (2026-06-14)"
+    "motivo": "data_hora=2026-05-20T20:59:28 anterior à publicação (2026-06-14)",
+    "registro": {
+      "usuario_id": 131,
+      "conteudo_id": 355,
+      "tipo_interacao": "avaliação",
+      "data_hora": "2026-05-20T20:59:28",
+      "tempo_consumido": 811,
+      "percentual_conclusao": 73.0,
+      "avaliacao_atribuida": 4
+    }
   },
   {
     "fonte": "interação",
     "linha": 19,
     "classe": "invalidos",
-    "motivo": "data_hora=2026-04-21T03:09:37 anterior à publicação (2026-06-08)"
+    "motivo": "data_hora=2026-04-21T03:09:37 anterior à publicação (2026-06-08)",
+    "registro": {
+      "usuario_id": 126,
+      "conteudo_id": 514,
+      "tipo_interacao": "visualização",
+      "data_hora": "2026-04-21T03:09:37",
+      "tempo_consumido": 185,
+      "percentual_conclusao": 14.4,
+      "avaliacao_atribuida": null
+    }
   },
   {
     "fonte": "interação",
     "linha": 31,
     "classe": "invalidos",
-    "motivo": "data_hora=2026-06-07T07:07:44 anterior à publicação (2026-06-29)"
+    "motivo": "data_hora=2026-06-07T07:07:44 anterior à publicação (2026-06-29)",
+    "registro": {
+      "usuario_id": 97,
+      "conteudo_id": 164,
+      "tipo_interacao": "visualização",
+      "data_hora": "2026-06-07T07:07:44",
+      "tempo_consumido": 63,
+      "percentual_conclusao": 84.6,
+      "avaliacao_atribuida": null
+    }
   },
   {
     "fonte": "interação",
     "linha": 84,
     "classe": "invalidos",
-    "motivo": "data_hora=2026-02-19T14:05:36 anterior à publicação (2026-02-20)"
+    "motivo": "data_hora=2026-02-19T14:05:36 anterior à publicação (2026-02-20)",
+    "registro": {
+      "usuario_id": 31,
+      "conteudo_id": 343,
+      "tipo_interacao": "conclusão",
+      "data_hora": "2026-02-19T14:05:36",
+      "tempo_consumido": 57,
+      "percentual_conclusao": 100.0,
+      "avaliacao_atribuida": 5
+    }
   },
   {
     "fonte": "interação",
     "linha": 94,
     "classe": "invalidos",
-    "motivo": "data_hora=2026-04-03T04:56:00 anterior à publicação (2026-06-30)"
+    "motivo": "data_hora=2026-04-03T04:56:00 anterior à publicação (2026-06-30)",
+    "registro": {
+      "usuario_id": 21,
+      "conteudo_id": 929,
+      "tipo_interacao": "início",
+      "data_hora": "2026-04-03T04:56:00",
+      "tempo_consumido": 1,
+      "percentual_conclusao": 7.1,
+      "avaliacao_atribuida": null
+    }
   },
   {
     "fonte": "interação",
     "linha": 113,
     "classe": "invalidos",
-    "motivo": "data_hora=2026-04-18T09:03:49 anterior à publicação (2026-05-16)"
+    "motivo": "data_hora=2026-04-18T09:03:49 anterior à publicação (2026-05-16)",
+    "registro": {
+      "usuario_id": 73,
+      "conteudo_id": 545,
+      "tipo_interacao": "curtida",
+      "data_hora": "2026-04-18T09:03:49",
+      "tempo_consumido": 26,
+      "percentual_conclusao": 60.3,
+      "avaliacao_atribuida": 5
+    }
   },
   {
     "fonte": "interação",
     "linha": 151,
     "classe": "invalidos",
-    "motivo": "data_hora=2026-06-07T06:16:00 anterior à publicação (2026-06-23)"
+    "motivo": "data_hora=2026-06-07T06:16:00 anterior à publicação (2026-06-23)",
+    "registro": {
+      "usuario_id": 81,
+      "conteudo_id": 72,
+      "tipo_interacao": "compartilhamento",
+      "data_hora": "2026-06-07T06:16:00",
+      "tempo_consumido": 19,
+      "percentual_conclusao": 96.0,
+      "avaliacao_atribuida": null
+    }
   },
   {
     "fonte": "interação",
     "linha": 164,
     "classe": "invalidos",
-    "motivo": "data_hora=2026-01-11T14:49:34 anterior à publicação (2026-06-11)"
+    "motivo": "data_hora=2026-01-11T14:49:34 anterior à publicação (2026-06-11)",
+    "registro": {
+      "usuario_id": 98,
+      "conteudo_id": 565,
+      "tipo_interacao": "visualização",
+      "data_hora": "2026-01-11T14:49:34",
+      "tempo_consumido": 762,
+      "percentual_conclusao": 64.0,
+      "avaliacao_atribuida": null
+    }
   },
   {
     "fonte": "interação",
     "linha": 169,
     "classe": "invalidos",
-    "motivo": "data_hora=2026-02-26T08:25:23 anterior à publicação (2026-05-11)"
+    "motivo": "data_hora=2026-02-26T08:25:23 anterior à publicação (2026-05-11)",
+    "registro": {
+      "usuario_id": 2,
+      "conteudo_id": 178,
+      "tipo_interacao": "visualização",
+      "data_hora": "2026-02-26T08:25:23",
+      "tempo_consumido": 23,
+      "percentual_conclusao": 39.9,
+      "avaliacao_atribuida": null
+    }
   },
   {
     "fonte": "interação",
     "linha": 183,
     "classe": "invalidos",
-    "motivo": "data_hora=2026-03-14T01:53:32 anterior à publicação (2026-04-01)"
+    "motivo": "data_hora=2026-03-14T01:53:32 anterior à publicação (2026-04-01)",
+    "registro": {
+      "usuario_id": 46,
+      "conteudo_id": 756,
+      "tipo_interacao": "início",
+      "data_hora": "2026-03-14T01:53:32",
+      "tempo_consumido": 7,
+      "percentual_conclusao": 12.0,
+      "avaliacao_atribuida": null
+    }
   },
   {
     "fonte": "interação",
     "linha": 195,
     "classe": "invalidos",
-    "motivo": "data_hora=2026-01-11T23:59:49 anterior à publicação (2026-01-29)"
+    "motivo": "data_hora=2026-01-11T23:59:49 anterior à publicação (2026-01-29)",
+    "registro": {
+      "usuario_id": 45,
+      "conteudo_id": 770,
+      "tipo_interacao": "compartilhamento",
+      "data_hora": "2026-01-11T23:59:49",
+      "tempo_consumido": 17,
+      "percentual_conclusao": 90.8,
+      "avaliacao_atribuida": null
+    }
   },
   {
     "fonte": "interação",
     "linha": 197,
     "classe": "invalidos",
-    "motivo": "data_hora=2026-06-03T09:04:43 anterior à publicação (2026-06-30)"
+    "motivo": "data_hora=2026-06-03T09:04:43 anterior à publicação (2026-06-30)",
+    "registro": {
+      "usuario_id": 142,
+      "conteudo_id": 724,
+      "tipo_interacao": "visualização",
+      "data_hora": "2026-06-03T09:04:43",
+      "tempo_consumido": 8,
+      "percentual_conclusao": 61.6,
+      "avaliacao_atribuida": null
+    }
   },
   {
     "fonte": "interação",
     "linha": 210,
     "classe": "invalidos",
-    "motivo": "data_hora=2026-01-22T11:23:01 anterior à publicação (2026-03-06)"
+    "motivo": "data_hora=2026-01-22T11:23:01 anterior à publicação (2026-03-06)",
+    "registro": {
+      "usuario_id": 88,
+      "conteudo_id": 374,
+      "tipo_interacao": "visualização",
+      "data_hora": "2026-01-22T11:23:01",
+      "tempo_consumido": 9,
+      "percentual_conclusao": 43.7,
+      "avaliacao_atribuida": null
+    }
   },
   {
     "fonte": "interação",
     "linha": 218,
     "classe": "invalidos",
-    "motivo": "data_hora=2026-01-31T11:15:24 anterior à publicação (2026-03-30)"
+    "motivo": "data_hora=2026-01-31T11:15:24 anterior à publicação (2026-03-30)",
+    "registro": {
+      "usuario_id": 109,
+      "conteudo_id": 627,
+      "tipo_interacao": "visualização",
+      "data_hora": "2026-01-31T11:15:24",
+      "tempo_consumido": 18,
+      "percentual_conclusao": 30.2,
+      "avaliacao_atribuida": null
+    }
   },
   {
     "fonte": "interação",
     "linha": 222,
     "classe": "invalidos",
-    "motivo": "data_hora=2026-01-11T02:10:10 anterior à publicação (2026-03-29)"
+    "motivo": "data_hora=2026-01-11T02:10:10 anterior à publicação (2026-03-29)",
+    "registro": {
+      "usuario_id": 42,
+      "conteudo_id": 219,
+      "tipo_interacao": "início",
+      "data_hora": "2026-01-11T02:10:10",
+      "tempo_consumido": 1,
+      "percentual_conclusao": 1.3,
+      "avaliacao_atribuida": null
+    }
   },
   {
     "fonte": "interação",
     "linha": 229,
     "classe": "invalidos",
-    "motivo": "data_hora=2026-02-14T04:45:47 anterior à publicação (2026-06-27)"
+    "motivo": "data_hora=2026-02-14T04:45:47 anterior à publicação (2026-06-27)",
+    "registro": {
+      "usuario_id": 67,
+      "conteudo_id": 489,
+      "tipo_interacao": "curtida",
+      "data_hora": "2026-02-14T04:45:47",
+      "tempo_consumido": 14,
+      "percentual_conclusao": 64.1,
+      "avaliacao_atribuida": 5
+    }
   },
   {
     "fonte": "interação",
     "linha": 238,
     "classe": "invalidos",
-    "motivo": "data_hora=2026-03-26T13:46:00 anterior à publicação (2026-05-19)"
+    "motivo": "data_hora=2026-03-26T13:46:00 anterior à publicação (2026-05-19)",
+    "registro": {
+      "usuario_id": 114,
+      "conteudo_id": 898,
+      "tipo_interacao": "início",
+      "data_hora": "2026-03-26T13:46:00",
+      "tempo_consumido": 1,
+      "percentual_conclusao": 3.1,
+      "avaliacao_atribuida": null
+    }
   },
   {
     "fonte": "interação",
     "linha": 248,
     "classe": "invalidos",
-    "motivo": "data_hora=2026-01-01T11:23:56 anterior à publicação (2026-01-29)"
+    "motivo": "data_hora=2026-01-01T11:23:56 anterior à publicação (2026-01-29)",
+    "registro": {
+      "usuario_id": 146,
+      "conteudo_id": 969,
+      "tipo_interacao": "início",
+      "data_hora": "2026-01-01T11:23:56",
+      "tempo_consumido": 1,
+      "percentual_conclusao": 1.4,
+      "avaliacao_atribuida": null
+    }
   },
   {
     "fonte": "interação",
     "linha": 296,
     "classe": "invalidos",
-    "motivo": "data_hora=2026-01-12T13:28:10 anterior à publicação (2026-01-27)"
+    "motivo": "data_hora=2026-01-12T13:28:10 anterior à publicação (2026-01-27)",
+    "registro": {
+      "usuario_id": 75,
+      "conteudo_id": 522,
+      "tipo_interacao": "visualização",
+      "data_hora": "2026-01-12T13:28:10",
+      "tempo_consumido": 14,
+      "percentual_conclusao": 24.7,
+      "avaliacao_atribuida": null
+    }
   },
   {
     "fonte": "interação",
     "linha": 304,
     "classe": "invalidos",
-    "motivo": "data_hora=2026-04-26T05:04:35 anterior à publicação (2026-04-30)"
+    "motivo": "data_hora=2026-04-26T05:04:35 anterior à publicação (2026-04-30)",
+    "registro": {
+      "usuario_id": 126,
+      "conteudo_id": 566,
+      "tipo_interacao": "avaliação",
+      "data_hora": "2026-04-26T05:04:35",
+      "tempo_consumido": 57,
+      "percentual_conclusao": 69.0,
+      "avaliacao_atribuida": 3
+    }
   },
   {
     "fonte": "interação",
     "linha": 305,
     "classe": "invalidos",
-    "motivo": "data_hora=2026-04-05T15:34:12 anterior à publicação (2026-04-14)"
+    "motivo": "data_hora=2026-04-05T15:34:12 anterior à publicação (2026-04-14)",
+    "registro": {
+      "usuario_id": 99,
+      "conteudo_id": 282,
+      "tipo_interacao": "visualização",
+      "data_hora": "2026-04-05T15:34:12",
+      "tempo_consumido": 57,
+      "percentual_conclusao": 68.0,
+      "avaliacao_atribuida": null
+    }
   },
   {
     "fonte": "interação",
     "linha": 320,
     "classe": "invalidos",
-    "motivo": "data_hora=2026-06-12T22:04:07 anterior à publicação (2026-06-17)"
+    "motivo": "data_hora=2026-06-12T22:04:07 anterior à publicação (2026-06-17)",
+    "registro": {
+      "usuario_id": 45,
+      "conteudo_id": 212,
+      "tipo_interacao": "início",
+      "data_hora": "2026-06-12T22:04:07",
+      "tempo_consumido": 1,
+      "percentual_conclusao": 3.4,
+      "avaliacao_atribuida": null
+    }
   },
   {
     "fonte": "interação",
     "linha": 343,
     "classe": "invalidos",
-    "motivo": "data_hora=2026-02-03T01:32:35 anterior à publicação (2026-05-11)"
+    "motivo": "data_hora=2026-02-03T01:32:35 anterior à publicação (2026-05-11)",
+    "registro": {
+      "usuario_id": 80,
+      "conteudo_id": 178,
+      "tipo_interacao": "visualização",
+      "data_hora": "2026-02-03T01:32:35",
+      "tempo_consumido": 44,
+      "percentual_conclusao": 74.7,
+      "avaliacao_atribuida": null
+    }
   },
   {
     "fonte": "interação",
     "linha": 355,
     "classe": "invalidos",
-    "motivo": "data_hora=2026-01-29T14:58:41 anterior à publicação (2026-04-15)"
+    "motivo": "data_hora=2026-01-29T14:58:41 anterior à publicação (2026-04-15)",
+    "registro": {
+      "usuario_id": 117,
+      "conteudo_id": 325,
+      "tipo_interacao": "conclusão",
+      "data_hora": "2026-01-29T14:58:41",
+      "tempo_consumido": 5,
+      "percentual_conclusao": 100.0,
+      "avaliacao_atribuida": 4
+    }
   },
   {
     "fonte": "interação",
     "linha": 358,
     "classe": "invalidos",
-    "motivo": "data_hora=2026-02-05T00:12:00 anterior à publicação (2026-06-07)"
+    "motivo": "data_hora=2026-02-05T00:12:00 anterior à publicação (2026-06-07)",
+    "registro": {
+      "usuario_id": 14,
+      "conteudo_id": 787,
+      "tipo_interacao": "conclusão",
+      "data_hora": "2026-02-05T00:12:00",
+      "tempo_consumido": 70,
+      "percentual_conclusao": 100.0,
+      "avaliacao_atribuida": 5
+    }
   },
   {
     "fonte": "interação",
     "linha": 373,
     "classe": "invalidos",
-    "motivo": "data_hora=2026-01-28T10:20:45 anterior à publicação (2026-03-20)"
+    "motivo": "data_hora=2026-01-28T10:20:45 anterior à publicação (2026-03-20)",
+    "registro": {
+      "usuario_id": 77,
+      "conteudo_id": 745,
+      "tipo_interacao": "visualização",
+      "data_hora": "2026-01-28T10:20:45",
+      "tempo_consumido": 11,
+      "percentual_conclusao": 69.7,
+      "avaliacao_atribuida": null
+    }
   },
   {
     "fonte": "interação",
     "linha": 381,
     "classe": "invalidos",
-    "motivo": "data_hora=2026-01-19T16:28:03 anterior à publicação (2026-02-20)"
+    "motivo": "data_hora=2026-01-19T16:28:03 anterior à publicação (2026-02-20)",
+    "registro": {
+      "usuario_id": 145,
+      "conteudo_id": 343,
+      "tipo_interacao": "visualização",
+      "data_hora": "2026-01-19T16:28:03",
+      "tempo_consumido": 27,
+      "percentual_conclusao": 47.7,
+      "avaliacao_atribuida": null
+    }
   },
   {
     "fonte": "interação",
     "linha": 386,
     "classe": "invalidos",
-    "motivo": "data_hora=2026-05-13T12:42:39 anterior à publicação (2026-05-27)"
+    "motivo": "data_hora=2026-05-13T12:42:39 anterior à publicação (2026-05-27)",
+    "registro": {
+      "usuario_id": 38,
+      "conteudo_id": 612,
+      "tipo_interacao": "conclusão",
+      "data_hora": "2026-05-13T12:42:39",
+      "tempo_consumido": 41,
+      "percentual_conclusao": 100.0,
+      "avaliacao_atribuida": 4
+    }
   },
   {
     "fonte": "interação",
     "linha": 389,
     "classe": "invalidos",
-    "motivo": "data_hora=2026-02-27T13:27:48 anterior à publicação (2026-05-03)"
+    "motivo": "data_hora=2026-02-27T13:27:48 anterior à publicação (2026-05-03)",
+    "registro": {
+      "usuario_id": 107,
+      "conteudo_id": 19,
+      "tipo_interacao": "visualização",
+      "data_hora": "2026-02-27T13:27:48",
+      "tempo_consumido": 1,
+      "percentual_conclusao": 10.1,
+      "avaliacao_atribuida": null
+    }
   },
   {
     "fonte": "interação",
     "linha": 392,
     "classe": "invalidos",
-    "motivo": "data_hora=2026-03-21T18:50:06 anterior à publicação (2026-05-03)"
+    "motivo": "data_hora=2026-03-21T18:50:06 anterior à publicação (2026-05-03)",
+    "registro": {
+      "usuario_id": 8,
+      "conteudo_id": 19,
+      "tipo_interacao": "avaliação",
+      "data_hora": "2026-03-21T18:50:06",
+      "tempo_consumido": 11,
+      "percentual_conclusao": 87.2,
+      "avaliacao_atribuida": 5
+    }
   },
   {
     "fonte": "interação",
     "linha": 400,
     "classe": "invalidos",
-    "motivo": "data_hora=2026-03-22T15:22:44 anterior à publicação (2026-05-16)"
+    "motivo": "data_hora=2026-03-22T15:22:44 anterior à publicação (2026-05-16)",
+    "registro": {
+      "usuario_id": 56,
+      "conteudo_id": 857,
+      "tipo_interacao": "compartilhamento",
+      "data_hora": "2026-03-22T15:22:44",
+      "tempo_consumido": 33,
+      "percentual_conclusao": 55.4,
+      "avaliacao_atribuida": null
+    }
   },
   {
     "fonte": "interação",
     "linha": 410,
     "classe": "invalidos",
-    "motivo": "data_hora=2026-05-23T20:01:20 anterior à publicação (2026-05-24)"
+    "motivo": "data_hora=2026-05-23T20:01:20 anterior à publicação (2026-05-24)",
+    "registro": {
+      "usuario_id": 56,
+      "conteudo_id": 833,
+      "tipo_interacao": "compartilhamento",
+      "data_hora": "2026-05-23T20:01:20",
+      "tempo_consumido": 62,
+      "percentual_conclusao": 69.5,
+      "avaliacao_atribuida": null
+    }
   },
   {
     "fonte": "interação",
     "linha": 423,
     "classe": "invalidos",
-    "motivo": "data_hora=2026-04-23T14:09:03 anterior à publicação (2026-05-16)"
+    "motivo": "data_hora=2026-04-23T14:09:03 anterior à publicação (2026-05-16)",
+    "registro": {
+      "usuario_id": 16,
+      "conteudo_id": 857,
+      "tipo_interacao": "compartilhamento",
+      "data_hora": "2026-04-23T14:09:03",
+      "tempo_consumido": 38,
+      "percentual_conclusao": 63.8,
+      "avaliacao_atribuida": null
+    }
   },
   {
     "fonte": "interação",
     "linha": 427,
     "classe": "invalidos",
-    "motivo": "data_hora=2026-03-26T13:32:19 anterior à publicação (2026-05-27)"
+    "motivo": "data_hora=2026-03-26T13:32:19 anterior à publicação (2026-05-27)",
+    "registro": {
+      "usuario_id": 39,
+      "conteudo_id": 612,
+      "tipo_interacao": "início",
+      "data_hora": "2026-03-26T13:32:19",
+      "tempo_consumido": 4,
+      "percentual_conclusao": 10.1,
+      "avaliacao_atribuida": null
+    }
   },
   {
     "fonte": "interação",
     "linha": 436,
     "classe": "invalidos",
-    "motivo": "data_hora=2026-01-26T19:16:57 anterior à publicação (2026-06-29)"
+    "motivo": "data_hora=2026-01-26T19:16:57 anterior à publicação (2026-06-29)",
+    "registro": {
+      "usuario_id": 131,
+      "conteudo_id": 318,
+      "tipo_interacao": "visualização",
+      "data_hora": "2026-01-26T19:16:57",
+      "tempo_consumido": 206,
+      "percentual_conclusao": 32.9,
+      "avaliacao_atribuida": null
+    }
   },
   {
     "fonte": "interação",
     "linha": 438,
     "classe": "invalidos",
-    "motivo": "data_hora=2026-01-03T17:31:49 anterior à publicação (2026-06-17)"
+    "motivo": "data_hora=2026-01-03T17:31:49 anterior à publicação (2026-06-17)",
+    "registro": {
+      "usuario_id": 125,
+      "conteudo_id": 229,
+      "tipo_interacao": "início",
+      "data_hora": "2026-01-03T17:31:49",
+      "tempo_consumido": 1,
+      "percentual_conclusao": 4.2,
+      "avaliacao_atribuida": null
+    }
   },
   {
     "fonte": "interação",
     "linha": 444,
     "classe": "invalidos",
-    "motivo": "data_hora=2026-01-22T20:46:15 anterior à publicação (2026-05-11)"
+    "motivo": "data_hora=2026-01-22T20:46:15 anterior à publicação (2026-05-11)",
+    "registro": {
+      "usuario_id": 20,
+      "conteudo_id": 61,
+      "tipo_interacao": "curtida",
+      "data_hora": "2026-01-22T20:46:15",
+      "tempo_consumido": 27,
+      "percentual_conclusao": 58.3,
+      "avaliacao_atribuida": 5
+    }
   },
   {
     "fonte": "interação",
     "linha": 479,
     "classe": "invalidos",
-    "motivo": "data_hora=2026-05-14T22:47:29 anterior à publicação (2026-06-16)"
+    "motivo": "data_hora=2026-05-14T22:47:29 anterior à publicação (2026-06-16)",
+    "registro": {
+      "usuario_id": 46,
+      "conteudo_id": 166,
+      "tipo_interacao": "visualização",
+      "data_hora": "2026-05-14T22:47:29",
+      "tempo_consumido": 2,
+      "percentual_conclusao": 29.5,
+      "avaliacao_atribuida": null
+    }
   },
   {
     "fonte": "interação",
     "linha": 488,
     "classe": "invalidos",
-    "motivo": "data_hora=2026-02-21T17:33:43 anterior à publicação (2026-06-18)"
+    "motivo": "data_hora=2026-02-21T17:33:43 anterior à publicação (2026-06-18)",
+    "registro": {
+      "usuario_id": 5,
+      "conteudo_id": 571,
+      "tipo_interacao": "conclusão",
+      "data_hora": "2026-02-21T17:33:43",
+      "tempo_consumido": 2713,
+      "percentual_conclusao": 100.0,
+      "avaliacao_atribuida": 5
+    }
   },
   {
     "fonte": "interação",
     "linha": 513,
     "classe": "invalidos",
-    "motivo": "data_hora=2026-03-21T15:00:04 anterior à publicação (2026-06-23)"
+    "motivo": "data_hora=2026-03-21T15:00:04 anterior à publicação (2026-06-23)",
+    "registro": {
+      "usuario_id": 5,
+      "conteudo_id": 72,
+      "tipo_interacao": "visualização",
+      "data_hora": "2026-03-21T15:00:04",
+      "tempo_consumido": 8,
+      "percentual_conclusao": 40.5,
+      "avaliacao_atribuida": null
+    }
   },
   {
     "fonte": "interação",
     "linha": 529,
     "classe": "invalidos",
-    "motivo": "data_hora=2026-04-21T03:12:36 anterior à publicação (2026-06-17)"
+    "motivo": "data_hora=2026-04-21T03:12:36 anterior à publicação (2026-06-17)",
+    "registro": {
+      "usuario_id": 145,
+      "conteudo_id": 229,
+      "tipo_interacao": "visualização",
+      "data_hora": "2026-04-21T03:12:36",
+      "tempo_consumido": 4,
+      "percentual_conclusao": 14.0,
+      "avaliacao_atribuida": null
+    }
   },
   {
     "fonte": "interação",
     "linha": 601,
     "classe": "invalidos",
-    "motivo": "data_hora=2026-02-17T12:02:47 anterior à publicação (2026-06-29)"
+    "motivo": "data_hora=2026-02-17T12:02:47 anterior à publicação (2026-06-29)",
+    "registro": {
+      "usuario_id": 24,
+      "conteudo_id": 164,
+      "tipo_interacao": "início",
+      "data_hora": "2026-02-17T12:02:47",
+      "tempo_consumido": 3,
+      "percentual_conclusao": 5.1,
+      "avaliacao_atribuida": null
+    }
   },
   {
     "fonte": "interação",
     "linha": 605,
     "classe": "invalidos",
-    "motivo": "data_hora=2026-01-19T05:49:09 anterior à publicação (2026-06-05)"
+    "motivo": "data_hora=2026-01-19T05:49:09 anterior à publicação (2026-06-05)",
+    "registro": {
+      "usuario_id": 77,
+      "conteudo_id": 124,
+      "tipo_interacao": "conclusão",
+      "data_hora": "2026-01-19T05:49:09",
+      "tempo_consumido": 89,
+      "percentual_conclusao": 100.0,
+      "avaliacao_atribuida": 5
+    }
   },
   {
     "fonte": "interação",
     "linha": 617,
     "classe": "invalidos",
-    "motivo": "data_hora=2026-03-01T16:44:32 anterior à publicação (2026-05-18)"
+    "motivo": "data_hora=2026-03-01T16:44:32 anterior à publicação (2026-05-18)",
+    "registro": {
+      "usuario_id": 94,
+      "conteudo_id": 5,
+      "tipo_interacao": "visualização",
+      "data_hora": "2026-03-01T16:44:32",
+      "tempo_consumido": 3,
+      "percentual_conclusao": 64.9,
+      "avaliacao_atribuida": null
+    }
   },
   {
     "fonte": "interação",
     "linha": 624,
     "classe": "invalidos",
-    "motivo": "data_hora=2026-03-01T22:28:10 anterior à publicação (2026-05-23)"
+    "motivo": "data_hora=2026-03-01T22:28:10 anterior à publicação (2026-05-23)",
+    "registro": {
+      "usuario_id": 89,
+      "conteudo_id": 872,
+      "tipo_interacao": "início",
+      "data_hora": "2026-03-01T22:28:10",
+      "tempo_consumido": 1,
+      "percentual_conclusao": 1.7,
+      "avaliacao_atribuida": null
+    }
   },
   {
     "fonte": "interação",
     "linha": 629,
     "classe": "invalidos",
-    "motivo": "data_hora=2026-01-25T00:54:05 anterior à publicação (2026-04-08)"
+    "motivo": "data_hora=2026-01-25T00:54:05 anterior à publicação (2026-04-08)",
+    "registro": {
+      "usuario_id": 30,
+      "conteudo_id": 273,
+      "tipo_interacao": "curtida",
+      "data_hora": "2026-01-25T00:54:05",
+      "tempo_consumido": 2,
+      "percentual_conclusao": 55.9,
+      "avaliacao_atribuida": 5
+    }
   },
   {
     "fonte": "interação",
     "linha": 634,
     "classe": "invalidos",
-    "motivo": "data_hora=2026-06-10T06:25:22 anterior à publicação (2026-06-27)"
+    "motivo": "data_hora=2026-06-10T06:25:22 anterior à publicação (2026-06-27)",
+    "registro": {
+      "usuario_id": 106,
+      "conteudo_id": 489,
+      "tipo_interacao": "visualização",
+      "data_hora": "2026-06-10T06:25:22",
+      "tempo_consumido": 10,
+      "percentual_conclusao": 47.2,
+      "avaliacao_atribuida": null
+    }
   },
   {
     "fonte": "interação",
     "linha": 644,
     "classe": "invalidos",
-    "motivo": "data_hora=2026-03-10T20:15:53 anterior à publicação (2026-05-30)"
+    "motivo": "data_hora=2026-03-10T20:15:53 anterior à publicação (2026-05-30)",
+    "registro": {
+      "usuario_id": 79,
+      "conteudo_id": 491,
+      "tipo_interacao": "início",
+      "data_hora": "2026-03-10T20:15:53",
+      "tempo_consumido": 49,
+      "percentual_conclusao": 8.2,
+      "avaliacao_atribuida": null
+    }
   },
   {
     "fonte": "interação",
     "linha": 658,
     "classe": "invalidos",
-    "motivo": "data_hora=2026-02-18T02:43:30 anterior à publicação (2026-05-11)"
+    "motivo": "data_hora=2026-02-18T02:43:30 anterior à publicação (2026-05-11)",
+    "registro": {
+      "usuario_id": 47,
+      "conteudo_id": 106,
+      "tipo_interacao": "curtida",
+      "data_hora": "2026-02-18T02:43:30",
+      "tempo_consumido": 1767,
+      "percentual_conclusao": 56.8,
+      "avaliacao_atribuida": 5
+    }
   },
   {
     "fonte": "interação",
     "linha": 675,
     "classe": "invalidos",
-    "motivo": "data_hora=2026-02-21T13:17:45 anterior à publicação (2026-06-16)"
+    "motivo": "data_hora=2026-02-21T13:17:45 anterior à publicação (2026-06-16)",
+    "registro": {
+      "usuario_id": 134,
+      "conteudo_id": 166,
+      "tipo_interacao": "conclusão",
+      "data_hora": "2026-02-21T13:17:45",
+      "tempo_consumido": 7,
+      "percentual_conclusao": 100.0,
+      "avaliacao_atribuida": 5
+    }
   },
   {
     "fonte": "interação",
     "linha": 677,
     "classe": "invalidos",
-    "motivo": "data_hora=2026-02-13T05:18:10 anterior à publicação (2026-05-11)"
+    "motivo": "data_hora=2026-02-13T05:18:10 anterior à publicação (2026-05-11)",
+    "registro": {
+      "usuario_id": 22,
+      "conteudo_id": 178,
+      "tipo_interacao": "curtida",
+      "data_hora": "2026-02-13T05:18:10",
+      "tempo_consumido": 27,
+      "percentual_conclusao": 46.0,
+      "avaliacao_atribuida": 5
+    }
   },
   {
     "fonte": "interação",
     "linha": 730,
     "classe": "invalidos",
-    "motivo": "data_hora=2026-04-01T22:41:32 anterior à publicação (2026-06-26)"
+    "motivo": "data_hora=2026-04-01T22:41:32 anterior à publicação (2026-06-26)",
+    "registro": {
+      "usuario_id": 12,
+      "conteudo_id": 330,
+      "tipo_interacao": "visualização",
+      "data_hora": "2026-04-01T22:41:32",
+      "tempo_consumido": 32,
+      "percentual_conclusao": 68.1,
+      "avaliacao_atribuida": null
+    }
   },
   {
     "fonte": "interação",
     "linha": 733,
     "classe": "invalidos",
-    "motivo": "data_hora=2026-03-30T19:36:01 anterior à publicação (2026-05-03)"
+    "motivo": "data_hora=2026-03-30T19:36:01 anterior à publicação (2026-05-03)",
+    "registro": {
+      "usuario_id": 12,
+      "conteudo_id": 19,
+      "tipo_interacao": "visualização",
+      "data_hora": "2026-03-30T19:36:01",
+      "tempo_consumido": 10,
+      "percentual_conclusao": 79.7,
+      "avaliacao_atribuida": null
+    }
   },
   {
     "fonte": "interação",
     "linha": 764,
     "classe": "invalidos",
-    "motivo": "data_hora=2026-01-27T12:00:35 anterior à publicação (2026-06-10)"
+    "motivo": "data_hora=2026-01-27T12:00:35 anterior à publicação (2026-06-10)",
+    "registro": {
+      "usuario_id": 136,
+      "conteudo_id": 919,
+      "tipo_interacao": "visualização",
+      "data_hora": "2026-01-27T12:00:35",
+      "tempo_consumido": 7,
+      "percentual_conclusao": 36.1,
+      "avaliacao_atribuida": null
+    }
   },
   {
     "fonte": "interação",
     "linha": 772,
     "classe": "invalidos",
-    "motivo": "data_hora=2026-01-25T16:02:13 anterior à publicação (2026-05-03)"
+    "motivo": "data_hora=2026-01-25T16:02:13 anterior à publicação (2026-05-03)",
+    "registro": {
+      "usuario_id": 5,
+      "conteudo_id": 179,
+      "tipo_interacao": "início",
+      "data_hora": "2026-01-25T16:02:13",
+      "tempo_consumido": 144,
+      "percentual_conclusao": 6.2,
+      "avaliacao_atribuida": null
+    }
   },
   {
     "fonte": "interação",
     "linha": 784,
     "classe": "invalidos",
-    "motivo": "data_hora=2026-05-27T23:39:21 anterior à publicação (2026-06-13)"
+    "motivo": "data_hora=2026-05-27T23:39:21 anterior à publicação (2026-06-13)",
+    "registro": {
+      "usuario_id": 11,
+      "conteudo_id": 829,
+      "tipo_interacao": "início",
+      "data_hora": "2026-05-27T23:39:21",
+      "tempo_consumido": 1,
+      "percentual_conclusao": 3.1,
+      "avaliacao_atribuida": null
+    }
   },
   {
     "fonte": "interação",
     "linha": 842,
     "classe": "invalidos",
-    "motivo": "data_hora=2026-04-08T08:13:28 anterior à publicação (2026-05-21)"
+    "motivo": "data_hora=2026-04-08T08:13:28 anterior à publicação (2026-05-21)",
+    "registro": {
+      "usuario_id": 135,
+      "conteudo_id": 66,
+      "tipo_interacao": "início",
+      "data_hora": "2026-04-08T08:13:28",
+      "tempo_consumido": 3,
+      "percentual_conclusao": 2.9,
+      "avaliacao_atribuida": null
+    }
   },
   {
     "fonte": "interação",
     "linha": 851,
     "classe": "invalidos",
-    "motivo": "data_hora=2026-02-17T19:43:30 anterior à publicação (2026-06-13)"
+    "motivo": "data_hora=2026-02-17T19:43:30 anterior à publicação (2026-06-13)",
+    "registro": {
+      "usuario_id": 21,
+      "conteudo_id": 829,
+      "tipo_interacao": "compartilhamento",
+      "data_hora": "2026-02-17T19:43:30",
+      "tempo_consumido": 19,
+      "percentual_conclusao": 42.1,
+      "avaliacao_atribuida": null
+    }
   },
   {
     "fonte": "interação",
     "linha": 856,
     "classe": "invalidos",
-    "motivo": "data_hora=2026-01-14T05:59:32 anterior à publicação (2026-01-27)"
+    "motivo": "data_hora=2026-01-14T05:59:32 anterior à publicação (2026-01-27)",
+    "registro": {
+      "usuario_id": 68,
+      "conteudo_id": 173,
+      "tipo_interacao": "visualização",
+      "data_hora": "2026-01-14T05:59:32",
+      "tempo_consumido": 25,
+      "percentual_conclusao": 78.4,
+      "avaliacao_atribuida": null
+    }
   },
   {
     "fonte": "interação",
     "linha": 874,
     "classe": "invalidos",
-    "motivo": "data_hora=2026-02-09T17:13:58 anterior à publicação (2026-02-10)"
+    "motivo": "data_hora=2026-02-09T17:13:58 anterior à publicação (2026-02-10)",
+    "registro": {
+      "usuario_id": 40,
+      "conteudo_id": 806,
+      "tipo_interacao": "conclusão",
+      "data_hora": "2026-02-09T17:13:58",
+      "tempo_consumido": 78,
+      "percentual_conclusao": 100.0,
+      "avaliacao_atribuida": 3
+    }
   },
   {
     "fonte": "interação",
     "linha": 899,
     "classe": "invalidos",
-    "motivo": "data_hora=2026-01-13T17:12:32 anterior à publicação (2026-04-17)"
+    "motivo": "data_hora=2026-01-13T17:12:32 anterior à publicação (2026-04-17)",
+    "registro": {
+      "usuario_id": 59,
+      "conteudo_id": 121,
+      "tipo_interacao": "visualização",
+      "data_hora": "2026-01-13T17:12:32",
+      "tempo_consumido": 8,
+      "percentual_conclusao": 55.6,
+      "avaliacao_atribuida": null
+    }
   },
   {
     "fonte": "interação",
     "linha": 902,
     "classe": "invalidos",
-    "motivo": "data_hora=2026-04-25T01:54:29 anterior à publicação (2026-06-29)"
+    "motivo": "data_hora=2026-04-25T01:54:29 anterior à publicação (2026-06-29)",
+    "registro": {
+      "usuario_id": 109,
+      "conteudo_id": 318,
+      "tipo_interacao": "curtida",
+      "data_hora": "2026-04-25T01:54:29",
+      "tempo_consumido": 305,
+      "percentual_conclusao": 48.5,
+      "avaliacao_atribuida": 5
+    }
   },
   {
     "fonte": "interação",
     "linha": 919,
     "classe": "invalidos",
-    "motivo": "data_hora=2026-02-06T15:46:47 anterior à publicação (2026-05-27)"
+    "motivo": "data_hora=2026-02-06T15:46:47 anterior à publicação (2026-05-27)",
+    "registro": {
+      "usuario_id": 62,
+      "conteudo_id": 612,
+      "tipo_interacao": "avaliação",
+      "data_hora": "2026-02-06T15:46:47",
+      "tempo_consumido": 28,
+      "percentual_conclusao": 69.6,
+      "avaliacao_atribuida": 5
+    }
   },
   {
     "fonte": "interação",
     "linha": 927,
     "classe": "invalidos",
-    "motivo": "data_hora=2026-05-06T02:00:53 anterior à publicação (2026-05-28)"
+    "motivo": "data_hora=2026-05-06T02:00:53 anterior à publicação (2026-05-28)",
+    "registro": {
+      "usuario_id": 74,
+      "conteudo_id": 722,
+      "tipo_interacao": "compartilhamento",
+      "data_hora": "2026-05-06T02:00:53",
+      "tempo_consumido": 8,
+      "percentual_conclusao": 50.6,
+      "avaliacao_atribuida": null
+    }
   },
   {
     "fonte": "interação",
     "linha": 928,
     "classe": "invalidos",
-    "motivo": "data_hora=2026-06-22T18:08:14 anterior à publicação (2026-06-23)"
+    "motivo": "data_hora=2026-06-22T18:08:14 anterior à publicação (2026-06-23)",
+    "registro": {
+      "usuario_id": 49,
+      "conteudo_id": 72,
+      "tipo_interacao": "curtida",
+      "data_hora": "2026-06-22T18:08:14",
+      "tempo_consumido": 8,
+      "percentual_conclusao": 40.1,
+      "avaliacao_atribuida": 5
+    }
   },
   {
     "fonte": "interação",
     "linha": 929,
     "classe": "invalidos",
-    "motivo": "data_hora=2026-03-23T03:53:51 anterior à publicação (2026-06-17)"
+    "motivo": "data_hora=2026-03-23T03:53:51 anterior à publicação (2026-06-17)",
+    "registro": {
+      "usuario_id": 99,
+      "conteudo_id": 465,
+      "tipo_interacao": "curtida",
+      "data_hora": "2026-03-23T03:53:51",
+      "tempo_consumido": 12,
+      "percentual_conclusao": 98.2,
+      "avaliacao_atribuida": 5
+    }
   },
   {
     "fonte": "interação",
     "linha": 940,
     "classe": "invalidos",
-    "motivo": "data_hora=2026-04-11T17:41:26 anterior à publicação (2026-06-17)"
+    "motivo": "data_hora=2026-04-11T17:41:26 anterior à publicação (2026-06-17)",
+    "registro": {
+      "usuario_id": 3,
+      "conteudo_id": 229,
+      "tipo_interacao": "visualização",
+      "data_hora": "2026-04-11T17:41:26",
+      "tempo_consumido": 13,
+      "percentual_conclusao": 45.7,
+      "avaliacao_atribuida": null
+    }
   },
   {
     "fonte": "interação",
     "linha": 960,
     "classe": "invalidos",
-    "motivo": "data_hora=2026-01-23T13:04:05 anterior à publicação (2026-04-14)"
+    "motivo": "data_hora=2026-01-23T13:04:05 anterior à publicação (2026-04-14)",
+    "registro": {
+      "usuario_id": 22,
+      "conteudo_id": 282,
+      "tipo_interacao": "início",
+      "data_hora": "2026-01-23T13:04:05",
+      "tempo_consumido": 12,
+      "percentual_conclusao": 14.5,
+      "avaliacao_atribuida": null
+    }
   },
   {
     "fonte": "interação",
     "linha": 962,
     "classe": "invalidos",
-    "motivo": "data_hora=2026-02-20T14:01:28 anterior à publicação (2026-02-26)"
+    "motivo": "data_hora=2026-02-20T14:01:28 anterior à publicação (2026-02-26)",
+    "registro": {
+      "usuario_id": 148,
+      "conteudo_id": 680,
+      "tipo_interacao": "avaliação",
+      "data_hora": "2026-02-20T14:01:28",
+      "tempo_consumido": 800,
+      "percentual_conclusao": 66.3,
+      "avaliacao_atribuida": 5
+    }
   },
   {
     "fonte": "interação",
     "linha": 964,
     "classe": "invalidos",
-    "motivo": "data_hora=2026-05-26T16:47:53 anterior à publicação (2026-06-30)"
+    "motivo": "data_hora=2026-05-26T16:47:53 anterior à publicação (2026-06-30)",
+    "registro": {
+      "usuario_id": 103,
+      "conteudo_id": 929,
+      "tipo_interacao": "conclusão",
+      "data_hora": "2026-05-26T16:47:53",
+      "tempo_consumido": 20,
+      "percentual_conclusao": 100.0,
+      "avaliacao_atribuida": 5
+    }
   },
   {
     "fonte": "interação",
     "linha": 970,
     "classe": "invalidos",
-    "motivo": "data_hora=2026-01-05T05:55:38 anterior à publicação (2026-02-26)"
+    "motivo": "data_hora=2026-01-05T05:55:38 anterior à publicação (2026-02-26)",
+    "registro": {
+      "usuario_id": 109,
+      "conteudo_id": 496,
+      "tipo_interacao": "curtida",
+      "data_hora": "2026-01-05T05:55:38",
+      "tempo_consumido": 38,
+      "percentual_conclusao": 93.9,
+      "avaliacao_atribuida": 5
+    }
   },
   {
     "fonte": "interação",
     "linha": 976,
     "classe": "invalidos",
-    "motivo": "data_hora=2026-04-29T16:59:02 anterior à publicação (2026-05-28)"
+    "motivo": "data_hora=2026-04-29T16:59:02 anterior à publicação (2026-05-28)",
+    "registro": {
+      "usuario_id": 40,
+      "conteudo_id": 722,
+      "tipo_interacao": "visualização",
+      "data_hora": "2026-04-29T16:59:02",
+      "tempo_consumido": 13,
+      "percentual_conclusao": 84.6,
+      "avaliacao_atribuida": null
+    }
   },
   {
     "fonte": "interação",
     "linha": 977,
     "classe": "invalidos",
-    "motivo": "data_hora=2026-03-15T11:56:38 anterior à publicação (2026-05-03)"
+    "motivo": "data_hora=2026-03-15T11:56:38 anterior à publicação (2026-05-03)",
+    "registro": {
+      "usuario_id": 1,
+      "conteudo_id": 179,
+      "tipo_interacao": "conclusão",
+      "data_hora": "2026-03-15T11:56:38",
+      "tempo_consumido": 2330,
+      "percentual_conclusao": 100.0,
+      "avaliacao_atribuida": null
+    }
   },
   {
     "fonte": "interação",
     "linha": 985,
     "classe": "invalidos",
-    "motivo": "data_hora=2026-02-11T13:09:19 anterior à publicação (2026-05-24)"
+    "motivo": "data_hora=2026-02-11T13:09:19 anterior à publicação (2026-05-24)",
+    "registro": {
+      "usuario_id": 123,
+      "conteudo_id": 852,
+      "tipo_interacao": "conclusão",
+      "data_hora": "2026-02-11T13:09:19",
+      "tempo_consumido": 69,
+      "percentual_conclusao": 100.0,
+      "avaliacao_atribuida": 5
+    }
   },
   {
     "fonte": "interação",
     "linha": 999,
     "classe": "invalidos",
-    "motivo": "data_hora=2026-02-03T05:05:51 anterior à publicação (2026-03-18)"
+    "motivo": "data_hora=2026-02-03T05:05:51 anterior à publicação (2026-03-18)",
+    "registro": {
+      "usuario_id": 58,
+      "conteudo_id": 578,
+      "tipo_interacao": "visualização",
+      "data_hora": "2026-02-03T05:05:51",
+      "tempo_consumido": 3,
+      "percentual_conclusao": 38.5,
+      "avaliacao_atribuida": null
+    }
   },
   {
     "fonte": "comentário",
     "linha": 19,
     "classe": "invalidos",
-    "motivo": "data=2026-03-24 anterior à publicação (2026-06-11)"
+    "motivo": "data=2026-03-24 anterior à publicação (2026-06-11)",
+    "registro": {
+      "usuario_id": 116,
+      "conteudo_id": 689,
+      "avaliacao": 5,
+      "comentario": "Excelente abordagem! Didática impecável e ritmo perfeito.",
+      "tags": [
+        "pipeline",
+        "dataops",
+        "prático"
+      ],
+      "data": "2026-03-24"
+    }
   },
   {
     "fonte": "comentário",
     "linha": 63,
     "classe": "invalidos",
-    "motivo": "data=2026-04-19 anterior à publicação (2026-04-21)"
+    "motivo": "data=2026-04-19 anterior à publicação (2026-04-21)",
+    "registro": {
+      "usuario_id": 31,
+      "conteudo_id": 937,
+      "avaliacao": 4,
+      "comentario": "Apresentação muito clara e objetiva. Recomendo para quem está estudando a área.",
+      "tags": [
+        "seguranca",
+        "lgpd",
+        "didático"
+      ],
+      "data": "2026-04-19"
+    }
   },
   {
     "fonte": "comentário",
     "linha": 73,
     "classe": "invalidos",
-    "motivo": "data=2026-02-14 anterior à publicação (2026-05-28)"
+    "motivo": "data=2026-02-14 anterior à publicação (2026-05-28)",
+    "registro": {
+      "usuario_id": 133,
+      "conteudo_id": 722,
+      "avaliacao": 4,
+      "comentario": "Excelente conteúdo teórico, com bons exemplos para fixar o aprendizado.",
+      "tags": [
+        "spark",
+        "streaming",
+        "hands-on"
+      ],
+      "data": "2026-02-14"
+    }
   },
   {
     "fonte": "comentário",
     "linha": 88,
     "classe": "invalidos",
-    "motivo": "data=2026-05-04 anterior à publicação (2026-06-22)"
+    "motivo": "data=2026-05-04 anterior à publicação (2026-06-22)",
+    "registro": {
+      "usuario_id": 77,
+      "conteudo_id": 321,
+      "avaliacao": 5,
+      "comentario": "Conteúdo introdutório, claro e objetivo. Superou minhas expectativas!",
+      "tags": [
+        "metadados",
+        "governanca",
+        "hands-on"
+      ],
+      "data": "2026-05-04"
+    }
   },
   {
     "fonte": "comentário",
     "linha": 94,
     "classe": "invalidos",
-    "motivo": "data=2026-03-12 anterior à publicação (2026-06-18)"
+    "motivo": "data=2026-03-12 anterior à publicação (2026-06-18)",
+    "registro": {
+      "usuario_id": 53,
+      "conteudo_id": 88,
+      "avaliacao": 4,
+      "comentario": "Excelente conteúdo teórico, com bons exemplos para fixar o aprendizado.",
+      "tags": [
+        "analytics",
+        "superset",
+        "didático"
+      ],
+      "data": "2026-03-12"
+    }
   },
   {
     "fonte": "comentário",
     "linha": 95,
     "classe": "invalidos",
-    "motivo": "data=2026-04-21 anterior à publicação (2026-06-07)"
+    "motivo": "data=2026-04-21 anterior à publicação (2026-06-07)",
+    "registro": {
+      "usuario_id": 123,
+      "conteudo_id": 787,
+      "avaliacao": 4,
+      "comentario": "Apresentação muito clara e objetiva. Recomendo para quem está estudando a área.",
+      "tags": [
+        "ia",
+        "nlp",
+        "essencial"
+      ],
+      "data": "2026-04-21"
+    }
   },
   {
     "fonte": "comentário",
     "linha": 110,
     "classe": "invalidos",
-    "motivo": "data=2026-02-25 anterior à publicação (2026-06-30)"
+    "motivo": "data=2026-02-25 anterior à publicação (2026-06-30)",
+    "registro": {
+      "usuario_id": 126,
+      "conteudo_id": 345,
+      "avaliacao": 5,
+      "comentario": "Uma das melhores explicações sobre o assunto que já encontrei na plataforma.",
+      "tags": [
+        "embeddings",
+        "agentes",
+        "iniciante"
+      ],
+      "data": "2026-02-25"
+    }
   },
   {
     "fonte": "comentário",
     "linha": 111,
     "classe": "invalidos",
-    "motivo": "data=2026-01-30 anterior à publicação (2026-02-10)"
+    "motivo": "data=2026-01-30 anterior à publicação (2026-02-10)",
+    "registro": {
+      "usuario_id": 58,
+      "conteudo_id": 806,
+      "avaliacao": 3,
+      "comentario": "Cobre o essencial para iniciantes, porém esperado tópicos mais avançados no final.",
+      "tags": [
+        "terraform",
+        "docker",
+        "didático"
+      ],
+      "data": "2026-01-30"
+    }
   },
   {
     "fonte": "comentário",
     "linha": 126,
     "classe": "invalidos",
-    "motivo": "data=2026-05-15 anterior à publicação (2026-06-04)"
+    "motivo": "data=2026-05-15 anterior à publicação (2026-06-04)",
+    "registro": {
+      "usuario_id": 82,
+      "conteudo_id": 867,
+      "avaliacao": 4,
+      "comentario": "Ótima didática e visão geral sólida do tema.",
+      "tags": [
+        "sql",
+        "postgresql",
+        "essencial"
+      ],
+      "data": "2026-05-15"
+    }
   },
   {
     "fonte": "comentário",
     "linha": 153,
     "classe": "invalidos",
-    "motivo": "data=2026-03-08 anterior à publicação (2026-03-23)"
+    "motivo": "data=2026-03-08 anterior à publicação (2026-03-23)",
+    "registro": {
+      "usuario_id": 22,
+      "conteudo_id": 576,
+      "avaliacao": 4,
+      "comentario": "Muito bom material, bem estruturado e com explicações coerentes.",
+      "tags": [
+        "metadados",
+        "seguranca",
+        "avançado"
+      ],
+      "data": "2026-03-08"
+    }
   },
   {
     "fonte": "comentário",
     "linha": 177,
     "classe": "invalidos",
-    "motivo": "data=2026-03-05 anterior à publicação (2026-03-31)"
+    "motivo": "data=2026-03-05 anterior à publicação (2026-03-31)",
+    "registro": {
+      "usuario_id": 101,
+      "conteudo_id": 103,
+      "avaliacao": 5,
+      "comentario": "Muito enriquecedor. Direto ao ponto, com foco nas melhores práticas de mercado.",
+      "tags": [
+        "rag",
+        "embeddings",
+        "iniciante"
+      ],
+      "data": "2026-03-05"
+    }
   },
   {
     "fonte": "comentário",
     "linha": 200,
     "classe": "invalidos",
-    "motivo": "data=2026-02-18 anterior à publicação (2026-02-28)"
+    "motivo": "data=2026-02-18 anterior à publicação (2026-02-28)",
+    "registro": {
+      "usuario_id": 7,
+      "conteudo_id": 619,
+      "avaliacao": 4,
+      "comentario": "Ótima didática e visão geral sólida do tema.",
+      "tags": [
+        "pandas",
+        "predicao",
+        "essencial"
+      ],
+      "data": "2026-02-18"
+    }
   },
   {
     "fonte": "comentário",
     "linha": 208,
     "classe": "invalidos",
-    "motivo": "data=2026-02-03 anterior à publicação (2026-06-13)"
+    "motivo": "data=2026-02-03 anterior à publicação (2026-06-13)",
+    "registro": {
+      "usuario_id": 94,
+      "conteudo_id": 829,
+      "avaliacao": 5,
+      "comentario": "Sensacional! O instrutor domina o assunto e os conceitos ficaram cristalinos.",
+      "tags": [
+        "postgresql",
+        "jsonb",
+        "iniciante"
+      ],
+      "data": "2026-02-03"
+    }
   },
   {
     "fonte": "comentário",
     "linha": 235,
     "classe": "invalidos",
-    "motivo": "data=2026-05-09 anterior à publicação (2026-05-11)"
+    "motivo": "data=2026-05-09 anterior à publicação (2026-05-11)",
+    "registro": {
+      "usuario_id": 46,
+      "conteudo_id": 61,
+      "avaliacao": 5,
+      "comentario": "Muito enriquecedor. Direto ao ponto, com foco nas melhores práticas de mercado.",
+      "tags": [
+        "solid",
+        "pytest",
+        "hands-on"
+      ],
+      "data": "2026-05-09"
+    }
   },
   {
     "fonte": "comentário",
     "linha": 238,
     "classe": "invalidos",
-    "motivo": "data=2026-01-21 anterior à publicação (2026-06-08)"
+    "motivo": "data=2026-01-21 anterior à publicação (2026-06-08)",
+    "registro": {
+      "usuario_id": 22,
+      "conteudo_id": 759,
+      "avaliacao": 4,
+      "comentario": "Ótima didática e visão geral sólida do tema.",
+      "tags": [
+        "deep-learning",
+        "ia",
+        "essencial"
+      ],
+      "data": "2026-01-21"
+    }
   },
   {
     "fonte": "comentário",
     "linha": 266,
     "classe": "invalidos",
-    "motivo": "data=2026-01-24 anterior à publicação (2026-04-04)"
+    "motivo": "data=2026-01-24 anterior à publicação (2026-04-04)",
+    "registro": {
+      "usuario_id": 103,
+      "conteudo_id": 432,
+      "avaliacao": 3,
+      "comentario": "Cobre o essencial para iniciantes, porém esperado tópicos mais avançados no final.",
+      "tags": [
+        "superset",
+        "metricas",
+        "teórico"
+      ],
+      "data": "2026-01-24"
+    }
   },
   {
     "fonte": "comentário",
     "linha": 271,
     "classe": "invalidos",
-    "motivo": "data=2026-03-12 anterior à publicação (2026-05-16)"
+    "motivo": "data=2026-03-12 anterior à publicação (2026-05-16)",
+    "registro": {
+      "usuario_id": 144,
+      "conteudo_id": 545,
+      "avaliacao": 3,
+      "comentario": "Conteúdo razoável, atende ao básico, mas senti falta de maior aprofundamento.",
+      "tags": [
+        "pipeline",
+        "lakehouse",
+        "teórico"
+      ],
+      "data": "2026-03-12"
+    }
   },
   {
     "fonte": "comentário",
     "linha": 286,
     "classe": "invalidos",
-    "motivo": "data=2026-01-21 anterior à publicação (2026-05-17)"
+    "motivo": "data=2026-01-21 anterior à publicação (2026-05-17)",
+    "registro": {
+      "usuario_id": 62,
+      "conteudo_id": 906,
+      "avaliacao": 5,
+      "comentario": "Material de altíssimo nível. Ajudou muito a destravar meu projeto prático.",
+      "tags": [
+        "estatistica",
+        "machine-learning",
+        "prático"
+      ],
+      "data": "2026-01-21"
+    }
   },
   {
     "fonte": "comentário",
     "linha": 307,
     "classe": "invalidos",
-    "motivo": "data=2026-03-05 anterior à publicação (2026-04-17)"
+    "motivo": "data=2026-03-05 anterior à publicação (2026-04-17)",
+    "registro": {
+      "usuario_id": 29,
+      "conteudo_id": 121,
+      "avaliacao": 5,
+      "comentario": "Conteúdo introdutório, claro e objetivo. Superou minhas expectativas!",
+      "tags": [
+        "governanca",
+        "linhagem",
+        "recomendado"
+      ],
+      "data": "2026-03-05"
+    }
   },
   {
     "fonte": "comentário",
     "linha": 333,
     "classe": "invalidos",
-    "motivo": "data=2026-02-16 anterior à publicação (2026-03-27)"
+    "motivo": "data=2026-02-16 anterior à publicação (2026-03-27)",
+    "registro": {
+      "usuario_id": 74,
+      "conteudo_id": 773,
+      "avaliacao": 4,
+      "comentario": "Ótima didática e visão geral sólida do tema.",
+      "tags": [
+        "pipeline",
+        "streaming",
+        "didático"
+      ],
+      "data": "2026-02-16"
+    }
   },
   {
     "fonte": "comentário",
     "linha": 338,
     "classe": "invalidos",
-    "motivo": "data=2026-02-23 anterior à publicação (2026-03-24)"
+    "motivo": "data=2026-02-23 anterior à publicação (2026-03-24)",
+    "registro": {
+      "usuario_id": 39,
+      "conteudo_id": 703,
+      "avaliacao": 4,
+      "comentario": "Material de alta qualidade e de fácil compreensão.",
+      "tags": [
+        "fastapi",
+        "pytest",
+        "essencial"
+      ],
+      "data": "2026-02-23"
+    }
   },
   {
     "fonte": "comentário",
     "linha": 356,
     "classe": "invalidos",
-    "motivo": "data=2026-04-14 anterior à publicação (2026-06-17)"
+    "motivo": "data=2026-04-14 anterior à publicação (2026-06-17)",
+    "registro": {
+      "usuario_id": 88,
+      "conteudo_id": 229,
+      "avaliacao": 5,
+      "comentario": "Uma das melhores explicações sobre o assunto que já encontrei na plataforma.",
+      "tags": [
+        "superset",
+        "bi",
+        "teórico"
+      ],
+      "data": "2026-04-14"
+    }
   },
   {
     "fonte": "comentário",
     "linha": 359,
     "classe": "invalidos",
-    "motivo": "data=2026-01-27 anterior à publicação (2026-03-04)"
+    "motivo": "data=2026-01-27 anterior à publicação (2026-03-04)",
+    "registro": {
+      "usuario_id": 146,
+      "conteudo_id": 308,
+      "avaliacao": 2,
+      "comentario": "Achei um pouco superficial em comparação com o nível prometido na ementa.",
+      "tags": [
+        "etl",
+        "dataops",
+        "hands-on"
+      ],
+      "data": "2026-01-27"
+    }
   },
   {
     "fonte": "comentário",
     "linha": 360,
     "classe": "invalidos",
-    "motivo": "data=2026-03-22 anterior à publicação (2026-05-03)"
+    "motivo": "data=2026-03-22 anterior à publicação (2026-05-03)",
+    "registro": {
+      "usuario_id": 102,
+      "conteudo_id": 179,
+      "avaliacao": 4,
+      "comentario": "Apresentação muito clara e objetiva. Recomendo para quem está estudando a área.",
+      "tags": [
+        "metricas",
+        "bi",
+        "teórico"
+      ],
+      "data": "2026-03-22"
+    }
   },
   {
     "fonte": "comentário",
     "linha": 390,
     "classe": "invalidos",
-    "motivo": "data=2026-03-06 anterior à publicação (2026-06-20)"
+    "motivo": "data=2026-03-06 anterior à publicação (2026-06-20)",
+    "registro": {
+      "usuario_id": 150,
+      "conteudo_id": 757,
+      "avaliacao": 4,
+      "comentario": "Ótima didática e visão geral sólida do tema.",
+      "tags": [
+        "postgresql",
+        "nosql",
+        "prático"
+      ],
+      "data": "2026-03-06"
+    }
   },
   {
     "fonte": "comentário",
     "linha": 401,
     "classe": "invalidos",
-    "motivo": "data=2026-02-09 anterior à publicação (2026-04-20)"
+    "motivo": "data=2026-02-09 anterior à publicação (2026-04-20)",
+    "registro": {
+      "usuario_id": 143,
+      "conteudo_id": 669,
+      "avaliacao": 4,
+      "comentario": "Apresentação muito clara e objetiva. Recomendo para quem está estudando a área.",
+      "tags": [
+        "sql",
+        "pgvector",
+        "prático"
+      ],
+      "data": "2026-02-09"
+    }
   },
   {
     "fonte": "comentário",
     "linha": 402,
     "classe": "invalidos",
-    "motivo": "data=2026-03-03 anterior à publicação (2026-05-18)"
+    "motivo": "data=2026-03-03 anterior à publicação (2026-05-18)",
+    "registro": {
+      "usuario_id": 27,
+      "conteudo_id": 5,
+      "avaliacao": 4,
+      "comentario": "Ótima didática e visão geral sólida do tema.",
+      "tags": [
+        "kpis",
+        "metricas",
+        "avançado"
+      ],
+      "data": "2026-03-03"
+    }
   },
   {
     "fonte": "comentário",
     "linha": 403,
     "classe": "invalidos",
-    "motivo": "data=2026-03-29 anterior à publicação (2026-06-05)"
+    "motivo": "data=2026-03-29 anterior à publicação (2026-06-05)",
+    "registro": {
+      "usuario_id": 110,
+      "conteudo_id": 124,
+      "avaliacao": 4,
+      "comentario": "Excelente conteúdo teórico, com bons exemplos para fixar o aprendizado.",
+      "tags": [
+        "dashboard",
+        "kpis",
+        "recomendado"
+      ],
+      "data": "2026-03-29"
+    }
   },
   {
     "fonte": "comentário",
     "linha": 418,
     "classe": "invalidos",
-    "motivo": "data=2026-01-19 anterior à publicação (2026-03-20)"
+    "motivo": "data=2026-01-19 anterior à publicação (2026-03-20)",
+    "registro": {
+      "usuario_id": 4,
+      "conteudo_id": 745,
+      "avaliacao": 5,
+      "comentario": "Sensacional! O instrutor domina o assunto e os conceitos ficaram cristalinos.",
+      "tags": [
+        "solid",
+        "oop",
+        "iniciante"
+      ],
+      "data": "2026-01-19"
+    }
   },
   {
     "fonte": "comentário",
     "linha": 448,
     "classe": "invalidos",
-    "motivo": "data=2026-06-02 anterior à publicação (2026-06-08)"
+    "motivo": "data=2026-06-02 anterior à publicação (2026-06-08)",
+    "registro": {
+      "usuario_id": 122,
+      "conteudo_id": 514,
+      "avaliacao": 5,
+      "comentario": "Sensacional! O instrutor domina o assunto e os conceitos ficaram cristalinos.",
+      "tags": [
+        "linhagem",
+        "lgpd",
+        "teórico"
+      ],
+      "data": "2026-06-02"
+    }
   },
   {
     "fonte": "comentário",
     "linha": 464,
     "classe": "invalidos",
-    "motivo": "data=2026-02-27 anterior à publicação (2026-05-18)"
+    "motivo": "data=2026-02-27 anterior à publicação (2026-05-18)",
+    "registro": {
+      "usuario_id": 65,
+      "conteudo_id": 5,
+      "avaliacao": 5,
+      "comentario": "Muito enriquecedor. Direto ao ponto, com foco nas melhores práticas de mercado.",
+      "tags": [
+        "dashboard",
+        "superset",
+        "iniciante"
+      ],
+      "data": "2026-02-27"
+    }
   },
   {
     "fonte": "comentário",
     "linha": 506,
     "classe": "invalidos",
-    "motivo": "data=2026-02-02 anterior à publicação (2026-03-04)"
+    "motivo": "data=2026-02-02 anterior à publicação (2026-03-04)",
+    "registro": {
+      "usuario_id": 45,
+      "conteudo_id": 308,
+      "avaliacao": 4,
+      "comentario": "Apresentação muito clara e objetiva. Recomendo para quem está estudando a área.",
+      "tags": [
+        "spark",
+        "etl",
+        "recomendado"
+      ],
+      "data": "2026-02-02"
+    }
   },
   {
     "fonte": "comentário",
     "linha": 528,
     "classe": "invalidos",
-    "motivo": "data=2026-04-03 anterior à publicação (2026-06-23)"
+    "motivo": "data=2026-04-03 anterior à publicação (2026-06-23)",
+    "registro": {
+      "usuario_id": 47,
+      "conteudo_id": 72,
+      "avaliacao": 2,
+      "comentario": "Achei um pouco superficial em comparação com o nível prometido na ementa.",
+      "tags": [
+        "linux",
+        "cloud",
+        "hands-on"
+      ],
+      "data": "2026-04-03"
+    }
   },
   {
     "fonte": "comentário",
     "linha": 588,
     "classe": "invalidos",
-    "motivo": "data=2026-02-14 anterior à publicação (2026-06-03)"
+    "motivo": "data=2026-02-14 anterior à publicação (2026-06-03)",
+    "registro": {
+      "usuario_id": 115,
+      "conteudo_id": 129,
+      "avaliacao": 5,
+      "comentario": "Conteúdo excelente, muito didático e com exemplos práticos aplicáveis.",
+      "tags": [
+        "ci-cd",
+        "linux",
+        "hands-on"
+      ],
+      "data": "2026-02-14"
+    }
   },
   {
     "fonte": "comentário",
     "linha": 650,
     "classe": "invalidos",
-    "motivo": "data=2026-03-19 anterior à publicação (2026-04-29)"
+    "motivo": "data=2026-03-19 anterior à publicação (2026-04-29)",
+    "registro": {
+      "usuario_id": 126,
+      "conteudo_id": 498,
+      "avaliacao": 5,
+      "comentario": "Conteúdo introdutório, claro e objetivo. Superou minhas expectativas!",
+      "tags": [
+        "cloud",
+        "docker",
+        "hands-on"
+      ],
+      "data": "2026-03-19"
+    }
   },
   {
     "fonte": "comentário",
     "linha": 652,
     "classe": "invalidos",
-    "motivo": "data=2026-02-03 anterior à publicação (2026-05-01)"
+    "motivo": "data=2026-02-03 anterior à publicação (2026-05-01)",
+    "registro": {
+      "usuario_id": 9,
+      "conteudo_id": 973,
+      "avaliacao": 5,
+      "comentario": "Material de altíssimo nível. Ajudou muito a destravar meu projeto prático.",
+      "tags": [
+        "lgpd",
+        "anonimizacao",
+        "teórico"
+      ],
+      "data": "2026-02-03"
+    }
   },
   {
     "fonte": "comentário",
     "linha": 653,
     "classe": "invalidos",
-    "motivo": "data=2026-02-19 anterior à publicação (2026-05-16)"
+    "motivo": "data=2026-02-19 anterior à publicação (2026-05-16)",
+    "registro": {
+      "usuario_id": 31,
+      "conteudo_id": 545,
+      "avaliacao": 5,
+      "comentario": "Conteúdo introdutório, claro e objetivo. Superou minhas expectativas!",
+      "tags": [
+        "spark",
+        "dataops",
+        "hands-on"
+      ],
+      "data": "2026-02-19"
+    }
   },
   {
     "fonte": "comentário",
     "linha": 654,
     "classe": "invalidos",
-    "motivo": "data=2026-01-24 anterior à publicação (2026-05-18)"
+    "motivo": "data=2026-01-24 anterior à publicação (2026-05-18)",
+    "registro": {
+      "usuario_id": 12,
+      "conteudo_id": 377,
+      "avaliacao": 5,
+      "comentario": "Conteúdo introdutório, claro e objetivo. Superou minhas expectativas!",
+      "tags": [
+        "analytics",
+        "superset",
+        "iniciante"
+      ],
+      "data": "2026-01-24"
+    }
   },
   {
     "fonte": "comentário",
     "linha": 658,
     "classe": "invalidos",
-    "motivo": "data=2026-04-23 anterior à publicação (2026-05-25)"
+    "motivo": "data=2026-04-23 anterior à publicação (2026-05-25)",
+    "registro": {
+      "usuario_id": 119,
+      "conteudo_id": 135,
+      "avaliacao": 4,
+      "comentario": "Material de alta qualidade e de fácil compreensão.",
+      "tags": [
+        "deep-learning",
+        "rag",
+        "recomendado"
+      ],
+      "data": "2026-04-23"
+    }
   },
   {
     "fonte": "comentário",
     "linha": 686,
     "classe": "invalidos",
-    "motivo": "data=2026-02-04 anterior à publicação (2026-06-30)"
+    "motivo": "data=2026-02-04 anterior à publicação (2026-06-30)",
+    "registro": {
+      "usuario_id": 40,
+      "conteudo_id": 345,
+      "avaliacao": 5,
+      "comentario": "Sensacional! O instrutor domina o assunto e os conceitos ficaram cristalinos.",
+      "tags": [
+        "deep-learning",
+        "rag",
+        "iniciante"
+      ],
+      "data": "2026-02-04"
+    }
   },
   {
     "fonte": "comentário",
     "linha": 702,
     "classe": "invalidos",
-    "motivo": "data=2026-02-23 anterior à publicação (2026-05-25)"
+    "motivo": "data=2026-02-23 anterior à publicação (2026-05-25)",
+    "registro": {
+      "usuario_id": 129,
+      "conteudo_id": 135,
+      "avaliacao": 5,
+      "comentario": "Uma das melhores explicações sobre o assunto que já encontrei na plataforma.",
+      "tags": [
+        "agentes",
+        "ia",
+        "recomendado"
+      ],
+      "data": "2026-02-23"
+    }
   },
   {
     "fonte": "comentário",
     "linha": 706,
     "classe": "invalidos",
-    "motivo": "data=2026-02-14 anterior à publicação (2026-04-20)"
+    "motivo": "data=2026-02-14 anterior à publicação (2026-04-20)",
+    "registro": {
+      "usuario_id": 143,
+      "conteudo_id": 669,
+      "avaliacao": 5,
+      "comentario": "Excelente abordagem! Didática impecável e ritmo perfeito.",
+      "tags": [
+        "mongodb",
+        "nosql",
+        "prático"
+      ],
+      "data": "2026-02-14"
+    }
   },
   {
     "fonte": "comentário",
     "linha": 727,
     "classe": "invalidos",
-    "motivo": "data=2026-02-15 anterior à publicação (2026-04-20)"
+    "motivo": "data=2026-02-15 anterior à publicação (2026-04-20)",
+    "registro": {
+      "usuario_id": 149,
+      "conteudo_id": 669,
+      "avaliacao": 5,
+      "comentario": "Uma das melhores explicações sobre o assunto que já encontrei na plataforma.",
+      "tags": [
+        "postgresql",
+        "pgvector",
+        "iniciante"
+      ],
+      "data": "2026-02-15"
+    }
   },
   {
     "fonte": "comentário",
     "linha": 735,
     "classe": "invalidos",
-    "motivo": "data=2026-02-28 anterior à publicação (2026-06-30)"
+    "motivo": "data=2026-02-28 anterior à publicação (2026-06-30)",
+    "registro": {
+      "usuario_id": 23,
+      "conteudo_id": 345,
+      "avaliacao": 5,
+      "comentario": "Uma das melhores explicações sobre o assunto que já encontrei na plataforma.",
+      "tags": [
+        "deep-learning",
+        "nlp",
+        "avançado"
+      ],
+      "data": "2026-02-28"
+    }
   },
   {
     "fonte": "comentário",
     "linha": 744,
     "classe": "invalidos",
-    "motivo": "data=2026-03-08 anterior à publicação (2026-04-08)"
+    "motivo": "data=2026-03-08 anterior à publicação (2026-04-08)",
+    "registro": {
+      "usuario_id": 94,
+      "conteudo_id": 994,
+      "avaliacao": 4,
+      "comentario": "Ótima didática e visão geral sólida do tema.",
+      "tags": [
+        "dataops",
+        "lakehouse",
+        "prático"
+      ],
+      "data": "2026-03-08"
+    }
   },
   {
     "fonte": "comentário",
     "linha": 789,
     "classe": "invalidos",
-    "motivo": "data=2026-04-15 anterior à publicação (2026-05-17)"
+    "motivo": "data=2026-04-15 anterior à publicação (2026-05-17)",
+    "registro": {
+      "usuario_id": 106,
+      "conteudo_id": 906,
+      "avaliacao": 4,
+      "comentario": "Excelente conteúdo teórico, com bons exemplos para fixar o aprendizado.",
+      "tags": [
+        "predicao",
+        "machine-learning",
+        "teórico"
+      ],
+      "data": "2026-04-15"
+    }
   },
   {
     "fonte": "comentário",
     "linha": 792,
     "classe": "invalidos",
-    "motivo": "data=2026-01-27 anterior à publicação (2026-06-25)"
+    "motivo": "data=2026-01-27 anterior à publicação (2026-06-25)",
+    "registro": {
+      "usuario_id": 134,
+      "conteudo_id": 378,
+      "avaliacao": 3,
+      "comentario": "Cobre o essencial para iniciantes, porém esperado tópicos mais avançados no final.",
+      "tags": [
+        "embeddings",
+        "rag",
+        "prático"
+      ],
+      "data": "2026-01-27"
+    }
   },
   {
     "fonte": "comentário",
     "linha": 864,
     "classe": "invalidos",
-    "motivo": "data=2026-02-22 anterior à publicação (2026-03-23)"
+    "motivo": "data=2026-02-22 anterior à publicação (2026-03-23)",
+    "registro": {
+      "usuario_id": 143,
+      "conteudo_id": 705,
+      "avaliacao": 4,
+      "comentario": "Conteúdo bastante completo e relevante. Apenas gostaria de mais exercícios práticos.",
+      "tags": [
+        "lgpd",
+        "linhagem",
+        "didático"
+      ],
+      "data": "2026-02-22"
+    }
   },
   {
     "fonte": "comentário",
     "linha": 894,
     "classe": "invalidos",
-    "motivo": "data=2026-05-14 anterior à publicação (2026-05-17)"
+    "motivo": "data=2026-05-14 anterior à publicação (2026-05-17)",
+    "registro": {
+      "usuario_id": 88,
+      "conteudo_id": 721,
+      "avaliacao": 3,
+      "comentario": "Boa introdução ao tema, porém o ritmo em alguns momentos ficou um pouco arrastado.",
+      "tags": [
+        "fastapi",
+        "python",
+        "didático"
+      ],
+      "data": "2026-05-14"
+    }
   },
   {
     "fonte": "comentário",
     "linha": 929,
     "classe": "invalidos",
-    "motivo": "data=2026-03-01 anterior à publicação (2026-05-16)"
+    "motivo": "data=2026-03-01 anterior à publicação (2026-05-16)",
+    "registro": {
+      "usuario_id": 4,
+      "conteudo_id": 857,
+      "avaliacao": 5,
+      "comentario": "Conteúdo introdutório, claro e objetivo. Superou minhas expectativas!",
+      "tags": [
+        "linhagem",
+        "metadados",
+        "teórico"
+      ],
+      "data": "2026-03-01"
+    }
   },
   {
     "fonte": "comentário",
     "linha": 953,
     "classe": "invalidos",
-    "motivo": "data=2026-02-03 anterior à publicação (2026-03-22)"
+    "motivo": "data=2026-02-03 anterior à publicação (2026-03-22)",
+    "registro": {
+      "usuario_id": 79,
+      "conteudo_id": 463,
+      "avaliacao": 4,
+      "comentario": "Muito bom material, bem estruturado e com explicações coerentes.",
+      "tags": [
+        "indices",
+        "nosql",
+        "iniciante"
+      ],
+      "data": "2026-02-03"
+    }
   },
   {
     "fonte": "comentário",
     "linha": 962,
     "classe": "invalidos",
-    "motivo": "data=2026-02-25 anterior à publicação (2026-04-13)"
+    "motivo": "data=2026-02-25 anterior à publicação (2026-04-13)",
+    "registro": {
+      "usuario_id": 30,
+      "conteudo_id": 130,
+      "avaliacao": 4,
+      "comentario": "Muito bom material, bem estruturado e com explicações coerentes.",
+      "tags": [
+        "estatistica",
+        "predicao",
+        "avançado"
+      ],
+      "data": "2026-02-25"
+    }
   }
 ]

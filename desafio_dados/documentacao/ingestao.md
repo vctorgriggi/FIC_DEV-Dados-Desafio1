@@ -6,9 +6,9 @@ Código em `ingestao/pipeline.py`. Testes com registros sujos em `tests/test_ing
 ## Fluxo
 
 1. **RF02 — leitura.** `catalogo.csv` (utf-8, tolera BOM), `interacoes.json` e `comentarios.json` (listas JSON). Nome do arquivo e quantidade de registros vão para o log.
-2. **RF03 — validação.** Cada registro é classificado como válido, inválido, incompleto ou duplicado, nessa ordem de verificação: campos obrigatórios → conversões e domínios → referência ao catálogo → duplicidade. O motivo de cada rejeição vai para o log e para `dados/processados/rejeitados.json`.
+2. **RF03 — validação.** Cada registro é classificado como válido, inválido, incompleto ou duplicado, nessa ordem de verificação: campos obrigatórios → conversões e domínios → referência ao catálogo → regras cruzadas → duplicidade. O motivo de cada rejeição vai para o log e para `dados/processados/rejeitados.json`, junto com o registro original, para auditoria sem abrir os arquivos brutos.
 3. **RF04 — tratamento.** Aplicado só aos registros válidos. Saída em `dados/processados/` (`catalogo_processado.csv`, `interacoes_processadas.json`, `comentarios_processados.json`). Os brutos não são alterados.
-4. **RF06 — carga.** PostgreSQL em uma única transação: `categoria`, `usuario` e `conteudo` por upsert (`ON CONFLICT`), para preservar embeddings e recomendações entre execuções; `interacao` é substituída por completo, para que registros que deixem de ser válidos não permaneçam no banco. Comentários vão para o MongoDB (RF07, módulo `mongodb/`), com a mesma reconciliação.
+4. **RF06 — carga.** PostgreSQL em uma única transação: `categoria`, `usuario` e `conteudo` por upsert (`ON CONFLICT`), para preservar embeddings e recomendações dos conteúdos que continuam válidos; `interacao` é substituída por completo. Ao final da mesma transação, tudo o que não veio nesta carga é removido (recomendações, embeddings, conteúdos, usuários e categorias órfãos), de modo que o banco reflita exatamente os dados válidos da execução. Comentários vão para o MongoDB (RF07, módulo `mongodb/`), com a mesma reconciliação.
 5. **RF05 — resumo.** `dados/processados/resumo_ingestao.json`: lidos por fonte, válidos/inválidos/incompletos/duplicados/corrigidos (total e por fonte), carregados por banco, tempo por etapa e total.
 
 ## Regras de validação (RF03)
