@@ -44,7 +44,7 @@ def main() -> int:
         with logger.etapa(log, "recomendacao", tempos):
             resumo["recomendacao"] = recomendacao.executar(cfg, pg)
         with logger.etapa(log, "metricas", tempos):
-            resumo["metricas"] = metricas.executar(cfg, pg)
+            resumo["metricas"] = metricas.executar(cfg, pg, resumo)
     except Exception:
         return 1
     finally:
