@@ -3,6 +3,7 @@
 import csv
 import json
 import logging
+from datetime import datetime
 from pathlib import Path
 
 from pymongo import ASCENDING, UpdateOne
@@ -37,9 +38,12 @@ def executar(cfg: dict, mongo: Database) -> dict:
     col.create_index([("categoria", ASCENDING)])
     col.create_index([(k, ASCENDING) for k in CHAVE], unique=True)
 
-    resultado = inserir(col, docs)
-    log.info("[RF07] MongoDB %s: inseridos=%d atualizados=%d total=%d",
-             col.name, resultado["inseridos"], resultado["atualizados"], col.count_documents({}))
+    carga = datetime.now().isoformat(timespec="seconds")
+    resultado = inserir(col, docs, carga)
+    # documentos que nao vieram nesta carga deixaram de ser validos
+    removidos = col.delete_many({"carga": {"$ne": carga}}).deleted_count
+    log.info("[RF07] MongoDB %s: inseridos=%d atualizados=%d removidos=%d total=%d",
+             col.name, resultado["inseridos"], resultado["atualizados"], removidos, col.count_documents({}))
     demonstrar(col)
     return {"carregados": col.count_documents({}), **resultado}
 
@@ -56,24 +60,25 @@ def demonstrar(col) -> None:
     log.info("[RF07] por categoria: %s", {r["categoria"]: r["quantidade"] for r in agregar_por_categoria(col)})
 
 
-def inserir(col, docs: list[dict]) -> dict:
+def inserir(col, docs: list[dict], carga: str | None = None) -> dict:
     if not docs:
         return {"inseridos": 0, "atualizados": 0}
-    ops = [UpdateOne({k: d[k] for k in CHAVE}, {"$set": d}, upsert=True) for d in docs]
+    carga = carga or datetime.now().isoformat(timespec="seconds")
+    ops = [UpdateOne({k: d[k] for k in CHAVE}, {"$set": {**d, "carga": carga}}, upsert=True) for d in docs]
     r = col.bulk_write(ops, ordered=False)
     return {"inseridos": r.upserted_count, "atualizados": r.modified_count}
 
 
 def por_conteudo(col, conteudo_id: int) -> list[dict]:
-    return list(col.find({"conteudo_id": conteudo_id}, {"_id": 0}).sort("data", -1))
+    return list(col.find({"conteudo_id": conteudo_id}, {"_id": 0, "carga": 0}).sort("data", -1))
 
 
 def por_tag(col, tag: str) -> list[dict]:
-    return list(col.find({"tags": tag.casefold()}, {"_id": 0}))
+    return list(col.find({"tags": tag.casefold()}, {"_id": 0, "carga": 0}))
 
 
 def por_nota(col, minima: int, maxima: int = 5) -> list[dict]:
-    return list(col.find({"avaliacao": {"$gte": minima, "$lte": maxima}}, {"_id": 0}))
+    return list(col.find({"avaliacao": {"$gte": minima, "$lte": maxima}}, {"_id": 0, "carga": 0}))
 
 
 def agregar_por_categoria(col) -> list[dict]:
