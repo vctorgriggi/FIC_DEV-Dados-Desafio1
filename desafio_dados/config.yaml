@@ -25,11 +25,17 @@ mongodb:
   colecao_comentarios: comentarios
 
 embeddings:
-  modelo: sentence-transformers/all-MiniLM-L6-v2
+  modelo: sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2
   dimensao: 384
+  lote: 64
 
 busca:
   top_k: 5
+  demonstracao:
+    - "Quero aprender os fundamentos de banco de dados para inteligência artificial."
+    - "Como proteger dados pessoais e atender à LGPD?"
+    - "Curso prático de deploy de aplicações na nuvem com containers"
 
 recomendacao:
   top_k: 10
+  nota_minima_aprovacao: 4

@@ -10,6 +10,11 @@ from recomendacao import embeddings, motor as recomendacao
 from src import config, db, logger, metricas
 
 
+def salvar(caminho: Path, dados) -> None:
+    caminho.parent.mkdir(parents=True, exist_ok=True)
+    caminho.write_text(json.dumps(dados, ensure_ascii=False, indent=2), encoding="utf-8")
+
+
 def main() -> int:
     cfg = config.carregar()
     log = logger.configurar(cfg["saida"]["log"])
@@ -34,6 +39,8 @@ def main() -> int:
             resumo["ingestao"]["carregados"]["mongodb"] = resumo["mongodb"].get("carregados")
         with logger.etapa(log, "embeddings", tempos):
             resumo["embeddings"] = embeddings.executar(cfg, pg)
+        with logger.etapa(log, "busca_semantica", tempos):
+            resumo["busca_semantica"] = embeddings.demonstrar(cfg, pg)
         with logger.etapa(log, "recomendacao", tempos):
             resumo["recomendacao"] = recomendacao.executar(cfg, pg)
         with logger.etapa(log, "metricas", tempos):
@@ -45,10 +52,8 @@ def main() -> int:
         resumo["tempos_etapas_s"] = tempos
         resumo["tempo_total_s"] = round(time.perf_counter() - inicio, 3)
         resumo["fim"] = datetime.now().isoformat(timespec="seconds")
-        caminho = Path(cfg["saida"]["resumo"])
-        caminho.parent.mkdir(parents=True, exist_ok=True)
-        caminho.write_text(json.dumps(resumo, ensure_ascii=False, indent=2), encoding="utf-8")
-        log.info("resumo gravado em %s", caminho)
+        salvar(Path(cfg["saida"]["resumo"]), resumo)
+        log.info("resumo gravado em %s", cfg["saida"]["resumo"])
         log.info("Término do processamento em %.3fs", resumo["tempo_total_s"])
 
     return 0

@@ -12,6 +12,7 @@ def conectar_postgres(cfg: dict) -> psycopg.Connection:
         dbname=pg["database"],
         user=pg["user"],
         password=pg["password"],
+        autocommit=True,  # escrita sempre dentro de "with conn.transaction()"
     )
     register_vector(conn)
     return conn
