@@ -1,5 +1,5 @@
 {
-  "inicio": "2026-09-12T22:47:41",
+  "inicio": "2026-09-12T22:53:10",
   "ingestao": {
     "registros_lidos": {
       "catalogo": 1000,
@@ -68,7 +68,7 @@
       "positivo": 190,
       "estavel": 1010
     },
-    "gerado_em": "2026-09-12T22:47:49",
+    "gerado_em": "2026-09-12T22:53:17",
     "arquivo": "dados/processados/recomendacoes.json"
   },
   "metricas": {
@@ -87,14 +87,14 @@
   },
   "status": "sucesso",
   "tempos_etapas_s": {
-    "conexoes": 0.018,
-    "ingestao": 0.118,
-    "mongodb": 0.038,
+    "conexoes": 0.016,
+    "ingestao": 0.113,
+    "mongodb": 0.037,
     "embeddings": 0.001,
-    "busca_semantica": 7.967,
-    "recomendacao": 0.231,
-    "metricas": 0.015
+    "busca_semantica": 7.479,
+    "recomendacao": 0.23,
+    "metricas": 0.013
   },
-  "tempo_total_s": 8.39,
-  "fim": "2026-09-12T22:47:50"
+  "tempo_total_s": 7.891,
+  "fim": "2026-09-12T22:53:18"
 }
