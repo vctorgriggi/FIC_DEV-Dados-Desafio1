@@ -124,9 +124,10 @@ class Contadores(dict):
         self.fonte = fonte
         self.rejeitados = []
 
-    def rejeitar(self, classe, linha, motivo):
+    def rejeitar(self, classe, linha, motivo, registro=None):
         self[classe] += 1
-        self.rejeitados.append({"fonte": self.fonte, "linha": linha, "classe": classe, "motivo": motivo})
+        self.rejeitados.append({"fonte": self.fonte, "linha": linha, "classe": classe, "motivo": motivo,
+                                "registro": registro})
         log.warning("[RF03] %s linha %d %s: %s", self.fonte, linha, classe[:-1], motivo)
 
     def aceitar(self, corrigido):
@@ -163,7 +164,7 @@ def tratar_catalogo(registros):
     for n, r in enumerate(registros, start=1):
         campos = faltantes(r, CAMPOS_CATALOGO[:7])
         if campos:
-            cont.rejeitar("incompletos", n, f"campos ausentes: {', '.join(campos)}")
+            cont.rejeitar("incompletos", n, f"campos ausentes: {', '.join(campos)}", r)
             continue
 
         conteudo_id = converter_int(r["conteudo_id"])
@@ -173,17 +174,17 @@ def tratar_catalogo(registros):
         nivel = NIVEIS.get(chave(r["nivel"]))
 
         if conteudo_id is None or conteudo_id <= 0:
-            cont.rejeitar("invalidos", n, f"conteudo_id={r['conteudo_id']!r}")
+            cont.rejeitar("invalidos", n, f"conteudo_id={r['conteudo_id']!r}", r)
         elif carga is None or carga < 0:
-            cont.rejeitar("invalidos", n, f"carga_horaria_min={r['carga_horaria_min']!r}")
+            cont.rejeitar("invalidos", n, f"carga_horaria_min={r['carga_horaria_min']!r}", r)
         elif data is None:
-            cont.rejeitar("invalidos", n, f"data_publicacao={r['data_publicacao']!r}")
+            cont.rejeitar("invalidos", n, f"data_publicacao={r['data_publicacao']!r}", r)
         elif tipo is None:
-            cont.rejeitar("invalidos", n, f"tipo={r['tipo']!r}")
+            cont.rejeitar("invalidos", n, f"tipo={r['tipo']!r}", r)
         elif nivel is None:
-            cont.rejeitar("invalidos", n, f"nivel={r['nivel']!r}")
+            cont.rejeitar("invalidos", n, f"nivel={r['nivel']!r}", r)
         elif conteudo_id in ids_vistos:
-            cont.rejeitar("duplicados", n, f"conteudo_id={conteudo_id}")
+            cont.rejeitar("duplicados", n, f"conteudo_id={conteudo_id}", r)
         else:
             categoria = categorias.setdefault(chave(r["categoria"]), limpar_texto(r["categoria"]))
             tratado = {
@@ -212,7 +213,7 @@ def tratar_interacoes(registros, publicacao: dict):
     for n, r in enumerate(registros, start=1):
         campos = faltantes(r, ("usuario_id", "conteudo_id", "tipo_interacao", "data_hora"))
         if campos:
-            cont.rejeitar("incompletos", n, f"campos ausentes: {', '.join(campos)}")
+            cont.rejeitar("incompletos", n, f"campos ausentes: {', '.join(campos)}", r)
             continue
 
         usuario_id = converter_int(r["usuario_id"])
@@ -225,31 +226,31 @@ def tratar_interacoes(registros, publicacao: dict):
         chave_dup = (usuario_id, conteudo_id, tipo, data_hora)
 
         if usuario_id is None or usuario_id <= 0:
-            cont.rejeitar("invalidos", n, f"usuario_id={r['usuario_id']!r}")
+            cont.rejeitar("invalidos", n, f"usuario_id={r['usuario_id']!r}", r)
         elif conteudo_id is None or conteudo_id <= 0:
-            cont.rejeitar("invalidos", n, f"conteudo_id={r['conteudo_id']!r}")
+            cont.rejeitar("invalidos", n, f"conteudo_id={r['conteudo_id']!r}", r)
         elif conteudo_id not in publicacao:
-            cont.rejeitar("invalidos", n, f"conteudo_id={conteudo_id} não existe no catálogo")
+            cont.rejeitar("invalidos", n, f"conteudo_id={conteudo_id} não existe no catálogo", r)
         elif tipo is None:
-            cont.rejeitar("invalidos", n, f"tipo_interacao={r['tipo_interacao']!r}")
+            cont.rejeitar("invalidos", n, f"tipo_interacao={r['tipo_interacao']!r}", r)
         elif data_hora is None:
-            cont.rejeitar("invalidos", n, f"data_hora={r['data_hora']!r}")
+            cont.rejeitar("invalidos", n, f"data_hora={r['data_hora']!r}", r)
         elif data_hora[:10] < publicacao[conteudo_id]:
-            cont.rejeitar("invalidos", n, f"data_hora={data_hora} anterior à publicação ({publicacao[conteudo_id]})")
+            cont.rejeitar("invalidos", n, f"data_hora={data_hora} anterior à publicação ({publicacao[conteudo_id]})", r)
         elif data_hora > agora():
-            cont.rejeitar("invalidos", n, f"data_hora={data_hora} no futuro")
+            cont.rejeitar("invalidos", n, f"data_hora={data_hora} no futuro", r)
         elif r.get("tempo_consumido") is not None and (tempo is None or tempo < 0):
-            cont.rejeitar("invalidos", n, f"tempo_consumido={r['tempo_consumido']!r}")
+            cont.rejeitar("invalidos", n, f"tempo_consumido={r['tempo_consumido']!r}", r)
         elif r.get("percentual_conclusao") is not None and (percentual is None or not 0 <= percentual <= 100):
-            cont.rejeitar("invalidos", n, f"percentual_conclusao={r['percentual_conclusao']!r}")
+            cont.rejeitar("invalidos", n, f"percentual_conclusao={r['percentual_conclusao']!r}", r)
         elif r.get("avaliacao_atribuida") is not None and (avaliacao is None or not 1 <= avaliacao <= 5):
-            cont.rejeitar("invalidos", n, f"avaliacao_atribuida={r['avaliacao_atribuida']!r}")
+            cont.rejeitar("invalidos", n, f"avaliacao_atribuida={r['avaliacao_atribuida']!r}", r)
         elif tipo == "conclusão" and percentual is not None and percentual < 100:
-            cont.rejeitar("invalidos", n, f"conclusão com percentual_conclusao={percentual}")
+            cont.rejeitar("invalidos", n, f"conclusão com percentual_conclusao={percentual}", r)
         elif tipo == "avaliação" and avaliacao is None:
-            cont.rejeitar("invalidos", n, "avaliação sem avaliacao_atribuida")
+            cont.rejeitar("invalidos", n, "avaliação sem avaliacao_atribuida", r)
         elif chave_dup in chaves_vistas:
-            cont.rejeitar("duplicados", n, f"usuario={usuario_id} conteudo={conteudo_id} {tipo} {data_hora}")
+            cont.rejeitar("duplicados", n, f"usuario={usuario_id} conteudo={conteudo_id} {tipo} {data_hora}", r)
         else:
             tratado = {
                 "usuario_id": usuario_id,
@@ -274,7 +275,7 @@ def tratar_comentarios(registros, publicacao: dict):
     for n, r in enumerate(registros, start=1):
         campos = faltantes(r, ("usuario_id", "conteudo_id", "avaliacao", "comentario", "data"))
         if campos:
-            cont.rejeitar("incompletos", n, f"campos ausentes: {', '.join(campos)}")
+            cont.rejeitar("incompletos", n, f"campos ausentes: {', '.join(campos)}", r)
             continue
 
         usuario_id = converter_int(r["usuario_id"])
@@ -286,23 +287,23 @@ def tratar_comentarios(registros, publicacao: dict):
         chave_dup = (usuario_id, conteudo_id, data, comentario)
 
         if usuario_id is None or usuario_id <= 0:
-            cont.rejeitar("invalidos", n, f"usuario_id={r['usuario_id']!r}")
+            cont.rejeitar("invalidos", n, f"usuario_id={r['usuario_id']!r}", r)
         elif conteudo_id is None or conteudo_id <= 0:
-            cont.rejeitar("invalidos", n, f"conteudo_id={r['conteudo_id']!r}")
+            cont.rejeitar("invalidos", n, f"conteudo_id={r['conteudo_id']!r}", r)
         elif conteudo_id not in publicacao:
-            cont.rejeitar("invalidos", n, f"conteudo_id={conteudo_id} não existe no catálogo")
+            cont.rejeitar("invalidos", n, f"conteudo_id={conteudo_id} não existe no catálogo", r)
         elif avaliacao is None or not 1 <= avaliacao <= 5:
-            cont.rejeitar("invalidos", n, f"avaliacao={r['avaliacao']!r}")
+            cont.rejeitar("invalidos", n, f"avaliacao={r['avaliacao']!r}", r)
         elif data is None:
-            cont.rejeitar("invalidos", n, f"data={r['data']!r}")
+            cont.rejeitar("invalidos", n, f"data={r['data']!r}", r)
         elif data < publicacao[conteudo_id]:
-            cont.rejeitar("invalidos", n, f"data={data} anterior à publicação ({publicacao[conteudo_id]})")
+            cont.rejeitar("invalidos", n, f"data={data} anterior à publicação ({publicacao[conteudo_id]})", r)
         elif data > hoje():
-            cont.rejeitar("invalidos", n, f"data={data} no futuro")
+            cont.rejeitar("invalidos", n, f"data={data} no futuro", r)
         elif not isinstance(tags, list):
-            cont.rejeitar("invalidos", n, f"tags={tags!r}")
+            cont.rejeitar("invalidos", n, f"tags={tags!r}", r)
         elif chave_dup in chaves_vistas:
-            cont.rejeitar("duplicados", n, f"usuario={usuario_id} conteudo={conteudo_id} {data}")
+            cont.rejeitar("duplicados", n, f"usuario={usuario_id} conteudo={conteudo_id} {data}", r)
         else:
             tratado = {
                 "usuario_id": usuario_id,
@@ -341,8 +342,9 @@ def salvar_processados(pasta: Path, catalogo, interacoes, comentarios, rejeitado
 # --- carga (RF06) ---
 
 def carregar_postgres(pg, catalogo, interacoes, comentarios) -> dict:
-    """Uma unica transacao: dimensoes por upsert (preserva embeddings e recomendacoes),
-    interacoes substituidas por completo para nao manter registros que deixaram de ser validos."""
+    """Uma unica transacao. Dimensoes por upsert (preserva embeddings e recomendacoes dos
+    conteudos que continuam validos); interacoes substituidas por completo; ao final, tudo que
+    nao veio nesta carga e removido para o banco refletir exatamente os dados validos."""
     with pg.transaction():
         categorias = {}
         for nome in sorted({r["categoria"] for r in catalogo}):
@@ -391,6 +393,22 @@ def carregar_postgres(pg, catalogo, interacoes, comentarios) -> dict:
                 for r in interacoes
             ],
         )
+
+        # reconciliacao: remove o que deixou de existir nas fontes (ordem respeita as FKs)
+        ids_conteudo = [r["conteudo_id"] for r in catalogo]
+        removidos = {}
+        for tabela, sql, params in (
+            ("recomendacao", "DELETE FROM recomendacao WHERE conteudo_id <> ALL(%s) OR usuario_id <> ALL(%s)", (ids_conteudo, usuarios)),
+            ("conteudo_embedding", "DELETE FROM conteudo_embedding WHERE conteudo_id <> ALL(%s)", (ids_conteudo,)),
+            ("conteudo", "DELETE FROM conteudo WHERE conteudo_id <> ALL(%s)", (ids_conteudo,)),
+            ("usuario", "DELETE FROM usuario WHERE usuario_id <> ALL(%s)", (usuarios,)),
+            ("categoria", "DELETE FROM categoria WHERE categoria_id NOT IN (SELECT categoria_id FROM conteudo)", ()),
+        ):
+            n = pg.execute(sql, params).rowcount
+            if n:
+                removidos[tabela] = n
+        if removidos:
+            log.info("[RF06] removidos por não constarem mais nas fontes: %s", removidos)
 
     carregados = {
         "categorias": len(categorias),
