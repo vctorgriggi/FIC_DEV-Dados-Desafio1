@@ -1,5 +1,5 @@
 {
-  "inicio": "2026-09-12T21:23:27",
+  "inicio": "2026-09-12T21:57:49",
   "ingestao": {
     "registros_lidos": {
       "catalogo": 1000,
@@ -10,14 +10,14 @@
     "invalidos": 0,
     "incompletos": 0,
     "duplicados": 0,
-    "corrigidos": 1000,
+    "corrigidos": 0,
     "detalhamento": {
       "catalogo": {
         "validos": 1000,
         "invalidos": 0,
         "incompletos": 0,
         "duplicados": 0,
-        "corrigidos": 1000
+        "corrigidos": 0
       },
       "interacoes": {
         "validos": 1000,
@@ -39,9 +39,10 @@
         "categorias": 8,
         "usuarios": 150,
         "conteudos": 1000,
-        "interacoes": 1000
+        "interacoes": 1000,
+        "interacoes_novas": 0
       },
-      "mongodb": 0
+      "mongodb": null
     }
   },
   "mongodb": {},
@@ -49,13 +50,13 @@
   "recomendacao": {},
   "metricas": {},
   "tempos_etapas_s": {
-    "conexoes": 0.267,
-    "ingestao": 1.481,
-    "mongodb": 0.001,
-    "embeddings": 0.001,
-    "recomendacao": 0.001,
+    "conexoes": 0.016,
+    "ingestao": 0.073,
+    "mongodb": 0.0,
+    "embeddings": 0.0,
+    "recomendacao": 0.0,
     "metricas": 0.0
   },
-  "tempo_total_s": 1.769,
-  "fim": "2026-09-12T21:23:29"
+  "tempo_total_s": 0.092,
+  "fim": "2026-09-12T21:57:49"
 }

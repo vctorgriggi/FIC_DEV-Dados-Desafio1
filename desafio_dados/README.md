@@ -13,6 +13,7 @@ cd desafio_dados
 cp .env.example .env          # ajuste as senhas
 docker compose up -d          # PostgreSQL+pgvector, MongoDB, Superset
 docker compose run --rm app   # roda o pipeline (python -m src.main)
+docker compose run --rm app python -m unittest   # testes
 ```
 
 | Serviço    | Acesso                                                                |
@@ -43,6 +44,7 @@ desafio_dados/
 ├── ingestao/             leitura, validação, tratamento, carga no PostgreSQL (RF02–RF06)
 ├── mongodb/              carga e consultas MongoDB (RF07) — comentarios.py, consultas.js
 ├── recomendacao/         embeddings e busca semântica (RF08–RF09), motor (RF10–RF11)
+├── tests/                testes unitários (validação com registros sujos)
 ├── sql/                  criar_banco.sql (aplicado ao subir o Postgres), consultas.sql
 ├── dados/
 │   ├── brutos/           arquivos originais (não alterar)
@@ -54,7 +56,8 @@ desafio_dados/
 
 ## Decisões
 
-_(preencher: tratamento, escolha do MongoDB, modelo de embeddings, KPIs, limitações)_
+- Ingestão, validação e tratamento: [documentacao/ingestao.md](documentacao/ingestao.md)
+- _(preencher: escolha do MongoDB, modelo de embeddings, KPIs, limitações)_
 
 ## Uso de IA
 

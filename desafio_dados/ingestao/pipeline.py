@@ -1,1202 +1,422 @@
-
-"""RF02-RF06: le fontes, valida, trata, grava processados e carrega no PostgreSQL.
-    Retorna o resumo da ingestao no formato exigido pelo RF05."""
+"""RF02-RF06: leitura, validacao, tratamento, processados e carga no PostgreSQL."""
 
 import csv
 import json
 import logging
+import unicodedata
 from datetime import datetime
 from pathlib import Path
 
-
 log = logging.getLogger("ingestao")
 
-
-TIPOS_CONTEUDO = {
-    "curso",
-    "vídeo",
-    "artigo",
-    "podcast",
-}
-
-NIVEIS = {
-    "básico",
-    "intermediário",
-    "avançado",
-}
-
+# valor canonico indexado pela chave normalizada (minusculas, sem acento)
+TIPOS = {"curso": "Curso", "video": "Vídeo", "artigo": "Artigo", "podcast": "Podcast"}
+NIVEIS = {"basico": "Básico", "intermediario": "Intermediário", "avancado": "Avançado"}
 TIPOS_INTERACAO = {
-    "visualização",
-    "início",
-    "conclusão",
-    "curtida",
-    "avaliação",
-    "compartilhamento",
+    "visualizacao": "visualização",
+    "inicio": "início",
+    "conclusao": "conclusão",
+    "curtida": "curtida",
+    "avaliacao": "avaliação",
+    "compartilhamento": "compartilhamento",
 }
+FORMATOS_DATA = ("%Y-%m-%d", "%d/%m/%Y", "%Y/%m/%d")
+CAMPOS_CATALOGO = [
+    "conteudo_id", "titulo", "tipo", "categoria", "nivel",
+    "carga_horaria_min", "data_publicacao", "descricao", "autor",
+]
 
+
+# --- conversao e normalizacao (RF04) ---
 
 def limpar_texto(valor):
-    """Remove espaços extras e retorna texto padronizado."""
     if valor is None:
         return None
+    texto = " ".join(str(valor).split())
+    return texto or None
 
-    valor = str(valor).strip()
 
-    if not valor:
+def chave(valor):
+    """Chave de comparacao: sem acento, minusculas, espacos colapsados."""
+    texto = limpar_texto(valor)
+    if texto is None:
         return None
-
-    return valor
-
-
-def normalizar_chave(valor):
-    """Normaliza texto para comparação."""
-    valor = limpar_texto(valor)
-
-    if valor is None:
-        return None
-
-    return valor.lower()
+    sem_acento = unicodedata.normalize("NFKD", texto).encode("ascii", "ignore").decode()
+    return sem_acento.casefold()
 
 
 def converter_int(valor):
-    """Converte um valor para inteiro."""
-    if valor is None or str(valor).strip() == "":
+    """Inteiro estrito: '7.9' e 7.9 sao invalidos, '7.0' e 7.0 sao aceitos."""
+    if valor is None or isinstance(valor, bool):
         return None
-
+    if isinstance(valor, int):
+        return valor
+    if isinstance(valor, float):
+        return int(valor) if valor.is_integer() else None
+    texto = str(valor).strip()
+    if not texto:
+        return None
     try:
-        return int(float(str(valor).strip()))
-    except (ValueError, TypeError):
+        return int(texto)
+    except ValueError:
+        pass
+    try:
+        numero = float(texto)
+    except ValueError:
         return None
+    return int(numero) if numero.is_integer() else None
 
 
 def converter_float(valor):
-    """Converte um valor para float."""
-    if valor is None or str(valor).strip() == "":
+    if valor is None or isinstance(valor, bool):
         return None
-
     try:
         return float(str(valor).strip())
-    except (ValueError, TypeError):
-        return None
-
-
-def converter_data(valor):
-    """Converte data para o formato YYYY-MM-DD."""
-    valor = limpar_texto(valor)
-
-    if valor is None:
-        return None
-
-    formatos = [
-        "%Y-%m-%d",
-        "%d/%m/%Y",
-        "%Y/%m/%d",
-    ]
-
-    for formato in formatos:
-        try:
-            return datetime.strptime(valor, formato).date().isoformat()
-        except ValueError:
-            continue
-
-    return None
-
-
-def converter_datetime(valor):
-    """Valida e padroniza data/hora ISO."""
-    valor = limpar_texto(valor)
-
-    if valor is None:
-        return None
-
-    try:
-        data = datetime.fromisoformat(valor)
-        return data.isoformat(timespec="seconds")
     except ValueError:
         return None
 
 
-def salvar_json(caminho, dados):
-    """Salva JSON formatado."""
-    caminho.parent.mkdir(parents=True, exist_ok=True)
+def converter_data(valor):
+    """Data em qualquer formato de FORMATOS_DATA -> 'YYYY-MM-DD'."""
+    texto = limpar_texto(valor)
+    if texto is None:
+        return None
+    for formato in FORMATOS_DATA:
+        try:
+            return datetime.strptime(texto, formato).date().isoformat()
+        except ValueError:
+            continue
+    return None
 
-    caminho.write_text(
-        json.dumps(
-            dados,
-            ensure_ascii=False,
-            indent=2
-        ),
-        encoding="utf-8"
-    )
+
+def converter_datetime(valor):
+    texto = limpar_texto(valor)
+    if texto is None:
+        return None
+    try:
+        return datetime.fromisoformat(texto).isoformat(timespec="seconds")
+    except ValueError:
+        return None
 
 
-def ler_catalogo(caminho):
-    """RF02 - Lê o catálogo CSV."""
-    registros = []
+def mudou(original, final):
+    """True se a normalizacao alterou o valor (conta como 'corrigido' no RF05)."""
+    return original is not None and str(original).strip() != str(final)
 
-    with caminho.open(
-        "r",
-        encoding="utf-8-sig",
-        newline=""
-    ) as arquivo:
 
-        leitor = csv.DictReader(arquivo)
+def faltantes(registro, campos):
+    return [c for c in campos if limpar_texto(registro.get(c)) is None]
 
-        for linha in leitor:
-            registros.append(dict(linha))
 
-    log.info(
-        "[RF02] catálogo lido: arquivo=%s registros=%d",
-        caminho,
-        len(registros)
-    )
+class Contadores(dict):
+    """Contagem por classificacao (RF03) + lista de rejeitados com motivo."""
 
+    def __init__(self, fonte):
+        super().__init__(validos=0, invalidos=0, incompletos=0, duplicados=0, corrigidos=0)
+        self.fonte = fonte
+        self.rejeitados = []
+
+    def rejeitar(self, classe, linha, motivo):
+        self[classe] += 1
+        self.rejeitados.append({"fonte": self.fonte, "linha": linha, "classe": classe, "motivo": motivo})
+        log.warning("[RF03] %s linha %d %s: %s", self.fonte, linha, classe[:-1], motivo)
+
+    def aceitar(self, corrigido):
+        self["validos"] += 1
+        if corrigido:
+            self["corrigidos"] += 1
+
+
+# --- leitura (RF02) ---
+
+def ler_catalogo(caminho: Path) -> list[dict]:
+    with caminho.open(encoding="utf-8-sig", newline="") as f:
+        registros = list(csv.DictReader(f))
+    log.info("[RF02] %s: %d registros", caminho, len(registros))
     return registros
 
 
-def ler_json(caminho):
-    """RF02 - Lê um arquivo JSON contendo uma lista de registros."""
-    with caminho.open("r", encoding="utf-8") as arquivo:
-        dados = json.load(arquivo)
-
+def ler_json(caminho: Path) -> list[dict]:
+    with caminho.open(encoding="utf-8") as f:
+        dados = json.load(f)
     if not isinstance(dados, list):
-        raise ValueError(
-            f"O arquivo {caminho} deveria conter uma lista JSON."
-        )
-
-    log.info(
-        "[RF02] JSON lido: arquivo=%s registros=%d",
-        caminho,
-        len(dados)
-    )
-
+        raise ValueError(f"{caminho} deveria conter uma lista JSON")
+    log.info("[RF02] %s: %d registros", caminho, len(dados))
     return dados
 
 
+# --- validacao e tratamento (RF03 + RF04) ---
+
 def tratar_catalogo(registros):
-    """
-    RF03 + RF04
+    cont = Contadores("catálogo")
+    tratados, ids_vistos = [], set()
+    categorias = {}  # chave normalizada -> primeira grafia encontrada
 
-    Valida e padroniza registros do catálogo.
-    """
-
-    tratados = []
-    ids_vistos = set()
-
-    contadores = {
-        "validos": 0,
-        "invalidos": 0,
-        "incompletos": 0,
-        "duplicados": 0,
-        "corrigidos": 0,
-    }
-
-    for numero, registro in enumerate(registros, start=1):
-
-        conteudo_id = registro.get("conteudo_id")
-
-        if conteudo_id is None:
-            conteudo_id = registro.get("conteudoo_id")
-
-        titulo = limpar_texto(registro.get("titulo"))
-        tipo = limpar_texto(registro.get("tipo"))
-        categoria = limpar_texto(registro.get("categoria"))
-        nivel = limpar_texto(registro.get("nivel"))
-        carga_horaria = registro.get("carga_horaria_min")
-        data_publicacao = registro.get("data_publicacao")
-        descricao = limpar_texto(registro.get("descricao"))
-        autor = limpar_texto(registro.get("autor"))
-
-        corrigido = False
-
-        campos_obrigatorios = {
-            "conteudo_id": conteudo_id,
-            "titulo": titulo,
-            "tipo": tipo,
-            "categoria": categoria,
-            "nivel": nivel,
-            "carga_horaria_min": carga_horaria,
-            "data_publicacao": data_publicacao,
-        }
-
-        campos_faltantes = [
-            campo
-            for campo, valor in campos_obrigatorios.items()
-            if limpar_texto(valor) is None
-        ]
-
-        if campos_faltantes:
-            contadores["incompletos"] += 1
-
-            log.warning(
-                "[RF03] catálogo linha %d incompleta: campos=%s",
-                numero,
-                ", ".join(campos_faltantes)
-            )
-
+    for n, r in enumerate(registros, start=1):
+        campos = faltantes(r, CAMPOS_CATALOGO[:7])
+        if campos:
+            cont.rejeitar("incompletos", n, f"campos ausentes: {', '.join(campos)}")
             continue
 
-        id_convertido = converter_int(conteudo_id)
-        carga_convertida = converter_int(carga_horaria)
-        data_convertida = converter_data(data_publicacao)
+        conteudo_id = converter_int(r["conteudo_id"])
+        carga = converter_int(r["carga_horaria_min"])
+        data = converter_data(r["data_publicacao"])
+        tipo = TIPOS.get(chave(r["tipo"]))
+        nivel = NIVEIS.get(chave(r["nivel"]))
 
-        if id_convertido is None:
-            contadores["invalidos"] += 1
+        if conteudo_id is None or conteudo_id <= 0:
+            cont.rejeitar("invalidos", n, f"conteudo_id={r['conteudo_id']!r}")
+        elif carga is None or carga < 0:
+            cont.rejeitar("invalidos", n, f"carga_horaria_min={r['carga_horaria_min']!r}")
+        elif data is None:
+            cont.rejeitar("invalidos", n, f"data_publicacao={r['data_publicacao']!r}")
+        elif tipo is None:
+            cont.rejeitar("invalidos", n, f"tipo={r['tipo']!r}")
+        elif nivel is None:
+            cont.rejeitar("invalidos", n, f"nivel={r['nivel']!r}")
+        elif conteudo_id in ids_vistos:
+            cont.rejeitar("duplicados", n, f"conteudo_id={conteudo_id}")
+        else:
+            categoria = categorias.setdefault(chave(r["categoria"]), limpar_texto(r["categoria"]))
+            tratado = {
+                "conteudo_id": conteudo_id,
+                "titulo": limpar_texto(r["titulo"]),
+                "tipo": tipo,
+                "categoria": categoria,
+                "nivel": nivel,
+                "carga_horaria_min": carga,
+                "data_publicacao": data,
+                "descricao": limpar_texto(r.get("descricao")),
+                "autor": limpar_texto(r.get("autor")),
+            }
+            ids_vistos.add(conteudo_id)
+            tratados.append(tratado)
+            cont.aceitar(any(mudou(r.get(c), tratado[c]) for c in CAMPOS_CATALOGO))
 
-            log.warning(
-                "[RF03] catálogo linha %d inválida: conteudo_id inválido",
-                numero
-            )
-
-            continue
-
-        if id_convertido != conteudo_id:
-            corrigido = True
-
-        if carga_convertida is None:
-            contadores["invalidos"] += 1
-
-            log.warning(
-                "[RF03] catálogo linha %d inválida: carga_horaria_min inválida",
-                numero
-            )
-
-            continue
-
-        if carga_convertida < 0:
-            contadores["invalidos"] += 1
-
-            log.warning(
-                "[RF03] catálogo linha %d inválida: carga horária negativa",
-                numero
-            )
-
-            continue
-
-        if data_convertida is None:
-            contadores["invalidos"] += 1
-
-            log.warning(
-                "[RF03] catálogo linha %d inválida: data_publicacao inválida",
-                numero
-            )
-
-            continue
-
-        tipo_normalizado = tipo.lower()
-        nivel_normalizado = nivel.lower()
-
-        mapa_tipo = {
-            "curso": "Curso",
-            "vídeo": "Vídeo",
-            "video": "Vídeo",
-            "artigo": "Artigo",
-            "podcast": "Podcast",
-        }
-
-        mapa_nivel = {
-            "básico": "Básico",
-            "basico": "Básico",
-            "intermediário": "Intermediário",
-            "intermediario": "Intermediário",
-            "avançado": "Avançado",
-            "avancado": "Avançado",
-        }
-
-        if tipo_normalizado not in mapa_tipo:
-            contadores["invalidos"] += 1
-
-            log.warning(
-                "[RF03] catálogo linha %d inválida: tipo=%s",
-                numero,
-                tipo
-            )
-
-            continue
-
-        if nivel_normalizado not in mapa_nivel:
-            contadores["invalidos"] += 1
-
-            log.warning(
-                "[RF03] catálogo linha %d inválida: nivel=%s",
-                numero,
-                nivel
-            )
-
-            continue
-
-        tipo_normalizado = mapa_tipo[tipo_normalizado]
-        nivel_normalizado = mapa_nivel[nivel_normalizado]
-
-        if tipo_normalizado != tipo:
-            corrigido = True
-
-        if nivel_normalizado != nivel:
-            corrigido = True
-
-        # ----------------------------------------------------
-        # Categoria
-        # ----------------------------------------------------
-
-        categoria_normalizada = " ".join(categoria.split())
-
-        if categoria_normalizada != categoria:
-            corrigido = True
-
-        # ----------------------------------------------------
-        # Duplicidade
-        # ----------------------------------------------------
-
-        if id_convertido in ids_vistos:
-            contadores["duplicados"] += 1
-
-            log.warning(
-                "[RF03] catálogo linha %d duplicada: conteudo_id=%s",
-                numero,
-                id_convertido
-            )
-
-            continue
-
-        ids_vistos.add(id_convertido)
-
-        registro_tratado = {
-            "conteudo_id": id_convertido,
-            "titulo": titulo,
-            "tipo": tipo_normalizado,
-            "categoria": categoria_normalizada,
-            "nivel": nivel_normalizado,
-            "carga_horaria_min": carga_convertida,
-            "data_publicacao": data_convertida,
-            "descricao": descricao,
-            "autor": autor,
-        }
-
-        tratados.append(registro_tratado)
-
-        contadores["validos"] += 1
-
-        if corrigido:
-            contadores["corrigidos"] += 1
-
-    return tratados, contadores
+    return tratados, cont
 
 
 def tratar_interacoes(registros, conteudos_validos):
-    """
-    RF03 + RF04
+    cont = Contadores("interação")
+    tratados, chaves_vistas = [], set()
 
-    Valida e padroniza as interações.
-    """
-
-    tratados = []
-
-    contadores = {
-        "validos": 0,
-        "invalidos": 0,
-        "incompletos": 0,
-        "duplicados": 0,
-        "corrigidos": 0,
-    }
-
-    chaves_vistas = set()
-
-    for numero, registro in enumerate(registros, start=1):
-
-        usuario_id = registro.get("usuario_id")
-        conteudo_id = registro.get("conteudo_id")
-        tipo_interacao = registro.get("tipo_interacao")
-        data_hora = registro.get("data_hora")
-        tempo_consumido = registro.get("tempo_consumido")
-        percentual = registro.get("percentual_conclusao")
-        avaliacao = registro.get("avaliacao_atribuida")
-
-        campos_obrigatorios = {
-            "usuario_id": usuario_id,
-            "conteudo_id": conteudo_id,
-            "tipo_interacao": tipo_interacao,
-            "data_hora": data_hora,
-        }
-
-        campos_faltantes = [
-            campo
-            for campo, valor in campos_obrigatorios.items()
-            if limpar_texto(valor) is None
-        ]
-
-        if campos_faltantes:
-            contadores["incompletos"] += 1
-
-            log.warning(
-                "[RF03] interação linha %d incompleta: campos=%s",
-                numero,
-                ", ".join(campos_faltantes)
-            )
-
+    for n, r in enumerate(registros, start=1):
+        campos = faltantes(r, ("usuario_id", "conteudo_id", "tipo_interacao", "data_hora"))
+        if campos:
+            cont.rejeitar("incompletos", n, f"campos ausentes: {', '.join(campos)}")
             continue
 
-        usuario_convertido = converter_int(usuario_id)
-        conteudo_convertido = converter_int(conteudo_id)
+        usuario_id = converter_int(r["usuario_id"])
+        conteudo_id = converter_int(r["conteudo_id"])
+        tipo = TIPOS_INTERACAO.get(chave(r["tipo_interacao"]))
+        data_hora = converter_datetime(r["data_hora"])
+        tempo = converter_int(r.get("tempo_consumido"))
+        percentual = converter_float(r.get("percentual_conclusao"))
+        avaliacao = converter_int(r.get("avaliacao_atribuida"))
+        chave_dup = (usuario_id, conteudo_id, tipo, data_hora)
 
-        if usuario_convertido is None or usuario_convertido <= 0:
-            contadores["invalidos"] += 1
+        if usuario_id is None or usuario_id <= 0:
+            cont.rejeitar("invalidos", n, f"usuario_id={r['usuario_id']!r}")
+        elif conteudo_id is None or conteudo_id <= 0:
+            cont.rejeitar("invalidos", n, f"conteudo_id={r['conteudo_id']!r}")
+        elif conteudo_id not in conteudos_validos:
+            cont.rejeitar("invalidos", n, f"conteudo_id={conteudo_id} não existe no catálogo")
+        elif tipo is None:
+            cont.rejeitar("invalidos", n, f"tipo_interacao={r['tipo_interacao']!r}")
+        elif data_hora is None:
+            cont.rejeitar("invalidos", n, f"data_hora={r['data_hora']!r}")
+        elif r.get("tempo_consumido") is not None and (tempo is None or tempo < 0):
+            cont.rejeitar("invalidos", n, f"tempo_consumido={r['tempo_consumido']!r}")
+        elif r.get("percentual_conclusao") is not None and (percentual is None or not 0 <= percentual <= 100):
+            cont.rejeitar("invalidos", n, f"percentual_conclusao={r['percentual_conclusao']!r}")
+        elif r.get("avaliacao_atribuida") is not None and (avaliacao is None or not 1 <= avaliacao <= 5):
+            cont.rejeitar("invalidos", n, f"avaliacao_atribuida={r['avaliacao_atribuida']!r}")
+        elif chave_dup in chaves_vistas:
+            cont.rejeitar("duplicados", n, f"usuario={usuario_id} conteudo={conteudo_id} {tipo} {data_hora}")
+        else:
+            tratado = {
+                "usuario_id": usuario_id,
+                "conteudo_id": conteudo_id,
+                "tipo_interacao": tipo,
+                "data_hora": data_hora,
+                "tempo_consumido": tempo,
+                "percentual_conclusao": percentual,
+                "avaliacao_atribuida": avaliacao,
+            }
+            chaves_vistas.add(chave_dup)
+            tratados.append(tratado)
+            cont.aceitar(any(mudou(r.get(c), v) for c, v in tratado.items()))
 
-            log.warning(
-                "[RF03] interação linha %d inválida: usuario_id=%s",
-                numero,
-                usuario_id
-            )
+    return tratados, cont
 
-            continue
-
-        if conteudo_convertido is None or conteudo_convertido <= 0:
-            contadores["invalidos"] += 1
-
-            log.warning(
-                "[RF03] interação linha %d inválida: conteudo_id=%s",
-                numero,
-                conteudo_id
-            )
-
-            continue
-
-        if conteudo_convertido not in conteudos_validos:
-            contadores["invalidos"] += 1
-
-            log.warning(
-                "[RF03] interação linha %d inválida: "
-                "conteudo_id=%s não existe no catálogo",
-                numero,
-                conteudo_convertido
-            )
-
-            continue
-
-        tipo_normalizado = limpar_texto(tipo_interacao)
-
-        mapa_interacao = {
-            "visualização": "visualização",
-            "visualizacao": "visualização",
-            "início": "início",
-            "inicio": "início",
-            "conclusão": "conclusão",
-            "conclusao": "conclusão",
-            "curtida": "curtida",
-            "avaliação": "avaliação",
-            "avaliacao": "avaliação",
-            "compartilhamento": "compartilhamento",
-        }
-
-        chave_tipo = normalizar_chave(tipo_normalizado)
-
-        if chave_tipo not in mapa_interacao:
-            contadores["invalidos"] += 1
-
-            log.warning(
-                "[RF03] interação linha %d inválida: tipo_interacao=%s",
-                numero,
-                tipo_interacao
-            )
-
-            continue
-
-        tipo_normalizado = mapa_interacao[chave_tipo]
-
-        data_convertida = converter_datetime(data_hora)
-
-        if data_convertida is None:
-            contadores["invalidos"] += 1
-
-            log.warning(
-                "[RF03] interação linha %d inválida: data_hora=%s",
-                numero,
-                data_hora
-            )
-
-            continue
-
-        tempo_convertido = converter_int(tempo_consumido)
-
-        if tempo_consumido is not None and tempo_convertido is None:
-            contadores["invalidos"] += 1
-
-            log.warning(
-                "[RF03] interação linha %d inválida: tempo_consumido=%s",
-                numero,
-                tempo_consumido
-            )
-
-            continue
-
-        if tempo_convertido is not None and tempo_convertido < 0:
-            contadores["invalidos"] += 1
-
-            log.warning(
-                "[RF03] interação linha %d inválida: "
-                "tempo_consumido negativo",
-                numero
-            )
-
-            continue
-
-        percentual_convertido = converter_float(percentual)
-
-        if percentual is not None and percentual_convertido is None:
-            contadores["invalidos"] += 1
-
-            log.warning(
-                "[RF03] interação linha %d inválida: "
-                "percentual_conclusao=%s",
-                numero,
-                percentual
-            )
-
-            continue
-
-        if (
-            percentual_convertido is not None
-            and not 0 <= percentual_convertido <= 100
-        ):
-            contadores["invalidos"] += 1
-
-            log.warning(
-                "[RF03] interação linha %d inválida: "
-                "percentual_conclusao fora do intervalo",
-                numero
-            )
-
-            continue
-
-        avaliacao_convertida = None
-
-        if avaliacao is not None and str(avaliacao).strip() != "":
-            avaliacao_convertida = converter_int(avaliacao)
-
-            if avaliacao_convertida is None:
-                contadores["invalidos"] += 1
-
-                log.warning(
-                    "[RF03] interação linha %d inválida: "
-                    "avaliacao_atribuida=%s",
-                    numero,
-                    avaliacao
-                )
-
-                continue
-
-            if not 1 <= avaliacao_convertida <= 5:
-                contadores["invalidos"] += 1
-
-                log.warning(
-                    "[RF03] interação linha %d inválida: "
-                    "avaliação fora do intervalo 1-5",
-                    numero
-                )
-
-                continue
-
-        chave = (
-            usuario_convertido,
-            conteudo_convertido,
-            tipo_normalizado,
-            data_convertida,
-        )
-
-        if chave in chaves_vistas:
-            contadores["duplicados"] += 1
-
-            log.warning(
-                "[RF03] interação linha %d duplicada",
-                numero
-            )
-
-            continue
-
-        chaves_vistas.add(chave)
-
-        corrigido = (
-            usuario_convertido != usuario_id
-            or conteudo_convertido != conteudo_id
-            or tipo_normalizado != tipo_interacao
-            or data_convertida != data_hora
-        )
-
-        registro_tratado = {
-            "usuario_id": usuario_convertido,
-            "conteudo_id": conteudo_convertido,
-            "tipo_interacao": tipo_normalizado,
-            "data_hora": data_convertida,
-            "tempo_consumido": tempo_convertido,
-            "percentual_conclusao": percentual_convertido,
-            "avaliacao_atribuida": avaliacao_convertida,
-        }
-
-        tratados.append(registro_tratado)
-
-        contadores["validos"] += 1
-
-        if corrigido:
-            contadores["corrigidos"] += 1
-
-    return tratados, contadores
 
 def tratar_comentarios(registros, conteudos_validos):
-    """
-    RF03 + RF04
+    cont = Contadores("comentário")
+    tratados, chaves_vistas = [], set()
 
-    Valida e padroniza comentários.
-
-    Os comentários posteriormente são enviados para o MongoDB
-    pelo módulo mongodb/comentarios.py.
-    """
-
-    tratados = []
-
-    contadores = {
-        "validos": 0,
-        "invalidos": 0,
-        "incompletos": 0,
-        "duplicados": 0,
-        "corrigidos": 0,
-    }
-
-    chaves_vistas = set()
-
-    for numero, registro in enumerate(registros, start=1):
-
-        usuario_id = registro.get("usuario_id")
-        conteudo_id = registro.get("conteudo_id")
-        avaliacao = registro.get("avaliacao")
-        comentario = registro.get("comentario")
-        tags = registro.get("tags")
-        data = registro.get("data")
-
-        campos_obrigatorios = {
-            "usuario_id": usuario_id,
-            "conteudo_id": conteudo_id,
-            "avaliacao": avaliacao,
-            "comentario": comentario,
-            "data": data,
-        }
-
-        campos_faltantes = [
-            campo
-            for campo, valor in campos_obrigatorios.items()
-            if limpar_texto(valor) is None
-        ]
-
-        if campos_faltantes:
-            contadores["incompletos"] += 1
-
-            log.warning(
-                "[RF03] comentário linha %d incompleto: campos=%s",
-                numero,
-                ", ".join(campos_faltantes)
-            )
-
+    for n, r in enumerate(registros, start=1):
+        campos = faltantes(r, ("usuario_id", "conteudo_id", "avaliacao", "comentario", "data"))
+        if campos:
+            cont.rejeitar("incompletos", n, f"campos ausentes: {', '.join(campos)}")
             continue
 
-        usuario_convertido = converter_int(usuario_id)
-        conteudo_convertido = converter_int(conteudo_id)
-        avaliacao_convertida = converter_int(avaliacao)
+        usuario_id = converter_int(r["usuario_id"])
+        conteudo_id = converter_int(r["conteudo_id"])
+        avaliacao = converter_int(r["avaliacao"])
+        comentario = limpar_texto(r["comentario"])
+        data = converter_data(r["data"])
+        tags = r.get("tags") or []
+        chave_dup = (usuario_id, conteudo_id, data, comentario)
 
-        if usuario_convertido is None or usuario_convertido <= 0:
-            contadores["invalidos"] += 1
-            log.warning(
-                "[RF03] comentário linha %d: usuario_id inválido",
-                numero
-            )
-            continue
-
-        if conteudo_convertido is None or conteudo_convertido <= 0:
-            contadores["invalidos"] += 1
-            log.warning(
-                "[RF03] comentário linha %d: conteudo_id inválido",
-                numero
-            )
-            continue
-
-        if conteudo_convertido not in conteudos_validos:
-            contadores["invalidos"] += 1
-
-            log.warning(
-                "[RF03] comentário linha %d: "
-                "conteudo_id=%s não existe no catálogo",
-                numero,
-                conteudo_convertido
-            )
-
-            continue
-
-        if avaliacao_convertida is None:
-            contadores["invalidos"] += 1
-            log.warning(
-                "[RF03] comentário linha %d: avaliação inválida",
-                numero
-            )
-            continue
-
-        if not 1 <= avaliacao_convertida <= 5:
-            contadores["invalidos"] += 1
-
-            log.warning(
-                "[RF03] comentário linha %d: "
-                "avaliação fora do intervalo 1-5",
-                numero
-            )
-
-            continue
-
-        comentario_normalizado = " ".join(
-            str(comentario).strip().split()
-        )
-
-        if not comentario_normalizado:
-            contadores["incompletos"] += 1
-            continue
-
-        data_convertida = converter_data(data)
-
-        if data_convertida is None:
-            contadores["invalidos"] += 1
-
-            log.warning(
-                "[RF03] comentário linha %d: data inválida",
-                numero
-            )
-
-            continue
-
-        if tags is None:
-            tags_normalizadas = []
-        elif isinstance(tags, list):
-            tags_normalizadas = [
-                str(tag).strip().lower()
-                for tag in tags
-                if str(tag).strip()
-            ]
+        if usuario_id is None or usuario_id <= 0:
+            cont.rejeitar("invalidos", n, f"usuario_id={r['usuario_id']!r}")
+        elif conteudo_id is None or conteudo_id <= 0:
+            cont.rejeitar("invalidos", n, f"conteudo_id={r['conteudo_id']!r}")
+        elif conteudo_id not in conteudos_validos:
+            cont.rejeitar("invalidos", n, f"conteudo_id={conteudo_id} não existe no catálogo")
+        elif avaliacao is None or not 1 <= avaliacao <= 5:
+            cont.rejeitar("invalidos", n, f"avaliacao={r['avaliacao']!r}")
+        elif data is None:
+            cont.rejeitar("invalidos", n, f"data={r['data']!r}")
+        elif not isinstance(tags, list):
+            cont.rejeitar("invalidos", n, f"tags={tags!r}")
+        elif chave_dup in chaves_vistas:
+            cont.rejeitar("duplicados", n, f"usuario={usuario_id} conteudo={conteudo_id} {data}")
         else:
-            contadores["invalidos"] += 1
+            tratado = {
+                "usuario_id": usuario_id,
+                "conteudo_id": conteudo_id,
+                "avaliacao": avaliacao,
+                "comentario": comentario,
+                "tags": [t.casefold() for t in map(limpar_texto, tags) if t],
+                "data": data,
+            }
+            chaves_vistas.add(chave_dup)
+            tratados.append(tratado)
+            cont.aceitar(any(mudou(r.get(c), v) for c, v in tratado.items()))
 
-            log.warning(
-                "[RF03] comentário linha %d: tags inválidas",
-                numero
-            )
-
-            continue
-
-        chave = (
-            usuario_convertido,
-            conteudo_convertido,
-            data_convertida,
-            comentario_normalizado,
-        )
-
-        if chave in chaves_vistas:
-            contadores["duplicados"] += 1
-
-            log.warning(
-                "[RF03] comentário linha %d duplicado",
-                numero
-            )
-
-            continue
-
-        chaves_vistas.add(chave)
-
-        corrigido = (
-            usuario_convertido != usuario_id
-            or conteudo_convertido != conteudo_id
-            or avaliacao_convertida != avaliacao
-            or comentario_normalizado != comentario
-            or data_convertida != data
-        )
-
-        registro_tratado = {
-            "usuario_id": usuario_convertido,
-            "conteudo_id": conteudo_convertido,
-            "avaliacao": avaliacao_convertida,
-            "comentario": comentario_normalizado,
-            "tags": tags_normalizadas,
-            "data": data_convertida,
-        }
-
-        tratados.append(registro_tratado)
-
-        contadores["validos"] += 1
-
-        if corrigido:
-            contadores["corrigidos"] += 1
-
-    return tratados, contadores
+    return tratados, cont
 
 
-def salvar_processados(cfg, catalogo, interacoes, comentarios):
-    """RF04 - Salva os dados tratados em dados/processados."""
+# --- saida (RF04) ---
 
-    pasta = Path(cfg["saida"]["processados"])
+def salvar_json(caminho: Path, dados):
+    caminho.parent.mkdir(parents=True, exist_ok=True)
+    caminho.write_text(json.dumps(dados, ensure_ascii=False, indent=2), encoding="utf-8")
+
+
+def salvar_processados(pasta: Path, catalogo, interacoes, comentarios, rejeitados):
     pasta.mkdir(parents=True, exist_ok=True)
-
-    caminho_catalogo = pasta / "catalogo_processado.csv"
-
-    campos_catalogo = [
-        "conteudo_id",
-        "titulo",
-        "tipo",
-        "categoria",
-        "nivel",
-        "carga_horaria_min",
-        "data_publicacao",
-        "descricao",
-        "autor",
-    ]
-
-    with caminho_catalogo.open(
-        "w",
-        encoding="utf-8",
-        newline=""
-    ) as arquivo:
-
-        escritor = csv.DictWriter(
-            arquivo,
-            fieldnames=campos_catalogo
-        )
-
+    with (pasta / "catalogo_processado.csv").open("w", encoding="utf-8", newline="") as f:
+        escritor = csv.DictWriter(f, fieldnames=CAMPOS_CATALOGO, lineterminator="\n")
         escritor.writeheader()
         escritor.writerows(catalogo)
+    salvar_json(pasta / "interacoes_processadas.json", interacoes)
+    salvar_json(pasta / "comentarios_processados.json", comentarios)
+    salvar_json(pasta / "rejeitados.json", rejeitados)
+    log.info("[RF04] processados salvos em %s", pasta)
 
-    caminho_interacoes = pasta / "interacoes_processadas.json"
 
-    salvar_json(
-        caminho_interacoes,
-        interacoes
-    )
+# --- carga (RF06) ---
 
-    caminho_comentarios = pasta / "comentarios_processados.json"
+def carregar_postgres(pg, catalogo, interacoes, comentarios) -> dict:
+    """Carga idempotente em uma unica transacao."""
+    with pg.transaction():
+        categorias = {}
+        for nome in sorted({r["categoria"] for r in catalogo}):
+            row = pg.execute(
+                "INSERT INTO categoria (nome) VALUES (%s) "
+                "ON CONFLICT (nome) DO UPDATE SET nome = EXCLUDED.nome RETURNING categoria_id",
+                (nome,),
+            ).fetchone()
+            categorias[nome] = row[0]
 
-    salvar_json(
-        caminho_comentarios,
-        comentarios
-    )
-
-    log.info(
-        "[RF04] dados processados salvos em %s",
-        pasta
-    )
-
-def carregar_postgres(pg, catalogo, interacoes):
-    """
-    RF06 - Carrega os dados estruturados no PostgreSQL.
-
-    A operação utiliza uma única transação.
-    """
-
-    categorias = {}
-
-    for registro in catalogo:
-        categoria = registro["categoria"]
-
-        cursor = pg.execute(
-            """
-            INSERT INTO categoria (nome)
-            VALUES (%s)
-            ON CONFLICT (nome)
-            DO UPDATE SET nome = EXCLUDED.nome
-            RETURNING categoria_id
-            """,
-            (categoria,)
+        # usuarios existem apenas dentro das interacoes e comentarios
+        usuarios = sorted({r["usuario_id"] for r in interacoes} | {r["usuario_id"] for r in comentarios})
+        pg.cursor().executemany(
+            "INSERT INTO usuario (usuario_id) VALUES (%s) ON CONFLICT (usuario_id) DO NOTHING",
+            [(u,) for u in usuarios],
         )
 
-        categoria_id = cursor.fetchone()[0]
-        categorias[categoria] = categoria_id
-
-    usuarios = set()
-
-    for registro in interacoes:
-        usuarios.add(registro["usuario_id"])
-
-    for usuario_id in sorted(usuarios):
-        pg.execute(
+        pg.cursor().executemany(
             """
-            INSERT INTO usuario (usuario_id)
-            VALUES (%s)
-            ON CONFLICT (usuario_id) DO NOTHING
-            """,
-            (usuario_id,)
-        )
-
-    for registro in catalogo:
-
-        pg.execute(
-            """
-            INSERT INTO conteudo (
-                conteudo_id,
-                titulo,
-                tipo,
-                categoria_id,
-                nivel,
-                carga_horaria_min,
-                data_publicacao,
-                descricao,
-                autor
-            )
-            VALUES (
-                %s, %s, %s, %s, %s,
-                %s, %s, %s, %s
-            )
-            ON CONFLICT (conteudo_id)
-            DO UPDATE SET
-                titulo = EXCLUDED.titulo,
-                tipo = EXCLUDED.tipo,
-                categoria_id = EXCLUDED.categoria_id,
-                nivel = EXCLUDED.nivel,
-                carga_horaria_min = EXCLUDED.carga_horaria_min,
-                data_publicacao = EXCLUDED.data_publicacao,
-                descricao = EXCLUDED.descricao,
+            INSERT INTO conteudo (conteudo_id, titulo, tipo, categoria_id, nivel,
+                                  carga_horaria_min, data_publicacao, descricao, autor)
+            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
+            ON CONFLICT (conteudo_id) DO UPDATE SET
+                titulo = EXCLUDED.titulo, tipo = EXCLUDED.tipo, categoria_id = EXCLUDED.categoria_id,
+                nivel = EXCLUDED.nivel, carga_horaria_min = EXCLUDED.carga_horaria_min,
+                data_publicacao = EXCLUDED.data_publicacao, descricao = EXCLUDED.descricao,
                 autor = EXCLUDED.autor
             """,
-            (
-                registro["conteudo_id"],
-                registro["titulo"],
-                registro["tipo"],
-                categorias[registro["categoria"]],
-                registro["nivel"],
-                registro["carga_horaria_min"],
-                registro["data_publicacao"],
-                registro["descricao"],
-                registro["autor"],
-            )
+            [
+                (r["conteudo_id"], r["titulo"], r["tipo"], categorias[r["categoria"]], r["nivel"],
+                 r["carga_horaria_min"], r["data_publicacao"], r["descricao"], r["autor"])
+                for r in catalogo
+            ],
         )
 
-    carregadas = 0
-
-    for registro in interacoes:
-
-        pg.execute(
+        cur = pg.cursor()
+        cur.executemany(
             """
-            INSERT INTO interacao (
-                usuario_id,
-                conteudo_id,
-                tipo_interacao,
-                data_hora,
-                tempo_consumido,
-                percentual_conclusao,
-                avaliacao_atribuida
-            )
-            VALUES (
-                %s, %s, %s, %s,
-                %s, %s, %s
-            )
-            ON CONFLICT (
-                usuario_id,
-                conteudo_id,
-                tipo_interacao,
-                data_hora
-            )
-            DO NOTHING
+            INSERT INTO interacao (usuario_id, conteudo_id, tipo_interacao, data_hora,
+                                   tempo_consumido, percentual_conclusao, avaliacao_atribuida)
+            VALUES (%s, %s, %s, %s, %s, %s, %s)
+            ON CONFLICT (usuario_id, conteudo_id, tipo_interacao, data_hora) DO NOTHING
             """,
-            (
-                registro["usuario_id"],
-                registro["conteudo_id"],
-                registro["tipo_interacao"],
-                registro["data_hora"],
-                registro["tempo_consumido"],
-                registro["percentual_conclusao"],
-                registro["avaliacao_atribuida"],
-            )
+            [
+                (r["usuario_id"], r["conteudo_id"], r["tipo_interacao"], r["data_hora"],
+                 r["tempo_consumido"], r["percentual_conclusao"], r["avaliacao_atribuida"])
+                for r in interacoes
+            ],
+            returning=False,
         )
+        interacoes_inseridas = cur.rowcount
 
-        carregadas += 1
-
-    pg.commit()
-
-    log.info(
-        "[RF06] PostgreSQL carregado: "
-        "categorias=%d usuários=%d conteúdos=%d interações=%d",
-        len(categorias),
-        len(usuarios),
-        len(catalogo),
-        carregadas
-    )
-
-    return {
+    carregados = {
         "categorias": len(categorias),
         "usuarios": len(usuarios),
         "conteudos": len(catalogo),
-        "interacoes": carregadas,
+        "interacoes": len(interacoes),
+        "interacoes_novas": interacoes_inseridas,
     }
+    log.info("[RF06] PostgreSQL: %s", carregados)
+    return carregados
 
 
-# ============================================================
-# EXECUÇÃO PRINCIPAL DA INGESTÃO
-# ============================================================
+# --- orquestracao ---
 
 def executar(cfg: dict, pg) -> dict:
-    """
-    RF02-RF06.
+    """Retorna o resumo da ingestao (RF05)."""
+    arquivos = cfg["arquivos"]
+    catalogo_bruto = ler_catalogo(Path(arquivos["catalogo"]))
+    interacoes_brutas = ler_json(Path(arquivos["interacoes"]))
+    comentarios_brutos = ler_json(Path(arquivos["comentarios"]))
 
-    Executa:
-        1. leitura;
-        2. validação;
-        3. tratamento;
-        4. persistência dos processados;
-        5. carga no PostgreSQL;
-        6. geração do resumo.
-    """
-
-    log.info("[RF02] iniciando leitura das fontes")
-
-    caminho_catalogo = Path(cfg["arquivos"]["catalogo"])
-    caminho_interacoes = Path(cfg["arquivos"]["interacoes"])
-    caminho_comentarios = Path(cfg["arquivos"]["comentarios"])
-
-    # RF02 - Leitura
-   
-
-    catalogo_bruto = ler_catalogo(caminho_catalogo)
-    interacoes_brutas = ler_json(caminho_interacoes)
-    comentarios_brutos = ler_json(caminho_comentarios)
-
-    registros_lidos = {
-        "catalogo": len(catalogo_bruto),
-        "interacoes": len(interacoes_brutas),
-        "comentarios": len(comentarios_brutos),
-    }
-
-   
-    # RF03 + RF04 - Validação e tratamento
-    
-
-    log.info("[RF03] iniciando validação do catálogo")
-
-    catalogo, resultado_catalogo = tratar_catalogo(
-        catalogo_bruto
-    )
-
-    conteudos_validos = {
-        registro["conteudo_id"]
-        for registro in catalogo
-    }
-
-    log.info(
-        "[RF03] catálogo: válidos=%d inválidos=%d "
-        "incompletos=%d duplicados=%d corrigidos=%d",
-        resultado_catalogo["validos"],
-        resultado_catalogo["invalidos"],
-        resultado_catalogo["incompletos"],
-        resultado_catalogo["duplicados"],
-        resultado_catalogo["corrigidos"],
-    )
-
-    log.info("[RF03] iniciando validação das interações")
-
-    interacoes, resultado_interacoes = tratar_interacoes(
-        interacoes_brutas,
-        conteudos_validos
-    )
-
-    log.info(
-        "[RF03] interações: válidos=%d inválidos=%d "
-        "incompletos=%d duplicados=%d corrigidos=%d",
-        resultado_interacoes["validos"],
-        resultado_interacoes["invalidos"],
-        resultado_interacoes["incompletos"],
-        resultado_interacoes["duplicados"],
-        resultado_interacoes["corrigidos"],
-    )
-
-    log.info("[RF03] iniciando validação dos comentários")
-
-    comentarios, resultado_comentarios = tratar_comentarios(
-        comentarios_brutos,
-        conteudos_validos
-    )
-
-    log.info(
-        "[RF03] comentários: válidos=%d inválidos=%d "
-        "incompletos=%d duplicados=%d corrigidos=%d",
-        resultado_comentarios["validos"],
-        resultado_comentarios["invalidos"],
-        resultado_comentarios["incompletos"],
-        resultado_comentarios["duplicados"],
-        resultado_comentarios["corrigidos"],
-    )
-
-    # Continuacao RF04 - Salvar dados processados
+    catalogo, c_cat = tratar_catalogo(catalogo_bruto)
+    ids_validos = {r["conteudo_id"] for r in catalogo}
+    interacoes, c_int = tratar_interacoes(interacoes_brutas, ids_validos)
+    comentarios, c_com = tratar_comentarios(comentarios_brutos, ids_validos)
+    for c in (c_cat, c_int, c_com):
+        log.info("[RF03] %s: %s", c.fonte, dict(c))
 
     salvar_processados(
-        cfg,
-        catalogo,
-        interacoes,
-        comentarios
+        Path(cfg["saida"]["processados"]), catalogo, interacoes, comentarios,
+        c_cat.rejeitados + c_int.rejeitados + c_com.rejeitados,
     )
-
-    # RF06 - PostgreSQL
-
-    dados_postgres = carregar_postgres(
-        pg,
-        catalogo,
-        interacoes
-    )
-
-    # RF05 - Consolidar resumo
+    carregados = carregar_postgres(pg, catalogo, interacoes, comentarios)
 
     resumo = {
-        "registros_lidos": registros_lidos,
-
-        "validos": (
-            resultado_catalogo["validos"]
-            + resultado_interacoes["validos"]
-            + resultado_comentarios["validos"]
-        ),
-
-        "invalidos": (
-            resultado_catalogo["invalidos"]
-            + resultado_interacoes["invalidos"]
-            + resultado_comentarios["invalidos"]
-        ),
-
-        "incompletos": (
-            resultado_catalogo["incompletos"]
-            + resultado_interacoes["incompletos"]
-            + resultado_comentarios["incompletos"]
-        ),
-
-        "duplicados": (
-            resultado_catalogo["duplicados"]
-            + resultado_interacoes["duplicados"]
-            + resultado_comentarios["duplicados"]
-        ),
-
-        "corrigidos": (
-            resultado_catalogo["corrigidos"]
-            + resultado_interacoes["corrigidos"]
-            + resultado_comentarios["corrigidos"]
-        ),
-
-        "detalhamento": {
-            "catalogo": resultado_catalogo,
-            "interacoes": resultado_interacoes,
-            "comentarios": resultado_comentarios,
+        "registros_lidos": {
+            "catalogo": len(catalogo_bruto),
+            "interacoes": len(interacoes_brutas),
+            "comentarios": len(comentarios_brutos),
         },
-
-        "carregados": {
-            "postgresql": dados_postgres,
-            "mongodb": 0,
-        },
+        **{k: c_cat[k] + c_int[k] + c_com[k] for k in c_cat},
+        "detalhamento": {"catalogo": dict(c_cat), "interacoes": dict(c_int), "comentarios": dict(c_com)},
+        "carregados": {"postgresql": carregados, "mongodb": None},
     }
-
-    log.info(
-        "[RF05] resumo da ingestão: "
-        "lidos=%d válidos=%d inválidos=%d "
-        "incompletos=%d duplicados=%d corrigidos=%d",
-        sum(registros_lidos.values()),
-        resumo["validos"],
-        resumo["invalidos"],
-        resumo["incompletos"],
-        resumo["duplicados"],
-        resumo["corrigidos"],
-    )
-
+    log.info("[RF05] lidos=%d válidos=%d inválidos=%d incompletos=%d duplicados=%d corrigidos=%d",
+             sum(resumo["registros_lidos"].values()), resumo["validos"], resumo["invalidos"],
+             resumo["incompletos"], resumo["duplicados"], resumo["corrigidos"])
     return resumo
-    

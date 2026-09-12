@@ -31,6 +31,7 @@ def main() -> int:
             resumo["ingestao"] = ingestao.executar(cfg, pg)
         with logger.etapa(log, "mongodb", tempos):
             resumo["mongodb"] = comentarios.executar(cfg, mongo)
+            resumo["ingestao"]["carregados"]["mongodb"] = resumo["mongodb"].get("carregados")
         with logger.etapa(log, "embeddings", tempos):
             resumo["embeddings"] = embeddings.executar(cfg, pg)
         with logger.etapa(log, "recomendacao", tempos):
