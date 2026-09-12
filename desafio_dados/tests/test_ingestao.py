@@ -71,9 +71,12 @@ class Catalogo(unittest.TestCase):
         self.assertTrue(all(r["motivo"] for r in c.rejeitados))
 
 
+PUBLICACAO = {1: "2025-06-01"}
+
+
 class Interacoes(unittest.TestCase):
     def tratar(self, *extras):
-        return p.tratar_interacoes([INTERACAO_OK, *extras], {1})
+        return p.tratar_interacoes([INTERACAO_OK, *extras], PUBLICACAO)
 
     def test_limpo(self):
         _, c = self.tratar()
@@ -92,8 +95,19 @@ class Interacoes(unittest.TestCase):
         )
         self.assertEqual(dict(c), dict(validos=1, invalidos=6, incompletos=1, duplicados=1, corrigidos=0))
 
+    def test_regras_cruzadas(self):
+        _, c = self.tratar(
+            {**INTERACAO_OK, "data_hora": "2025-05-31T23:59:00"},                    # antes da publicação
+            {**INTERACAO_OK, "data_hora": "2099-01-01T00:00:00"},                    # futuro
+            {**INTERACAO_OK, "tipo_interacao": "conclusão", "percentual_conclusao": 80.0,
+             "data_hora": "2026-01-02T10:00:00"},                                    # conclusão incompleta
+            {**INTERACAO_OK, "tipo_interacao": "avaliação", "data_hora": "2026-01-03T10:00:00"},  # sem nota
+        )
+        self.assertEqual((c["validos"], c["invalidos"]), (1, 4))
+        self.assertIn("anterior à publicação", c.rejeitados[0]["motivo"])
+
     def test_normaliza_tipo(self):
-        t, c = self.tratar({**INTERACAO_OK, "tipo_interacao": " CONCLUSAO ", "data_hora": "2026-01-02T10:00:00"})
+        t, c = self.tratar({**INTERACAO_OK, "tipo_interacao": " CONCLUSAO ", "percentual_conclusao": 100.0, "data_hora": "2026-01-02T10:00:00"})
         self.assertEqual(t[1]["tipo_interacao"], "conclusão")
         self.assertEqual(c["corrigidos"], 1)
 
@@ -106,9 +120,16 @@ class Comentarios(unittest.TestCase):
             {**COMENTARIO_OK, "avaliacao": 0},
             {**COMENTARIO_OK, "tags": "python"},
             {**COMENTARIO_OK, "comentario": "   "},              # incompleto
-        ], {1})
+        ], PUBLICACAO)
         self.assertEqual(t[0]["tags"], ["python", "lgpd"])
         self.assertEqual(dict(c), dict(validos=1, invalidos=2, incompletos=1, duplicados=1, corrigidos=1))
+
+    def test_regras_cruzadas(self):
+        _, c = p.tratar_comentarios([
+            {**COMENTARIO_OK, "data": "2025-01-01"},   # antes da publicação
+            {**COMENTARIO_OK, "data": "2099-01-01"},   # futuro
+        ], PUBLICACAO)
+        self.assertEqual(c["invalidos"], 2)
 
 
 if __name__ == "__main__":

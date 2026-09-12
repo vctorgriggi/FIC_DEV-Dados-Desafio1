@@ -99,6 +99,14 @@ def converter_datetime(valor):
         return None
 
 
+def hoje():
+    return datetime.now().date().isoformat()
+
+
+def agora():
+    return datetime.now().isoformat(timespec="seconds")
+
+
 def mudou(original, final):
     """True se a normalizacao alterou o valor (conta como 'corrigido' no RF05)."""
     return original is not None and str(original).strip() != str(final)
@@ -196,7 +204,8 @@ def tratar_catalogo(registros):
     return tratados, cont
 
 
-def tratar_interacoes(registros, conteudos_validos):
+def tratar_interacoes(registros, publicacao: dict):
+    """publicacao: conteudo_id -> data_publicacao dos conteudos validos."""
     cont = Contadores("interação")
     tratados, chaves_vistas = [], set()
 
@@ -219,18 +228,26 @@ def tratar_interacoes(registros, conteudos_validos):
             cont.rejeitar("invalidos", n, f"usuario_id={r['usuario_id']!r}")
         elif conteudo_id is None or conteudo_id <= 0:
             cont.rejeitar("invalidos", n, f"conteudo_id={r['conteudo_id']!r}")
-        elif conteudo_id not in conteudos_validos:
+        elif conteudo_id not in publicacao:
             cont.rejeitar("invalidos", n, f"conteudo_id={conteudo_id} não existe no catálogo")
         elif tipo is None:
             cont.rejeitar("invalidos", n, f"tipo_interacao={r['tipo_interacao']!r}")
         elif data_hora is None:
             cont.rejeitar("invalidos", n, f"data_hora={r['data_hora']!r}")
+        elif data_hora[:10] < publicacao[conteudo_id]:
+            cont.rejeitar("invalidos", n, f"data_hora={data_hora} anterior à publicação ({publicacao[conteudo_id]})")
+        elif data_hora > agora():
+            cont.rejeitar("invalidos", n, f"data_hora={data_hora} no futuro")
         elif r.get("tempo_consumido") is not None and (tempo is None or tempo < 0):
             cont.rejeitar("invalidos", n, f"tempo_consumido={r['tempo_consumido']!r}")
         elif r.get("percentual_conclusao") is not None and (percentual is None or not 0 <= percentual <= 100):
             cont.rejeitar("invalidos", n, f"percentual_conclusao={r['percentual_conclusao']!r}")
         elif r.get("avaliacao_atribuida") is not None and (avaliacao is None or not 1 <= avaliacao <= 5):
             cont.rejeitar("invalidos", n, f"avaliacao_atribuida={r['avaliacao_atribuida']!r}")
+        elif tipo == "conclusão" and percentual is not None and percentual < 100:
+            cont.rejeitar("invalidos", n, f"conclusão com percentual_conclusao={percentual}")
+        elif tipo == "avaliação" and avaliacao is None:
+            cont.rejeitar("invalidos", n, "avaliação sem avaliacao_atribuida")
         elif chave_dup in chaves_vistas:
             cont.rejeitar("duplicados", n, f"usuario={usuario_id} conteudo={conteudo_id} {tipo} {data_hora}")
         else:
@@ -250,7 +267,7 @@ def tratar_interacoes(registros, conteudos_validos):
     return tratados, cont
 
 
-def tratar_comentarios(registros, conteudos_validos):
+def tratar_comentarios(registros, publicacao: dict):
     cont = Contadores("comentário")
     tratados, chaves_vistas = [], set()
 
@@ -272,12 +289,16 @@ def tratar_comentarios(registros, conteudos_validos):
             cont.rejeitar("invalidos", n, f"usuario_id={r['usuario_id']!r}")
         elif conteudo_id is None or conteudo_id <= 0:
             cont.rejeitar("invalidos", n, f"conteudo_id={r['conteudo_id']!r}")
-        elif conteudo_id not in conteudos_validos:
+        elif conteudo_id not in publicacao:
             cont.rejeitar("invalidos", n, f"conteudo_id={conteudo_id} não existe no catálogo")
         elif avaliacao is None or not 1 <= avaliacao <= 5:
             cont.rejeitar("invalidos", n, f"avaliacao={r['avaliacao']!r}")
         elif data is None:
             cont.rejeitar("invalidos", n, f"data={r['data']!r}")
+        elif data < publicacao[conteudo_id]:
+            cont.rejeitar("invalidos", n, f"data={data} anterior à publicação ({publicacao[conteudo_id]})")
+        elif data > hoje():
+            cont.rejeitar("invalidos", n, f"data={data} no futuro")
         elif not isinstance(tags, list):
             cont.rejeitar("invalidos", n, f"tags={tags!r}")
         elif chave_dup in chaves_vistas:
@@ -320,7 +341,8 @@ def salvar_processados(pasta: Path, catalogo, interacoes, comentarios, rejeitado
 # --- carga (RF06) ---
 
 def carregar_postgres(pg, catalogo, interacoes, comentarios) -> dict:
-    """Carga idempotente em uma unica transacao."""
+    """Uma unica transacao: dimensoes por upsert (preserva embeddings e recomendacoes),
+    interacoes substituidas por completo para nao manter registros que deixaram de ser validos."""
     with pg.transaction():
         categorias = {}
         for nome in sorted({r["categoria"] for r in catalogo}):
@@ -356,29 +378,25 @@ def carregar_postgres(pg, catalogo, interacoes, comentarios) -> dict:
             ],
         )
 
-        cur = pg.cursor()
-        cur.executemany(
+        pg.execute("DELETE FROM interacao")
+        pg.cursor().executemany(
             """
             INSERT INTO interacao (usuario_id, conteudo_id, tipo_interacao, data_hora,
                                    tempo_consumido, percentual_conclusao, avaliacao_atribuida)
             VALUES (%s, %s, %s, %s, %s, %s, %s)
-            ON CONFLICT (usuario_id, conteudo_id, tipo_interacao, data_hora) DO NOTHING
             """,
             [
                 (r["usuario_id"], r["conteudo_id"], r["tipo_interacao"], r["data_hora"],
                  r["tempo_consumido"], r["percentual_conclusao"], r["avaliacao_atribuida"])
                 for r in interacoes
             ],
-            returning=False,
         )
-        interacoes_inseridas = cur.rowcount
 
     carregados = {
         "categorias": len(categorias),
         "usuarios": len(usuarios),
         "conteudos": len(catalogo),
         "interacoes": len(interacoes),
-        "interacoes_novas": interacoes_inseridas,
     }
     log.info("[RF06] PostgreSQL: %s", carregados)
     return carregados
@@ -394,9 +412,9 @@ def executar(cfg: dict, pg) -> dict:
     comentarios_brutos = ler_json(Path(arquivos["comentarios"]))
 
     catalogo, c_cat = tratar_catalogo(catalogo_bruto)
-    ids_validos = {r["conteudo_id"] for r in catalogo}
-    interacoes, c_int = tratar_interacoes(interacoes_brutas, ids_validos)
-    comentarios, c_com = tratar_comentarios(comentarios_brutos, ids_validos)
+    publicacao = {r["conteudo_id"]: r["data_publicacao"] for r in catalogo}
+    interacoes, c_int = tratar_interacoes(interacoes_brutas, publicacao)
+    comentarios, c_com = tratar_comentarios(comentarios_brutos, publicacao)
     for c in (c_cat, c_int, c_com):
         log.info("[RF03] %s: %s", c.fonte, dict(c))
 
