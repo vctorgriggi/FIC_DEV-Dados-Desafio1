@@ -21,7 +21,8 @@ def _interpolar(valor):
             resolvido = os.environ.get(nome, padrao)
             if resolvido is None:
                 raise KeyError(f"variavel de ambiente obrigatoria nao definida: {nome}")
-            return int(resolvido) if resolvido.isdigit() else resolvido
+            # so converte para int quando o padrao tambem e numerico (portas); senhas ficam texto
+            return int(resolvido) if padrao and padrao.isdigit() and resolvido.isdigit() else resolvido
     return valor
 
 
