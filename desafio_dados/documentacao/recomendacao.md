@@ -17,7 +17,7 @@ Código em `mongodb/` e `recomendacao/`. Testes em `tests/test_recomendacao.py`.
 }
 ```
 
-**Carga.** `mongodb/comentarios.py` lê `dados/processados/comentarios_processados.json` (já validado pela ingestão) e faz *upsert* pela chave (usuário, conteúdo, data, comentário) com índice único — reexecuções não duplicam. Índices em `conteudo_id`, `tags`, `avaliacao` e `categoria`.
+**Carga.** `mongodb/comentarios.py` lê `dados/processados/comentarios_processados.json` (já validado pela ingestão) e faz *upsert* pela chave (usuário, conteúdo, data, comentário) com índice único; cada documento recebe o identificador da carga e os de cargas anteriores são removidos — reexecuções não duplicam nem mantêm comentários que deixaram de ser válidos. Índices em `conteudo_id`, `tags`, `avaliacao` e `categoria`.
 
 **Operações.** Em Python (`por_conteudo`, `por_tag`, `por_nota`, `agregar_por_categoria`) e em `mongodb/consultas.js` (inserir, comentários de um conteúdo, por tag, por nota, contagem e média por categoria).
 
@@ -49,7 +49,7 @@ Usuário sem histórico tem índice 0. **Desempate:** candidatos com a mesma pon
 
 **Por que a proporção por categoria, e não a similaridade vetorial, como índice.** O RF10 admite as duas. Testamos primeiro a vetorial (cosseno entre o candidato e a média do histórico): as descrições do catálogo seguem o mesmo molde textual, e a similaridade ficou comprimida entre 0,38 e 0,85 — todo top-10 caía em "positivo" e a classificação perdia sentido. A proporção por categoria produz índices espalhados em 0–1 e é explicável ("40 % do tempo desse usuário foi em Banco de Dados"). O pgvector segue no desempate e na busca semântica.
 
-**Resultado nos dados fornecidos:** 150 usuários, 117 com recomendação, 1170 recomendações (200 positivas, 970 estáveis), `top_k = 10`.
+**Resultado nos dados fornecidos:** 150 usuários, 120 com recomendação, 1200 recomendações (190 positivas, 1010 estáveis), `top_k = 10`.
 
 ## RF11 — Persistência
 

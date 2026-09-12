@@ -12,7 +12,7 @@ Todas as definições estão em views do PostgreSQL (`sql/criar_banco.sql`, seç
 - **Fórmula:** contagens diretas; `tempo_medio_min = avg(tempo_consumido)`; `cobertura_recomendacao_pct = usuários com ≥ 1 recomendação / usuários × 100`.
 - **Fonte:** `usuario`, `conteudo`, `interacao`, `recomendacao`, `conteudo_embedding`.
 - **Periodicidade:** a cada execução do pipeline (acumulado).
-- **Interpretação:** cartões de contexto do dashboard. Hoje: 150 usuários (150 ativos), 1000 conteúdos, 1000 interações, 144,9 min de tempo médio, 1170 recomendações cobrindo 78 % dos usuários.
+- **Interpretação:** cartões de contexto do dashboard. Hoje: 150 usuários (150 ativos), 1000 conteúdos, 923 interações válidas, 144,5 min de tempo médio, 1200 recomendações cobrindo 80 % dos usuários.
 
 ### M2 — Uso mensal — `vw_uso_mensal`
 
@@ -28,7 +28,7 @@ Todas as definições estão em views do PostgreSQL (`sql/criar_banco.sql`, seç
 - **Fórmula:** por conteúdo: `visualizacoes`, `usuarios` distintos, `tempo_medio_min`, `avaliacao_media`.
 - **Fonte:** `vw_interacoes`.
 - **Periodicidade:** acumulado; pode ser cortado por mês via `vw_interacoes`.
-- **Interpretação:** ranking. Com 1000 interações para 1000 conteúdos, o topo tem 3 visualizações — os dados são esparsos, então o ranking é mais útil por categoria do que por conteúdo isolado.
+- **Interpretação:** ranking. Com 923 interações para 1000 conteúdos, o topo tem 3 visualizações — os dados são esparsos, então o ranking é mais útil por categoria do que por conteúdo isolado.
 
 ### M4 — Execução do pipeline — tabela `execucao_pipeline`
 
@@ -46,7 +46,7 @@ Todas as definições estão em views do PostgreSQL (`sql/criar_banco.sql`, seç
 - **Fórmula:** para cada par (usuário, conteúdo) com alguma interação de consumo (`visualização`, `início`, `conclusão`), o par é *concluído* se houver `conclusão` ou `percentual_conclusao = 100`. `taxa_conclusao_pct = pares concluídos / pares com consumo × 100`, por categoria, tipo e nível.
 - **Fonte:** `vw_interacoes`.
 - **Periodicidade:** acumulado; recalculado a cada execução.
-- **Interpretação:** quanto maior, melhor. Categorias com taxa baixa e boa avaliação (ver KPI2) indicam conteúdo longo demais ou mal sequenciado, não conteúdo ruim → candidato a revisão de formato. Hoje: DevOps & Cloud 29,9 % (melhor) e Segurança & Governança 11,6 % (pior).
+- **Interpretação:** quanto maior, melhor. Categorias com taxa baixa e boa avaliação (ver KPI2) indicam conteúdo longo demais ou mal sequenciado, não conteúdo ruim → candidato a revisão de formato. Hoje: DevOps & Cloud 30,0 % (melhor) e Segurança & Governança 11,4 % (pior).
 - **Por que não `conclusões / inícios`:** nos dados fornecidos há conclusões sem início correspondente, o que produzia taxas acima de 100 %. A base por par usuário/conteúdo é limitada a 0–100.
 
 ### KPI2 — Qualidade percebida — `vw_kpi_qualidade`
@@ -55,7 +55,7 @@ Todas as definições estão em views do PostgreSQL (`sql/criar_banco.sql`, seç
 - **Fórmula:** por categoria, tipo e nível: `avaliacao_media = avg(avaliacao_atribuida)`; `pct_positivas = avaliações ≥ 4 / avaliações × 100`. Só interações com avaliação entram.
 - **Fonte:** `vw_interacoes` (`avaliacao_atribuida`). As avaliações dos comentários (MongoDB) não entram; ver `mongodb/consultas.js` para a média por categoria naquela base.
 - **Periodicidade:** acumulado; recalculado a cada execução.
-- **Interpretação:** escala 1–5; `pct_positivas` é mais robusta que a média com poucas avaliações. Categorias abaixo da média geral (4,48) são candidatas a curadoria; cruzar com KPI1 para separar "não gostam" de "gostam mas não terminam". Hoje: Engenharia de Dados 4,75 (melhor) e Banco de Dados 4,31 (pior).
+- **Interpretação:** escala 1–5; `pct_positivas` é mais robusta que a média com poucas avaliações. Categorias abaixo da média geral (4,46) são candidatas a curadoria; cruzar com KPI1 para separar "não gostam" de "gostam mas não terminam". Hoje: Engenharia de Dados 4,72 (melhor) e Ciência de Dados 4,29 (pior).
 
 ### KPI3 — Retenção e engajamento mensal — `vw_kpi_retencao_mensal`
 
@@ -63,7 +63,7 @@ Todas as definições estão em views do PostgreSQL (`sql/criar_banco.sql`, seç
 - **Fórmula:** por mês: `usuarios_ativos = count(distinct usuario_id)`; `interacoes_por_usuario = interações / usuários ativos`; `retencao_pct = usuários ativos no mês que também têm interação no mês seguinte / usuários ativos × 100` (nulo no último mês, que ainda não tem "mês seguinte").
 - **Fonte:** `vw_interacoes`.
 - **Periodicidade:** mensal.
-- **Interpretação:** retenção em queda com uso estável indica rotatividade de público; retenção estável com engajamento em queda indica usuários que voltam mas consomem menos. Hoje: retenção entre 52 % e 63 %, engajamento entre 1,4 e 1,7 interações por usuário/mês.
+- **Interpretação:** retenção em queda com uso estável indica rotatividade de público; retenção estável com engajamento em queda indica usuários que voltam mas consomem menos. Hoje: retenção entre 48 % e 61 %, engajamento entre 1,4 e 1,7 interações por usuário/mês.
 
 ### KPI4 — Cobertura e qualidade da recomendação — `vw_kpi_recomendacao`
 
@@ -71,7 +71,7 @@ Todas as definições estão em views do PostgreSQL (`sql/criar_banco.sql`, seç
 - **Fórmula:** por classificação, categoria e tipo: `recomendacoes`, `usuarios` distintos, `pontuacao_media`, `cobertura_pct = usuários com recomendação / usuários × 100`.
 - **Fonte:** `recomendacao`, `conteudo`, `categoria`, `usuario`.
 - **Periodicidade:** a cada execução (snapshot).
-- **Interpretação:** cobertura baixa aponta *cold start* (usuários sem histórico suficiente) → decisão: recomendação por popularidade para esses. Proporção de `positivo` vs `estavel` indica a confiança do motor. Hoje: 78 % de cobertura; 200 positivas e 970 estáveis; 33 usuários sem recomendação.
+- **Interpretação:** cobertura baixa aponta *cold start* (usuários sem histórico suficiente) → decisão: recomendação por popularidade para esses. Proporção de `positivo` vs `estavel` indica a confiança do motor. Hoje: 80 % de cobertura; 190 positivas e 1010 estáveis; 30 usuários sem recomendação.
 
 ### Indicador do enunciado não calculado
 

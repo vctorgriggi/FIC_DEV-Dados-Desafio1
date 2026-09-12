@@ -1,1 +1,776 @@
-[]
+[
+  {
+    "fonte": "interação",
+    "linha": 16,
+    "classe": "invalidos",
+    "motivo": "data_hora=2026-05-07T21:27:46 anterior à publicação (2026-05-21)"
+  },
+  {
+    "fonte": "interação",
+    "linha": 17,
+    "classe": "invalidos",
+    "motivo": "data_hora=2026-02-10T22:43:28 anterior à publicação (2026-06-11)"
+  },
+  {
+    "fonte": "interação",
+    "linha": 18,
+    "classe": "invalidos",
+    "motivo": "data_hora=2026-05-20T20:59:28 anterior à publicação (2026-06-14)"
+  },
+  {
+    "fonte": "interação",
+    "linha": 19,
+    "classe": "invalidos",
+    "motivo": "data_hora=2026-04-21T03:09:37 anterior à publicação (2026-06-08)"
+  },
+  {
+    "fonte": "interação",
+    "linha": 31,
+    "classe": "invalidos",
+    "motivo": "data_hora=2026-06-07T07:07:44 anterior à publicação (2026-06-29)"
+  },
+  {
+    "fonte": "interação",
+    "linha": 84,
+    "classe": "invalidos",
+    "motivo": "data_hora=2026-02-19T14:05:36 anterior à publicação (2026-02-20)"
+  },
+  {
+    "fonte": "interação",
+    "linha": 94,
+    "classe": "invalidos",
+    "motivo": "data_hora=2026-04-03T04:56:00 anterior à publicação (2026-06-30)"
+  },
+  {
+    "fonte": "interação",
+    "linha": 113,
+    "classe": "invalidos",
+    "motivo": "data_hora=2026-04-18T09:03:49 anterior à publicação (2026-05-16)"
+  },
+  {
+    "fonte": "interação",
+    "linha": 151,
+    "classe": "invalidos",
+    "motivo": "data_hora=2026-06-07T06:16:00 anterior à publicação (2026-06-23)"
+  },
+  {
+    "fonte": "interação",
+    "linha": 164,
+    "classe": "invalidos",
+    "motivo": "data_hora=2026-01-11T14:49:34 anterior à publicação (2026-06-11)"
+  },
+  {
+    "fonte": "interação",
+    "linha": 169,
+    "classe": "invalidos",
+    "motivo": "data_hora=2026-02-26T08:25:23 anterior à publicação (2026-05-11)"
+  },
+  {
+    "fonte": "interação",
+    "linha": 183,
+    "classe": "invalidos",
+    "motivo": "data_hora=2026-03-14T01:53:32 anterior à publicação (2026-04-01)"
+  },
+  {
+    "fonte": "interação",
+    "linha": 195,
+    "classe": "invalidos",
+    "motivo": "data_hora=2026-01-11T23:59:49 anterior à publicação (2026-01-29)"
+  },
+  {
+    "fonte": "interação",
+    "linha": 197,
+    "classe": "invalidos",
+    "motivo": "data_hora=2026-06-03T09:04:43 anterior à publicação (2026-06-30)"
+  },
+  {
+    "fonte": "interação",
+    "linha": 210,
+    "classe": "invalidos",
+    "motivo": "data_hora=2026-01-22T11:23:01 anterior à publicação (2026-03-06)"
+  },
+  {
+    "fonte": "interação",
+    "linha": 218,
+    "classe": "invalidos",
+    "motivo": "data_hora=2026-01-31T11:15:24 anterior à publicação (2026-03-30)"
+  },
+  {
+    "fonte": "interação",
+    "linha": 222,
+    "classe": "invalidos",
+    "motivo": "data_hora=2026-01-11T02:10:10 anterior à publicação (2026-03-29)"
+  },
+  {
+    "fonte": "interação",
+    "linha": 229,
+    "classe": "invalidos",
+    "motivo": "data_hora=2026-02-14T04:45:47 anterior à publicação (2026-06-27)"
+  },
+  {
+    "fonte": "interação",
+    "linha": 238,
+    "classe": "invalidos",
+    "motivo": "data_hora=2026-03-26T13:46:00 anterior à publicação (2026-05-19)"
+  },
+  {
+    "fonte": "interação",
+    "linha": 248,
+    "classe": "invalidos",
+    "motivo": "data_hora=2026-01-01T11:23:56 anterior à publicação (2026-01-29)"
+  },
+  {
+    "fonte": "interação",
+    "linha": 296,
+    "classe": "invalidos",
+    "motivo": "data_hora=2026-01-12T13:28:10 anterior à publicação (2026-01-27)"
+  },
+  {
+    "fonte": "interação",
+    "linha": 304,
+    "classe": "invalidos",
+    "motivo": "data_hora=2026-04-26T05:04:35 anterior à publicação (2026-04-30)"
+  },
+  {
+    "fonte": "interação",
+    "linha": 305,
+    "classe": "invalidos",
+    "motivo": "data_hora=2026-04-05T15:34:12 anterior à publicação (2026-04-14)"
+  },
+  {
+    "fonte": "interação",
+    "linha": 320,
+    "classe": "invalidos",
+    "motivo": "data_hora=2026-06-12T22:04:07 anterior à publicação (2026-06-17)"
+  },
+  {
+    "fonte": "interação",
+    "linha": 343,
+    "classe": "invalidos",
+    "motivo": "data_hora=2026-02-03T01:32:35 anterior à publicação (2026-05-11)"
+  },
+  {
+    "fonte": "interação",
+    "linha": 355,
+    "classe": "invalidos",
+    "motivo": "data_hora=2026-01-29T14:58:41 anterior à publicação (2026-04-15)"
+  },
+  {
+    "fonte": "interação",
+    "linha": 358,
+    "classe": "invalidos",
+    "motivo": "data_hora=2026-02-05T00:12:00 anterior à publicação (2026-06-07)"
+  },
+  {
+    "fonte": "interação",
+    "linha": 373,
+    "classe": "invalidos",
+    "motivo": "data_hora=2026-01-28T10:20:45 anterior à publicação (2026-03-20)"
+  },
+  {
+    "fonte": "interação",
+    "linha": 381,
+    "classe": "invalidos",
+    "motivo": "data_hora=2026-01-19T16:28:03 anterior à publicação (2026-02-20)"
+  },
+  {
+    "fonte": "interação",
+    "linha": 386,
+    "classe": "invalidos",
+    "motivo": "data_hora=2026-05-13T12:42:39 anterior à publicação (2026-05-27)"
+  },
+  {
+    "fonte": "interação",
+    "linha": 389,
+    "classe": "invalidos",
+    "motivo": "data_hora=2026-02-27T13:27:48 anterior à publicação (2026-05-03)"
+  },
+  {
+    "fonte": "interação",
+    "linha": 392,
+    "classe": "invalidos",
+    "motivo": "data_hora=2026-03-21T18:50:06 anterior à publicação (2026-05-03)"
+  },
+  {
+    "fonte": "interação",
+    "linha": 400,
+    "classe": "invalidos",
+    "motivo": "data_hora=2026-03-22T15:22:44 anterior à publicação (2026-05-16)"
+  },
+  {
+    "fonte": "interação",
+    "linha": 410,
+    "classe": "invalidos",
+    "motivo": "data_hora=2026-05-23T20:01:20 anterior à publicação (2026-05-24)"
+  },
+  {
+    "fonte": "interação",
+    "linha": 423,
+    "classe": "invalidos",
+    "motivo": "data_hora=2026-04-23T14:09:03 anterior à publicação (2026-05-16)"
+  },
+  {
+    "fonte": "interação",
+    "linha": 427,
+    "classe": "invalidos",
+    "motivo": "data_hora=2026-03-26T13:32:19 anterior à publicação (2026-05-27)"
+  },
+  {
+    "fonte": "interação",
+    "linha": 436,
+    "classe": "invalidos",
+    "motivo": "data_hora=2026-01-26T19:16:57 anterior à publicação (2026-06-29)"
+  },
+  {
+    "fonte": "interação",
+    "linha": 438,
+    "classe": "invalidos",
+    "motivo": "data_hora=2026-01-03T17:31:49 anterior à publicação (2026-06-17)"
+  },
+  {
+    "fonte": "interação",
+    "linha": 444,
+    "classe": "invalidos",
+    "motivo": "data_hora=2026-01-22T20:46:15 anterior à publicação (2026-05-11)"
+  },
+  {
+    "fonte": "interação",
+    "linha": 479,
+    "classe": "invalidos",
+    "motivo": "data_hora=2026-05-14T22:47:29 anterior à publicação (2026-06-16)"
+  },
+  {
+    "fonte": "interação",
+    "linha": 488,
+    "classe": "invalidos",
+    "motivo": "data_hora=2026-02-21T17:33:43 anterior à publicação (2026-06-18)"
+  },
+  {
+    "fonte": "interação",
+    "linha": 513,
+    "classe": "invalidos",
+    "motivo": "data_hora=2026-03-21T15:00:04 anterior à publicação (2026-06-23)"
+  },
+  {
+    "fonte": "interação",
+    "linha": 529,
+    "classe": "invalidos",
+    "motivo": "data_hora=2026-04-21T03:12:36 anterior à publicação (2026-06-17)"
+  },
+  {
+    "fonte": "interação",
+    "linha": 601,
+    "classe": "invalidos",
+    "motivo": "data_hora=2026-02-17T12:02:47 anterior à publicação (2026-06-29)"
+  },
+  {
+    "fonte": "interação",
+    "linha": 605,
+    "classe": "invalidos",
+    "motivo": "data_hora=2026-01-19T05:49:09 anterior à publicação (2026-06-05)"
+  },
+  {
+    "fonte": "interação",
+    "linha": 617,
+    "classe": "invalidos",
+    "motivo": "data_hora=2026-03-01T16:44:32 anterior à publicação (2026-05-18)"
+  },
+  {
+    "fonte": "interação",
+    "linha": 624,
+    "classe": "invalidos",
+    "motivo": "data_hora=2026-03-01T22:28:10 anterior à publicação (2026-05-23)"
+  },
+  {
+    "fonte": "interação",
+    "linha": 629,
+    "classe": "invalidos",
+    "motivo": "data_hora=2026-01-25T00:54:05 anterior à publicação (2026-04-08)"
+  },
+  {
+    "fonte": "interação",
+    "linha": 634,
+    "classe": "invalidos",
+    "motivo": "data_hora=2026-06-10T06:25:22 anterior à publicação (2026-06-27)"
+  },
+  {
+    "fonte": "interação",
+    "linha": 644,
+    "classe": "invalidos",
+    "motivo": "data_hora=2026-03-10T20:15:53 anterior à publicação (2026-05-30)"
+  },
+  {
+    "fonte": "interação",
+    "linha": 658,
+    "classe": "invalidos",
+    "motivo": "data_hora=2026-02-18T02:43:30 anterior à publicação (2026-05-11)"
+  },
+  {
+    "fonte": "interação",
+    "linha": 675,
+    "classe": "invalidos",
+    "motivo": "data_hora=2026-02-21T13:17:45 anterior à publicação (2026-06-16)"
+  },
+  {
+    "fonte": "interação",
+    "linha": 677,
+    "classe": "invalidos",
+    "motivo": "data_hora=2026-02-13T05:18:10 anterior à publicação (2026-05-11)"
+  },
+  {
+    "fonte": "interação",
+    "linha": 730,
+    "classe": "invalidos",
+    "motivo": "data_hora=2026-04-01T22:41:32 anterior à publicação (2026-06-26)"
+  },
+  {
+    "fonte": "interação",
+    "linha": 733,
+    "classe": "invalidos",
+    "motivo": "data_hora=2026-03-30T19:36:01 anterior à publicação (2026-05-03)"
+  },
+  {
+    "fonte": "interação",
+    "linha": 764,
+    "classe": "invalidos",
+    "motivo": "data_hora=2026-01-27T12:00:35 anterior à publicação (2026-06-10)"
+  },
+  {
+    "fonte": "interação",
+    "linha": 772,
+    "classe": "invalidos",
+    "motivo": "data_hora=2026-01-25T16:02:13 anterior à publicação (2026-05-03)"
+  },
+  {
+    "fonte": "interação",
+    "linha": 784,
+    "classe": "invalidos",
+    "motivo": "data_hora=2026-05-27T23:39:21 anterior à publicação (2026-06-13)"
+  },
+  {
+    "fonte": "interação",
+    "linha": 842,
+    "classe": "invalidos",
+    "motivo": "data_hora=2026-04-08T08:13:28 anterior à publicação (2026-05-21)"
+  },
+  {
+    "fonte": "interação",
+    "linha": 851,
+    "classe": "invalidos",
+    "motivo": "data_hora=2026-02-17T19:43:30 anterior à publicação (2026-06-13)"
+  },
+  {
+    "fonte": "interação",
+    "linha": 856,
+    "classe": "invalidos",
+    "motivo": "data_hora=2026-01-14T05:59:32 anterior à publicação (2026-01-27)"
+  },
+  {
+    "fonte": "interação",
+    "linha": 874,
+    "classe": "invalidos",
+    "motivo": "data_hora=2026-02-09T17:13:58 anterior à publicação (2026-02-10)"
+  },
+  {
+    "fonte": "interação",
+    "linha": 899,
+    "classe": "invalidos",
+    "motivo": "data_hora=2026-01-13T17:12:32 anterior à publicação (2026-04-17)"
+  },
+  {
+    "fonte": "interação",
+    "linha": 902,
+    "classe": "invalidos",
+    "motivo": "data_hora=2026-04-25T01:54:29 anterior à publicação (2026-06-29)"
+  },
+  {
+    "fonte": "interação",
+    "linha": 919,
+    "classe": "invalidos",
+    "motivo": "data_hora=2026-02-06T15:46:47 anterior à publicação (2026-05-27)"
+  },
+  {
+    "fonte": "interação",
+    "linha": 927,
+    "classe": "invalidos",
+    "motivo": "data_hora=2026-05-06T02:00:53 anterior à publicação (2026-05-28)"
+  },
+  {
+    "fonte": "interação",
+    "linha": 928,
+    "classe": "invalidos",
+    "motivo": "data_hora=2026-06-22T18:08:14 anterior à publicação (2026-06-23)"
+  },
+  {
+    "fonte": "interação",
+    "linha": 929,
+    "classe": "invalidos",
+    "motivo": "data_hora=2026-03-23T03:53:51 anterior à publicação (2026-06-17)"
+  },
+  {
+    "fonte": "interação",
+    "linha": 940,
+    "classe": "invalidos",
+    "motivo": "data_hora=2026-04-11T17:41:26 anterior à publicação (2026-06-17)"
+  },
+  {
+    "fonte": "interação",
+    "linha": 960,
+    "classe": "invalidos",
+    "motivo": "data_hora=2026-01-23T13:04:05 anterior à publicação (2026-04-14)"
+  },
+  {
+    "fonte": "interação",
+    "linha": 962,
+    "classe": "invalidos",
+    "motivo": "data_hora=2026-02-20T14:01:28 anterior à publicação (2026-02-26)"
+  },
+  {
+    "fonte": "interação",
+    "linha": 964,
+    "classe": "invalidos",
+    "motivo": "data_hora=2026-05-26T16:47:53 anterior à publicação (2026-06-30)"
+  },
+  {
+    "fonte": "interação",
+    "linha": 970,
+    "classe": "invalidos",
+    "motivo": "data_hora=2026-01-05T05:55:38 anterior à publicação (2026-02-26)"
+  },
+  {
+    "fonte": "interação",
+    "linha": 976,
+    "classe": "invalidos",
+    "motivo": "data_hora=2026-04-29T16:59:02 anterior à publicação (2026-05-28)"
+  },
+  {
+    "fonte": "interação",
+    "linha": 977,
+    "classe": "invalidos",
+    "motivo": "data_hora=2026-03-15T11:56:38 anterior à publicação (2026-05-03)"
+  },
+  {
+    "fonte": "interação",
+    "linha": 985,
+    "classe": "invalidos",
+    "motivo": "data_hora=2026-02-11T13:09:19 anterior à publicação (2026-05-24)"
+  },
+  {
+    "fonte": "interação",
+    "linha": 999,
+    "classe": "invalidos",
+    "motivo": "data_hora=2026-02-03T05:05:51 anterior à publicação (2026-03-18)"
+  },
+  {
+    "fonte": "comentário",
+    "linha": 19,
+    "classe": "invalidos",
+    "motivo": "data=2026-03-24 anterior à publicação (2026-06-11)"
+  },
+  {
+    "fonte": "comentário",
+    "linha": 63,
+    "classe": "invalidos",
+    "motivo": "data=2026-04-19 anterior à publicação (2026-04-21)"
+  },
+  {
+    "fonte": "comentário",
+    "linha": 73,
+    "classe": "invalidos",
+    "motivo": "data=2026-02-14 anterior à publicação (2026-05-28)"
+  },
+  {
+    "fonte": "comentário",
+    "linha": 88,
+    "classe": "invalidos",
+    "motivo": "data=2026-05-04 anterior à publicação (2026-06-22)"
+  },
+  {
+    "fonte": "comentário",
+    "linha": 94,
+    "classe": "invalidos",
+    "motivo": "data=2026-03-12 anterior à publicação (2026-06-18)"
+  },
+  {
+    "fonte": "comentário",
+    "linha": 95,
+    "classe": "invalidos",
+    "motivo": "data=2026-04-21 anterior à publicação (2026-06-07)"
+  },
+  {
+    "fonte": "comentário",
+    "linha": 110,
+    "classe": "invalidos",
+    "motivo": "data=2026-02-25 anterior à publicação (2026-06-30)"
+  },
+  {
+    "fonte": "comentário",
+    "linha": 111,
+    "classe": "invalidos",
+    "motivo": "data=2026-01-30 anterior à publicação (2026-02-10)"
+  },
+  {
+    "fonte": "comentário",
+    "linha": 126,
+    "classe": "invalidos",
+    "motivo": "data=2026-05-15 anterior à publicação (2026-06-04)"
+  },
+  {
+    "fonte": "comentário",
+    "linha": 153,
+    "classe": "invalidos",
+    "motivo": "data=2026-03-08 anterior à publicação (2026-03-23)"
+  },
+  {
+    "fonte": "comentário",
+    "linha": 177,
+    "classe": "invalidos",
+    "motivo": "data=2026-03-05 anterior à publicação (2026-03-31)"
+  },
+  {
+    "fonte": "comentário",
+    "linha": 200,
+    "classe": "invalidos",
+    "motivo": "data=2026-02-18 anterior à publicação (2026-02-28)"
+  },
+  {
+    "fonte": "comentário",
+    "linha": 208,
+    "classe": "invalidos",
+    "motivo": "data=2026-02-03 anterior à publicação (2026-06-13)"
+  },
+  {
+    "fonte": "comentário",
+    "linha": 235,
+    "classe": "invalidos",
+    "motivo": "data=2026-05-09 anterior à publicação (2026-05-11)"
+  },
+  {
+    "fonte": "comentário",
+    "linha": 238,
+    "classe": "invalidos",
+    "motivo": "data=2026-01-21 anterior à publicação (2026-06-08)"
+  },
+  {
+    "fonte": "comentário",
+    "linha": 266,
+    "classe": "invalidos",
+    "motivo": "data=2026-01-24 anterior à publicação (2026-04-04)"
+  },
+  {
+    "fonte": "comentário",
+    "linha": 271,
+    "classe": "invalidos",
+    "motivo": "data=2026-03-12 anterior à publicação (2026-05-16)"
+  },
+  {
+    "fonte": "comentário",
+    "linha": 286,
+    "classe": "invalidos",
+    "motivo": "data=2026-01-21 anterior à publicação (2026-05-17)"
+  },
+  {
+    "fonte": "comentário",
+    "linha": 307,
+    "classe": "invalidos",
+    "motivo": "data=2026-03-05 anterior à publicação (2026-04-17)"
+  },
+  {
+    "fonte": "comentário",
+    "linha": 333,
+    "classe": "invalidos",
+    "motivo": "data=2026-02-16 anterior à publicação (2026-03-27)"
+  },
+  {
+    "fonte": "comentário",
+    "linha": 338,
+    "classe": "invalidos",
+    "motivo": "data=2026-02-23 anterior à publicação (2026-03-24)"
+  },
+  {
+    "fonte": "comentário",
+    "linha": 356,
+    "classe": "invalidos",
+    "motivo": "data=2026-04-14 anterior à publicação (2026-06-17)"
+  },
+  {
+    "fonte": "comentário",
+    "linha": 359,
+    "classe": "invalidos",
+    "motivo": "data=2026-01-27 anterior à publicação (2026-03-04)"
+  },
+  {
+    "fonte": "comentário",
+    "linha": 360,
+    "classe": "invalidos",
+    "motivo": "data=2026-03-22 anterior à publicação (2026-05-03)"
+  },
+  {
+    "fonte": "comentário",
+    "linha": 390,
+    "classe": "invalidos",
+    "motivo": "data=2026-03-06 anterior à publicação (2026-06-20)"
+  },
+  {
+    "fonte": "comentário",
+    "linha": 401,
+    "classe": "invalidos",
+    "motivo": "data=2026-02-09 anterior à publicação (2026-04-20)"
+  },
+  {
+    "fonte": "comentário",
+    "linha": 402,
+    "classe": "invalidos",
+    "motivo": "data=2026-03-03 anterior à publicação (2026-05-18)"
+  },
+  {
+    "fonte": "comentário",
+    "linha": 403,
+    "classe": "invalidos",
+    "motivo": "data=2026-03-29 anterior à publicação (2026-06-05)"
+  },
+  {
+    "fonte": "comentário",
+    "linha": 418,
+    "classe": "invalidos",
+    "motivo": "data=2026-01-19 anterior à publicação (2026-03-20)"
+  },
+  {
+    "fonte": "comentário",
+    "linha": 448,
+    "classe": "invalidos",
+    "motivo": "data=2026-06-02 anterior à publicação (2026-06-08)"
+  },
+  {
+    "fonte": "comentário",
+    "linha": 464,
+    "classe": "invalidos",
+    "motivo": "data=2026-02-27 anterior à publicação (2026-05-18)"
+  },
+  {
+    "fonte": "comentário",
+    "linha": 506,
+    "classe": "invalidos",
+    "motivo": "data=2026-02-02 anterior à publicação (2026-03-04)"
+  },
+  {
+    "fonte": "comentário",
+    "linha": 528,
+    "classe": "invalidos",
+    "motivo": "data=2026-04-03 anterior à publicação (2026-06-23)"
+  },
+  {
+    "fonte": "comentário",
+    "linha": 588,
+    "classe": "invalidos",
+    "motivo": "data=2026-02-14 anterior à publicação (2026-06-03)"
+  },
+  {
+    "fonte": "comentário",
+    "linha": 650,
+    "classe": "invalidos",
+    "motivo": "data=2026-03-19 anterior à publicação (2026-04-29)"
+  },
+  {
+    "fonte": "comentário",
+    "linha": 652,
+    "classe": "invalidos",
+    "motivo": "data=2026-02-03 anterior à publicação (2026-05-01)"
+  },
+  {
+    "fonte": "comentário",
+    "linha": 653,
+    "classe": "invalidos",
+    "motivo": "data=2026-02-19 anterior à publicação (2026-05-16)"
+  },
+  {
+    "fonte": "comentário",
+    "linha": 654,
+    "classe": "invalidos",
+    "motivo": "data=2026-01-24 anterior à publicação (2026-05-18)"
+  },
+  {
+    "fonte": "comentário",
+    "linha": 658,
+    "classe": "invalidos",
+    "motivo": "data=2026-04-23 anterior à publicação (2026-05-25)"
+  },
+  {
+    "fonte": "comentário",
+    "linha": 686,
+    "classe": "invalidos",
+    "motivo": "data=2026-02-04 anterior à publicação (2026-06-30)"
+  },
+  {
+    "fonte": "comentário",
+    "linha": 702,
+    "classe": "invalidos",
+    "motivo": "data=2026-02-23 anterior à publicação (2026-05-25)"
+  },
+  {
+    "fonte": "comentário",
+    "linha": 706,
+    "classe": "invalidos",
+    "motivo": "data=2026-02-14 anterior à publicação (2026-04-20)"
+  },
+  {
+    "fonte": "comentário",
+    "linha": 727,
+    "classe": "invalidos",
+    "motivo": "data=2026-02-15 anterior à publicação (2026-04-20)"
+  },
+  {
+    "fonte": "comentário",
+    "linha": 735,
+    "classe": "invalidos",
+    "motivo": "data=2026-02-28 anterior à publicação (2026-06-30)"
+  },
+  {
+    "fonte": "comentário",
+    "linha": 744,
+    "classe": "invalidos",
+    "motivo": "data=2026-03-08 anterior à publicação (2026-04-08)"
+  },
+  {
+    "fonte": "comentário",
+    "linha": 789,
+    "classe": "invalidos",
+    "motivo": "data=2026-04-15 anterior à publicação (2026-05-17)"
+  },
+  {
+    "fonte": "comentário",
+    "linha": 792,
+    "classe": "invalidos",
+    "motivo": "data=2026-01-27 anterior à publicação (2026-06-25)"
+  },
+  {
+    "fonte": "comentário",
+    "linha": 864,
+    "classe": "invalidos",
+    "motivo": "data=2026-02-22 anterior à publicação (2026-03-23)"
+  },
+  {
+    "fonte": "comentário",
+    "linha": 894,
+    "classe": "invalidos",
+    "motivo": "data=2026-05-14 anterior à publicação (2026-05-17)"
+  },
+  {
+    "fonte": "comentário",
+    "linha": 929,
+    "classe": "invalidos",
+    "motivo": "data=2026-03-01 anterior à publicação (2026-05-16)"
+  },
+  {
+    "fonte": "comentário",
+    "linha": 953,
+    "classe": "invalidos",
+    "motivo": "data=2026-02-03 anterior à publicação (2026-03-22)"
+  },
+  {
+    "fonte": "comentário",
+    "linha": 962,
+    "classe": "invalidos",
+    "motivo": "data=2026-02-25 anterior à publicação (2026-04-13)"
+  }
+]

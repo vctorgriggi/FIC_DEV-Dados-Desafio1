@@ -1,13 +1,13 @@
 {
-  "inicio": "2026-09-12T22:17:43",
+  "inicio": "2026-09-12T22:43:31",
   "ingestao": {
     "registros_lidos": {
       "catalogo": 1000,
       "interacoes": 1000,
       "comentarios": 1000
     },
-    "validos": 3000,
-    "invalidos": 0,
+    "validos": 2871,
+    "invalidos": 129,
     "incompletos": 0,
     "duplicados": 0,
     "corrigidos": 0,
@@ -20,15 +20,15 @@
         "corrigidos": 0
       },
       "interacoes": {
-        "validos": 1000,
-        "invalidos": 0,
+        "validos": 923,
+        "invalidos": 77,
         "incompletos": 0,
         "duplicados": 0,
         "corrigidos": 0
       },
       "comentarios": {
-        "validos": 1000,
-        "invalidos": 0,
+        "validos": 948,
+        "invalidos": 52,
         "incompletos": 0,
         "duplicados": 0,
         "corrigidos": 0
@@ -39,16 +39,15 @@
         "categorias": 8,
         "usuarios": 150,
         "conteudos": 1000,
-        "interacoes": 1000,
-        "interacoes_novas": 0
+        "interacoes": 923
       },
-      "mongodb": 1000
+      "mongodb": 948
     }
   },
   "mongodb": {
-    "carregados": 1000,
+    "carregados": 948,
     "inseridos": 0,
-    "atualizados": 0
+    "atualizados": 948
   },
   "embeddings": {
     "modelo": "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2",
@@ -63,13 +62,13 @@
   },
   "recomendacao": {
     "usuarios": 150,
-    "usuarios_com_recomendacao": 117,
-    "recomendacoes": 1170,
+    "usuarios_com_recomendacao": 120,
+    "recomendacoes": 1200,
     "por_classificacao": {
-      "positivo": 200,
-      "estavel": 970
+      "positivo": 190,
+      "estavel": 1010
     },
-    "gerado_em": "2026-09-12T22:17:51",
+    "gerado_em": "2026-09-12T22:43:39",
     "arquivo": "dados/processados/recomendacoes.json"
   },
   "metricas": {
@@ -87,14 +86,14 @@
     "arquivo": "dados/processados/kpis.json"
   },
   "tempos_etapas_s": {
-    "conexoes": 0.028,
-    "ingestao": 0.077,
-    "mongodb": 0.038,
+    "conexoes": 0.018,
+    "ingestao": 0.105,
+    "mongodb": 0.043,
     "embeddings": 0.004,
-    "busca_semantica": 8.544,
-    "recomendacao": 0.273,
-    "metricas": 0.016
+    "busca_semantica": 7.946,
+    "recomendacao": 0.235,
+    "metricas": 0.015
   },
-  "tempo_total_s": 8.982,
-  "fim": "2026-09-12T22:17:52"
+  "tempo_total_s": 8.368,
+  "fim": "2026-09-12T22:43:39"
 }
