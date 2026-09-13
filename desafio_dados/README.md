@@ -61,26 +61,22 @@ No Superset, conectar ao banco com a URI `postgresql+psycopg2://desafio:desafio@
 
 ## Dashboard no Superset (RF13)
 
-O dashboard **Indicadores da Plataforma** responde a duas perguntas de negócio:
+O dashboard **Indicadores da Plataforma** (export em `dashboard/evidencias/`) abre com as duas perguntas de negócio que ele responde e se divide em duas seções, para separar o que é contexto do que é indicador:
 
-1. Quais categorias têm baixa conclusão e precisam ser revisadas?
-2. Estamos crescendo e retendo os usuários ao longo dos meses?
+**Visão geral — métricas de volume:** usuários ativos, conteúdos no catálogo, interações válidas e cobertura da recomendação (cartões).
 
-O layout criado em uma única página contém:
+**Indicadores de desempenho — KPIs:**
 
 | Elemento | Fonte | Leitura |
 |---|---|---|
-| Usuários ativos | `vw_metricas_gerais.usuarios_ativos` | Tamanho atual da base. |
-| Qualidade percebida | `vw_kpi_qualidade.avaliacao_media` | Média das avaliações, em escala de 1 a 5. |
-| Taxa média de conclusão | `vw_kpi_taxa_conclusao.taxa_conclusao_pct` | Percentual de pares usuário/conteúdo concluídos. |
-| Taxa de conclusão por categoria | `vw_kpi_taxa_conclusao` | Barras horizontais ordenadas da maior para a menor taxa. |
-| Retenção e crescimento mensal | `vw_kpi_retencao_mensal` | Linhas de `retencao_pct` e `usuarios_ativos` por mês. |
-| Filtro de categoria | `vw_interacoes.categoria` | Multi-seleção por área temática. |
-| Filtro de tipo | `vw_interacoes.tipo` | Multi-seleção por formato de conteúdo. |
+| Avaliação média (cartão) | `vw_interacoes` | escala 1–5; responde aos filtros |
+| Taxa de conclusão (cartão) | `vw_kpi_taxa_conclusao` | `sum(conclusoes) / sum(consumos)`, ponderada; responde aos filtros |
+| Taxa de conclusão por categoria (barras horizontais) | `vw_kpi_taxa_conclusao` | mesma métrica ponderada, com rótulos; ordena da maior para a menor |
+| Usuários ativos e retenção por mês (barras + linha, eixo duplo) | `vw_kpi_retencao_mensal` | barras = usuários ativos (contagem, eixo esquerdo); linha = retenção (%, eixo direito) |
+| Top 10 conteúdos mais procurados (tabela) | `vw_conteudos_populares` | visualizações, usuários e avaliação média |
+| Filtros de categoria e tipo | `vw_interacoes` | multi-seleção; a série mensal não filtra porque a view é agregada por mês |
 
-As cores das séries são azul para retenção e laranja para usuários ativos. A linha de retenção não possui valor no último mês porque o cálculo depende da existência do mês seguinte. A análise detalhada, as fórmulas e as limitações de filtragem estão em [`documentacao/kpis.md`](documentacao/kpis.md).
-
-O diretório [`dashboard/evidencias/`](dashboard/evidencias/) é o local reservado para exportações e capturas usadas na entrega do dashboard.
+Importar em outra máquina: *Dashboards → Import*, escolher o zip e informar a senha do PostgreSQL do `.env`. Perguntas de negócio, fórmulas e justificativa de cada gráfico em [`documentacao/kpis.md`](documentacao/kpis.md).
 
 Outros comandos:
 

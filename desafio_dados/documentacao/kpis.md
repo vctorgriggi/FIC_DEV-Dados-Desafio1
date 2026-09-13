@@ -79,29 +79,24 @@ Todas as definições estão em views do PostgreSQL (`sql/criar_banco.sql`, seç
 
 ## Perguntas de negócio respondidas pelo dashboard (RF13)
 
-O dashboard "Indicadores da Plataforma", no Apache Superset, responde às duas perguntas prioritárias:
+O dashboard "Indicadores da Plataforma" abre com um bloco de texto enunciando as duas perguntas, e o layout responde a cada uma:
 
-1. **Quais categorias precisam ser revisadas?** O gráfico de barras mostra a taxa de conclusão por categoria e os cartões permitem cruzá-la com qualidade percebida. Segurança & Governança é o principal caso de investigação: 11,4 % de conclusão e avaliação média de 4,42 indicam conteúdo bem avaliado, mas possivelmente longo ou mal sequenciado.
-2. **Estamos crescendo e retendo os usuários?** O gráfico de linhas compara usuários ativos e retenção mês a mês. A leitura conjunta diferencia crescimento saudável, rotatividade e queda geral da base; por exemplo, maio tem o pico de usuários ativos (93), mas retenção de 51,6 %.
+1. **Quais categorias precisam ser revisadas?** O gráfico de barras mostra a taxa de conclusão ponderada por categoria; o cartão de avaliação média, filtrado pela mesma categoria, diz se o problema é de qualidade ou de formato. Segurança & Governança é o principal caso: 11,4 % de conclusão com avaliação média de 4,67 — conteúdo bem avaliado que não é terminado, candidato a revisão de formato ou sequência.
+2. **Estamos crescendo e retendo os usuários?** O gráfico combinado mostra usuários ativos (barras) e retenção (linha) mês a mês em eixos separados. Maio tem o pico de usuários ativos (93) com retenção de 51,6 %: entrada de novos usuários com rotatividade, não crescimento retido.
 
-O dashboard também permite explorar as duas perguntas por **categoria** e **tipo de conteúdo**, usando filtros multi-seleção aplicados aos cartões e aos gráficos.
+Os filtros de categoria e tipo refinam cartões, barras e tabela. A série mensal e os cartões de volume não filtram porque suas views são agregadas.
 
 ## Justificativa dos gráficos (RF13)
 
+O painel separa **métricas de volume** (contexto: quanto) de **indicadores de desempenho** (KPIs: quão bem), em duas seções com título. Todo indicador tem formato explícito (`%`, escala 1–5) e subtítulo dizendo o que está sendo medido.
+
 | Gráfico | Dado (view) | Por que esse tipo |
 |---|---|---|
-| Cartão 1 — Usuários ativos | `vw_metricas_gerais` (`usuarios_ativos`) | Número de contexto que mostra o tamanho atual da base. |
-| Cartão 2 — Qualidade percebida | `vw_kpi_qualidade` (`avaliacao_media`) | Média de avaliações em escala de 1 a 5; orienta a curadoria. |
-| Cartão 3 — Taxa média de conclusão | `vw_kpi_taxa_conclusao` (`taxa_conclusao_pct`) | KPI acionável para priorizar revisão de formato e sequência. |
-| Barras horizontais — Taxa de conclusão por categoria | `vw_kpi_taxa_conclusao` | A orientação horizontal acomoda nomes longos e facilita ordenar as categorias da maior para a menor conclusão. |
-| Linhas — Retenção e crescimento mensal | `vw_kpi_retencao_mensal` (`retencao_pct`, `usuarios_ativos`) | A série temporal revela tendência, picos e quedas. As duas medidas usam uma escala única e evitam eixo duplo. |
-| Filtro 1 — Categoria | `categoria` em `vw_interacoes` | Permite isolar áreas temáticas e refiltrar todos os elementos. |
-| Filtro 2 — Tipo de conteúdo | `tipo` em `vw_interacoes` | Permite comparar formatos, como Vídeo, Artigo, Podcast e Curso. |
-
-### Configuração e leitura do dashboard
-
-- **Layout:** filtros no topo; três cartões lado a lado; barras de conclusão e linhas de retenção/crescimento em duas colunas.
-- **Filtros:** ambos são multi-seleção e iniciam com todos os valores selecionados. Categoria e tipo refinam os elementos que possuem essas dimensões na fonte; os cartões de volume e a série mensal permanecem agregados porque suas views não expõem categoria/tipo.
-- **Cartões:** qualidade é agregada como média ponderada das avaliações; conclusão é agregada como média ponderada de `conclusoes / consumos`, evitando média simples distorcida entre grupos.
-- **Gráfico de barras:** eixo vertical `categoria`, medida `taxa_conclusao_pct`, ordenação decrescente e escala de 0 a 100 %.
-- **Gráfico de linhas:** eixo temporal `mes`, séries `retencao_pct` e `usuarios_ativos`, ordem cronológica e escala única. `retencao_pct` fica nula no último mês por não haver mês seguinte.
+| Cartões de volume — usuários ativos, conteúdos, interações válidas, cobertura da recomendação | `vw_metricas_gerais` | Números de contexto; um valor só, sem comparação, pede cartão. Cobertura em % mostra o alcance do motor de recomendação. |
+| Cartão — Avaliação média (1 a 5) | `vw_interacoes` | KPI de qualidade percebida; construído sobre a view-fato para responder aos filtros. |
+| Cartão — Taxa de conclusão (%) | `vw_kpi_taxa_conclusao` | KPI de engajamento; métrica `sum(conclusoes)/sum(consumos)` para não fazer média de médias entre grupos de tamanhos diferentes. |
+| Barras horizontais — Taxa de conclusão por categoria | `vw_kpi_taxa_conclusao` | Comparação de uma medida entre poucas categorias com nomes longos: barras horizontais ordenadas, com rótulo de valor. Mesma métrica ponderada do cartão. |
+| Barras + linha, eixo duplo — Usuários ativos e retenção por mês | `vw_kpi_retencao_mensal` | Série temporal com duas grandezas de unidades diferentes (contagem e %): barras para volume, linha para taxa, cada uma no seu eixo. Retenção fica vazia no último mês por não haver mês seguinte. |
+| Tabela — Top 10 conteúdos mais procurados | `vw_conteudos_populares` | Ranking com vários atributos por linha (título, categoria, tipo, visualizações, usuários, avaliação): tabela é o formato natural; responde diretamente à situação-problema. |
+| Filtro — Categoria | `vw_interacoes.categoria` | Isola áreas temáticas e refiltra cartões, barras e tabela. |
+| Filtro — Tipo | `vw_interacoes.tipo` | Compara formatos (Curso, Vídeo, Artigo, Podcast). |
