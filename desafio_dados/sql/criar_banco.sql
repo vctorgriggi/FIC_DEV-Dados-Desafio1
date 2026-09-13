@@ -84,6 +84,9 @@ CREATE INDEX IF NOT EXISTS ix_embedding_cosine      ON conteudo_embedding USING 
 -- views sao dropadas e recriadas para permitir mudanca de colunas
 -- ---------------------------------------------------------------
 
+-- objeto de versao anterior; removido para manter bancos ja criados consistentes
+DROP VIEW IF EXISTS vw_recomendacoes;
+
 -- fato: interacoes com atributos do conteudo (base de filtros: categoria, tipo, nivel, mes)
 DROP VIEW IF EXISTS vw_interacoes CASCADE;
 CREATE VIEW vw_interacoes AS
