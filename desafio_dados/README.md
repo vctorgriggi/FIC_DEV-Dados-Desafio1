@@ -61,7 +61,7 @@ No Superset, conectar ao banco com a URI `postgresql+psycopg2://desafio:desafio@
 
 ## Dashboard no Superset (RF13)
 
-O dashboard **Indicadores da Plataforma** (export em `dashboard/evidencias/`) abre com as duas perguntas de negócio que ele responde e se divide em duas seções, para separar o que é contexto do que é indicador:
+O dashboard **Indicadores da Plataforma** (export e capturas em `dashboard/evidencias/`) abre com as duas perguntas de negócio que ele responde e se divide em duas seções, para separar o que é contexto do que é indicador:
 
 **Visão geral — métricas de volume:** usuários ativos, conteúdos no catálogo, interações válidas e cobertura da recomendação (cartões).
 
@@ -76,7 +76,7 @@ O dashboard **Indicadores da Plataforma** (export em `dashboard/evidencias/`) ab
 | Top 10 conteúdos mais procurados (tabela) | `vw_conteudos_populares` | visualizações, usuários e avaliação média |
 | Filtros de categoria e tipo | `vw_interacoes` | multi-seleção; a série mensal não filtra porque a view é agregada por mês |
 
-Importar em outra máquina: *Dashboards → Import*, escolher o zip e informar a senha do PostgreSQL do `.env`. Perguntas de negócio, fórmulas e justificativa de cada gráfico em [`documentacao/kpis.md`](documentacao/kpis.md).
+Evidências: `01_dashboard_completo.png` (painel inteiro) e `02_dashboard_filtro_seguranca_governanca.png` (filtro aplicado: a categoria com a 2ª melhor avaliação, 4,67, e a pior conclusão, 11,4 %). Importar em outra máquina: *Dashboards → Import*, escolher o zip e informar a senha do PostgreSQL do `.env`. Perguntas de negócio, fórmulas e justificativa de cada gráfico em [`documentacao/kpis.md`](documentacao/kpis.md).
 
 Outros comandos:
 
