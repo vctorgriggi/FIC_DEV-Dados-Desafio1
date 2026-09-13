@@ -82,7 +82,7 @@ Todas as definições estão em views do PostgreSQL (`sql/criar_banco.sql`, seç
 O dashboard "Indicadores da Plataforma" abre com um bloco de texto enunciando as duas perguntas, e o layout responde a cada uma:
 
 1. **Quais categorias precisam ser revisadas?** O gráfico de barras mostra a taxa de conclusão ponderada por categoria; o cartão de avaliação média, filtrado pela mesma categoria, diz se o problema é de qualidade ou de formato. Segurança & Governança é o principal caso: 11,4 % de conclusão com avaliação média de 4,67 — conteúdo bem avaliado que não é terminado, candidato a revisão de formato ou sequência.
-2. **Estamos crescendo e retendo os usuários?** O gráfico combinado mostra usuários ativos (barras) e retenção (linha) mês a mês em eixos separados. Maio tem o pico de usuários ativos (93) com retenção de 51,6 %: entrada de novos usuários com rotatividade, não crescimento retido.
+2. **Estamos crescendo e retendo os usuários?** O gráfico de linhas mostra usuários ativos e retenção mês a mês, cada série no seu eixo. Maio tem o pico de usuários ativos (93) com retenção de 51,6 %: entrada de novos usuários com rotatividade, não crescimento retido.
 
 Os filtros de categoria e tipo refinam cartões, barras e tabela. A série mensal e os cartões de volume não filtram porque suas views são agregadas.
 
@@ -96,7 +96,7 @@ O painel separa **métricas de volume** (contexto: quanto) de **indicadores de d
 | Cartão — Avaliação média (1 a 5) | `vw_interacoes` | KPI de qualidade percebida; construído sobre a view-fato para responder aos filtros. |
 | Cartão — Taxa de conclusão (%) | `vw_kpi_taxa_conclusao` | KPI de engajamento; métrica `sum(conclusoes)/sum(consumos)` para não fazer média de médias entre grupos de tamanhos diferentes. |
 | Barras horizontais — Taxa de conclusão por categoria | `vw_kpi_taxa_conclusao` | Comparação de uma medida entre poucas categorias com nomes longos: barras horizontais ordenadas, com rótulo de valor. Mesma métrica ponderada do cartão. |
-| Barras + linha, eixo duplo — Usuários ativos e retenção por mês | `vw_kpi_retencao_mensal` | Série temporal com duas grandezas de unidades diferentes (contagem e %): barras para volume, linha para taxa, cada uma no seu eixo. Retenção fica vazia no último mês por não haver mês seguinte. |
+| Linhas, eixo duplo — Usuários ativos e retenção por mês | `vw_kpi_retencao_mensal` | Série temporal pede linhas; as duas grandezas têm unidades diferentes (contagem e %), então cada uma usa o seu eixo em vez de dividir uma escala. Retenção fica vazia no último mês por não haver mês seguinte. |
 | Tabela — Top 10 conteúdos mais procurados | `vw_conteudos_populares` | Ranking com vários atributos por linha (título, categoria, tipo, visualizações, usuários, avaliação): tabela é o formato natural; responde diretamente à situação-problema. |
 | Filtro — Categoria | `vw_interacoes.categoria` | Isola áreas temáticas e refiltra cartões, barras e tabela. |
 | Filtro — Tipo | `vw_interacoes.tipo` | Compara formatos (Curso, Vídeo, Artigo, Podcast). |
