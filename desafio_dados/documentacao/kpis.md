@@ -19,7 +19,7 @@ Todas as definições estão em views do PostgreSQL (`sql/criar_banco.sql`, seç
 - **Objetivo:** acompanhar a evolução do uso no tempo.
 - **Fórmula:** por mês (e categoria/tipo): `interacoes = count(*)`; `visualizacoes = count(tipo_interacao = 'visualização')`; `usuarios_ativos = count(distinct usuario_id)`; `tempo_total_min = sum(tempo_consumido)`.
 - **Fonte:** `vw_interacoes`.
-- **Periodicidade:** mensal (jan–ago/2026 nos dados fornecidos).
+- **Periodicidade:** mensal (jan–ago/2026 nos dados fornecidos; agosto vai só até o dia 25, portanto incompleto).
 - **Interpretação:** série para o gráfico de linhas; quedas ou picos indicam sazonalidade ou efeito de novos conteúdos. Filtrável por categoria e tipo.
 
 ### M3 — Conteúdos mais procurados — `vw_conteudos_populares`
@@ -63,7 +63,7 @@ Todas as definições estão em views do PostgreSQL (`sql/criar_banco.sql`, seç
 - **Fórmula:** por mês: `usuarios_ativos = count(distinct usuario_id)`; `interacoes_por_usuario = interações / usuários ativos`; `retencao_pct = usuários ativos no mês que também têm interação no mês seguinte / usuários ativos × 100` (nulo no último mês, que ainda não tem "mês seguinte").
 - **Fonte:** `vw_interacoes`.
 - **Periodicidade:** mensal.
-- **Interpretação:** o dashboard cruza retenção e usuários ativos na mesma série temporal. Retenção e usuários subindo indicam crescimento saudável; usuários subindo com retenção caindo sugerem entrada de novos usuários e rotatividade; ambas as séries caindo sugerem churn ou sazonalidade. Nos dados fornecidos, há 64–93 usuários ativos por mês e retenção entre 48,1 % e 61,1 % de janeiro a julho; agosto tem retenção nula porque ainda não existe o mês seguinte para comparação.
+- **Interpretação:** o dashboard cruza retenção e usuários ativos na mesma série temporal. Retenção e usuários subindo indicam crescimento saudável; usuários subindo com retenção caindo sugerem entrada de novos usuários e rotatividade; ambas as séries caindo sugerem churn ou sazonalidade. Nos dados fornecidos, há 64–93 usuários ativos por mês e retenção entre 48,1 % e 61,1 % de janeiro a julho; agosto tem retenção nula porque ainda não existe o mês seguinte para comparação. Os dados terminam em 25/08/2026: agosto é um mês incompleto, e a queda de usuários ativos nesse mês é efeito do recorte, não do comportamento dos usuários.
 
 ### KPI4 — Cobertura e qualidade da recomendação — `vw_kpi_recomendacao`
 

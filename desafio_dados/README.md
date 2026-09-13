@@ -72,7 +72,7 @@ O dashboard **Indicadores da Plataforma** (export e capturas em `dashboard/evide
 | Avaliação média (cartão) | `vw_interacoes` | escala 1–5; responde aos filtros |
 | Taxa de conclusão (cartão) | `vw_kpi_taxa_conclusao` | `sum(conclusoes) / sum(consumos)`, ponderada; responde aos filtros |
 | Taxa de conclusão por categoria (barras horizontais) | `vw_kpi_taxa_conclusao` | mesma métrica ponderada, com rótulos; ordena da maior para a menor |
-| Usuários ativos e retenção por mês (linhas, eixo duplo) | `vw_kpi_retencao_mensal` | usuários ativos (contagem, eixo esquerdo) e retenção (%, eixo direito) |
+| Usuários ativos e retenção por mês (linhas, eixo duplo) | `vw_kpi_retencao_mensal` | usuários ativos (contagem, eixo esquerdo) e retenção (%, eixo direito); agosto é incompleto (dados até 25/08) |
 | Top 10 conteúdos mais procurados (tabela) | `vw_conteudos_populares` | visualizações, usuários e avaliação média |
 | Filtros de categoria e tipo | `vw_interacoes` | multi-seleção; a série mensal não filtra porque a view é agregada por mês |
 
