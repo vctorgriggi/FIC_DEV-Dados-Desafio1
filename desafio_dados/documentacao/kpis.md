@@ -57,13 +57,13 @@ Todas as definições estão em views do PostgreSQL (`sql/criar_banco.sql`, seç
 - **Periodicidade:** acumulado; recalculado a cada execução.
 - **Interpretação:** escala 1–5; `pct_positivas` é mais robusta que a média com poucas avaliações. Categorias abaixo da média geral (4,46) são candidatas a curadoria; cruzar com KPI1 para separar "não gostam" de "gostam mas não terminam". Hoje: Engenharia de Dados 4,72 (melhor) e Ciência de Dados 4,29 (pior).
 
-### KPI3 — Retenção e engajamento mensal — `vw_kpi_retencao_mensal`
+### KPI3 — Retenção e crescimento mensal — `vw_kpi_retencao_mensal`
 
 - **Objetivo:** medir se a plataforma mantém os usuários voltando.
 - **Fórmula:** por mês: `usuarios_ativos = count(distinct usuario_id)`; `interacoes_por_usuario = interações / usuários ativos`; `retencao_pct = usuários ativos no mês que também têm interação no mês seguinte / usuários ativos × 100` (nulo no último mês, que ainda não tem "mês seguinte").
 - **Fonte:** `vw_interacoes`.
 - **Periodicidade:** mensal.
-- **Interpretação:** retenção em queda com uso estável indica rotatividade de público; retenção estável com engajamento em queda indica usuários que voltam mas consomem menos. Hoje: retenção entre 48 % e 61 %, engajamento entre 1,4 e 1,7 interações por usuário/mês.
+- **Interpretação:** o dashboard cruza retenção e usuários ativos na mesma série temporal. Retenção e usuários subindo indicam crescimento saudável; usuários subindo com retenção caindo sugerem entrada de novos usuários e rotatividade; ambas as séries caindo sugerem churn ou sazonalidade. Nos dados fornecidos, há 64–93 usuários ativos por mês e retenção entre 48,1 % e 61,1 % de janeiro a julho; agosto tem retenção nula porque ainda não existe o mês seguinte para comparação.
 
 ### KPI4 — Cobertura e qualidade da recomendação — `vw_kpi_recomendacao`
 
@@ -79,21 +79,29 @@ Todas as definições estão em views do PostgreSQL (`sql/criar_banco.sql`, seç
 
 ## Perguntas de negócio respondidas pelo dashboard (RF13)
 
-_(preencher — pelo menos duas; sugestão: cruzar KPI1 × KPI2 por categoria e KPI3 ao longo do tempo)_
+O dashboard "Indicadores da Plataforma", no Apache Superset, responde às duas perguntas prioritárias:
 
-1.
-2.
+1. **Quais categorias precisam ser revisadas?** O gráfico de barras mostra a taxa de conclusão por categoria e os cartões permitem cruzá-la com qualidade percebida. Segurança & Governança é o principal caso de investigação: 11,4 % de conclusão e avaliação média de 4,42 indicam conteúdo bem avaliado, mas possivelmente longo ou mal sequenciado.
+2. **Estamos crescendo e retendo os usuários?** O gráfico de linhas compara usuários ativos e retenção mês a mês. A leitura conjunta diferencia crescimento saudável, rotatividade e queda geral da base; por exemplo, maio tem o pico de usuários ativos (93), mas retenção de 51,6 %.
+
+O dashboard também permite explorar as duas perguntas por **categoria** e **tipo de conteúdo**, usando filtros multi-seleção aplicados aos cartões e aos gráficos.
 
 ## Justificativa dos gráficos (RF13)
 
-_(preencher — mínimo: três cartões, um gráfico de barras, um de linhas, dois filtros; views sugeridas na coluna "Dado")_
-
 | Gráfico | Dado (view) | Por que esse tipo |
 |---|---|---|
-| Cartão 1 | `vw_metricas_gerais` | |
-| Cartão 2 | `vw_metricas_gerais` | |
-| Cartão 3 | `vw_metricas_gerais` | |
-| Barras | `vw_kpi_taxa_conclusao` ou `vw_kpi_qualidade` | |
-| Linhas | `vw_uso_mensal` ou `vw_kpi_retencao_mensal` | |
-| Filtro 1 | `categoria` | |
-| Filtro 2 | `tipo` | |
+| Cartão 1 — Usuários ativos | `vw_metricas_gerais` (`usuarios_ativos`) | Número de contexto que mostra o tamanho atual da base. |
+| Cartão 2 — Qualidade percebida | `vw_kpi_qualidade` (`avaliacao_media`) | Média de avaliações em escala de 1 a 5; orienta a curadoria. |
+| Cartão 3 — Taxa média de conclusão | `vw_kpi_taxa_conclusao` (`taxa_conclusao_pct`) | KPI acionável para priorizar revisão de formato e sequência. |
+| Barras horizontais — Taxa de conclusão por categoria | `vw_kpi_taxa_conclusao` | A orientação horizontal acomoda nomes longos e facilita ordenar as categorias da maior para a menor conclusão. |
+| Linhas — Retenção e crescimento mensal | `vw_kpi_retencao_mensal` (`retencao_pct`, `usuarios_ativos`) | A série temporal revela tendência, picos e quedas. As duas medidas usam uma escala única e evitam eixo duplo. |
+| Filtro 1 — Categoria | `categoria` em `vw_interacoes` | Permite isolar áreas temáticas e refiltrar todos os elementos. |
+| Filtro 2 — Tipo de conteúdo | `tipo` em `vw_interacoes` | Permite comparar formatos, como Vídeo, Artigo, Podcast e Curso. |
+
+### Configuração e leitura do dashboard
+
+- **Layout:** filtros no topo; três cartões lado a lado; barras de conclusão e linhas de retenção/crescimento em duas colunas.
+- **Filtros:** ambos são multi-seleção e iniciam com todos os valores selecionados. Categoria e tipo refinam os elementos que possuem essas dimensões na fonte; os cartões de volume e a série mensal permanecem agregados porque suas views não expõem categoria/tipo.
+- **Cartões:** qualidade é agregada como média ponderada das avaliações; conclusão é agregada como média ponderada de `conclusoes / consumos`, evitando média simples distorcida entre grupos.
+- **Gráfico de barras:** eixo vertical `categoria`, medida `taxa_conclusao_pct`, ordenação decrescente e escala de 0 a 100 %.
+- **Gráfico de linhas:** eixo temporal `mes`, séries `retencao_pct` e `usuarios_ativos`, ordem cronológica e escala única. `retencao_pct` fica nula no último mês por não haver mês seguinte.

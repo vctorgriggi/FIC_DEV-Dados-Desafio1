@@ -59,6 +59,29 @@ A primeira execução baixa o modelo de embeddings (~470 MB, cacheado em volume)
 
 No Superset, conectar ao banco com a URI `postgresql+psycopg2://desafio:desafio@postgres:5432/desafio` (ajuste usuário/senha conforme o `.env`). As views `vw_*` e `vw_kpi_*` já estão criadas.
 
+## Dashboard no Superset (RF13)
+
+O dashboard **Indicadores da Plataforma** responde a duas perguntas de negócio:
+
+1. Quais categorias têm baixa conclusão e precisam ser revisadas?
+2. Estamos crescendo e retendo os usuários ao longo dos meses?
+
+O layout criado em uma única página contém:
+
+| Elemento | Fonte | Leitura |
+|---|---|---|
+| Usuários ativos | `vw_metricas_gerais.usuarios_ativos` | Tamanho atual da base. |
+| Qualidade percebida | `vw_kpi_qualidade.avaliacao_media` | Média das avaliações, em escala de 1 a 5. |
+| Taxa média de conclusão | `vw_kpi_taxa_conclusao.taxa_conclusao_pct` | Percentual de pares usuário/conteúdo concluídos. |
+| Taxa de conclusão por categoria | `vw_kpi_taxa_conclusao` | Barras horizontais ordenadas da maior para a menor taxa. |
+| Retenção e crescimento mensal | `vw_kpi_retencao_mensal` | Linhas de `retencao_pct` e `usuarios_ativos` por mês. |
+| Filtro de categoria | `vw_interacoes.categoria` | Multi-seleção por área temática. |
+| Filtro de tipo | `vw_interacoes.tipo` | Multi-seleção por formato de conteúdo. |
+
+As cores das séries são azul para retenção e laranja para usuários ativos. A linha de retenção não possui valor no último mês porque o cálculo depende da existência do mês seguinte. A análise detalhada, as fórmulas e as limitações de filtragem estão em [`documentacao/kpis.md`](documentacao/kpis.md).
+
+O diretório [`dashboard/evidencias/`](dashboard/evidencias/) é o local reservado para exportações e capturas usadas na entrega do dashboard.
+
 Outros comandos:
 
 ```bash
