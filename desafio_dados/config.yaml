@@ -39,3 +39,32 @@ busca:
 recomendacao:
   top_k: 10
   nota_minima_aprovacao: 4
+
+# ---------------------------------------------------------------
+# Desafio 2 — parametros nao sensiveis (segredos so no .env)
+# O Hop tem o proprio arquivo de ambiente: hop/environments/docker.json
+# ---------------------------------------------------------------
+
+fontes_desafio2:
+  usuarios: dados/brutos/usuarios.csv
+  lote_2: dados/brutos/lote_2
+  falhas: dados/brutos/falhas        # arquivos defeituosos para demonstrar falha de arquivo (RF23)
+
+camadas:
+  schemas: [bronze, silver, gold, quarentena, qualidade, controle, restrito]
+  diretorios:
+    bronze: dados/bronze             # amostras exportadas (RF34)
+    silver: dados/silver             # exportacao Parquet (RF24)
+    gold: dados/gold                 # amostras exportadas (RF34)
+    quarentena: dados/quarentena     # amostras exportadas (RF34)
+
+beam:
+  runners:
+    direct:
+      - --runner=DirectRunner
+    spark:                           # requer: docker compose --profile beam up -d
+      - --runner=PortableRunner
+      - --job_endpoint=beam-job-server:8099
+      - --artifact_endpoint=beam-job-server:8098
+      - --environment_type=EXTERNAL
+      - --environment_config=localhost:50000   # worker pool divide a rede com o spark-worker

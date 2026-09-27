@@ -1,0 +1,3745 @@
+[
+  {
+    "usuario_id": 3,
+    "conteudo_id": 560,
+    "tipo_interacao": "visualização",
+    "data_hora": "2026-08-30T18:19:14",
+    "tempo_consumido": 21,
+    "percentual_conclusao": 34.7,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 6,
+    "conteudo_id": 1022,
+    "tipo_interacao": "visualização",
+    "data_hora": "2026-09-23T21:16:31",
+    "tempo_consumido": 344,
+    "percentual_conclusao": 19.7,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 45,
+    "conteudo_id": 1033,
+    "tipo_interacao": "visualização",
+    "data_hora": "2026-09-04T18:45:18",
+    "tempo_consumido": 9,
+    "percentual_conclusao": 27.6,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 82,
+    "conteudo_id": 502,
+    "tipo_interacao": "curtida",
+    "data_hora": "2026-09-02T06:23:30",
+    "tempo_consumido": 666,
+    "percentual_conclusao": 97.7,
+    "avaliacao_atribuida": 5
+  },
+  {
+    "usuario_id": 32,
+    "conteudo_id": 36,
+    "tipo_interacao": "visualização",
+    "data_hora": "2026-09-12T11:30:13",
+    "tempo_consumido": 28,
+    "percentual_conclusao": 26.1,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 120,
+    "conteudo_id": 83,
+    "tipo_interacao": "compartilhamento",
+    "data_hora": "2026-09-19T05:10:41",
+    "tempo_consumido": 14,
+    "percentual_conclusao": 38.9,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 11,
+    "conteudo_id": 145,
+    "tipo_interacao": "curtida",
+    "data_hora": "2026-09-19T06:26:12",
+    "tempo_consumido": 18,
+    "percentual_conclusao": 76.2,
+    "avaliacao_atribuida": 5
+  },
+  {
+    "usuario_id": 39,
+    "conteudo_id": 449,
+    "tipo_interacao": "conclusão",
+    "data_hora": "2026-09-11T00:13:25",
+    "tempo_consumido": 78,
+    "percentual_conclusao": 100.0,
+    "avaliacao_atribuida": 3
+  },
+  {
+    "usuario_id": 22,
+    "conteudo_id": 315,
+    "tipo_interacao": "início",
+    "data_hora": "2026-09-14T18:34:45",
+    "tempo_consumido": 14,
+    "percentual_conclusao": 14.2,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 136,
+    "conteudo_id": 549,
+    "tipo_interacao": "início",
+    "data_hora": "2026-09-18T17:39:44",
+    "tempo_consumido": 69,
+    "percentual_conclusao": 10.0,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 5,
+    "conteudo_id": 923,
+    "tipo_interacao": "início",
+    "data_hora": "2026-09-08T20:21:15",
+    "tempo_consumido": 1,
+    "percentual_conclusao": 1.2,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 74,
+    "conteudo_id": 600,
+    "tipo_interacao": "avaliação",
+    "data_hora": "2026-09-25T11:56:45",
+    "tempo_consumido": 49,
+    "percentual_conclusao": 85.1,
+    "avaliacao_atribuida": 5
+  },
+  {
+    "usuario_id": 20,
+    "conteudo_id": 804,
+    "tipo_interacao": "visualização",
+    "data_hora": "2026-09-24T12:51:22",
+    "tempo_consumido": 20,
+    "percentual_conclusao": 51.7,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 92,
+    "conteudo_id": 234,
+    "tipo_interacao": "conclusão",
+    "data_hora": "2026-09-03T17:42:01",
+    "tempo_consumido": 36,
+    "percentual_conclusao": 100.0,
+    "avaliacao_atribuida": 5
+  },
+  {
+    "usuario_id": 104,
+    "conteudo_id": 729,
+    "tipo_interacao": "início",
+    "data_hora": "2026-09-18T18:17:37",
+    "tempo_consumido": 6,
+    "percentual_conclusao": 8.2,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 157,
+    "conteudo_id": 374,
+    "tipo_interacao": "conclusão",
+    "data_hora": "2026-09-25T10:48:01",
+    "tempo_consumido": 21,
+    "percentual_conclusao": 100.0,
+    "avaliacao_atribuida": 5
+  },
+  {
+    "usuario_id": 29,
+    "conteudo_id": 878,
+    "tipo_interacao": "início",
+    "data_hora": "2026-09-26T10:00:22",
+    "tempo_consumido": 27,
+    "percentual_conclusao": 6.3,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 80,
+    "conteudo_id": 155,
+    "tipo_interacao": "visualização",
+    "data_hora": "2026-09-06T23:40:50",
+    "tempo_consumido": 592,
+    "percentual_conclusao": 47.4,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 22,
+    "conteudo_id": 120,
+    "tipo_interacao": "início",
+    "data_hora": "2026-09-20T12:39:13",
+    "tempo_consumido": 4,
+    "percentual_conclusao": 12.7,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 26,
+    "conteudo_id": 538,
+    "tipo_interacao": "visualização",
+    "data_hora": "2026-09-15T09:27:18",
+    "tempo_consumido": 38,
+    "percentual_conclusao": 72.3,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 86,
+    "conteudo_id": 73,
+    "tipo_interacao": "visualização",
+    "data_hora": "2026-09-17T20:32:32",
+    "tempo_consumido": 6,
+    "percentual_conclusao": 21.4,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 132,
+    "conteudo_id": 451,
+    "tipo_interacao": "conclusão",
+    "data_hora": "2026-09-22T13:05:41",
+    "tempo_consumido": 15,
+    "percentual_conclusao": 100.0,
+    "avaliacao_atribuida": 5
+  },
+  {
+    "usuario_id": 15,
+    "conteudo_id": 826,
+    "tipo_interacao": "visualização",
+    "data_hora": "2026-09-16T05:29:04",
+    "tempo_consumido": 13,
+    "percentual_conclusao": 57.5,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 79,
+    "conteudo_id": 606,
+    "tipo_interacao": "visualização",
+    "data_hora": "2026-09-01T09:05:52",
+    "tempo_consumido": 4,
+    "percentual_conclusao": 68.1,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 155,
+    "conteudo_id": 872,
+    "tipo_interacao": "visualização",
+    "data_hora": "2026-09-15T05:46:52",
+    "tempo_consumido": 4,
+    "percentual_conclusao": 33.5,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 47,
+    "conteudo_id": 205,
+    "tipo_interacao": "visualização",
+    "data_hora": "2026-09-15T00:34:43",
+    "tempo_consumido": 382,
+    "percentual_conclusao": 52.9,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 106,
+    "conteudo_id": 883,
+    "tipo_interacao": "início",
+    "data_hora": "2026-09-02T07:15:37",
+    "tempo_consumido": 95,
+    "percentual_conclusao": 14.6,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 32,
+    "conteudo_id": 30,
+    "tipo_interacao": "visualização",
+    "data_hora": "2026-08-29T15:42:25",
+    "tempo_consumido": 436,
+    "percentual_conclusao": 18.1,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 113,
+    "conteudo_id": 505,
+    "tipo_interacao": "visualização",
+    "data_hora": "2026-09-21T19:31:03",
+    "tempo_consumido": 15,
+    "percentual_conclusao": 58.1,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 150,
+    "conteudo_id": 485,
+    "tipo_interacao": "curtida",
+    "data_hora": "2026-09-24T04:23:04",
+    "tempo_consumido": 50,
+    "percentual_conclusao": 70.4,
+    "avaliacao_atribuida": 5
+  },
+  {
+    "usuario_id": 37,
+    "conteudo_id": 806,
+    "tipo_interacao": "compartilhamento",
+    "data_hora": "2026-09-02T09:26:37",
+    "tempo_consumido": 25,
+    "percentual_conclusao": 32.4,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 140,
+    "conteudo_id": 820,
+    "tipo_interacao": "visualização",
+    "data_hora": "2026-09-23T09:48:01",
+    "tempo_consumido": 10,
+    "percentual_conclusao": 14.4,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 61,
+    "conteudo_id": 961,
+    "tipo_interacao": "conclusão",
+    "data_hora": "2026-09-20T04:20:06",
+    "tempo_consumido": 82,
+    "percentual_conclusao": 100.0,
+    "avaliacao_atribuida": 5
+  },
+  {
+    "usuario_id": 78,
+    "conteudo_id": 804,
+    "tipo_interacao": "curtida",
+    "data_hora": "2026-09-09T20:00:19",
+    "tempo_consumido": 37,
+    "percentual_conclusao": 94.9,
+    "avaliacao_atribuida": 5
+  },
+  {
+    "usuario_id": 131,
+    "conteudo_id": 262,
+    "tipo_interacao": "visualização",
+    "data_hora": "2026-09-22T00:20:04",
+    "tempo_consumido": 150,
+    "percentual_conclusao": 14.3,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 32,
+    "conteudo_id": 800,
+    "tipo_interacao": "conclusão",
+    "data_hora": "2026-09-20T15:17:03",
+    "tempo_consumido": 364,
+    "percentual_conclusao": 100.0,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 42,
+    "conteudo_id": 522,
+    "tipo_interacao": "conclusão",
+    "data_hora": "2026-09-14T11:06:00",
+    "tempo_consumido": 60,
+    "percentual_conclusao": 100.0,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 87,
+    "conteudo_id": 20,
+    "tipo_interacao": "avaliação",
+    "data_hora": "2026-09-19T17:24:30",
+    "tempo_consumido": 15,
+    "percentual_conclusao": 59.6,
+    "avaliacao_atribuida": 5
+  },
+  {
+    "usuario_id": 111,
+    "conteudo_id": 721,
+    "tipo_interacao": "visualização",
+    "data_hora": "2026-09-22T11:35:54",
+    "tempo_consumido": 37,
+    "percentual_conclusao": 36.9,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 30,
+    "conteudo_id": 757,
+    "tipo_interacao": "conclusão",
+    "data_hora": "2026-09-25T05:35:48",
+    "tempo_consumido": 656,
+    "percentual_conclusao": 100.0,
+    "avaliacao_atribuida": 4
+  },
+  {
+    "usuario_id": 54,
+    "conteudo_id": 218,
+    "tipo_interacao": "conclusão",
+    "data_hora": "2026-09-16T00:46:27",
+    "tempo_consumido": 23,
+    "percentual_conclusao": 100.0,
+    "avaliacao_atribuida": 4
+  },
+  {
+    "usuario_id": 24,
+    "conteudo_id": 601,
+    "tipo_interacao": "avaliação",
+    "data_hora": "2026-09-03T01:48:17",
+    "tempo_consumido": 25,
+    "percentual_conclusao": 91.0,
+    "avaliacao_atribuida": 4
+  },
+  {
+    "usuario_id": 71,
+    "conteudo_id": 474,
+    "tipo_interacao": "visualização",
+    "data_hora": "2026-09-19T03:12:48",
+    "tempo_consumido": 12,
+    "percentual_conclusao": 39.8,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 39,
+    "conteudo_id": 483,
+    "tipo_interacao": "visualização",
+    "data_hora": "2026-08-30T00:10:39",
+    "tempo_consumido": 6,
+    "percentual_conclusao": 39.7,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 13,
+    "conteudo_id": 815,
+    "tipo_interacao": "visualização",
+    "data_hora": "2026-08-31T13:57:56",
+    "tempo_consumido": 4,
+    "percentual_conclusao": 39.0,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 132,
+    "conteudo_id": 238,
+    "tipo_interacao": "início",
+    "data_hora": "2026-09-07T12:52:19",
+    "tempo_consumido": 1,
+    "percentual_conclusao": 2.2,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 2,
+    "conteudo_id": 485,
+    "tipo_interacao": "visualização",
+    "data_hora": "2026-09-18T13:01:49",
+    "tempo_consumido": 8,
+    "percentual_conclusao": 10.6,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 88,
+    "conteudo_id": 56,
+    "tipo_interacao": "compartilhamento",
+    "data_hora": "2026-09-20T15:30:52",
+    "tempo_consumido": 13,
+    "percentual_conclusao": 60.1,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 39,
+    "conteudo_id": 252,
+    "tipo_interacao": "avaliação",
+    "data_hora": "2026-09-13T21:09:45",
+    "tempo_consumido": 345,
+    "percentual_conclusao": 61.5,
+    "avaliacao_atribuida": 4
+  },
+  {
+    "usuario_id": 138,
+    "conteudo_id": 73,
+    "tipo_interacao": "visualização",
+    "data_hora": "2026-09-20T02:35:47",
+    "tempo_consumido": 21,
+    "percentual_conclusao": 70.7,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 17,
+    "conteudo_id": 269,
+    "tipo_interacao": "conclusão",
+    "data_hora": "2026-09-06T06:54:00",
+    "tempo_consumido": 613,
+    "percentual_conclusao": 100.0,
+    "avaliacao_atribuida": 4
+  },
+  {
+    "usuario_id": 155,
+    "conteudo_id": 534,
+    "tipo_interacao": "compartilhamento",
+    "data_hora": "2026-09-07T12:17:11",
+    "tempo_consumido": 15,
+    "percentual_conclusao": 51.1,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 118,
+    "conteudo_id": 725,
+    "tipo_interacao": "visualização",
+    "data_hora": "2026-09-16T00:41:43",
+    "tempo_consumido": 21,
+    "percentual_conclusao": 49.0,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 28,
+    "conteudo_id": 618,
+    "tipo_interacao": "visualização",
+    "data_hora": "2026-09-26T08:26:04",
+    "tempo_consumido": 105,
+    "percentual_conclusao": 30.5,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 24,
+    "conteudo_id": 223,
+    "tipo_interacao": "início",
+    "data_hora": "2026-09-14T15:17:56",
+    "tempo_consumido": 5,
+    "percentual_conclusao": 7.3,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 143,
+    "conteudo_id": 972,
+    "tipo_interacao": "curtida",
+    "data_hora": "2026-08-31T11:02:53",
+    "tempo_consumido": 51,
+    "percentual_conclusao": 93.9,
+    "avaliacao_atribuida": 5
+  },
+  {
+    "usuario_id": 168,
+    "conteudo_id": 787,
+    "tipo_interacao": "visualização",
+    "data_hora": "2026-09-10T01:20:08",
+    "tempo_consumido": 17,
+    "percentual_conclusao": 23.8,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 65,
+    "conteudo_id": 824,
+    "tipo_interacao": "visualização",
+    "data_hora": "2026-09-17T17:28:50",
+    "tempo_consumido": 1465,
+    "percentual_conclusao": 45.6,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 87,
+    "conteudo_id": 695,
+    "tipo_interacao": "curtida",
+    "data_hora": "2026-08-26T07:39:59",
+    "tempo_consumido": 39,
+    "percentual_conclusao": 64.4,
+    "avaliacao_atribuida": 5
+  },
+  {
+    "usuario_id": 37,
+    "conteudo_id": 26,
+    "tipo_interacao": "conclusão",
+    "data_hora": "2026-09-02T23:15:15",
+    "tempo_consumido": 14,
+    "percentual_conclusao": 100.0,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 145,
+    "conteudo_id": 757,
+    "tipo_interacao": "conclusão",
+    "data_hora": "2026-09-17T08:53:44",
+    "tempo_consumido": 656,
+    "percentual_conclusao": 100.0,
+    "avaliacao_atribuida": 5
+  },
+  {
+    "usuario_id": 110,
+    "conteudo_id": 319,
+    "tipo_interacao": "conclusão",
+    "data_hora": "2026-09-17T00:52:15",
+    "tempo_consumido": 2776,
+    "percentual_conclusao": 100.0,
+    "avaliacao_atribuida": 3
+  },
+  {
+    "usuario_id": 35,
+    "conteudo_id": 270,
+    "tipo_interacao": "visualização",
+    "data_hora": "2026-09-07T02:24:49",
+    "tempo_consumido": 13,
+    "percentual_conclusao": 45.7,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 45,
+    "conteudo_id": 402,
+    "tipo_interacao": "conclusão",
+    "data_hora": "2026-09-04T20:14:16",
+    "tempo_consumido": 1364,
+    "percentual_conclusao": 100.0,
+    "avaliacao_atribuida": 4
+  },
+  {
+    "usuario_id": 26,
+    "conteudo_id": 221,
+    "tipo_interacao": "visualização",
+    "data_hora": "2026-09-10T01:31:54",
+    "tempo_consumido": 20,
+    "percentual_conclusao": 28.1,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 161,
+    "conteudo_id": 605,
+    "tipo_interacao": "avaliação",
+    "data_hora": "2026-09-05T13:44:53",
+    "tempo_consumido": 38,
+    "percentual_conclusao": 97.8,
+    "avaliacao_atribuida": 3
+  },
+  {
+    "usuario_id": 72,
+    "conteudo_id": 779,
+    "tipo_interacao": "compartilhamento",
+    "data_hora": "2026-09-06T07:09:34",
+    "tempo_consumido": 41,
+    "percentual_conclusao": 48.3,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 120,
+    "conteudo_id": 454,
+    "tipo_interacao": "início",
+    "data_hora": "2026-09-04T10:15:02",
+    "tempo_consumido": 4,
+    "percentual_conclusao": 6.0,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 10,
+    "conteudo_id": 859,
+    "tipo_interacao": "visualização",
+    "data_hora": "2026-09-17T18:15:46",
+    "tempo_consumido": 31,
+    "percentual_conclusao": 69.4,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 115,
+    "conteudo_id": 814,
+    "tipo_interacao": "compartilhamento",
+    "data_hora": "2026-09-24T21:02:45",
+    "tempo_consumido": 18,
+    "percentual_conclusao": 62.5,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 136,
+    "conteudo_id": 620,
+    "tipo_interacao": "início",
+    "data_hora": "2026-08-29T04:40:10",
+    "tempo_consumido": 9,
+    "percentual_conclusao": 10.9,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 7,
+    "conteudo_id": 719,
+    "tipo_interacao": "início",
+    "data_hora": "2026-08-30T05:25:35",
+    "tempo_consumido": 26,
+    "percentual_conclusao": 2.9,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 168,
+    "conteudo_id": 700,
+    "tipo_interacao": "visualização",
+    "data_hora": "2026-09-04T08:51:50",
+    "tempo_consumido": 25,
+    "percentual_conclusao": 62.9,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 51,
+    "conteudo_id": 959,
+    "tipo_interacao": "compartilhamento",
+    "data_hora": "2026-09-16T14:38:20",
+    "tempo_consumido": 185,
+    "percentual_conclusao": 48.9,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 64,
+    "conteudo_id": 633,
+    "tipo_interacao": "início",
+    "data_hora": "2026-09-22T07:26:23",
+    "tempo_consumido": 46,
+    "percentual_conclusao": 8.7,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 160,
+    "conteudo_id": 465,
+    "tipo_interacao": "conclusão",
+    "data_hora": "2026-09-21T16:37:18",
+    "tempo_consumido": 13,
+    "percentual_conclusao": 100.0,
+    "avaliacao_atribuida": 4
+  },
+  {
+    "usuario_id": 164,
+    "conteudo_id": 531,
+    "tipo_interacao": "início",
+    "data_hora": "2026-08-30T07:07:40",
+    "tempo_consumido": 2,
+    "percentual_conclusao": 8.3,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 50,
+    "conteudo_id": 39,
+    "tipo_interacao": "visualização",
+    "data_hora": "2026-08-29T16:50:02",
+    "tempo_consumido": 5,
+    "percentual_conclusao": 31.2,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 2,
+    "conteudo_id": 852,
+    "tipo_interacao": "curtida",
+    "data_hora": "2026-09-03T22:31:49",
+    "tempo_consumido": 67,
+    "percentual_conclusao": 96.4,
+    "avaliacao_atribuida": 5
+  },
+  {
+    "usuario_id": 63,
+    "conteudo_id": 628,
+    "tipo_interacao": "conclusão",
+    "data_hora": "2026-09-01T12:26:27",
+    "tempo_consumido": 88,
+    "percentual_conclusao": 100.0,
+    "avaliacao_atribuida": 5
+  },
+  {
+    "usuario_id": 154,
+    "conteudo_id": 620,
+    "tipo_interacao": "compartilhamento",
+    "data_hora": "2026-08-27T14:34:09",
+    "tempo_consumido": 66,
+    "percentual_conclusao": 83.9,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 40,
+    "conteudo_id": 761,
+    "tipo_interacao": "avaliação",
+    "data_hora": "2026-08-28T20:56:49",
+    "tempo_consumido": 9,
+    "percentual_conclusao": 79.7,
+    "avaliacao_atribuida": 5
+  },
+  {
+    "usuario_id": 30,
+    "conteudo_id": 1005,
+    "tipo_interacao": "visualização",
+    "data_hora": "2026-09-18T21:53:22",
+    "tempo_consumido": 7,
+    "percentual_conclusao": 20.1,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 141,
+    "conteudo_id": 670,
+    "tipo_interacao": "visualização",
+    "data_hora": "2026-09-04T16:15:39",
+    "tempo_consumido": 14,
+    "percentual_conclusao": 22.5,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 47,
+    "conteudo_id": 65,
+    "tipo_interacao": "avaliação",
+    "data_hora": "2026-09-05T07:41:52",
+    "tempo_consumido": 10,
+    "percentual_conclusao": 75.3,
+    "avaliacao_atribuida": 4
+  },
+  {
+    "usuario_id": 162,
+    "conteudo_id": 27,
+    "tipo_interacao": "avaliação",
+    "data_hora": "2026-08-29T12:02:06",
+    "tempo_consumido": 25,
+    "percentual_conclusao": 84.6,
+    "avaliacao_atribuida": 5
+  },
+  {
+    "usuario_id": 22,
+    "conteudo_id": 232,
+    "tipo_interacao": "conclusão",
+    "data_hora": "2026-09-22T13:45:07",
+    "tempo_consumido": 6,
+    "percentual_conclusao": 100.0,
+    "avaliacao_atribuida": 5
+  },
+  {
+    "usuario_id": 49,
+    "conteudo_id": 155,
+    "tipo_interacao": "curtida",
+    "data_hora": "2026-08-27T16:59:56",
+    "tempo_consumido": 1232,
+    "percentual_conclusao": 98.6,
+    "avaliacao_atribuida": 5
+  },
+  {
+    "usuario_id": 133,
+    "conteudo_id": 350,
+    "tipo_interacao": "conclusão",
+    "data_hora": "2026-09-24T18:58:00",
+    "tempo_consumido": 7,
+    "percentual_conclusao": 100.0,
+    "avaliacao_atribuida": 5
+  },
+  {
+    "usuario_id": 70,
+    "conteudo_id": 831,
+    "tipo_interacao": "início",
+    "data_hora": "2026-09-06T16:34:52",
+    "tempo_consumido": 7,
+    "percentual_conclusao": 10.1,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 44,
+    "conteudo_id": 250,
+    "tipo_interacao": "curtida",
+    "data_hora": "2026-08-27T07:34:16",
+    "tempo_consumido": 45,
+    "percentual_conclusao": 74.2,
+    "avaliacao_atribuida": 5
+  },
+  {
+    "usuario_id": 141,
+    "conteudo_id": 864,
+    "tipo_interacao": "visualização",
+    "data_hora": "2026-09-15T06:04:25",
+    "tempo_consumido": 3,
+    "percentual_conclusao": 30.0,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 71,
+    "conteudo_id": 646,
+    "tipo_interacao": "visualização",
+    "data_hora": "2026-09-10T17:50:51",
+    "tempo_consumido": 18,
+    "percentual_conclusao": 16.6,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 67,
+    "conteudo_id": 700,
+    "tipo_interacao": "início",
+    "data_hora": "2026-09-10T15:51:21",
+    "tempo_consumido": 4,
+    "percentual_conclusao": 11.0,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 28,
+    "conteudo_id": 546,
+    "tipo_interacao": "conclusão",
+    "data_hora": "2026-09-17T00:28:11",
+    "tempo_consumido": 34,
+    "percentual_conclusao": 100.0,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 7,
+    "conteudo_id": 556,
+    "tipo_interacao": "visualização",
+    "data_hora": "2026-09-22T15:09:55",
+    "tempo_consumido": 26,
+    "percentual_conclusao": 34.4,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 22,
+    "conteudo_id": 54,
+    "tipo_interacao": "início",
+    "data_hora": "2026-08-28T10:55:05",
+    "tempo_consumido": 42,
+    "percentual_conclusao": 3.7,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 2,
+    "conteudo_id": 757,
+    "tipo_interacao": "início",
+    "data_hora": "2026-08-28T00:39:34",
+    "tempo_consumido": 39,
+    "percentual_conclusao": 6.0,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 82,
+    "conteudo_id": 586,
+    "tipo_interacao": "curtida",
+    "data_hora": "2026-08-29T09:40:12",
+    "tempo_consumido": 33,
+    "percentual_conclusao": 98.0,
+    "avaliacao_atribuida": 5
+  },
+  {
+    "usuario_id": 125,
+    "conteudo_id": 792,
+    "tipo_interacao": "compartilhamento",
+    "data_hora": "2026-08-26T22:33:58",
+    "tempo_consumido": 10,
+    "percentual_conclusao": 35.5,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 40,
+    "conteudo_id": 530,
+    "tipo_interacao": "início",
+    "data_hora": "2026-08-27T16:54:12",
+    "tempo_consumido": 6,
+    "percentual_conclusao": 10.9,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 126,
+    "conteudo_id": 760,
+    "tipo_interacao": "compartilhamento",
+    "data_hora": "2026-09-12T17:57:07",
+    "tempo_consumido": 5,
+    "percentual_conclusao": 34.2,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 87,
+    "conteudo_id": 441,
+    "tipo_interacao": "início",
+    "data_hora": "2026-09-18T13:58:35",
+    "tempo_consumido": 1,
+    "percentual_conclusao": 8.7,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 58,
+    "conteudo_id": 711,
+    "tipo_interacao": "visualização",
+    "data_hora": "2026-09-22T14:30:20",
+    "tempo_consumido": 249,
+    "percentual_conclusao": 73.1,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 112,
+    "conteudo_id": 818,
+    "tipo_interacao": "início",
+    "data_hora": "2026-09-26T18:15:02",
+    "tempo_consumido": 1,
+    "percentual_conclusao": 2.4,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 134,
+    "conteudo_id": 554,
+    "tipo_interacao": "compartilhamento",
+    "data_hora": "2026-09-06T19:36:56",
+    "tempo_consumido": 156,
+    "percentual_conclusao": 79.4,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 120,
+    "conteudo_id": 654,
+    "tipo_interacao": "compartilhamento",
+    "data_hora": "2026-08-27T07:19:04",
+    "tempo_consumido": 1591,
+    "percentual_conclusao": 60.9,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 95,
+    "conteudo_id": 473,
+    "tipo_interacao": "visualização",
+    "data_hora": "2026-09-23T02:11:10",
+    "tempo_consumido": 768,
+    "percentual_conclusao": 54.6,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 40,
+    "conteudo_id": 11,
+    "tipo_interacao": "início",
+    "data_hora": "2026-09-26T07:00:58",
+    "tempo_consumido": 5,
+    "percentual_conclusao": 11.3,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 90,
+    "conteudo_id": 605,
+    "tipo_interacao": "avaliação",
+    "data_hora": "2026-09-01T22:00:18",
+    "tempo_consumido": 27,
+    "percentual_conclusao": 69.9,
+    "avaliacao_atribuida": 5
+  },
+  {
+    "usuario_id": 30,
+    "conteudo_id": 87,
+    "tipo_interacao": "visualização",
+    "data_hora": "2026-08-30T06:30:42",
+    "tempo_consumido": 40,
+    "percentual_conclusao": 51.1,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 141,
+    "conteudo_id": 503,
+    "tipo_interacao": "início",
+    "data_hora": "2026-09-09T13:43:50",
+    "tempo_consumido": 6,
+    "percentual_conclusao": 1.9,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 145,
+    "conteudo_id": 801,
+    "tipo_interacao": "visualização",
+    "data_hora": "2026-08-29T23:44:31",
+    "tempo_consumido": 4,
+    "percentual_conclusao": 24.9,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 112,
+    "conteudo_id": 636,
+    "tipo_interacao": "visualização",
+    "data_hora": "2026-08-30T19:43:16",
+    "tempo_consumido": 8,
+    "percentual_conclusao": 70.8,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 140,
+    "conteudo_id": 828,
+    "tipo_interacao": "visualização",
+    "data_hora": "2026-09-11T05:36:34",
+    "tempo_consumido": 15,
+    "percentual_conclusao": 60.5,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 68,
+    "conteudo_id": 532,
+    "tipo_interacao": "visualização",
+    "data_hora": "2026-09-05T16:43:25",
+    "tempo_consumido": 147,
+    "percentual_conclusao": 34.3,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 163,
+    "conteudo_id": 645,
+    "tipo_interacao": "visualização",
+    "data_hora": "2026-09-26T19:51:07",
+    "tempo_consumido": 20,
+    "percentual_conclusao": 65.5,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 69,
+    "conteudo_id": 1029,
+    "tipo_interacao": "conclusão",
+    "data_hora": "2026-09-19T03:15:38",
+    "tempo_consumido": 45,
+    "percentual_conclusao": 100.0,
+    "avaliacao_atribuida": 5
+  },
+  {
+    "usuario_id": 96,
+    "conteudo_id": 116,
+    "tipo_interacao": "visualização",
+    "data_hora": "2026-09-08T11:35:45",
+    "tempo_consumido": 13,
+    "percentual_conclusao": 63.6,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 162,
+    "conteudo_id": 784,
+    "tipo_interacao": "início",
+    "data_hora": "2026-09-26T17:33:16",
+    "tempo_consumido": 26,
+    "percentual_conclusao": 3.3,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 83,
+    "conteudo_id": 655,
+    "tipo_interacao": "curtida",
+    "data_hora": "2026-09-18T12:22:10",
+    "tempo_consumido": 272,
+    "percentual_conclusao": 99.0,
+    "avaliacao_atribuida": 5
+  },
+  {
+    "usuario_id": 4,
+    "conteudo_id": 94,
+    "tipo_interacao": "conclusão",
+    "data_hora": "2026-09-10T02:43:35",
+    "tempo_consumido": 251,
+    "percentual_conclusao": 100.0,
+    "avaliacao_atribuida": 3
+  },
+  {
+    "usuario_id": 80,
+    "conteudo_id": 410,
+    "tipo_interacao": "conclusão",
+    "data_hora": "2026-09-11T08:00:44",
+    "tempo_consumido": 8,
+    "percentual_conclusao": 100.0,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 22,
+    "conteudo_id": 768,
+    "tipo_interacao": "visualização",
+    "data_hora": "2026-08-28T09:32:12",
+    "tempo_consumido": 16,
+    "percentual_conclusao": 47.7,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 1,
+    "conteudo_id": 784,
+    "tipo_interacao": "compartilhamento",
+    "data_hora": "2026-09-02T10:53:05",
+    "tempo_consumido": 352,
+    "percentual_conclusao": 44.3,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 83,
+    "conteudo_id": 195,
+    "tipo_interacao": "conclusão",
+    "data_hora": "2026-09-16T09:31:29",
+    "tempo_consumido": 27,
+    "percentual_conclusao": 100.0,
+    "avaliacao_atribuida": 4
+  },
+  {
+    "usuario_id": 63,
+    "conteudo_id": 72,
+    "tipo_interacao": "curtida",
+    "data_hora": "2026-09-03T18:46:45",
+    "tempo_consumido": 11,
+    "percentual_conclusao": 54.1,
+    "avaliacao_atribuida": 5
+  },
+  {
+    "usuario_id": 74,
+    "conteudo_id": 754,
+    "tipo_interacao": "visualização",
+    "data_hora": "2026-09-12T09:41:44",
+    "tempo_consumido": 298,
+    "percentual_conclusao": 27.4,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 65,
+    "conteudo_id": 627,
+    "tipo_interacao": "visualização",
+    "data_hora": "2026-09-12T07:28:50",
+    "tempo_consumido": 30,
+    "percentual_conclusao": 50.4,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 59,
+    "conteudo_id": 663,
+    "tipo_interacao": "conclusão",
+    "data_hora": "2026-09-02T19:21:13",
+    "tempo_consumido": 364,
+    "percentual_conclusao": 100.0,
+    "avaliacao_atribuida": 3
+  },
+  {
+    "usuario_id": 74,
+    "conteudo_id": 882,
+    "tipo_interacao": "visualização",
+    "data_hora": "2026-09-06T03:31:44",
+    "tempo_consumido": 1,
+    "percentual_conclusao": 12.1,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 158,
+    "conteudo_id": 316,
+    "tipo_interacao": "início",
+    "data_hora": "2026-09-24T13:43:14",
+    "tempo_consumido": 9,
+    "percentual_conclusao": 14.1,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 17,
+    "conteudo_id": 372,
+    "tipo_interacao": "início",
+    "data_hora": "2026-09-08T06:31:05",
+    "tempo_consumido": 5,
+    "percentual_conclusao": 14.8,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 79,
+    "conteudo_id": 1015,
+    "tipo_interacao": "visualização",
+    "data_hora": "2026-08-28T12:24:48",
+    "tempo_consumido": 8,
+    "percentual_conclusao": 36.6,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 67,
+    "conteudo_id": 973,
+    "tipo_interacao": "curtida",
+    "data_hora": "2026-09-02T23:05:00",
+    "tempo_consumido": 11,
+    "percentual_conclusao": 90.8,
+    "avaliacao_atribuida": 5
+  },
+  {
+    "usuario_id": 41,
+    "conteudo_id": 382,
+    "tipo_interacao": "visualização",
+    "data_hora": "2026-09-16T23:21:14",
+    "tempo_consumido": 8,
+    "percentual_conclusao": 12.0,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 45,
+    "conteudo_id": 880,
+    "tipo_interacao": "conclusão",
+    "data_hora": "2026-09-18T09:00:03",
+    "tempo_consumido": 50,
+    "percentual_conclusao": 100.0,
+    "avaliacao_atribuida": 4
+  },
+  {
+    "usuario_id": 127,
+    "conteudo_id": 651,
+    "tipo_interacao": "visualização",
+    "data_hora": "2026-09-23T12:14:50",
+    "tempo_consumido": 93,
+    "percentual_conclusao": 22.4,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 95,
+    "conteudo_id": 581,
+    "tipo_interacao": "visualização",
+    "data_hora": "2026-09-23T00:44:38",
+    "tempo_consumido": 214,
+    "percentual_conclusao": 18.3,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 97,
+    "conteudo_id": 126,
+    "tipo_interacao": "avaliação",
+    "data_hora": "2026-09-06T11:40:50",
+    "tempo_consumido": 55,
+    "percentual_conclusao": 65.5,
+    "avaliacao_atribuida": 4
+  },
+  {
+    "usuario_id": 41,
+    "conteudo_id": 329,
+    "tipo_interacao": "início",
+    "data_hora": "2026-09-21T20:46:44",
+    "tempo_consumido": 2,
+    "percentual_conclusao": 4.6,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 139,
+    "conteudo_id": 243,
+    "tipo_interacao": "compartilhamento",
+    "data_hora": "2026-09-15T05:21:12",
+    "tempo_consumido": 2386,
+    "percentual_conclusao": 82.1,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 97,
+    "conteudo_id": 202,
+    "tipo_interacao": "visualização",
+    "data_hora": "2026-09-02T04:52:20",
+    "tempo_consumido": 30,
+    "percentual_conclusao": 64.4,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 90,
+    "conteudo_id": 860,
+    "tipo_interacao": "visualização",
+    "data_hora": "2026-09-24T02:03:40",
+    "tempo_consumido": 720,
+    "percentual_conclusao": 62.2,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 62,
+    "conteudo_id": 724,
+    "tipo_interacao": "avaliação",
+    "data_hora": "2026-09-16T12:55:55",
+    "tempo_consumido": 7,
+    "percentual_conclusao": 52.4,
+    "avaliacao_atribuida": 5
+  },
+  {
+    "usuario_id": 106,
+    "conteudo_id": 290,
+    "tipo_interacao": "compartilhamento",
+    "data_hora": "2026-08-30T00:46:25",
+    "tempo_consumido": 3,
+    "percentual_conclusao": 36.3,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 106,
+    "conteudo_id": 406,
+    "tipo_interacao": "curtida",
+    "data_hora": "2026-09-26T06:15:08",
+    "tempo_consumido": 8,
+    "percentual_conclusao": 89.0,
+    "avaliacao_atribuida": 5
+  },
+  {
+    "usuario_id": 134,
+    "conteudo_id": 464,
+    "tipo_interacao": "avaliação",
+    "data_hora": "2026-08-31T06:02:38",
+    "tempo_consumido": 6,
+    "percentual_conclusao": 68.9,
+    "avaliacao_atribuida": 5
+  },
+  {
+    "usuario_id": 137,
+    "conteudo_id": 516,
+    "tipo_interacao": "visualização",
+    "data_hora": "2026-08-31T10:14:29",
+    "tempo_consumido": 10,
+    "percentual_conclusao": 13.5,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 41,
+    "conteudo_id": 1013,
+    "tipo_interacao": "compartilhamento",
+    "data_hora": "2026-08-28T17:34:12",
+    "tempo_consumido": 9,
+    "percentual_conclusao": 60.3,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 117,
+    "conteudo_id": 24,
+    "tipo_interacao": "início",
+    "data_hora": "2026-09-01T17:41:22",
+    "tempo_consumido": 2,
+    "percentual_conclusao": 5.9,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 32,
+    "conteudo_id": 647,
+    "tipo_interacao": "início",
+    "data_hora": "2026-08-26T15:24:24",
+    "tempo_consumido": 1,
+    "percentual_conclusao": 2.0,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 44,
+    "conteudo_id": 882,
+    "tipo_interacao": "visualização",
+    "data_hora": "2026-08-27T11:37:36",
+    "tempo_consumido": 2,
+    "percentual_conclusao": 26.4,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 164,
+    "conteudo_id": 26,
+    "tipo_interacao": "conclusão",
+    "data_hora": "2026-09-07T04:56:14",
+    "tempo_consumido": 14,
+    "percentual_conclusao": 100.0,
+    "avaliacao_atribuida": 4
+  },
+  {
+    "usuario_id": 63,
+    "conteudo_id": 118,
+    "tipo_interacao": "conclusão",
+    "data_hora": "2026-09-20T23:34:08",
+    "tempo_consumido": 97,
+    "percentual_conclusao": 100.0,
+    "avaliacao_atribuida": 5
+  },
+  {
+    "usuario_id": 76,
+    "conteudo_id": 757,
+    "tipo_interacao": "início",
+    "data_hora": "2026-09-12T19:51:11",
+    "tempo_consumido": 22,
+    "percentual_conclusao": 3.4,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 55,
+    "conteudo_id": 805,
+    "tipo_interacao": "visualização",
+    "data_hora": "2026-08-31T16:49:08",
+    "tempo_consumido": 12,
+    "percentual_conclusao": 29.9,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 18,
+    "conteudo_id": 889,
+    "tipo_interacao": "conclusão",
+    "data_hora": "2026-09-05T19:15:03",
+    "tempo_consumido": 40,
+    "percentual_conclusao": 100.0,
+    "avaliacao_atribuida": 4
+  },
+  {
+    "usuario_id": 162,
+    "conteudo_id": 616,
+    "tipo_interacao": "início",
+    "data_hora": "2026-08-28T12:48:58",
+    "tempo_consumido": 2,
+    "percentual_conclusao": 13.6,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 31,
+    "conteudo_id": 796,
+    "tipo_interacao": "início",
+    "data_hora": "2026-09-20T10:02:02",
+    "tempo_consumido": 5,
+    "percentual_conclusao": 7.8,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 147,
+    "conteudo_id": 635,
+    "tipo_interacao": "início",
+    "data_hora": "2026-09-24T02:17:04",
+    "tempo_consumido": 4,
+    "percentual_conclusao": 7.0,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 109,
+    "conteudo_id": 558,
+    "tipo_interacao": "avaliação",
+    "data_hora": "2026-09-25T04:51:46",
+    "tempo_consumido": 16,
+    "percentual_conclusao": 82.2,
+    "avaliacao_atribuida": 5
+  },
+  {
+    "usuario_id": 65,
+    "conteudo_id": 885,
+    "tipo_interacao": "conclusão",
+    "data_hora": "2026-09-14T00:38:39",
+    "tempo_consumido": 26,
+    "percentual_conclusao": 100.0,
+    "avaliacao_atribuida": 3
+  },
+  {
+    "usuario_id": 44,
+    "conteudo_id": 444,
+    "tipo_interacao": "início",
+    "data_hora": "2026-09-13T20:04:54",
+    "tempo_consumido": 15,
+    "percentual_conclusao": 13.0,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 35,
+    "conteudo_id": 795,
+    "tipo_interacao": "visualização",
+    "data_hora": "2026-09-09T08:18:52",
+    "tempo_consumido": 69,
+    "percentual_conclusao": 82.8,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 148,
+    "conteudo_id": 296,
+    "tipo_interacao": "visualização",
+    "data_hora": "2026-09-06T04:45:19",
+    "tempo_consumido": 901,
+    "percentual_conclusao": 25.2,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 43,
+    "conteudo_id": 519,
+    "tipo_interacao": "conclusão",
+    "data_hora": "2026-09-04T20:47:04",
+    "tempo_consumido": 43,
+    "percentual_conclusao": 100.0,
+    "avaliacao_atribuida": 4
+  },
+  {
+    "usuario_id": 86,
+    "conteudo_id": 653,
+    "tipo_interacao": "início",
+    "data_hora": "2026-09-08T06:58:22",
+    "tempo_consumido": 1,
+    "percentual_conclusao": 3.2,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 160,
+    "conteudo_id": 731,
+    "tipo_interacao": "compartilhamento",
+    "data_hora": "2026-09-11T02:36:51",
+    "tempo_consumido": 44,
+    "percentual_conclusao": 42.3,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 135,
+    "conteudo_id": 718,
+    "tipo_interacao": "visualização",
+    "data_hora": "2026-09-25T14:16:11",
+    "tempo_consumido": 62,
+    "percentual_conclusao": 84.4,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 78,
+    "conteudo_id": 27,
+    "tipo_interacao": "visualização",
+    "data_hora": "2026-09-13T23:25:39",
+    "tempo_consumido": 21,
+    "percentual_conclusao": 68.7,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 19,
+    "conteudo_id": 707,
+    "tipo_interacao": "curtida",
+    "data_hora": "2026-08-28T19:26:42",
+    "tempo_consumido": 12,
+    "percentual_conclusao": 93.4,
+    "avaliacao_atribuida": 5
+  },
+  {
+    "usuario_id": 76,
+    "conteudo_id": 563,
+    "tipo_interacao": "visualização",
+    "data_hora": "2026-09-15T13:00:29",
+    "tempo_consumido": 6,
+    "percentual_conclusao": 19.6,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 158,
+    "conteudo_id": 545,
+    "tipo_interacao": "compartilhamento",
+    "data_hora": "2026-08-29T20:08:21",
+    "tempo_consumido": 25,
+    "percentual_conclusao": 56.5,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 121,
+    "conteudo_id": 185,
+    "tipo_interacao": "curtida",
+    "data_hora": "2026-09-07T05:48:03",
+    "tempo_consumido": 19,
+    "percentual_conclusao": 70.9,
+    "avaliacao_atribuida": 5
+  },
+  {
+    "usuario_id": 148,
+    "conteudo_id": 624,
+    "tipo_interacao": "curtida",
+    "data_hora": "2026-09-10T18:41:33",
+    "tempo_consumido": 977,
+    "percentual_conclusao": 80.4,
+    "avaliacao_atribuida": 5
+  },
+  {
+    "usuario_id": 94,
+    "conteudo_id": 952,
+    "tipo_interacao": "conclusão",
+    "data_hora": "2026-09-19T06:55:41",
+    "tempo_consumido": 46,
+    "percentual_conclusao": 100.0,
+    "avaliacao_atribuida": 3
+  },
+  {
+    "usuario_id": 11,
+    "conteudo_id": 744,
+    "tipo_interacao": "curtida",
+    "data_hora": "2026-09-13T23:19:02",
+    "tempo_consumido": 11,
+    "percentual_conclusao": 52.4,
+    "avaliacao_atribuida": 5
+  },
+  {
+    "usuario_id": 19,
+    "conteudo_id": 820,
+    "tipo_interacao": "visualização",
+    "data_hora": "2026-09-08T02:26:01",
+    "tempo_consumido": 24,
+    "percentual_conclusao": 34.5,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 129,
+    "conteudo_id": 360,
+    "tipo_interacao": "visualização",
+    "data_hora": "2026-08-30T12:30:03",
+    "tempo_consumido": 615,
+    "percentual_conclusao": 17.5,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 22,
+    "conteudo_id": 103,
+    "tipo_interacao": "início",
+    "data_hora": "2026-09-15T08:23:50",
+    "tempo_consumido": 2,
+    "percentual_conclusao": 10.6,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 7,
+    "conteudo_id": 359,
+    "tipo_interacao": "visualização",
+    "data_hora": "2026-09-05T11:21:08",
+    "tempo_consumido": 431,
+    "percentual_conclusao": 75.9,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 76,
+    "conteudo_id": 1002,
+    "tipo_interacao": "visualização",
+    "data_hora": "2026-09-08T17:38:37",
+    "tempo_consumido": 8,
+    "percentual_conclusao": 60.1,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 8,
+    "conteudo_id": 900,
+    "tipo_interacao": "visualização",
+    "data_hora": "2026-09-19T23:13:48",
+    "tempo_consumido": 537,
+    "percentual_conclusao": 40.1,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 147,
+    "conteudo_id": 269,
+    "tipo_interacao": "compartilhamento",
+    "data_hora": "2026-09-01T06:28:30",
+    "tempo_consumido": 397,
+    "percentual_conclusao": 64.7,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 165,
+    "conteudo_id": 694,
+    "tipo_interacao": "início",
+    "data_hora": "2026-09-07T10:21:56",
+    "tempo_consumido": 146,
+    "percentual_conclusao": 13.9,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 68,
+    "conteudo_id": 729,
+    "tipo_interacao": "avaliação",
+    "data_hora": "2026-09-18T12:33:21",
+    "tempo_consumido": 51,
+    "percentual_conclusao": 74.8,
+    "avaliacao_atribuida": 3
+  },
+  {
+    "usuario_id": 93,
+    "conteudo_id": 914,
+    "tipo_interacao": "curtida",
+    "data_hora": "2026-09-08T20:10:03",
+    "tempo_consumido": 903,
+    "percentual_conclusao": 63.0,
+    "avaliacao_atribuida": 5
+  },
+  {
+    "usuario_id": 108,
+    "conteudo_id": 133,
+    "tipo_interacao": "avaliação",
+    "data_hora": "2026-09-05T13:33:24",
+    "tempo_consumido": 15,
+    "percentual_conclusao": 58.9,
+    "avaliacao_atribuida": 5
+  },
+  {
+    "usuario_id": 36,
+    "conteudo_id": 402,
+    "tipo_interacao": "avaliação",
+    "data_hora": "2026-09-03T17:46:39",
+    "tempo_consumido": 1109,
+    "percentual_conclusao": 81.3,
+    "avaliacao_atribuida": 4
+  },
+  {
+    "usuario_id": 33,
+    "conteudo_id": 56,
+    "tipo_interacao": "início",
+    "data_hora": "2026-09-22T05:26:01",
+    "tempo_consumido": 2,
+    "percentual_conclusao": 8.2,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 128,
+    "conteudo_id": 747,
+    "tipo_interacao": "visualização",
+    "data_hora": "2026-09-08T00:42:19",
+    "tempo_consumido": 199,
+    "percentual_conclusao": 38.6,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 124,
+    "conteudo_id": 258,
+    "tipo_interacao": "visualização",
+    "data_hora": "2026-09-07T23:49:08",
+    "tempo_consumido": 683,
+    "percentual_conclusao": 45.2,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 162,
+    "conteudo_id": 294,
+    "tipo_interacao": "curtida",
+    "data_hora": "2026-09-05T00:36:48",
+    "tempo_consumido": 10,
+    "percentual_conclusao": 49.7,
+    "avaliacao_atribuida": 5
+  },
+  {
+    "usuario_id": 19,
+    "conteudo_id": 697,
+    "tipo_interacao": "visualização",
+    "data_hora": "2026-09-24T16:19:40",
+    "tempo_consumido": 8,
+    "percentual_conclusao": 23.1,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 48,
+    "conteudo_id": 715,
+    "tipo_interacao": "visualização",
+    "data_hora": "2026-09-09T13:48:20",
+    "tempo_consumido": 5,
+    "percentual_conclusao": 10.6,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 53,
+    "conteudo_id": 676,
+    "tipo_interacao": "início",
+    "data_hora": "2026-09-25T16:59:45",
+    "tempo_consumido": 102,
+    "percentual_conclusao": 13.7,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 65,
+    "conteudo_id": 1008,
+    "tipo_interacao": "conclusão",
+    "data_hora": "2026-09-02T09:26:15",
+    "tempo_consumido": 75,
+    "percentual_conclusao": 100.0,
+    "avaliacao_atribuida": 4
+  },
+  {
+    "usuario_id": 143,
+    "conteudo_id": 397,
+    "tipo_interacao": "avaliação",
+    "data_hora": "2026-09-14T15:09:57",
+    "tempo_consumido": 607,
+    "percentual_conclusao": 95.4,
+    "avaliacao_atribuida": 4
+  },
+  {
+    "usuario_id": 60,
+    "conteudo_id": 707,
+    "tipo_interacao": "início",
+    "data_hora": "2026-09-17T04:35:00",
+    "tempo_consumido": 1,
+    "percentual_conclusao": 6.5,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 10,
+    "conteudo_id": 755,
+    "tipo_interacao": "início",
+    "data_hora": "2026-09-22T08:16:36",
+    "tempo_consumido": 1,
+    "percentual_conclusao": 8.0,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 109,
+    "conteudo_id": 566,
+    "tipo_interacao": "curtida",
+    "data_hora": "2026-09-07T06:19:01",
+    "tempo_consumido": 38,
+    "percentual_conclusao": 46.1,
+    "avaliacao_atribuida": 5
+  },
+  {
+    "usuario_id": 149,
+    "conteudo_id": 1021,
+    "tipo_interacao": "início",
+    "data_hora": "2026-09-17T02:03:24",
+    "tempo_consumido": 2,
+    "percentual_conclusao": 3.1,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 107,
+    "conteudo_id": 93,
+    "tipo_interacao": "visualização",
+    "data_hora": "2026-09-19T10:28:07",
+    "tempo_consumido": 630,
+    "percentual_conclusao": 20.2,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 170,
+    "conteudo_id": 874,
+    "tipo_interacao": "conclusão",
+    "data_hora": "2026-09-22T21:07:09",
+    "tempo_consumido": 500,
+    "percentual_conclusao": 100.0,
+    "avaliacao_atribuida": 4
+  },
+  {
+    "usuario_id": 59,
+    "conteudo_id": 1000,
+    "tipo_interacao": "conclusão",
+    "data_hora": "2026-09-13T06:20:29",
+    "tempo_consumido": 54,
+    "percentual_conclusao": 100.0,
+    "avaliacao_atribuida": 4
+  },
+  {
+    "usuario_id": 108,
+    "conteudo_id": 267,
+    "tipo_interacao": "conclusão",
+    "data_hora": "2026-09-12T12:56:20",
+    "tempo_consumido": 995,
+    "percentual_conclusao": 100.0,
+    "avaliacao_atribuida": 3
+  },
+  {
+    "usuario_id": 84,
+    "conteudo_id": 66,
+    "tipo_interacao": "avaliação",
+    "data_hora": "2026-09-12T11:20:55",
+    "tempo_consumido": 82,
+    "percentual_conclusao": 77.9,
+    "avaliacao_atribuida": 4
+  },
+  {
+    "usuario_id": 8,
+    "conteudo_id": 53,
+    "tipo_interacao": "conclusão",
+    "data_hora": "2026-09-20T23:58:19",
+    "tempo_consumido": 40,
+    "percentual_conclusao": 100.0,
+    "avaliacao_atribuida": 3
+  },
+  {
+    "usuario_id": 148,
+    "conteudo_id": 313,
+    "tipo_interacao": "visualização",
+    "data_hora": "2026-09-17T15:39:51",
+    "tempo_consumido": 85,
+    "percentual_conclusao": 30.1,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 95,
+    "conteudo_id": 649,
+    "tipo_interacao": "início",
+    "data_hora": "2026-09-12T04:23:46",
+    "tempo_consumido": 5,
+    "percentual_conclusao": 8.8,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 78,
+    "conteudo_id": 683,
+    "tipo_interacao": "conclusão",
+    "data_hora": "2026-09-24T22:11:23",
+    "tempo_consumido": 17,
+    "percentual_conclusao": 100.0,
+    "avaliacao_atribuida": 5
+  },
+  {
+    "usuario_id": 37,
+    "conteudo_id": 654,
+    "tipo_interacao": "visualização",
+    "data_hora": "2026-09-16T22:55:18",
+    "tempo_consumido": 1222,
+    "percentual_conclusao": 46.8,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 62,
+    "conteudo_id": 642,
+    "tipo_interacao": "visualização",
+    "data_hora": "2026-09-03T06:31:40",
+    "tempo_consumido": 46,
+    "percentual_conclusao": 51.5,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 46,
+    "conteudo_id": 777,
+    "tipo_interacao": "curtida",
+    "data_hora": "2026-09-07T07:10:55",
+    "tempo_consumido": 49,
+    "percentual_conclusao": 95.8,
+    "avaliacao_atribuida": 5
+  },
+  {
+    "usuario_id": 119,
+    "conteudo_id": 585,
+    "tipo_interacao": "conclusão",
+    "data_hora": "2026-08-28T14:50:30",
+    "tempo_consumido": 6,
+    "percentual_conclusao": 100.0,
+    "avaliacao_atribuida": 5
+  },
+  {
+    "usuario_id": 11,
+    "conteudo_id": 569,
+    "tipo_interacao": "compartilhamento",
+    "data_hora": "2026-09-07T18:20:06",
+    "tempo_consumido": 14,
+    "percentual_conclusao": 67.7,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 142,
+    "conteudo_id": 185,
+    "tipo_interacao": "visualização",
+    "data_hora": "2026-09-18T06:41:17",
+    "tempo_consumido": 19,
+    "percentual_conclusao": 69.5,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 116,
+    "conteudo_id": 911,
+    "tipo_interacao": "início",
+    "data_hora": "2026-09-23T04:34:31",
+    "tempo_consumido": 1,
+    "percentual_conclusao": 6.7,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 40,
+    "conteudo_id": 251,
+    "tipo_interacao": "conclusão",
+    "data_hora": "2026-09-07T16:39:19",
+    "tempo_consumido": 1672,
+    "percentual_conclusao": 100.0,
+    "avaliacao_atribuida": 5
+  },
+  {
+    "usuario_id": 169,
+    "conteudo_id": 88,
+    "tipo_interacao": "início",
+    "data_hora": "2026-08-31T08:26:49",
+    "tempo_consumido": 7,
+    "percentual_conclusao": 12.1,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 107,
+    "conteudo_id": 620,
+    "tipo_interacao": "início",
+    "data_hora": "2026-09-23T06:34:18",
+    "tempo_consumido": 6,
+    "percentual_conclusao": 7.3,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 125,
+    "conteudo_id": 465,
+    "tipo_interacao": "conclusão",
+    "data_hora": "2026-09-01T17:35:41",
+    "tempo_consumido": 13,
+    "percentual_conclusao": 100.0,
+    "avaliacao_atribuida": 5
+  },
+  {
+    "usuario_id": 71,
+    "conteudo_id": 796,
+    "tipo_interacao": "visualização",
+    "data_hora": "2026-09-21T16:40:31",
+    "tempo_consumido": 15,
+    "percentual_conclusao": 22.7,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 90,
+    "conteudo_id": 388,
+    "tipo_interacao": "avaliação",
+    "data_hora": "2026-09-12T21:53:28",
+    "tempo_consumido": 410,
+    "percentual_conclusao": 66.5,
+    "avaliacao_atribuida": 3
+  },
+  {
+    "usuario_id": 20,
+    "conteudo_id": 397,
+    "tipo_interacao": "início",
+    "data_hora": "2026-09-08T22:04:57",
+    "tempo_consumido": 29,
+    "percentual_conclusao": 4.5,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 51,
+    "conteudo_id": 159,
+    "tipo_interacao": "início",
+    "data_hora": "2026-09-15T07:41:41",
+    "tempo_consumido": 2,
+    "percentual_conclusao": 12.3,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 137,
+    "conteudo_id": 696,
+    "tipo_interacao": "conclusão",
+    "data_hora": "2026-09-18T04:38:45",
+    "tempo_consumido": 85,
+    "percentual_conclusao": 100.0,
+    "avaliacao_atribuida": 5
+  },
+  {
+    "usuario_id": 164,
+    "conteudo_id": 878,
+    "tipo_interacao": "visualização",
+    "data_hora": "2026-09-13T03:40:24",
+    "tempo_consumido": 125,
+    "percentual_conclusao": 29.3,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 87,
+    "conteudo_id": 663,
+    "tipo_interacao": "início",
+    "data_hora": "2026-09-15T23:17:58",
+    "tempo_consumido": 29,
+    "percentual_conclusao": 8.0,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 23,
+    "conteudo_id": 788,
+    "tipo_interacao": "visualização",
+    "data_hora": "2026-09-24T02:08:21",
+    "tempo_consumido": 3,
+    "percentual_conclusao": 16.6,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 94,
+    "conteudo_id": 677,
+    "tipo_interacao": "curtida",
+    "data_hora": "2026-09-20T15:55:49",
+    "tempo_consumido": 14,
+    "percentual_conclusao": 42.6,
+    "avaliacao_atribuida": 5
+  },
+  {
+    "usuario_id": 109,
+    "conteudo_id": 100,
+    "tipo_interacao": "visualização",
+    "data_hora": "2026-08-28T11:03:34",
+    "tempo_consumido": 23,
+    "percentual_conclusao": 44.9,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 164,
+    "conteudo_id": 202,
+    "tipo_interacao": "início",
+    "data_hora": "2026-09-01T18:43:11",
+    "tempo_consumido": 5,
+    "percentual_conclusao": 11.3,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 127,
+    "conteudo_id": 652,
+    "tipo_interacao": "início",
+    "data_hora": "2026-09-19T14:21:02",
+    "tempo_consumido": 1,
+    "percentual_conclusao": 2.6,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 66,
+    "conteudo_id": 337,
+    "tipo_interacao": "avaliação",
+    "data_hora": "2026-08-31T08:03:32",
+    "tempo_consumido": 26,
+    "percentual_conclusao": 94.4,
+    "avaliacao_atribuida": 5
+  },
+  {
+    "usuario_id": 68,
+    "conteudo_id": 421,
+    "tipo_interacao": "visualização",
+    "data_hora": "2026-09-18T10:10:32",
+    "tempo_consumido": 127,
+    "percentual_conclusao": 10.3,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 62,
+    "conteudo_id": 976,
+    "tipo_interacao": "visualização",
+    "data_hora": "2026-09-20T16:03:40",
+    "tempo_consumido": 20,
+    "percentual_conclusao": 71.3,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 164,
+    "conteudo_id": 528,
+    "tipo_interacao": "conclusão",
+    "data_hora": "2026-09-09T19:26:28",
+    "tempo_consumido": 14,
+    "percentual_conclusao": 100.0,
+    "avaliacao_atribuida": 5
+  },
+  {
+    "usuario_id": 70,
+    "conteudo_id": 699,
+    "tipo_interacao": "início",
+    "data_hora": "2026-09-10T21:33:17",
+    "tempo_consumido": 1,
+    "percentual_conclusao": 1.6,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 28,
+    "conteudo_id": 513,
+    "tipo_interacao": "visualização",
+    "data_hora": "2026-09-20T08:51:47",
+    "tempo_consumido": 15,
+    "percentual_conclusao": 44.6,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 107,
+    "conteudo_id": 967,
+    "tipo_interacao": "início",
+    "data_hora": "2026-09-20T21:53:51",
+    "tempo_consumido": 3,
+    "percentual_conclusao": 11.2,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 31,
+    "conteudo_id": 905,
+    "tipo_interacao": "visualização",
+    "data_hora": "2026-09-17T04:31:15",
+    "tempo_consumido": 5,
+    "percentual_conclusao": 60.7,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 8,
+    "conteudo_id": 266,
+    "tipo_interacao": "início",
+    "data_hora": "2026-09-07T13:27:43",
+    "tempo_consumido": 22,
+    "percentual_conclusao": 8.5,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 144,
+    "conteudo_id": 69,
+    "tipo_interacao": "conclusão",
+    "data_hora": "2026-09-19T14:02:58",
+    "tempo_consumido": 354,
+    "percentual_conclusao": 100.0,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 72,
+    "conteudo_id": 847,
+    "tipo_interacao": "visualização",
+    "data_hora": "2026-09-12T22:20:47",
+    "tempo_consumido": 6,
+    "percentual_conclusao": 47.6,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 23,
+    "conteudo_id": 106,
+    "tipo_interacao": "compartilhamento",
+    "data_hora": "2026-08-27T16:32:24",
+    "tempo_consumido": 1668,
+    "percentual_conclusao": 53.6,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 6,
+    "conteudo_id": 964,
+    "tipo_interacao": "visualização",
+    "data_hora": "2026-09-25T03:29:28",
+    "tempo_consumido": 26,
+    "percentual_conclusao": 55.5,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 102,
+    "conteudo_id": 792,
+    "tipo_interacao": "início",
+    "data_hora": "2026-09-08T02:09:15",
+    "tempo_consumido": 3,
+    "percentual_conclusao": 11.8,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 106,
+    "conteudo_id": 904,
+    "tipo_interacao": "curtida",
+    "data_hora": "2026-09-19T00:56:06",
+    "tempo_consumido": 39,
+    "percentual_conclusao": 52.8,
+    "avaliacao_atribuida": 5
+  },
+  {
+    "usuario_id": 43,
+    "conteudo_id": 18,
+    "tipo_interacao": "conclusão",
+    "data_hora": "2026-09-08T16:14:59",
+    "tempo_consumido": 54,
+    "percentual_conclusao": 100.0,
+    "avaliacao_atribuida": 5
+  },
+  {
+    "usuario_id": 76,
+    "conteudo_id": 329,
+    "tipo_interacao": "visualização",
+    "data_hora": "2026-08-30T11:03:51",
+    "tempo_consumido": 34,
+    "percentual_conclusao": 68.8,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 130,
+    "conteudo_id": 287,
+    "tipo_interacao": "visualização",
+    "data_hora": "2026-09-03T03:10:21",
+    "tempo_consumido": 27,
+    "percentual_conclusao": 51.5,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 98,
+    "conteudo_id": 79,
+    "tipo_interacao": "curtida",
+    "data_hora": "2026-09-10T00:21:35",
+    "tempo_consumido": 65,
+    "percentual_conclusao": 87.0,
+    "avaliacao_atribuida": 5
+  },
+  {
+    "usuario_id": 93,
+    "conteudo_id": 359,
+    "tipo_interacao": "visualização",
+    "data_hora": "2026-09-02T05:27:28",
+    "tempo_consumido": 327,
+    "percentual_conclusao": 57.5,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 72,
+    "conteudo_id": 673,
+    "tipo_interacao": "curtida",
+    "data_hora": "2026-09-10T11:07:23",
+    "tempo_consumido": 46,
+    "percentual_conclusao": 70.5,
+    "avaliacao_atribuida": 5
+  },
+  {
+    "usuario_id": 87,
+    "conteudo_id": 347,
+    "tipo_interacao": "visualização",
+    "data_hora": "2026-08-27T20:54:53",
+    "tempo_consumido": 9,
+    "percentual_conclusao": 35.3,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 126,
+    "conteudo_id": 327,
+    "tipo_interacao": "avaliação",
+    "data_hora": "2026-09-05T06:33:24",
+    "tempo_consumido": 73,
+    "percentual_conclusao": 86.3,
+    "avaliacao_atribuida": 5
+  },
+  {
+    "usuario_id": 129,
+    "conteudo_id": 347,
+    "tipo_interacao": "início",
+    "data_hora": "2026-09-05T14:52:54",
+    "tempo_consumido": 3,
+    "percentual_conclusao": 10.3,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 109,
+    "conteudo_id": 277,
+    "tipo_interacao": "visualização",
+    "data_hora": "2026-09-19T20:46:25",
+    "tempo_consumido": 19,
+    "percentual_conclusao": 38.5,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 107,
+    "conteudo_id": 520,
+    "tipo_interacao": "avaliação",
+    "data_hora": "2026-09-23T12:40:37",
+    "tempo_consumido": 59,
+    "percentual_conclusao": 85.0,
+    "avaliacao_atribuida": 5
+  },
+  {
+    "usuario_id": 86,
+    "conteudo_id": 281,
+    "tipo_interacao": "compartilhamento",
+    "data_hora": "2026-09-20T18:32:06",
+    "tempo_consumido": 281,
+    "percentual_conclusao": 72.2,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 76,
+    "conteudo_id": 491,
+    "tipo_interacao": "conclusão",
+    "data_hora": "2026-09-10T05:20:43",
+    "tempo_consumido": 601,
+    "percentual_conclusao": 100.0,
+    "avaliacao_atribuida": 3
+  },
+  {
+    "usuario_id": 72,
+    "conteudo_id": 45,
+    "tipo_interacao": "início",
+    "data_hora": "2026-09-12T07:36:02",
+    "tempo_consumido": 3,
+    "percentual_conclusao": 9.4,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 5,
+    "conteudo_id": 934,
+    "tipo_interacao": "conclusão",
+    "data_hora": "2026-09-25T15:58:21",
+    "tempo_consumido": 14,
+    "percentual_conclusao": 100.0,
+    "avaliacao_atribuida": 4
+  },
+  {
+    "usuario_id": 144,
+    "conteudo_id": 182,
+    "tipo_interacao": "visualização",
+    "data_hora": "2026-08-26T13:27:43",
+    "tempo_consumido": 4,
+    "percentual_conclusao": 13.7,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 132,
+    "conteudo_id": 263,
+    "tipo_interacao": "avaliação",
+    "data_hora": "2026-09-24T13:24:18",
+    "tempo_consumido": 7,
+    "percentual_conclusao": 97.5,
+    "avaliacao_atribuida": 5
+  },
+  {
+    "usuario_id": 128,
+    "conteudo_id": 483,
+    "tipo_interacao": "compartilhamento",
+    "data_hora": "2026-09-03T10:19:47",
+    "tempo_consumido": 10,
+    "percentual_conclusao": 70.7,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 15,
+    "conteudo_id": 279,
+    "tipo_interacao": "visualização",
+    "data_hora": "2026-09-15T15:04:44",
+    "tempo_consumido": 25,
+    "percentual_conclusao": 75.7,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 144,
+    "conteudo_id": 77,
+    "tipo_interacao": "visualização",
+    "data_hora": "2026-09-25T15:22:55",
+    "tempo_consumido": 30,
+    "percentual_conclusao": 41.8,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 10,
+    "conteudo_id": 755,
+    "tipo_interacao": "início",
+    "data_hora": "2026-09-21T15:54:04",
+    "tempo_consumido": 1,
+    "percentual_conclusao": 14.9,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 7,
+    "conteudo_id": 473,
+    "tipo_interacao": "início",
+    "data_hora": "2026-09-11T22:14:15",
+    "tempo_consumido": 107,
+    "percentual_conclusao": 7.6,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 83,
+    "conteudo_id": 198,
+    "tipo_interacao": "visualização",
+    "data_hora": "2026-09-08T03:53:01",
+    "tempo_consumido": 123,
+    "percentual_conclusao": 10.6,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 14,
+    "conteudo_id": 183,
+    "tipo_interacao": "visualização",
+    "data_hora": "2026-09-16T08:29:19",
+    "tempo_consumido": 17,
+    "percentual_conclusao": 58.7,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 136,
+    "conteudo_id": 101,
+    "tipo_interacao": "início",
+    "data_hora": "2026-09-09T08:42:13",
+    "tempo_consumido": 6,
+    "percentual_conclusao": 10.8,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 114,
+    "conteudo_id": 419,
+    "tipo_interacao": "visualização",
+    "data_hora": "2026-09-04T11:44:28",
+    "tempo_consumido": 601,
+    "percentual_conclusao": 71.1,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 67,
+    "conteudo_id": 76,
+    "tipo_interacao": "visualização",
+    "data_hora": "2026-08-30T12:06:48",
+    "tempo_consumido": 257,
+    "percentual_conclusao": 32.8,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 108,
+    "conteudo_id": 554,
+    "tipo_interacao": "visualização",
+    "data_hora": "2026-09-10T06:09:43",
+    "tempo_consumido": 20,
+    "percentual_conclusao": 10.2,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 7,
+    "conteudo_id": 951,
+    "tipo_interacao": "curtida",
+    "data_hora": "2026-08-29T03:37:41",
+    "tempo_consumido": 43,
+    "percentual_conclusao": 99.6,
+    "avaliacao_atribuida": 5
+  },
+  {
+    "usuario_id": 17,
+    "conteudo_id": 428,
+    "tipo_interacao": "avaliação",
+    "data_hora": "2026-09-11T17:19:26",
+    "tempo_consumido": 25,
+    "percentual_conclusao": 83.5,
+    "avaliacao_atribuida": 5
+  },
+  {
+    "usuario_id": 54,
+    "conteudo_id": 247,
+    "tipo_interacao": "compartilhamento",
+    "data_hora": "2026-09-11T03:35:23",
+    "tempo_consumido": 52,
+    "percentual_conclusao": 61.6,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 112,
+    "conteudo_id": 997,
+    "tipo_interacao": "início",
+    "data_hora": "2026-08-27T20:55:51",
+    "tempo_consumido": 5,
+    "percentual_conclusao": 6.4,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 163,
+    "conteudo_id": 200,
+    "tipo_interacao": "curtida",
+    "data_hora": "2026-09-17T19:10:08",
+    "tempo_consumido": 26,
+    "percentual_conclusao": 40.7,
+    "avaliacao_atribuida": 5
+  },
+  {
+    "usuario_id": 123,
+    "conteudo_id": 542,
+    "tipo_interacao": "visualização",
+    "data_hora": "2026-09-01T08:03:16",
+    "tempo_consumido": 9,
+    "percentual_conclusao": 46.7,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 133,
+    "conteudo_id": 135,
+    "tipo_interacao": "avaliação",
+    "data_hora": "2026-09-11T03:21:54",
+    "tempo_consumido": 503,
+    "percentual_conclusao": 76.5,
+    "avaliacao_atribuida": 3
+  },
+  {
+    "usuario_id": 55,
+    "conteudo_id": 636,
+    "tipo_interacao": "compartilhamento",
+    "data_hora": "2026-08-29T09:57:45",
+    "tempo_consumido": 4,
+    "percentual_conclusao": 30.9,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 61,
+    "conteudo_id": 304,
+    "tipo_interacao": "curtida",
+    "data_hora": "2026-09-14T08:50:35",
+    "tempo_consumido": 25,
+    "percentual_conclusao": 83.1,
+    "avaliacao_atribuida": 5
+  },
+  {
+    "usuario_id": 73,
+    "conteudo_id": 416,
+    "tipo_interacao": "curtida",
+    "data_hora": "2026-09-24T03:29:08",
+    "tempo_consumido": 46,
+    "percentual_conclusao": 62.8,
+    "avaliacao_atribuida": 5
+  },
+  {
+    "usuario_id": 114,
+    "conteudo_id": 25,
+    "tipo_interacao": "início",
+    "data_hora": "2026-09-17T22:14:59",
+    "tempo_consumido": 6,
+    "percentual_conclusao": 7.6,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 167,
+    "conteudo_id": 725,
+    "tipo_interacao": "conclusão",
+    "data_hora": "2026-09-18T14:52:54",
+    "tempo_consumido": 43,
+    "percentual_conclusao": 100.0,
+    "avaliacao_atribuida": 3
+  },
+  {
+    "usuario_id": 170,
+    "conteudo_id": 63,
+    "tipo_interacao": "visualização",
+    "data_hora": "2026-09-15T18:54:02",
+    "tempo_consumido": 1597,
+    "percentual_conclusao": 56.3,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 26,
+    "conteudo_id": 873,
+    "tipo_interacao": "visualização",
+    "data_hora": "2026-09-23T00:30:58",
+    "tempo_consumido": 2,
+    "percentual_conclusao": 21.1,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 101,
+    "conteudo_id": 570,
+    "tipo_interacao": "avaliação",
+    "data_hora": "2026-09-18T04:52:02",
+    "tempo_consumido": 9,
+    "percentual_conclusao": 72.5,
+    "avaliacao_atribuida": 4
+  },
+  {
+    "usuario_id": 3,
+    "conteudo_id": 423,
+    "tipo_interacao": "curtida",
+    "data_hora": "2026-09-05T17:16:34",
+    "tempo_consumido": 18,
+    "percentual_conclusao": 63.8,
+    "avaliacao_atribuida": 5
+  },
+  {
+    "usuario_id": 92,
+    "conteudo_id": 778,
+    "tipo_interacao": "avaliação",
+    "data_hora": "2026-09-25T14:12:55",
+    "tempo_consumido": 1944,
+    "percentual_conclusao": 90.4,
+    "avaliacao_atribuida": 5
+  },
+  {
+    "usuario_id": 85,
+    "conteudo_id": 320,
+    "tipo_interacao": "curtida",
+    "data_hora": "2026-09-23T14:29:26",
+    "tempo_consumido": 52,
+    "percentual_conclusao": 58.1,
+    "avaliacao_atribuida": 5
+  },
+  {
+    "usuario_id": 148,
+    "conteudo_id": 835,
+    "tipo_interacao": "visualização",
+    "data_hora": "2026-09-24T04:32:10",
+    "tempo_consumido": 20,
+    "percentual_conclusao": 27.9,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 24,
+    "conteudo_id": 573,
+    "tipo_interacao": "visualização",
+    "data_hora": "2026-08-30T17:10:16",
+    "tempo_consumido": 20,
+    "percentual_conclusao": 46.5,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 114,
+    "conteudo_id": 971,
+    "tipo_interacao": "curtida",
+    "data_hora": "2026-09-06T12:14:11",
+    "tempo_consumido": 28,
+    "percentual_conclusao": 71.2,
+    "avaliacao_atribuida": 5
+  },
+  {
+    "usuario_id": 94,
+    "conteudo_id": 461,
+    "tipo_interacao": "compartilhamento",
+    "data_hora": "2026-09-04T06:58:01",
+    "tempo_consumido": 705,
+    "percentual_conclusao": 54.1,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 146,
+    "conteudo_id": 338,
+    "tipo_interacao": "compartilhamento",
+    "data_hora": "2026-09-21T19:46:29",
+    "tempo_consumido": 393,
+    "percentual_conclusao": 42.8,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 24,
+    "conteudo_id": 692,
+    "tipo_interacao": "conclusão",
+    "data_hora": "2026-09-19T10:15:43",
+    "tempo_consumido": 967,
+    "percentual_conclusao": 100.0,
+    "avaliacao_atribuida": 4
+  },
+  {
+    "usuario_id": 144,
+    "conteudo_id": 466,
+    "tipo_interacao": "início",
+    "data_hora": "2026-09-26T14:30:54",
+    "tempo_consumido": 1,
+    "percentual_conclusao": 1.1,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 26,
+    "conteudo_id": 645,
+    "tipo_interacao": "visualização",
+    "data_hora": "2026-09-20T23:40:54",
+    "tempo_consumido": 17,
+    "percentual_conclusao": 57.6,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 132,
+    "conteudo_id": 973,
+    "tipo_interacao": "visualização",
+    "data_hora": "2026-09-03T18:44:48",
+    "tempo_consumido": 6,
+    "percentual_conclusao": 52.1,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 152,
+    "conteudo_id": 782,
+    "tipo_interacao": "curtida",
+    "data_hora": "2026-09-09T13:21:02",
+    "tempo_consumido": 45,
+    "percentual_conclusao": 86.0,
+    "avaliacao_atribuida": 5
+  },
+  {
+    "usuario_id": 146,
+    "conteudo_id": 954,
+    "tipo_interacao": "início",
+    "data_hora": "2026-09-17T10:16:15",
+    "tempo_consumido": 85,
+    "percentual_conclusao": 14.4,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 6,
+    "conteudo_id": 568,
+    "tipo_interacao": "conclusão",
+    "data_hora": "2026-08-28T09:09:19",
+    "tempo_consumido": 21,
+    "percentual_conclusao": 100.0,
+    "avaliacao_atribuida": 5
+  },
+  {
+    "usuario_id": 127,
+    "conteudo_id": 693,
+    "tipo_interacao": "visualização",
+    "data_hora": "2026-08-26T03:11:52",
+    "tempo_consumido": 148,
+    "percentual_conclusao": 67.2,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 121,
+    "conteudo_id": 972,
+    "tipo_interacao": "compartilhamento",
+    "data_hora": "2026-09-08T03:05:56",
+    "tempo_consumido": 34,
+    "percentual_conclusao": 62.9,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 132,
+    "conteudo_id": 400,
+    "tipo_interacao": "compartilhamento",
+    "data_hora": "2026-09-02T14:23:37",
+    "tempo_consumido": 16,
+    "percentual_conclusao": 42.3,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 129,
+    "conteudo_id": 656,
+    "tipo_interacao": "avaliação",
+    "data_hora": "2026-09-18T17:59:52",
+    "tempo_consumido": 35,
+    "percentual_conclusao": 84.5,
+    "avaliacao_atribuida": 5
+  },
+  {
+    "usuario_id": 148,
+    "conteudo_id": 211,
+    "tipo_interacao": "início",
+    "data_hora": "2026-09-11T11:57:28",
+    "tempo_consumido": 5,
+    "percentual_conclusao": 14.3,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 150,
+    "conteudo_id": 998,
+    "tipo_interacao": "início",
+    "data_hora": "2026-09-22T20:22:11",
+    "tempo_consumido": 1,
+    "percentual_conclusao": 2.4,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 161,
+    "conteudo_id": 420,
+    "tipo_interacao": "visualização",
+    "data_hora": "2026-08-30T09:57:13",
+    "tempo_consumido": 7,
+    "percentual_conclusao": 17.3,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 156,
+    "conteudo_id": 983,
+    "tipo_interacao": "curtida",
+    "data_hora": "2026-09-13T05:17:11",
+    "tempo_consumido": 4,
+    "percentual_conclusao": 73.4,
+    "avaliacao_atribuida": 5
+  },
+  {
+    "usuario_id": 70,
+    "conteudo_id": 790,
+    "tipo_interacao": "visualização",
+    "data_hora": "2026-08-26T23:36:50",
+    "tempo_consumido": 37,
+    "percentual_conclusao": 59.1,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 48,
+    "conteudo_id": 881,
+    "tipo_interacao": "início",
+    "data_hora": "2026-09-19T21:25:24",
+    "tempo_consumido": 8,
+    "percentual_conclusao": 10.6,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 116,
+    "conteudo_id": 147,
+    "tipo_interacao": "conclusão",
+    "data_hora": "2026-09-02T02:57:45",
+    "tempo_consumido": 16,
+    "percentual_conclusao": 100.0,
+    "avaliacao_atribuida": 4
+  },
+  {
+    "usuario_id": 137,
+    "conteudo_id": 332,
+    "tipo_interacao": "início",
+    "data_hora": "2026-09-21T18:51:46",
+    "tempo_consumido": 1,
+    "percentual_conclusao": 4.6,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 169,
+    "conteudo_id": 138,
+    "tipo_interacao": "avaliação",
+    "data_hora": "2026-09-21T14:56:06",
+    "tempo_consumido": 1223,
+    "percentual_conclusao": 74.3,
+    "avaliacao_atribuida": 5
+  },
+  {
+    "usuario_id": 24,
+    "conteudo_id": 181,
+    "tipo_interacao": "visualização",
+    "data_hora": "2026-09-04T03:50:48",
+    "tempo_consumido": 258,
+    "percentual_conclusao": 82.7,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 22,
+    "conteudo_id": 97,
+    "tipo_interacao": "início",
+    "data_hora": "2026-08-30T12:03:57",
+    "tempo_consumido": 275,
+    "percentual_conclusao": 10.7,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 7,
+    "conteudo_id": 179,
+    "tipo_interacao": "visualização",
+    "data_hora": "2026-08-31T01:52:39",
+    "tempo_consumido": 1442,
+    "percentual_conclusao": 61.9,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 55,
+    "conteudo_id": 536,
+    "tipo_interacao": "conclusão",
+    "data_hora": "2026-09-11T04:32:08",
+    "tempo_consumido": 57,
+    "percentual_conclusao": 100.0,
+    "avaliacao_atribuida": 5
+  },
+  {
+    "usuario_id": 15,
+    "conteudo_id": 637,
+    "tipo_interacao": "início",
+    "data_hora": "2026-09-21T06:22:29",
+    "tempo_consumido": 6,
+    "percentual_conclusao": 6.6,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 2,
+    "conteudo_id": 194,
+    "tipo_interacao": "visualização",
+    "data_hora": "2026-09-03T08:38:33",
+    "tempo_consumido": 69,
+    "percentual_conclusao": 84.4,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 149,
+    "conteudo_id": 582,
+    "tipo_interacao": "início",
+    "data_hora": "2026-09-26T13:04:29",
+    "tempo_consumido": 3,
+    "percentual_conclusao": 11.4,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 107,
+    "conteudo_id": 787,
+    "tipo_interacao": "início",
+    "data_hora": "2026-09-19T02:54:07",
+    "tempo_consumido": 6,
+    "percentual_conclusao": 8.2,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 32,
+    "conteudo_id": 51,
+    "tipo_interacao": "curtida",
+    "data_hora": "2026-09-19T04:14:44",
+    "tempo_consumido": 887,
+    "percentual_conclusao": 99.4,
+    "avaliacao_atribuida": 5
+  },
+  {
+    "usuario_id": 95,
+    "conteudo_id": 783,
+    "tipo_interacao": "conclusão",
+    "data_hora": "2026-09-22T20:26:33",
+    "tempo_consumido": 23,
+    "percentual_conclusao": 100.0,
+    "avaliacao_atribuida": 4
+  },
+  {
+    "usuario_id": 38,
+    "conteudo_id": 270,
+    "tipo_interacao": "visualização",
+    "data_hora": "2026-09-12T19:09:01",
+    "tempo_consumido": 13,
+    "percentual_conclusao": 47.0,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 64,
+    "conteudo_id": 984,
+    "tipo_interacao": "conclusão",
+    "data_hora": "2026-09-06T02:09:14",
+    "tempo_consumido": 24,
+    "percentual_conclusao": 100.0,
+    "avaliacao_atribuida": 5
+  },
+  {
+    "usuario_id": 133,
+    "conteudo_id": 598,
+    "tipo_interacao": "curtida",
+    "data_hora": "2026-09-14T19:48:32",
+    "tempo_consumido": 26,
+    "percentual_conclusao": 94.3,
+    "avaliacao_atribuida": 5
+  },
+  {
+    "usuario_id": 157,
+    "conteudo_id": 708,
+    "tipo_interacao": "compartilhamento",
+    "data_hora": "2026-08-26T04:27:25",
+    "tempo_consumido": 6,
+    "percentual_conclusao": 44.6,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 20,
+    "conteudo_id": 451,
+    "tipo_interacao": "conclusão",
+    "data_hora": "2026-09-11T22:39:15",
+    "tempo_consumido": 15,
+    "percentual_conclusao": 100.0,
+    "avaliacao_atribuida": 5
+  },
+  {
+    "usuario_id": 36,
+    "conteudo_id": 650,
+    "tipo_interacao": "início",
+    "data_hora": "2026-09-20T09:05:30",
+    "tempo_consumido": 16,
+    "percentual_conclusao": 5.5,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 105,
+    "conteudo_id": 207,
+    "tipo_interacao": "visualização",
+    "data_hora": "2026-09-17T01:58:15",
+    "tempo_consumido": 19,
+    "percentual_conclusao": 62.8,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 123,
+    "conteudo_id": 657,
+    "tipo_interacao": "início",
+    "data_hora": "2026-09-09T12:45:44",
+    "tempo_consumido": 48,
+    "percentual_conclusao": 1.8,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 56,
+    "conteudo_id": 237,
+    "tipo_interacao": "visualização",
+    "data_hora": "2026-09-10T14:14:43",
+    "tempo_consumido": 10,
+    "percentual_conclusao": 50.1,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 83,
+    "conteudo_id": 293,
+    "tipo_interacao": "avaliação",
+    "data_hora": "2026-09-21T09:44:48",
+    "tempo_consumido": 11,
+    "percentual_conclusao": 95.6,
+    "avaliacao_atribuida": 5
+  },
+  {
+    "usuario_id": 42,
+    "conteudo_id": 358,
+    "tipo_interacao": "visualização",
+    "data_hora": "2026-09-26T08:04:58",
+    "tempo_consumido": 465,
+    "percentual_conclusao": 79.3,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 29,
+    "conteudo_id": 484,
+    "tipo_interacao": "visualização",
+    "data_hora": "2026-08-31T23:35:24",
+    "tempo_consumido": 41,
+    "percentual_conclusao": 58.8,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 89,
+    "conteudo_id": 999,
+    "tipo_interacao": "visualização",
+    "data_hora": "2026-09-24T09:04:23",
+    "tempo_consumido": 26,
+    "percentual_conclusao": 52.9,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 55,
+    "conteudo_id": 937,
+    "tipo_interacao": "visualização",
+    "data_hora": "2026-09-26T22:38:25",
+    "tempo_consumido": 27,
+    "percentual_conclusao": 75.8,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 61,
+    "conteudo_id": 787,
+    "tipo_interacao": "visualização",
+    "data_hora": "2026-08-29T15:39:56",
+    "tempo_consumido": 35,
+    "percentual_conclusao": 50.3,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 56,
+    "conteudo_id": 523,
+    "tipo_interacao": "visualização",
+    "data_hora": "2026-09-23T15:18:09",
+    "tempo_consumido": 12,
+    "percentual_conclusao": 24.4,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 90,
+    "conteudo_id": 1016,
+    "tipo_interacao": "visualização",
+    "data_hora": "2026-09-04T09:29:23",
+    "tempo_consumido": 3,
+    "percentual_conclusao": 69.1,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 88,
+    "conteudo_id": 932,
+    "tipo_interacao": "visualização",
+    "data_hora": "2026-08-29T23:08:17",
+    "tempo_consumido": 10,
+    "percentual_conclusao": 27.6,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 44,
+    "conteudo_id": 736,
+    "tipo_interacao": "conclusão",
+    "data_hora": "2026-09-25T07:09:19",
+    "tempo_consumido": 54,
+    "percentual_conclusao": 100.0,
+    "avaliacao_atribuida": 3
+  },
+  {
+    "usuario_id": 79,
+    "conteudo_id": 536,
+    "tipo_interacao": "avaliação",
+    "data_hora": "2026-09-23T12:55:24",
+    "tempo_consumido": 52,
+    "percentual_conclusao": 91.2,
+    "avaliacao_atribuida": 4
+  },
+  {
+    "usuario_id": 142,
+    "conteudo_id": 322,
+    "tipo_interacao": "visualização",
+    "data_hora": "2026-09-11T10:51:00",
+    "tempo_consumido": 69,
+    "percentual_conclusao": 73.7,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 70,
+    "conteudo_id": 422,
+    "tipo_interacao": "início",
+    "data_hora": "2026-09-02T06:05:50",
+    "tempo_consumido": 148,
+    "percentual_conclusao": 12.5,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 160,
+    "conteudo_id": 576,
+    "tipo_interacao": "conclusão",
+    "data_hora": "2026-09-19T23:12:41",
+    "tempo_consumido": 787,
+    "percentual_conclusao": 100.0,
+    "avaliacao_atribuida": 3
+  },
+  {
+    "usuario_id": 110,
+    "conteudo_id": 766,
+    "tipo_interacao": "conclusão",
+    "data_hora": "2026-09-24T10:15:28",
+    "tempo_consumido": 19,
+    "percentual_conclusao": 100.0,
+    "avaliacao_atribuida": 5
+  },
+  {
+    "usuario_id": 67,
+    "conteudo_id": 1030,
+    "tipo_interacao": "visualização",
+    "data_hora": "2026-09-13T05:49:11",
+    "tempo_consumido": 735,
+    "percentual_conclusao": 70.4,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 64,
+    "conteudo_id": 379,
+    "tipo_interacao": "avaliação",
+    "data_hora": "2026-09-04T15:51:30",
+    "tempo_consumido": 441,
+    "percentual_conclusao": 66.8,
+    "avaliacao_atribuida": 3
+  },
+  {
+    "usuario_id": 62,
+    "conteudo_id": 1024,
+    "tipo_interacao": "início",
+    "data_hora": "2026-09-25T11:12:24",
+    "tempo_consumido": 2,
+    "percentual_conclusao": 10.8,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 12,
+    "conteudo_id": 974,
+    "tipo_interacao": "conclusão",
+    "data_hora": "2026-09-01T21:47:38",
+    "tempo_consumido": 71,
+    "percentual_conclusao": 100.0,
+    "avaliacao_atribuida": 5
+  },
+  {
+    "usuario_id": 53,
+    "conteudo_id": 935,
+    "tipo_interacao": "início",
+    "data_hora": "2026-08-29T17:06:38",
+    "tempo_consumido": 9,
+    "percentual_conclusao": 11.2,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 6,
+    "conteudo_id": 642,
+    "tipo_interacao": "visualização",
+    "data_hora": "2026-09-05T11:12:34",
+    "tempo_consumido": 20,
+    "percentual_conclusao": 22.7,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 149,
+    "conteudo_id": 448,
+    "tipo_interacao": "conclusão",
+    "data_hora": "2026-09-24T20:04:54",
+    "tempo_consumido": 229,
+    "percentual_conclusao": 100.0,
+    "avaliacao_atribuida": 5
+  },
+  {
+    "usuario_id": 132,
+    "conteudo_id": 1028,
+    "tipo_interacao": "curtida",
+    "data_hora": "2026-09-06T10:31:21",
+    "tempo_consumido": 239,
+    "percentual_conclusao": 47.9,
+    "avaliacao_atribuida": 5
+  },
+  {
+    "usuario_id": 29,
+    "conteudo_id": 939,
+    "tipo_interacao": "visualização",
+    "data_hora": "2026-09-01T05:01:16",
+    "tempo_consumido": 10,
+    "percentual_conclusao": 38.0,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 12,
+    "conteudo_id": 996,
+    "tipo_interacao": "avaliação",
+    "data_hora": "2026-08-29T17:11:04",
+    "tempo_consumido": 45,
+    "percentual_conclusao": 59.9,
+    "avaliacao_atribuida": 5
+  },
+  {
+    "usuario_id": 60,
+    "conteudo_id": 486,
+    "tipo_interacao": "início",
+    "data_hora": "2026-08-26T09:56:27",
+    "tempo_consumido": 4,
+    "percentual_conclusao": 11.1,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 122,
+    "conteudo_id": 277,
+    "tipo_interacao": "compartilhamento",
+    "data_hora": "2026-09-04T06:45:28",
+    "tempo_consumido": 32,
+    "percentual_conclusao": 66.2,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 28,
+    "conteudo_id": 830,
+    "tipo_interacao": "conclusão",
+    "data_hora": "2026-09-03T06:59:46",
+    "tempo_consumido": 11,
+    "percentual_conclusao": 100.0,
+    "avaliacao_atribuida": 5
+  },
+  {
+    "usuario_id": 53,
+    "conteudo_id": 94,
+    "tipo_interacao": "visualização",
+    "data_hora": "2026-09-21T18:27:40",
+    "tempo_consumido": 70,
+    "percentual_conclusao": 27.7,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 95,
+    "conteudo_id": 623,
+    "tipo_interacao": "início",
+    "data_hora": "2026-09-02T01:10:47",
+    "tempo_consumido": 155,
+    "percentual_conclusao": 4.5,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 128,
+    "conteudo_id": 718,
+    "tipo_interacao": "visualização",
+    "data_hora": "2026-09-10T13:26:18",
+    "tempo_consumido": 27,
+    "percentual_conclusao": 36.1,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 31,
+    "conteudo_id": 927,
+    "tipo_interacao": "visualização",
+    "data_hora": "2026-09-11T20:26:25",
+    "tempo_consumido": 24,
+    "percentual_conclusao": 52.9,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 162,
+    "conteudo_id": 215,
+    "tipo_interacao": "curtida",
+    "data_hora": "2026-08-27T05:06:25",
+    "tempo_consumido": 37,
+    "percentual_conclusao": 96.9,
+    "avaliacao_atribuida": 5
+  },
+  {
+    "usuario_id": 71,
+    "conteudo_id": 142,
+    "tipo_interacao": "conclusão",
+    "data_hora": "2026-09-14T00:12:47",
+    "tempo_consumido": 19,
+    "percentual_conclusao": 100.0,
+    "avaliacao_atribuida": 3
+  },
+  {
+    "usuario_id": 148,
+    "conteudo_id": 897,
+    "tipo_interacao": "visualização",
+    "data_hora": "2026-09-26T20:56:45",
+    "tempo_consumido": 862,
+    "percentual_conclusao": 60.0,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 35,
+    "conteudo_id": 441,
+    "tipo_interacao": "curtida",
+    "data_hora": "2026-09-08T20:33:07",
+    "tempo_consumido": 7,
+    "percentual_conclusao": 60.1,
+    "avaliacao_atribuida": 5
+  },
+  {
+    "usuario_id": 48,
+    "conteudo_id": 1014,
+    "tipo_interacao": "avaliação",
+    "data_hora": "2026-08-31T12:06:34",
+    "tempo_consumido": 784,
+    "percentual_conclusao": 55.2,
+    "avaliacao_atribuida": 4
+  },
+  {
+    "usuario_id": 15,
+    "conteudo_id": 95,
+    "tipo_interacao": "visualização",
+    "data_hora": "2026-09-24T01:51:43",
+    "tempo_consumido": 770,
+    "percentual_conclusao": 66.8,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 34,
+    "conteudo_id": 623,
+    "tipo_interacao": "visualização",
+    "data_hora": "2026-09-06T23:06:56",
+    "tempo_consumido": 2026,
+    "percentual_conclusao": 58.7,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 91,
+    "conteudo_id": 27,
+    "tipo_interacao": "conclusão",
+    "data_hora": "2026-09-24T04:43:15",
+    "tempo_consumido": 30,
+    "percentual_conclusao": 100.0,
+    "avaliacao_atribuida": 4
+  },
+  {
+    "usuario_id": 117,
+    "conteudo_id": 480,
+    "tipo_interacao": "curtida",
+    "data_hora": "2026-09-14T10:52:05",
+    "tempo_consumido": 21,
+    "percentual_conclusao": 72.6,
+    "avaliacao_atribuida": 5
+  },
+  {
+    "usuario_id": 55,
+    "conteudo_id": 240,
+    "tipo_interacao": "curtida",
+    "data_hora": "2026-09-01T14:58:17",
+    "tempo_consumido": 18,
+    "percentual_conclusao": 49.3,
+    "avaliacao_atribuida": 5
+  },
+  {
+    "usuario_id": 38,
+    "conteudo_id": 703,
+    "tipo_interacao": "conclusão",
+    "data_hora": "2026-09-12T08:04:57",
+    "tempo_consumido": 18,
+    "percentual_conclusao": 100.0,
+    "avaliacao_atribuida": 5
+  },
+  {
+    "usuario_id": 108,
+    "conteudo_id": 898,
+    "tipo_interacao": "início",
+    "data_hora": "2026-09-15T09:51:38",
+    "tempo_consumido": 3,
+    "percentual_conclusao": 6.2,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 88,
+    "conteudo_id": 108,
+    "tipo_interacao": "visualização",
+    "data_hora": "2026-09-24T20:16:51",
+    "tempo_consumido": 3,
+    "percentual_conclusao": 15.2,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 11,
+    "conteudo_id": 253,
+    "tipo_interacao": "início",
+    "data_hora": "2026-09-05T09:50:56",
+    "tempo_consumido": 2,
+    "percentual_conclusao": 7.5,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 77,
+    "conteudo_id": 698,
+    "tipo_interacao": "visualização",
+    "data_hora": "2026-09-09T17:19:46",
+    "tempo_consumido": 15,
+    "percentual_conclusao": 24.0,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 101,
+    "conteudo_id": 723,
+    "tipo_interacao": "curtida",
+    "data_hora": "2026-09-16T09:52:23",
+    "tempo_consumido": 706,
+    "percentual_conclusao": 87.7,
+    "avaliacao_atribuida": 5
+  },
+  {
+    "usuario_id": 55,
+    "conteudo_id": 508,
+    "tipo_interacao": "visualização",
+    "data_hora": "2026-08-27T19:19:35",
+    "tempo_consumido": 20,
+    "percentual_conclusao": 30.5,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 18,
+    "conteudo_id": 204,
+    "tipo_interacao": "início",
+    "data_hora": "2026-09-21T03:51:32",
+    "tempo_consumido": 4,
+    "percentual_conclusao": 7.2,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 2,
+    "conteudo_id": 134,
+    "tipo_interacao": "compartilhamento",
+    "data_hora": "2026-09-25T00:58:37",
+    "tempo_consumido": 39,
+    "percentual_conclusao": 57.7,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 27,
+    "conteudo_id": 408,
+    "tipo_interacao": "início",
+    "data_hora": "2026-09-10T12:35:56",
+    "tempo_consumido": 44,
+    "percentual_conclusao": 6.3,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 122,
+    "conteudo_id": 450,
+    "tipo_interacao": "visualização",
+    "data_hora": "2026-09-18T17:02:47",
+    "tempo_consumido": 1001,
+    "percentual_conclusao": 82.4,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 149,
+    "conteudo_id": 228,
+    "tipo_interacao": "início",
+    "data_hora": "2026-09-09T12:50:38",
+    "tempo_consumido": 4,
+    "percentual_conclusao": 14.8,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 69,
+    "conteudo_id": 1026,
+    "tipo_interacao": "curtida",
+    "data_hora": "2026-09-06T01:28:05",
+    "tempo_consumido": 12,
+    "percentual_conclusao": 76.9,
+    "avaliacao_atribuida": 5
+  },
+  {
+    "usuario_id": 28,
+    "conteudo_id": 207,
+    "tipo_interacao": "compartilhamento",
+    "data_hora": "2026-08-29T02:35:12",
+    "tempo_consumido": 16,
+    "percentual_conclusao": 54.5,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 109,
+    "conteudo_id": 622,
+    "tipo_interacao": "visualização",
+    "data_hora": "2026-09-08T20:08:46",
+    "tempo_consumido": 10,
+    "percentual_conclusao": 73.9,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 85,
+    "conteudo_id": 536,
+    "tipo_interacao": "curtida",
+    "data_hora": "2026-09-14T18:33:46",
+    "tempo_consumido": 30,
+    "percentual_conclusao": 53.5,
+    "avaliacao_atribuida": 5
+  },
+  {
+    "usuario_id": 52,
+    "conteudo_id": 453,
+    "tipo_interacao": "conclusão",
+    "data_hora": "2026-09-20T07:08:12",
+    "tempo_consumido": 360,
+    "percentual_conclusao": 100.0,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 41,
+    "conteudo_id": 377,
+    "tipo_interacao": "início",
+    "data_hora": "2026-09-24T15:18:32",
+    "tempo_consumido": 5,
+    "percentual_conclusao": 7.9,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 999,
+    "conteudo_id": 665,
+    "tipo_interacao": "visualização",
+    "data_hora": "2026-09-23T07:35:57",
+    "tempo_consumido": 2412,
+    "percentual_conclusao": 67.2,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 113,
+    "conteudo_id": 5000,
+    "tipo_interacao": "visualização",
+    "data_hora": "2026-09-07T03:23:54",
+    "tempo_consumido": 44,
+    "percentual_conclusao": 83.8,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 41,
+    "conteudo_id": 368,
+    "tipo_interacao": "visualização",
+    "data_hora": "2026-09-03T10:44:10",
+    "tempo_consumido": -15,
+    "percentual_conclusao": 13.3,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 14,
+    "conteudo_id": 743,
+    "tipo_interacao": "visualização",
+    "data_hora": "2026-09-05T02:52:52",
+    "tempo_consumido": 29,
+    "percentual_conclusao": 150.0,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 17,
+    "conteudo_id": 284,
+    "tipo_interacao": "download",
+    "data_hora": "2026-09-24T04:30:49",
+    "tempo_consumido": 2,
+    "percentual_conclusao": 12.9,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 61,
+    "conteudo_id": 735,
+    "tipo_interacao": "visualização",
+    "data_hora": "2026-13-01T10:00:00",
+    "tempo_consumido": 76,
+    "percentual_conclusao": 77.4,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 136,
+    "tipo_interacao": "visualização",
+    "data_hora": "2026-09-01T22:39:21",
+    "tempo_consumido": 22,
+    "percentual_conclusao": 31.4,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 3,
+    "conteudo_id": 560,
+    "tipo_interacao": "visualização",
+    "data_hora": "2026-08-30T18:19:14",
+    "tempo_consumido": 21,
+    "percentual_conclusao": 34.7,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 88,
+    "conteudo_id": 453,
+    "tipo_interacao": "visualização",
+    "data_hora": "2026-09-10T08:21:53",
+    "tempo_consumido": 134,
+    "percentual_conclusao": 37.2,
+    "avaliacao_atribuida": 0
+  },
+  {
+    "usuario_id": 109,
+    "conteudo_id": 373,
+    "tipo_interacao": "visualização",
+    "data_hora": "2027-01-10T09:00:00",
+    "tempo_consumido": 1916,
+    "percentual_conclusao": 72.7,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 115,
+    "conteudo_id": 908,
+    "tipo_interacao": "conclusão",
+    "data_hora": "2026-09-08T11:14:59",
+    "tempo_consumido": 5,
+    "percentual_conclusao": 80.0,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 171,
+    "conteudo_id": 63,
+    "tipo_interacao": "visualização",
+    "data_hora": "2026-09-10T00:54:55",
+    "tempo_consumido": 2334,
+    "percentual_conclusao": 82.3,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 13,
+    "conteudo_id": 1041,
+    "tipo_interacao": "visualização",
+    "data_hora": "2026-09-15T20:00:00",
+    "tempo_consumido": 47,
+    "percentual_conclusao": 55.5,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 57,
+    "conteudo_id": 72,
+    "tipo_interacao": "visualização",
+    "data_hora": "2026-01-05T08:00:00",
+    "tempo_consumido": 4,
+    "percentual_conclusao": 26.9,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": "  42 ",
+    "conteudo_id": 768,
+    "tipo_interacao": "visualização",
+    "data_hora": "2026-09-14T14:50:21",
+    "tempo_consumido": 10,
+    "percentual_conclusao": 30.4,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 140,
+    "conteudo_id": 475,
+    "tipo_interacao": "VISUALIZACAO",
+    "data_hora": "2026-09-07T06:58:51",
+    "tempo_consumido": 163,
+    "percentual_conclusao": 66.7,
+    "avaliacao_atribuida": null
+  }
+]

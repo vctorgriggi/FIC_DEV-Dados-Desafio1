@@ -1,0 +1,1294 @@
+[
+  {
+    "usuario_id": 15,
+    "conteudo_id": 864,
+    "avaliacao": 4,
+    "comentario": "A didática não funcionou para mim. Explicação confusa em vários momentos.",
+    "tags": [
+      "streaming",
+      "estatistica",
+      "storytelling"
+    ],
+    "data": "2026-09-10"
+  },
+  {
+    "usuario_id": 89,
+    "conteudo_id": 535,
+    "avaliacao": 3,
+    "comentario": "Uma das melhores explicações sobre o assunto que já encontrei na plataforma.",
+    "tags": [
+      "spark",
+      "ci-cd"
+    ],
+    "data": "2026-09-07"
+  },
+  {
+    "usuario_id": 134,
+    "conteudo_id": 767,
+    "avaliacao": 3,
+    "comentario": "Boa introdução ao tema, porém o ritmo em alguns momentos ficou um pouco arrastado.",
+    "tags": [
+      "devops"
+    ],
+    "data": "2026-09-13"
+  },
+  {
+    "usuario_id": 18,
+    "conteudo_id": 496,
+    "avaliacao": 3,
+    "comentario": "Muito bom material, bem estruturado e com explicações coerentes.",
+    "tags": [
+      "kubernetes"
+    ],
+    "data": "2026-08-27"
+  },
+  {
+    "usuario_id": 69,
+    "conteudo_id": 453,
+    "avaliacao": 4,
+    "comentario": "Cobre o essencial para iniciantes, porém esperado tópicos mais avançados no final.",
+    "tags": [
+      "metricas"
+    ],
+    "data": "2026-09-21"
+  },
+  {
+    "usuario_id": 140,
+    "conteudo_id": 862,
+    "avaliacao": 4,
+    "comentario": "Muito bom material, bem estruturado e com explicações coerentes.",
+    "tags": [
+      "streaming",
+      "embeddings"
+    ],
+    "data": "2026-08-27"
+  },
+  {
+    "usuario_id": 110,
+    "conteudo_id": 267,
+    "avaliacao": 4,
+    "comentario": "Ótima didática e visão geral sólida do tema.",
+    "tags": [
+      "pipeline",
+      "teórico"
+    ],
+    "data": "2026-09-07"
+  },
+  {
+    "usuario_id": 170,
+    "conteudo_id": 421,
+    "avaliacao": 5,
+    "comentario": "Cobre o essencial para iniciantes, porém esperado tópicos mais avançados no final.",
+    "tags": [
+      "postgresql"
+    ],
+    "data": "2026-09-21"
+  },
+  {
+    "usuario_id": 64,
+    "conteudo_id": 479,
+    "avaliacao": 3,
+    "comentario": "Muito enriquecedor. Direto ao ponto, com foco nas melhores práticas de mercado.",
+    "tags": [
+      "metadados",
+      "linux"
+    ],
+    "data": "2026-09-15"
+  },
+  {
+    "usuario_id": 90,
+    "conteudo_id": 491,
+    "avaliacao": 4,
+    "comentario": "Sensacional! O instrutor domina o assunto e os conceitos ficaram cristalinos.",
+    "tags": [
+      "superset"
+    ],
+    "data": "2026-09-22"
+  },
+  {
+    "usuario_id": 130,
+    "conteudo_id": 813,
+    "avaliacao": 5,
+    "comentario": "Material de altíssimo nível. Ajudou muito a destravar meu projeto prático.",
+    "tags": [
+      "terraform",
+      "pipeline",
+      "streaming"
+    ],
+    "data": "2026-09-15"
+  },
+  {
+    "usuario_id": 64,
+    "conteudo_id": 341,
+    "avaliacao": 4,
+    "comentario": "Excelente conteúdo teórico, com bons exemplos para fixar o aprendizado.",
+    "tags": [
+      "metadados"
+    ],
+    "data": "2026-09-02"
+  },
+  {
+    "usuario_id": 23,
+    "conteudo_id": 674,
+    "avaliacao": 3,
+    "comentario": "Excelente conteúdo teórico, com bons exemplos para fixar o aprendizado.",
+    "tags": [
+      "etl",
+      "governanca"
+    ],
+    "data": "2026-09-20"
+  },
+  {
+    "usuario_id": 126,
+    "conteudo_id": 20,
+    "avaliacao": 5,
+    "comentario": "Exemplos com erros conceituais e ritmo muito acelerado.",
+    "tags": [
+      "ci-cd",
+      "linhagem"
+    ],
+    "data": "2026-09-06"
+  },
+  {
+    "usuario_id": 18,
+    "conteudo_id": 50,
+    "avaliacao": 3,
+    "comentario": "Excelente abordagem! Didática impecável e ritmo perfeito.",
+    "tags": [
+      "hands-on"
+    ],
+    "data": "2026-09-13"
+  },
+  {
+    "usuario_id": 74,
+    "conteudo_id": 829,
+    "avaliacao": 3,
+    "comentario": "Explicações adequadas, mas faltou demonstrar mais casos reais de uso.",
+    "tags": [
+      "prático"
+    ],
+    "data": "2026-08-27"
+  },
+  {
+    "usuario_id": 162,
+    "conteudo_id": 953,
+    "avaliacao": 5,
+    "comentario": "Sensacional! O instrutor domina o assunto e os conceitos ficaram cristalinos.",
+    "tags": [
+      "dataops"
+    ],
+    "data": "2026-09-15"
+  },
+  {
+    "usuario_id": 19,
+    "conteudo_id": 118,
+    "avaliacao": 4,
+    "comentario": "Ótima didática e visão geral sólida do tema.",
+    "tags": [
+      "postgresql"
+    ],
+    "data": "2026-09-10"
+  },
+  {
+    "usuario_id": 22,
+    "conteudo_id": 379,
+    "avaliacao": 4,
+    "comentario": "Material de altíssimo nível. Ajudou muito a destravar meu projeto prático.",
+    "tags": [
+      "mongodb",
+      "teórico",
+      "iniciante"
+    ],
+    "data": "2026-09-09"
+  },
+  {
+    "usuario_id": 112,
+    "conteudo_id": 200,
+    "avaliacao": 4,
+    "comentario": "Achei um pouco superficial em comparação com o nível prometido na ementa.",
+    "tags": [
+      "clean-code",
+      "streaming"
+    ],
+    "data": "2026-09-09"
+  },
+  {
+    "usuario_id": 15,
+    "conteudo_id": 187,
+    "avaliacao": 4,
+    "comentario": "Excelente abordagem! Didática impecável e ritmo perfeito.",
+    "tags": [
+      "kpis"
+    ],
+    "data": "2026-09-07"
+  },
+  {
+    "usuario_id": 136,
+    "conteudo_id": 647,
+    "avaliacao": 4,
+    "comentario": "Apresentação muito clara e objetiva. Recomendo para quem está estudando a área.",
+    "tags": [
+      "eda",
+      "rag"
+    ],
+    "data": "2026-09-21"
+  },
+  {
+    "usuario_id": 56,
+    "conteudo_id": 132,
+    "avaliacao": 4,
+    "comentario": "Explicações adequadas, mas faltou demonstrar mais casos reais de uso.",
+    "tags": [
+      "indices",
+      "hands-on"
+    ],
+    "data": "2026-08-30"
+  },
+  {
+    "usuario_id": 153,
+    "conteudo_id": 677,
+    "avaliacao": 4,
+    "comentario": "Ótima didática e visão geral sólida do tema.",
+    "tags": [
+      "lakehouse"
+    ],
+    "data": "2026-09-07"
+  },
+  {
+    "usuario_id": 169,
+    "conteudo_id": 908,
+    "avaliacao": 3,
+    "comentario": "Material muito resumido, necessita de pesquisas externas para complementar.",
+    "tags": [
+      "spark",
+      "dataops",
+      "metadados"
+    ],
+    "data": "2026-09-19"
+  },
+  {
+    "usuario_id": 145,
+    "conteudo_id": 822,
+    "avaliacao": 4,
+    "comentario": "Explicações adequadas, mas faltou demonstrar mais casos reais de uso.",
+    "tags": [
+      "rag"
+    ],
+    "data": "2026-09-22"
+  },
+  {
+    "usuario_id": 161,
+    "conteudo_id": 861,
+    "avaliacao": 5,
+    "comentario": "Explicações adequadas, mas faltou demonstrar mais casos reais de uso.",
+    "tags": [
+      "streaming",
+      "predicao",
+      "recomendado"
+    ],
+    "data": "2026-08-28"
+  },
+  {
+    "usuario_id": 10,
+    "conteudo_id": 495,
+    "avaliacao": 4,
+    "comentario": "Material de altíssimo nível. Ajudou muito a destravar meu projeto prático.",
+    "tags": [
+      "storytelling",
+      "rag"
+    ],
+    "data": "2026-09-02"
+  },
+  {
+    "usuario_id": 135,
+    "conteudo_id": 853,
+    "avaliacao": 4,
+    "comentario": "A didática não funcionou para mim. Explicação confusa em vários momentos.",
+    "tags": [
+      "clean-code",
+      "pandas",
+      "metadados"
+    ],
+    "data": "2026-09-26"
+  },
+  {
+    "usuario_id": 162,
+    "conteudo_id": 652,
+    "avaliacao": 3,
+    "comentario": "Cobre o essencial para iniciantes, porém esperado tópicos mais avançados no final.",
+    "tags": [
+      "dados",
+      "nosql"
+    ],
+    "data": "2026-09-24"
+  },
+  {
+    "usuario_id": 44,
+    "conteudo_id": 710,
+    "avaliacao": 5,
+    "comentario": "Material de alta qualidade e de fácil compreensão.",
+    "tags": [
+      "predicao",
+      "hands-on"
+    ],
+    "data": "2026-08-28"
+  },
+  {
+    "usuario_id": 77,
+    "conteudo_id": 973,
+    "avaliacao": 5,
+    "comentario": "Uma das melhores explicações sobre o assunto que já encontrei na plataforma.",
+    "tags": [
+      "linhagem",
+      "governanca",
+      "solid"
+    ],
+    "data": "2026-09-18"
+  },
+  {
+    "usuario_id": 155,
+    "conteudo_id": 50,
+    "avaliacao": 5,
+    "comentario": "Conteúdo razoável, atende ao básico, mas senti falta de maior aprofundamento.",
+    "tags": [
+      "python",
+      "nlp"
+    ],
+    "data": "2026-08-26"
+  },
+  {
+    "usuario_id": 135,
+    "conteudo_id": 206,
+    "avaliacao": 5,
+    "comentario": "Cobre o essencial para iniciantes, porém esperado tópicos mais avançados no final.",
+    "tags": [
+      "linux",
+      "embeddings"
+    ],
+    "data": "2026-09-16"
+  },
+  {
+    "usuario_id": 44,
+    "conteudo_id": 312,
+    "avaliacao": 4,
+    "comentario": "Excelente conteúdo teórico, com bons exemplos para fixar o aprendizado.",
+    "tags": [
+      "dataops"
+    ],
+    "data": "2026-09-22"
+  },
+  {
+    "usuario_id": 136,
+    "conteudo_id": 993,
+    "avaliacao": 5,
+    "comentario": "Ótima didática e visão geral sólida do tema.",
+    "tags": [
+      "scikit-learn"
+    ],
+    "data": "2026-08-27"
+  },
+  {
+    "usuario_id": 32,
+    "conteudo_id": 345,
+    "avaliacao": 5,
+    "comentario": "Exemplos com erros conceituais e ritmo muito acelerado.",
+    "tags": [
+      "dataops",
+      "pipeline"
+    ],
+    "data": "2026-09-06"
+  },
+  {
+    "usuario_id": 44,
+    "conteudo_id": 999,
+    "avaliacao": 3,
+    "comentario": "Excelente abordagem! Didática impecável e ritmo perfeito.",
+    "tags": [
+      "governanca",
+      "devops",
+      "postgresql"
+    ],
+    "data": "2026-09-20"
+  },
+  {
+    "usuario_id": 3,
+    "conteudo_id": 137,
+    "avaliacao": 5,
+    "comentario": "A didática não funcionou para mim. Explicação confusa em vários momentos.",
+    "tags": [
+      "solid",
+      "clean-code"
+    ],
+    "data": "2026-09-04"
+  },
+  {
+    "usuario_id": 114,
+    "conteudo_id": 497,
+    "avaliacao": 4,
+    "comentario": "Material de alta qualidade e de fácil compreensão.",
+    "tags": [
+      "rag"
+    ],
+    "data": "2026-09-15"
+  },
+  {
+    "usuario_id": 121,
+    "conteudo_id": 457,
+    "avaliacao": 5,
+    "comentario": "Boa introdução ao tema, porém o ritmo em alguns momentos ficou um pouco arrastado.",
+    "tags": [
+      "ia",
+      "seguranca"
+    ],
+    "data": "2026-09-20"
+  },
+  {
+    "usuario_id": 65,
+    "conteudo_id": 171,
+    "avaliacao": 5,
+    "comentario": "Explicações adequadas, mas faltou demonstrar mais casos reais de uso.",
+    "tags": [
+      "solid"
+    ],
+    "data": "2026-09-09"
+  },
+  {
+    "usuario_id": 4,
+    "conteudo_id": 829,
+    "avaliacao": 4,
+    "comentario": "A didática não funcionou para mim. Explicação confusa em vários momentos.",
+    "tags": [
+      "lgpd",
+      "oop",
+      "eda"
+    ],
+    "data": "2026-09-24"
+  },
+  {
+    "usuario_id": 13,
+    "conteudo_id": 958,
+    "avaliacao": 3,
+    "comentario": "Material de alta qualidade e de fácil compreensão.",
+    "tags": [
+      "deep-learning",
+      "ci-cd",
+      "scikit-learn"
+    ],
+    "data": "2026-09-19"
+  },
+  {
+    "usuario_id": 126,
+    "conteudo_id": 32,
+    "avaliacao": 5,
+    "comentario": "Boa introdução ao tema, porém o ritmo em alguns momentos ficou um pouco arrastado.",
+    "tags": [
+      "pytest",
+      "etl"
+    ],
+    "data": "2026-09-21"
+  },
+  {
+    "usuario_id": 170,
+    "conteudo_id": 157,
+    "avaliacao": 4,
+    "comentario": "Explicações adequadas, mas faltou demonstrar mais casos reais de uso.",
+    "tags": [
+      "governanca",
+      "backend",
+      "nosql"
+    ],
+    "data": "2026-09-01"
+  },
+  {
+    "usuario_id": 89,
+    "conteudo_id": 223,
+    "avaliacao": 5,
+    "comentario": "Muito bom material, bem estruturado e com explicações coerentes.",
+    "tags": [
+      "dataops",
+      "ia",
+      "rag"
+    ],
+    "data": "2026-09-01"
+  },
+  {
+    "usuario_id": 138,
+    "conteudo_id": 973,
+    "avaliacao": 5,
+    "comentario": "Uma das melhores explicações sobre o assunto que já encontrei na plataforma.",
+    "tags": [
+      "embeddings",
+      "deep-learning"
+    ],
+    "data": "2026-09-26"
+  },
+  {
+    "usuario_id": 92,
+    "conteudo_id": 217,
+    "avaliacao": 5,
+    "comentario": "Uma das melhores explicações sobre o assunto que já encontrei na plataforma.",
+    "tags": [
+      "llm"
+    ],
+    "data": "2026-09-09"
+  },
+  {
+    "usuario_id": 54,
+    "conteudo_id": 323,
+    "avaliacao": 5,
+    "comentario": "Cobre o essencial para iniciantes, porém esperado tópicos mais avançados no final.",
+    "tags": [
+      "anonimizacao",
+      "bi"
+    ],
+    "data": "2026-09-26"
+  },
+  {
+    "usuario_id": 95,
+    "conteudo_id": 447,
+    "avaliacao": 4,
+    "comentario": "Uma das melhores explicações sobre o assunto que já encontrei na plataforma.",
+    "tags": [
+      "clean-code"
+    ],
+    "data": "2026-09-18"
+  },
+  {
+    "usuario_id": 39,
+    "conteudo_id": 459,
+    "avaliacao": 4,
+    "comentario": "Cobre o essencial para iniciantes, porém esperado tópicos mais avançados no final.",
+    "tags": [
+      "ci-cd",
+      "oop"
+    ],
+    "data": "2026-09-17"
+  },
+  {
+    "usuario_id": 148,
+    "conteudo_id": 615,
+    "avaliacao": 4,
+    "comentario": "Muito bom material, bem estruturado e com explicações coerentes.",
+    "tags": [
+      "essencial",
+      "mongodb"
+    ],
+    "data": "2026-09-06"
+  },
+  {
+    "usuario_id": 19,
+    "conteudo_id": 237,
+    "avaliacao": 5,
+    "comentario": "Apresentação muito clara e objetiva. Recomendo para quem está estudando a área.",
+    "tags": [
+      "spark",
+      "teórico",
+      "pandas"
+    ],
+    "data": "2026-09-23"
+  },
+  {
+    "usuario_id": 69,
+    "conteudo_id": 843,
+    "avaliacao": 4,
+    "comentario": "Cobre o essencial para iniciantes, porém esperado tópicos mais avançados no final.",
+    "tags": [
+      "governanca",
+      "pipeline"
+    ],
+    "data": "2026-09-17"
+  },
+  {
+    "usuario_id": 166,
+    "conteudo_id": 230,
+    "avaliacao": 4,
+    "comentario": "Sensacional! O instrutor domina o assunto e os conceitos ficaram cristalinos.",
+    "tags": [
+      "recomendado",
+      "anonimizacao"
+    ],
+    "data": "2026-09-23"
+  },
+  {
+    "usuario_id": 134,
+    "conteudo_id": 84,
+    "avaliacao": 5,
+    "comentario": "Ótima didática e visão geral sólida do tema.",
+    "tags": [
+      "jsonb"
+    ],
+    "data": "2026-09-06"
+  },
+  {
+    "usuario_id": 94,
+    "conteudo_id": 37,
+    "avaliacao": 4,
+    "comentario": "Conteúdo razoável, atende ao básico, mas senti falta de maior aprofundamento.",
+    "tags": [
+      "governanca",
+      "docker",
+      "machine-learning"
+    ],
+    "data": "2026-09-12"
+  },
+  {
+    "usuario_id": 108,
+    "conteudo_id": 696,
+    "avaliacao": 5,
+    "comentario": "Conteúdo excelente, muito didático e com exemplos práticos aplicáveis.",
+    "tags": [
+      "mongodb",
+      "didático"
+    ],
+    "data": "2026-09-23"
+  },
+  {
+    "usuario_id": 98,
+    "conteudo_id": 170,
+    "avaliacao": 4,
+    "comentario": "Uma das melhores explicações sobre o assunto que já encontrei na plataforma.",
+    "tags": [
+      "hands-on"
+    ],
+    "data": "2026-09-01"
+  },
+  {
+    "usuario_id": 15,
+    "conteudo_id": 810,
+    "avaliacao": 5,
+    "comentario": "Explicações adequadas, mas faltou demonstrar mais casos reais de uso.",
+    "tags": [
+      "embeddings",
+      "oop",
+      "postgresql"
+    ],
+    "data": "2026-09-18"
+  },
+  {
+    "usuario_id": 104,
+    "conteudo_id": 836,
+    "avaliacao": 4,
+    "comentario": "Conteúdo introdutório, claro e objetivo. Superou minhas expectativas!",
+    "tags": [
+      "jsonb",
+      "embeddings",
+      "seguranca"
+    ],
+    "data": "2026-08-26"
+  },
+  {
+    "usuario_id": 13,
+    "conteudo_id": 929,
+    "avaliacao": 5,
+    "comentario": "Faltou clareza na explicação de conceitos-chave no início.",
+    "tags": [
+      "streaming"
+    ],
+    "data": "2026-09-02"
+  },
+  {
+    "usuario_id": 86,
+    "conteudo_id": 336,
+    "avaliacao": 5,
+    "comentario": "Boa introdução ao tema, porém o ritmo em alguns momentos ficou um pouco arrastado.",
+    "tags": [
+      "rag"
+    ],
+    "data": "2026-09-26"
+  },
+  {
+    "usuario_id": 123,
+    "conteudo_id": 318,
+    "avaliacao": 4,
+    "comentario": "Cobre o essencial para iniciantes, porém esperado tópicos mais avançados no final.",
+    "tags": [
+      "kpis",
+      "superset",
+      "agentes"
+    ],
+    "data": "2026-09-18"
+  },
+  {
+    "usuario_id": 89,
+    "conteudo_id": 344,
+    "avaliacao": 5,
+    "comentario": "Exemplos com erros conceituais e ritmo muito acelerado.",
+    "tags": [
+      "prático",
+      "iniciante",
+      "eda"
+    ],
+    "data": "2026-09-19"
+  },
+  {
+    "usuario_id": 86,
+    "conteudo_id": 54,
+    "avaliacao": 4,
+    "comentario": "Uma das melhores explicações sobre o assunto que já encontrei na plataforma.",
+    "tags": [
+      "spark"
+    ],
+    "data": "2026-09-23"
+  },
+  {
+    "usuario_id": 69,
+    "conteudo_id": 898,
+    "avaliacao": 3,
+    "comentario": "Muito bom material, bem estruturado e com explicações coerentes.",
+    "tags": [
+      "clean-code",
+      "predicao",
+      "backend"
+    ],
+    "data": "2026-09-07"
+  },
+  {
+    "usuario_id": 118,
+    "conteudo_id": 155,
+    "avaliacao": 3,
+    "comentario": "Material muito resumido, necessita de pesquisas externas para complementar.",
+    "tags": [
+      "essencial",
+      "mongodb",
+      "metadados"
+    ],
+    "data": "2026-09-08"
+  },
+  {
+    "usuario_id": 24,
+    "conteudo_id": 516,
+    "avaliacao": 4,
+    "comentario": "Uma das melhores explicações sobre o assunto que já encontrei na plataforma.",
+    "tags": [
+      "superset"
+    ],
+    "data": "2026-09-01"
+  },
+  {
+    "usuario_id": 129,
+    "conteudo_id": 699,
+    "avaliacao": 4,
+    "comentario": "Uma das melhores explicações sobre o assunto que já encontrei na plataforma.",
+    "tags": [
+      "rag",
+      "scikit-learn"
+    ],
+    "data": "2026-09-06"
+  },
+  {
+    "usuario_id": 141,
+    "conteudo_id": 465,
+    "avaliacao": 4,
+    "comentario": "Conteúdo introdutório, claro e objetivo. Superou minhas expectativas!",
+    "tags": [
+      "etl",
+      "ci-cd",
+      "deep-learning"
+    ],
+    "data": "2026-09-08"
+  },
+  {
+    "usuario_id": 93,
+    "conteudo_id": 379,
+    "avaliacao": 4,
+    "comentario": "Explicações adequadas, mas faltou demonstrar mais casos reais de uso.",
+    "tags": [
+      "streaming",
+      "pgvector"
+    ],
+    "data": "2026-09-13"
+  },
+  {
+    "usuario_id": 122,
+    "conteudo_id": 22,
+    "avaliacao": 5,
+    "comentario": "Conteúdo bastante completo e relevante. Apenas gostaria de mais exercícios práticos.",
+    "tags": [
+      "bi"
+    ],
+    "data": "2026-09-09"
+  },
+  {
+    "usuario_id": 147,
+    "conteudo_id": 712,
+    "avaliacao": 4,
+    "comentario": "Sensacional! O instrutor domina o assunto e os conceitos ficaram cristalinos.",
+    "tags": [
+      "dashboard",
+      "pandas",
+      "recomendado"
+    ],
+    "data": "2026-08-29"
+  },
+  {
+    "usuario_id": 144,
+    "conteudo_id": 135,
+    "avaliacao": 3,
+    "comentario": "Faltou clareza na explicação de conceitos-chave no início.",
+    "tags": [
+      "kubernetes"
+    ],
+    "data": "2026-09-07"
+  },
+  {
+    "usuario_id": 165,
+    "conteudo_id": 748,
+    "avaliacao": 5,
+    "comentario": "Uma das melhores explicações sobre o assunto que já encontrei na plataforma.",
+    "tags": [
+      "dataops"
+    ],
+    "data": "2026-09-22"
+  },
+  {
+    "usuario_id": 132,
+    "conteudo_id": 244,
+    "avaliacao": 4,
+    "comentario": "Material de alta qualidade e de fácil compreensão.",
+    "tags": [
+      "dados"
+    ],
+    "data": "2026-09-16"
+  },
+  {
+    "usuario_id": 23,
+    "conteudo_id": 866,
+    "avaliacao": 5,
+    "comentario": "Conteúdo excelente, muito didático e com exemplos práticos aplicáveis.",
+    "tags": [
+      "dados"
+    ],
+    "data": "2026-09-03"
+  },
+  {
+    "usuario_id": 70,
+    "conteudo_id": 890,
+    "avaliacao": 5,
+    "comentario": "Material muito resumido, necessita de pesquisas externas para complementar.",
+    "tags": [
+      "didático"
+    ],
+    "data": "2026-09-02"
+  },
+  {
+    "usuario_id": 149,
+    "conteudo_id": 368,
+    "avaliacao": 3,
+    "comentario": "Conteúdo bastante completo e relevante. Apenas gostaria de mais exercícios práticos.",
+    "tags": [
+      "avançado",
+      "prático"
+    ],
+    "data": "2026-09-14"
+  },
+  {
+    "usuario_id": 50,
+    "conteudo_id": 595,
+    "avaliacao": 5,
+    "comentario": "Conteúdo excelente, muito didático e com exemplos práticos aplicáveis.",
+    "tags": [
+      "seguranca",
+      "nlp"
+    ],
+    "data": "2026-08-27"
+  },
+  {
+    "usuario_id": 99,
+    "conteudo_id": 421,
+    "avaliacao": 4,
+    "comentario": "A didática não funcionou para mim. Explicação confusa em vários momentos.",
+    "tags": [
+      "agentes",
+      "fastapi"
+    ],
+    "data": "2026-09-20"
+  },
+  {
+    "usuario_id": 109,
+    "conteudo_id": 627,
+    "avaliacao": 4,
+    "comentario": "Excelente abordagem! Didática impecável e ritmo perfeito.",
+    "tags": [
+      "predicao"
+    ],
+    "data": "2026-08-27"
+  },
+  {
+    "usuario_id": 106,
+    "conteudo_id": 990,
+    "avaliacao": 3,
+    "comentario": "Muito bom material, bem estruturado e com explicações coerentes.",
+    "tags": [
+      "rag"
+    ],
+    "data": "2026-08-31"
+  },
+  {
+    "usuario_id": 131,
+    "conteudo_id": 614,
+    "avaliacao": 4,
+    "comentario": "Muito enriquecedor. Direto ao ponto, com foco nas melhores práticas de mercado.",
+    "tags": [
+      "bi",
+      "sql",
+      "hands-on"
+    ],
+    "data": "2026-09-01"
+  },
+  {
+    "usuario_id": 149,
+    "conteudo_id": 47,
+    "avaliacao": 5,
+    "comentario": "Explicações adequadas, mas faltou demonstrar mais casos reais de uso.",
+    "tags": [
+      "teórico",
+      "lakehouse"
+    ],
+    "data": "2026-09-13"
+  },
+  {
+    "usuario_id": 24,
+    "conteudo_id": 39,
+    "avaliacao": 5,
+    "comentario": "Conteúdo razoável, atende ao básico, mas senti falta de maior aprofundamento.",
+    "tags": [
+      "sql"
+    ],
+    "data": "2026-09-23"
+  },
+  {
+    "usuario_id": 59,
+    "conteudo_id": 698,
+    "avaliacao": 4,
+    "comentario": "Cobre o essencial para iniciantes, porém esperado tópicos mais avançados no final.",
+    "tags": [
+      "metadados",
+      "recomendado"
+    ],
+    "data": "2026-09-16"
+  },
+  {
+    "usuario_id": 15,
+    "conteudo_id": 323,
+    "avaliacao": 4,
+    "comentario": "Boa introdução ao tema, porém o ritmo em alguns momentos ficou um pouco arrastado.",
+    "tags": [
+      "streaming"
+    ],
+    "data": "2026-09-11"
+  },
+  {
+    "usuario_id": 89,
+    "conteudo_id": 562,
+    "avaliacao": 5,
+    "comentario": "Conteúdo razoável, atende ao básico, mas senti falta de maior aprofundamento.",
+    "tags": [
+      "eda",
+      "devops",
+      "dataops"
+    ],
+    "data": "2026-09-22"
+  },
+  {
+    "usuario_id": 96,
+    "conteudo_id": 749,
+    "avaliacao": 5,
+    "comentario": "Muito enriquecedor. Direto ao ponto, com foco nas melhores práticas de mercado.",
+    "tags": [
+      "etl",
+      "predicao"
+    ],
+    "data": "2026-09-13"
+  },
+  {
+    "usuario_id": 78,
+    "conteudo_id": 358,
+    "avaliacao": 4,
+    "comentario": "Uma das melhores explicações sobre o assunto que já encontrei na plataforma.",
+    "tags": [
+      "spark"
+    ],
+    "data": "2026-09-24"
+  },
+  {
+    "usuario_id": 63,
+    "conteudo_id": 760,
+    "avaliacao": 5,
+    "comentario": "Excelente conteúdo teórico, com bons exemplos para fixar o aprendizado.",
+    "tags": [
+      "prático",
+      "rag",
+      "pytest"
+    ],
+    "data": "2026-09-23"
+  },
+  {
+    "usuario_id": 159,
+    "conteudo_id": 750,
+    "avaliacao": 5,
+    "comentario": "Excelente abordagem! Didática impecável e ritmo perfeito.",
+    "tags": [
+      "lakehouse"
+    ],
+    "data": "2026-09-14"
+  },
+  {
+    "usuario_id": 162,
+    "conteudo_id": 773,
+    "avaliacao": 5,
+    "comentario": "Excelente conteúdo teórico, com bons exemplos para fixar o aprendizado.",
+    "tags": [
+      "pgvector"
+    ],
+    "data": "2026-08-31"
+  },
+  {
+    "usuario_id": 129,
+    "conteudo_id": 920,
+    "avaliacao": 4,
+    "comentario": "Explicações adequadas, mas faltou demonstrar mais casos reais de uso.",
+    "tags": [
+      "essencial"
+    ],
+    "data": "2026-09-05"
+  },
+  {
+    "usuario_id": 6,
+    "conteudo_id": 774,
+    "avaliacao": 5,
+    "comentario": "Faltou clareza na explicação de conceitos-chave no início.",
+    "tags": [
+      "kubernetes"
+    ],
+    "data": "2026-09-02"
+  },
+  {
+    "usuario_id": 45,
+    "conteudo_id": 817,
+    "avaliacao": 4,
+    "comentario": "Conteúdo introdutório, claro e objetivo. Superou minhas expectativas!",
+    "tags": [
+      "governanca",
+      "dashboard",
+      "seguranca"
+    ],
+    "data": "2026-08-31"
+  },
+  {
+    "usuario_id": 33,
+    "conteudo_id": 794,
+    "avaliacao": 4,
+    "comentario": "Exemplos com erros conceituais e ritmo muito acelerado.",
+    "tags": [
+      "deep-learning"
+    ],
+    "data": "2026-09-20"
+  },
+  {
+    "usuario_id": 95,
+    "conteudo_id": 866,
+    "avaliacao": 5,
+    "comentario": "Uma das melhores explicações sobre o assunto que já encontrei na plataforma.",
+    "tags": [
+      "dataops"
+    ],
+    "data": "2026-09-19"
+  },
+  {
+    "usuario_id": 70,
+    "conteudo_id": 1000,
+    "avaliacao": 5,
+    "comentario": "Excelente conteúdo teórico, com bons exemplos para fixar o aprendizado.",
+    "tags": [
+      "agentes"
+    ],
+    "data": "2026-09-16"
+  },
+  {
+    "usuario_id": 68,
+    "conteudo_id": 793,
+    "avaliacao": 4,
+    "comentario": "Material de altíssimo nível. Ajudou muito a destravar meu projeto prático.",
+    "tags": [
+      "jsonb",
+      "llm",
+      "recomendado"
+    ],
+    "data": "2026-09-18"
+  },
+  {
+    "usuario_id": 5,
+    "conteudo_id": 778,
+    "avaliacao": 4,
+    "comentario": "Muito bom material, bem estruturado e com explicações coerentes.",
+    "tags": [
+      "teórico",
+      "anonimizacao",
+      "governanca"
+    ],
+    "data": "2026-09-14"
+  },
+  {
+    "usuario_id": 18,
+    "conteudo_id": 558,
+    "avaliacao": 5,
+    "comentario": "Boa introdução ao tema, porém o ritmo em alguns momentos ficou um pouco arrastado.",
+    "tags": [
+      "devops"
+    ],
+    "data": "2026-09-18"
+  },
+  {
+    "usuario_id": 67,
+    "conteudo_id": 412,
+    "avaliacao": 4,
+    "comentario": "Conteúdo bastante completo e relevante. Apenas gostaria de mais exercícios práticos.",
+    "tags": [
+      "iniciante",
+      "kpis",
+      "lakehouse"
+    ],
+    "data": "2026-09-22"
+  },
+  {
+    "usuario_id": 169,
+    "conteudo_id": 237,
+    "avaliacao": 5,
+    "comentario": "Apresentação muito clara e objetiva. Recomendo para quem está estudando a área.",
+    "tags": [
+      "predicao",
+      "dados",
+      "backend"
+    ],
+    "data": "2026-09-02"
+  },
+  {
+    "usuario_id": 18,
+    "conteudo_id": 112,
+    "avaliacao": 5,
+    "comentario": "Sensacional! O instrutor domina o assunto e os conceitos ficaram cristalinos.",
+    "tags": [
+      "metricas"
+    ],
+    "data": "2026-08-27"
+  },
+  {
+    "usuario_id": 7,
+    "conteudo_id": 429,
+    "avaliacao": 4,
+    "comentario": "Apresentação muito clara e objetiva. Recomendo para quem está estudando a área.",
+    "tags": [
+      "metricas"
+    ],
+    "data": "2026-09-09"
+  },
+  {
+    "usuario_id": 68,
+    "conteudo_id": 358,
+    "avaliacao": 4,
+    "comentario": "Muito bom material, bem estruturado e com explicações coerentes.",
+    "tags": [
+      "didático"
+    ],
+    "data": "2026-09-12"
+  },
+  {
+    "usuario_id": 105,
+    "conteudo_id": 230,
+    "avaliacao": 7,
+    "comentario": "Material de alta qualidade e de fácil compreensão.",
+    "tags": [
+      "linhagem",
+      "essencial",
+      "terraform"
+    ],
+    "data": "2026-09-05"
+  },
+  {
+    "usuario_id": 158,
+    "conteudo_id": 595,
+    "avaliacao": 3,
+    "comentario": "",
+    "tags": [
+      "kubernetes",
+      "backend"
+    ],
+    "data": "2026-09-03"
+  },
+  {
+    "usuario_id": 73,
+    "conteudo_id": 118,
+    "avaliacao": 4,
+    "comentario": "Conteúdo bastante completo e relevante. Apenas gostaria de mais exercícios práticos.",
+    "tags": "python, dados",
+    "data": "2026-09-02"
+  },
+  {
+    "usuario_id": 50,
+    "conteudo_id": 297,
+    "avaliacao": 4,
+    "comentario": "Gostei muito! Quem quiser trocar material me chama em lucas.prado@email.example",
+    "tags": [
+      "dashboard",
+      "dados"
+    ],
+    "data": "2026-09-17"
+  },
+  {
+    "usuario_id": 95,
+    "conteudo_id": 179,
+    "avaliacao": 4,
+    "comentario": "Excelente conteúdo, dúvidas no zap (00) 91234-5678",
+    "tags": [
+      "devops",
+      "sql"
+    ],
+    "data": "2026-09-20"
+  },
+  {
+    "usuario_id": 115,
+    "conteudo_id": 72,
+    "avaliacao": 3,
+    "comentario": "Material de alta qualidade e de fácil compreensão.",
+    "tags": [
+      "devops",
+      "streaming",
+      "jsonb"
+    ],
+    "data": "2026-01-10"
+  },
+  {
+    "usuario_id": 999,
+    "conteudo_id": 889,
+    "avaliacao": 4,
+    "comentario": "Faltou clareza na explicação de conceitos-chave no início.",
+    "tags": [
+      "clean-code"
+    ],
+    "data": "2026-09-12"
+  },
+  {
+    "usuario_id": 15,
+    "conteudo_id": 864,
+    "avaliacao": 4,
+    "comentario": "A didática não funcionou para mim. Explicação confusa em vários momentos.",
+    "tags": [
+      "streaming",
+      "estatistica",
+      "storytelling"
+    ],
+    "data": "2026-09-10"
+  },
+  {
+    "usuario_id": 28,
+    "conteudo_id": 512,
+    "avaliacao": 3,
+    "comentario": "Faltou clareza na explicação de conceitos-chave no início.",
+    "tags": [
+      "postgresql",
+      "streaming",
+      "prático"
+    ],
+    "data": "2026-09-31"
+  }
+]

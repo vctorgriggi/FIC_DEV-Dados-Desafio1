@@ -1,3 +1,42 @@
+# Desafio 1: postgres, mongo, superset e app (python -m src.main).
+# Desafio 2: servicos novos em perfis, para cada integrante subir so o que usa:
+#   (sem perfil)  postgres, mongo, superset, db-init
+#   hop           hop-web (designer no navegador)
+#   beam          spark-master, spark-worker, beam-job-server, beam-worker-pool
+#   governanca    elasticsearch, om-migrar, openmetadata, om-ingestao
+#   pipeline      executores avulsos: app, hop, beam (docker compose run --rm <servico>)
+
+x-openmetadata-env: &openmetadata-env
+  OPENMETADATA_CLUSTER_NAME: openmetadata
+  SERVER_PORT: 8585
+  SERVER_ADMIN_PORT: 8586
+  LOG_LEVEL: INFO
+  DB_DRIVER_CLASS: org.postgresql.Driver
+  DB_SCHEME: postgresql
+  DB_PARAMS: allowPublicKeyRetrieval=true&useSSL=false&serverTimezone=UTC
+  DB_HOST: postgres
+  DB_PORT: 5432
+  DB_USER: ${OM_DB_USER:-openmetadata}
+  DB_USER_PASSWORD: ${OM_DB_PASSWORD:-openmetadata}
+  OM_DATABASE: openmetadata_db
+  ELASTICSEARCH_HOST: elasticsearch
+  ELASTICSEARCH_PORT: 9200
+  ELASTICSEARCH_SCHEME: http
+  SEARCH_TYPE: elasticsearch
+  PIPELINE_SERVICE_CLIENT_ENDPOINT: http://om-ingestao:8080
+  SERVER_HOST_API_URL: http://openmetadata:8585/api
+  AIRFLOW_USERNAME: ${AIRFLOW_ADMIN_USER:-admin}
+  AIRFLOW_PASSWORD: ${AIRFLOW_ADMIN_PASSWORD:-admin}
+  FERNET_KEY: ${OM_FERNET_KEY:-jJ/9sz0g0OHxsfxOoSfdFdmk3ysNmPRnH3TUAbz3IHA=}
+  OPENMETADATA_HEAP_OPTS: -Xmx1G -Xms1G
+
+x-hop-env: &hop-env
+  HOP_PROJECT_NAME: desafio
+  HOP_PROJECT_FOLDER: /app/hop
+  HOP_ENVIRONMENT_NAME: docker
+  # docker.json: parametros nao sensiveis; hop-segredos.json: gerado do .env ao iniciar (docker/hop/segredos.sh)
+  HOP_ENVIRONMENT_CONFIG_FILE_NAME_PATHS: /app/hop/environments/docker.json,/tmp/hop-segredos.json
+
 services:
   postgres:
     image: pgvector/pgvector:pg17
@@ -13,6 +52,18 @@ services:
       interval: 5s
       timeout: 3s
       retries: 10
+
+  # Desafio 2: bancos do OpenMetadata/Airflow, schemas das camadas e papel de consumo (idempotente)
+  db-init:
+    image: pgvector/pgvector:pg17
+    env_file: .env
+    volumes:
+      - ./docker/postgres/inicializar.sh:/inicializar.sh:ro
+      - ./sql:/sql:ro
+    entrypoint: ["bash", "/inicializar.sh"]
+    depends_on:
+      postgres:
+        condition: service_healthy
 
   mongo:
     image: mongo:8.2
@@ -82,8 +133,191 @@ services:
         condition: service_healthy
     profiles: ["pipeline"]
 
+  # ---------------------------------------------------------------
+  # Desafio 2 — Apache Hop
+  # ---------------------------------------------------------------
+
+  # designer no navegador: http://localhost:8081/ui
+  hop-web:
+    image: apache/hop-web:2.19.0
+    env_file: .env
+    environment:
+      <<: *hop-env
+      HOP_OPTIONS: -Xmx1g -Dorg.eclipse.rap.rwt.resourceLocation=/tmp/rwt-resources
+    entrypoint: ["bash", "-c", "bash /app/docker/hop/segredos.sh && exec /bin/bash /tmp/run-web.sh"]
+    ports:
+      - "${HOP_WEB_HOST_PORT:-8081}:8080"
+    volumes:
+      - .:/app
+    depends_on:
+      db-init:
+        condition: service_completed_successfully
+    profiles: ["hop"]
+
+  # executa um pipeline ou workflow: docker compose run --rm hop <arquivo em hop/> [PARAM=valor ...]
+  hop:
+    image: apache/hop:2.19.0
+    env_file: .env
+    environment:
+      <<: *hop-env
+      HOP_RUN_CONFIG: local
+      HOP_OPTIONS: -Xmx1g
+    volumes:
+      - .:/app
+    entrypoint: ["bash", "/app/docker/hop/executar.sh"]
+    depends_on:
+      db-init:
+        condition: service_completed_successfully
+      mongo:
+        condition: service_healthy
+    profiles: ["pipeline"]
+
+  # ---------------------------------------------------------------
+  # Desafio 2 — Apache Beam com runtime Spark (a versao do Spark e a mesma embutida no job server)
+  # ---------------------------------------------------------------
+
+  spark-master:
+    image: apache/spark:3.5.0-scala2.12-java11-ubuntu
+    hostname: spark-master
+    command: ["/opt/spark/bin/spark-class", "org.apache.spark.deploy.master.Master"]
+    ports:
+      - "${SPARK_UI_HOST_PORT:-8090}:8080"
+    profiles: ["beam"]
+
+  spark-worker:
+    image: apache/spark:3.5.0-scala2.12-java11-ubuntu
+    hostname: spark-worker
+    command: ["/opt/spark/bin/spark-class", "org.apache.spark.deploy.worker.Worker", "spark://spark-master:7077"]
+    environment:
+      SPARK_WORKER_CORES: 2
+      SPARK_WORKER_MEMORY: 2g
+    volumes:
+      - ./dados:/app/dados
+      - beam_artefatos:/tmp/beam-artifact-staging
+    depends_on:
+      - spark-master
+    profiles: ["beam"]
+
+  # SDK Python que executa o codigo do pipeline; divide a rede com o worker, que o chama em localhost:50000
+  beam-worker-pool:
+    image: apache/beam_python3.12_sdk:2.77.0
+    command: ["--worker_pool"]
+    network_mode: service:spark-worker
+    volumes:
+      - .:/app
+      - beam_artefatos:/tmp/beam-artifact-staging
+    depends_on:
+      - spark-worker
+    profiles: ["beam"]
+
+  beam-job-server:
+    image: apache/beam_spark3_job_server:2.77.0
+    hostname: beam-job-server
+    command: ["--spark-master-url=spark://spark-master:7077", "--job-host=0.0.0.0"]
+    volumes:
+      - beam_artefatos:/tmp/beam-artifact-staging
+    depends_on:
+      - spark-master
+    profiles: ["beam"]
+
+  # executa um pipeline Beam: docker compose run --rm beam <script.py> [opcoes]
+  # mesma imagem e versao do SDK do worker pool, para o codigo rodar igual nos dois runners
+  beam:
+    image: apache/beam_python3.12_sdk:2.77.0
+    env_file: .env
+    working_dir: /app
+    entrypoint: ["python"]
+    volumes:
+      - .:/app
+      - beam_artefatos:/tmp/beam-artifact-staging
+    profiles: ["pipeline"]
+
+  # ---------------------------------------------------------------
+  # Desafio 2 — OpenMetadata (bancos proprios no mesmo PostgreSQL)
+  # ---------------------------------------------------------------
+
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:9.3.0
+    environment:
+      discovery.type: single-node
+      ES_JAVA_OPTS: -Xms512m -Xmx512m
+      xpack.security.enabled: "false"
+    volumes:
+      - es_data:/usr/share/elasticsearch/data
+    healthcheck:
+      test: "curl -s http://localhost:9200/_cluster/health | grep -qE '\"status\":\"(green|yellow)\"'"
+      interval: 10s
+      timeout: 10s
+      retries: 20
+    profiles: ["governanca"]
+
+  om-migrar:
+    image: docker.getcollate.io/openmetadata/server:2.0.2
+    command: "./bootstrap/openmetadata-ops.sh migrate"
+    environment:
+      <<: *openmetadata-env
+      MIGRATION_LIMIT_PARAM: 1200
+    depends_on:
+      elasticsearch:
+        condition: service_healthy
+      db-init:
+        condition: service_completed_successfully
+    profiles: ["governanca"]
+
+  # http://localhost:8585 — admin@open-metadata.org / admin
+  openmetadata:
+    image: docker.getcollate.io/openmetadata/server:2.0.2
+    restart: unless-stopped
+    environment:
+      <<: *openmetadata-env
+    ports:
+      - "${OPENMETADATA_HOST_PORT:-8585}:8585"
+    depends_on:
+      om-migrar:
+        condition: service_completed_successfully
+    healthcheck:
+      test: ["CMD", "wget", "-q", "--spider", "http://localhost:8586/healthcheck"]
+      interval: 15s
+      timeout: 10s
+      retries: 20
+    profiles: ["governanca"]
+
+  # Airflow que executa as ingestoes configuradas na interface do OpenMetadata
+  om-ingestao:
+    image: docker.getcollate.io/openmetadata/ingestion:2.0.2
+    environment:
+      AIRFLOW__CORE__EXECUTOR: LocalExecutor
+      AIRFLOW__OPENMETADATA_AIRFLOW_APIS__DAG_GENERATED_CONFIGS: /opt/airflow/dag_generated_configs
+      DB_HOST: postgres
+      DB_PORT: 5432
+      AIRFLOW_DB: airflow_db
+      DB_SCHEME: postgresql+psycopg2
+      DB_USER: ${AIRFLOW_DB_USER:-airflow}
+      DB_PASSWORD: ${AIRFLOW_DB_PASSWORD:-airflow}
+      AIRFLOW_ADMIN_USER: ${AIRFLOW_ADMIN_USER:-admin}
+      AIRFLOW_ADMIN_PASSWORD: ${AIRFLOW_ADMIN_PASSWORD:-admin}
+    entrypoint: /bin/bash
+    command: ["/opt/airflow/ingestion_dependency.sh"]
+    ports:
+      - "${AIRFLOW_HOST_PORT:-8082}:8080"
+    volumes:
+      - om_dags_config:/opt/airflow/dag_generated_configs
+      - om_dags:/opt/airflow/dags
+      - om_tmp:/tmp
+    depends_on:
+      db-init:
+        condition: service_completed_successfully
+      openmetadata:
+        condition: service_started
+    profiles: ["governanca"]
+
 volumes:
   postgres_data:
   mongo_data:
   superset_home:
   hf_cache:
+  beam_artefatos:
+  es_data:
+  om_dags_config:
+  om_dags:
+  om_tmp:

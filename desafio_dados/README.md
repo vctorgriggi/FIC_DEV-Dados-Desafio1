@@ -2,6 +2,8 @@
 
 FIC_DEV — Programador de Sistemas com IA · Fundamentos de Dados para IA · Desafio Prático 1
 
+> **Desafio Prático 2 em andamento.** A solução do Desafio 1 continua funcionando como está; a base do Desafio 2 (infraestrutura, contratos e dados de teste) está na seção [Desafio 2](#desafio-2--base-de-infraestrutura-contratos-e-dados-de-teste). Enunciado em [`../docs/desafio-2/`](../docs/desafio-2/README.md).
+
 **Equipe**
 
 - Vinycius Yuji Mogami — ingestão, validação, tratamento e PostgreSQL (RF01–RF06)
@@ -89,6 +91,72 @@ docker compose down -v                              # apaga bancos e volumes
 
 Se uma porta já estiver em uso na máquina, mude `*_HOST_PORT` no `.env`. Configurações não sensíveis (caminhos, modelo, `top_k`, consultas de demonstração) ficam em `config.yaml`; senhas só no `.env`, que está no `.gitignore`.
 
+## Desafio 2 — base de infraestrutura, contratos e dados de teste
+
+O Desafio 2 evolui esta mesma pasta. Nada do Desafio 1 foi alterado: o schema `public`, os arquivos de `dados/brutos/` e `python -m src.main` seguem iguais e passam a ser **fontes** das camadas novas. A base prepara o terreno para os três integrantes trabalharem em paralelo; os requisitos RF15–RF34 ainda são implementados por cada responsável.
+
+**Contratos entre as etapas** (quem lê e escreve o quê, convenções, códigos de regra, proposta da Gold): [`documentacao/contratos.md`](documentacao/contratos.md). Leitura obrigatória antes de começar.
+
+### Serviços e perfis
+
+Os serviços novos ficam em perfis do Compose, para cada integrante subir só o que usa:
+
+| Perfil | Serviços | Acesso |
+|---|---|---|
+| *(nenhum)* | `postgres`, `mongo`, `superset`, `db-init` | como no Desafio 1 |
+| `hop` | `hop-web` (designer do Apache Hop no navegador) | http://localhost:8081/ui (`HOP_WEB_HOST_PORT`) |
+| `beam` | `spark-master`, `spark-worker`, `beam-job-server`, `beam-worker-pool` | UI do Spark em http://localhost:8090 (`SPARK_UI_HOST_PORT`) |
+| `governanca` | `elasticsearch`, `om-migrar`, `openmetadata`, `om-ingestao` (Airflow) | http://localhost:8585 (`admin@open-metadata.org` / `admin`); Airflow em http://localhost:8082 |
+| `pipeline` | executores avulsos: `app` (Desafio 1), `hop`, `beam` | `docker compose run --rm <serviço> ...` |
+
+`db-init` roda a cada `up` e é idempotente: cria os bancos do OpenMetadata e do Airflow no mesmo PostgreSQL e aplica [`sql/camadas.sql`](sql/camadas.sql) (schemas `bronze`, `silver`, `gold`, `quarentena`, `qualidade`, `controle`, `restrito`, funções `lgpd.*` e o papel somente leitura `consumo`). Funciona também sobre um volume já criado no Desafio 1.
+
+```bash
+cp .env.example .env                               # quem já tem .env: copie as variáveis novas do bloco "Desafio 2"
+docker compose up -d                               # base
+docker compose --profile hop up -d                 # + Hop Web
+docker compose --profile beam up -d                # + cluster Spark para o Beam
+docker compose --profile governanca up -d          # + OpenMetadata (a primeira subida migra o banco e demora mais)
+
+docker compose run --rm hop pipelines/verificar_ambiente.hpl           # Hop: conexão, variáveis e schemas
+docker compose run --rm beam beam/verificar_runtime.py --runner direct # Beam no DirectRunner
+docker compose run --rm beam beam/verificar_runtime.py --runner spark  # Beam no cluster Spark (perfil beam)
+docker compose run --rm beam -m ferramentas.gerar_dados                # regenera os dados de teste
+```
+
+**Memória** (medida em repouso): a base usa ~0,7 GB; o perfil `governanca` ~3,5 GB (OpenMetadata, Elasticsearch e Airflow); o perfil `beam` ~1,3 GB, mais até 2 GB do executor durante um job (`SPARK_WORKER_MEMORY`). Com tudo no ar, reserve pelo menos 10 GB no Docker Desktop; com menos, suba um perfil de cada vez (`docker compose --profile <perfil> stop` libera).
+
+### Versões (RF15)
+
+| Componente | Versão | Imagem |
+|---|---|---|
+| Apache Hop | 2.19.0 | `apache/hop`, `apache/hop-web` |
+| Apache Beam (SDK Python e job server) | 2.77.0 | `apache/beam_python3.12_sdk`, `apache/beam_spark3_job_server` |
+| Apache Spark | 3.5.0 (Scala 2.12, Java 11) | `apache/spark:3.5.0-scala2.12-java11-ubuntu` — a mesma versão embutida no job server do Beam 2.77 |
+| OpenMetadata (servidor e ingestão) | 2.0.2 | `docker.getcollate.io/openmetadata/server`, `.../ingestion` |
+| Elasticsearch | 9.3.0 | versão do compose oficial do OpenMetadata 2.0.2 |
+| Apache Superset | 6.1.0 | como no Desafio 1 |
+| PostgreSQL + pgvector | 17 + 0.8 | como no Desafio 1 |
+
+Todas as imagens têm build para amd64 e arm64 (Linux, macOS Intel e Apple Silicon, Windows com WSL2).
+
+### Configuração e segredos (RF15)
+
+- **Segredos** só no `.env`: senhas, `LGPD_SALT`, `LGPD_CHAVE_PSEUDONIMO`, papel `consumo`, bancos do OpenMetadata.
+- **Parâmetros não sensíveis:** `config.yaml` (seções `fontes_desafio2`, `camadas`, `beam`) para o código Python e [`hop/environments/docker.json`](hop/environments/docker.json) para o Hop.
+- **Hop:** não lê variáveis de ambiente do sistema. Por isso [`docker/hop/segredos.sh`](docker/hop/segredos.sh) gera, dentro do container e com permissão 600, um segundo arquivo de ambiente com os valores do `.env`. As conexões usam `${PG_PASSWORD}` etc., sem senha gravada no projeto nem no log.
+- **Superset do Desafio 2:** conecta com o papel `consumo` (`postgresql+psycopg2://consumo:<senha>@postgres:5432/desafio`), que só lê `gold`, `qualidade` e `controle`.
+
+### Dados de teste
+
+Gerados por [`ferramentas/gerar_dados.py`](ferramentas/gerar_dados.py), deterministicamente e sem dados pessoais reais (e-mails `.example`, DDD `00`, CPF com dígito verificador inválido):
+
+- `dados/brutos/usuarios.csv` — cadastro fictício dos 150 usuários, nova fonte para a LGPD e para a integridade referencial;
+- `dados/brutos/recomendacoes_desafio1.json` — cópia fixa das recomendações entregues no Desafio 1 (`gerado_em` 2026-09-13). Rodar `python -m src.main` regrava `dados/processados/recomendacoes.json` com a data do dia; a Bronze lê a cópia fixa para a conversão de recomendação continuar mensurável;
+- `dados/brutos/lote_2/` — segundo lote com 46 anomalias catalogadas em [`ANOMALIAS.md`](dados/brutos/lote_2/ANOMALIAS.md), o oráculo para testar Silver, quarentena, dados mestres e qualidade;
+- `dados/brutos/falhas/` — arquivos defeituosos para demonstrar falha de arquivo;
+- `dados/volume/` — não versionado; `--volume N` gera N interações para medir Parquet e Beam.
+
 ## Estrutura
 
 ```
@@ -109,7 +177,17 @@ desafio_dados/
 ├── dados/processados/      tratados, rejeitados, resumo, busca, recomendações, kpis
 ├── logs/                   execucao.log
 ├── dashboard/evidencias/   export e capturas do dashboard
-└── documentacao/           ingestao.md, recomendacao.md, kpis.md, uso_da_ia.md, modelo_de_dados.pdf, arquitetura.pdf
+├── documentacao/           ingestao.md, recomendacao.md, kpis.md, uso_da_ia.md, modelo_de_dados.pdf, arquitetura.pdf,
+│                           contratos.md (Desafio 2)
+│
+│   Desafio 2
+├── dados/bronze|silver|gold|quarentena/   amostras e Parquet das camadas (as tabelas ficam no PostgreSQL)
+├── dados/brutos/usuarios.csv, lote_2/, falhas/, recomendacoes_desafio1.json   fontes novas
+├── hop/                    projeto Apache Hop: pipelines/, workflows/, environments/, metadata/
+├── beam/                   pipeline Apache Beam, verificar_runtime.py, evidencias/
+├── sql/camadas.sql         schemas e tabelas compartilhadas, funções lgpd.*, papel consumo
+├── superset/, openmetadata/, qualidade/, lgpd/   evidências e documentação por requisito
+└── ferramentas/            gerar_dados.py
 ```
 
 O enunciado sugere `ingestao/` e `recomendacao/` na raiz e exige `python -m src.main`; por isso o orquestrador e o código comum ficam em `src/` e os módulos de domínio nas pastas sugeridas.

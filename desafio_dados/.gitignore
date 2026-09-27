@@ -47,3 +47,8 @@ docker-compose.override.yml
 *.swp
 .DS_Store
 Thumbs.db
+
+# Desafio 2: volume gerado sob demanda (python -m ferramentas.gerar_dados --volume N)
+# e saida da verificacao do runtime do Beam
+dados/volume/
+dados/verificacao_beam/

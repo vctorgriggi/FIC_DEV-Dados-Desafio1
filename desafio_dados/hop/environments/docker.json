@@ -1,0 +1,11 @@
+{
+  "variables" : [
+    { "name" : "PG_HOST", "value" : "postgres", "description" : "PostgreSQL na rede do compose" },
+    { "name" : "PG_PORT", "value" : "5432", "description" : "" },
+    { "name" : "MONGO_HOST", "value" : "mongo", "description" : "MongoDB na rede do compose" },
+    { "name" : "MONGO_PORT", "value" : "27017", "description" : "" },
+    { "name" : "DIR_DADOS", "value" : "/app/dados", "description" : "raiz dos dados; mesma em hop, beam e app" },
+    { "name" : "DIR_BRUTOS", "value" : "/app/dados/brutos", "description" : "fontes do Desafio 1 e lote 2" },
+    { "name" : "DIR_SILVER", "value" : "/app/dados/silver", "description" : "exportacao Parquet da silver (RF24)" }
+  ]
+}

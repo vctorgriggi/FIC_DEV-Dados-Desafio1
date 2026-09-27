@@ -1,0 +1,93 @@
+[
+  {
+    "usuario_id": 3,
+    "conteudo_id": 614,
+    "tipo_interacao": "conclusão",
+    "data_hora": "2026-03-21T10:54:52",
+    "tempo_consumido": 28,
+    "percentual_conclusao": 100.0,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 57,
+    "conteudo_id": 165,
+    "tipo_interacao": "curtida",
+    "data_hora": "2026-04-11T15:11:01",
+    "tempo_consumido": 40,
+    "percentual_conclusao": 68.3,
+    "avaliacao_atribuida": 5
+  },
+  {
+    "usuario_id": 117,
+    "conteudo_id": 9,
+    "tipo_interacao": "início",
+    "data_hora": "2026-05-29T05:37:58",
+    "tempo_consumido": 4,
+    "percentual_conclusao": 7.1,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 33,
+    "conteudo_id": 868,
+    "tipo_interacao": "conclusão",
+    "data_hora": "2026-01-22T10:57:28",
+    "tempo_consumido": 1587,
+    "percentual_conclusao": 100.0,
+    "avaliacao_atribuida": 3
+  },
+  {
+    "usuario_id": 19,
+    "conteudo_id": 690,
+    "tipo_interacao": "curtida",
+    "data_hora": "2026-04-09T15:34:15",
+    "tempo_consumido": 10,
+    "percentual_conclusao": 89.0,
+    "avaliacao_atribuida": 5
+  },
+  {
+    "usuario_id": 145,
+    "conteudo_id": 234,
+    "tipo_interacao": "visualização",
+    "data_hora": "2026-03-08T15:30:29",
+    "tempo_consumido": 17,
+    "percentual_conclusao": 49.0,
+    "avaliacao_atribuida": null
+  },
+  {
+    "usuario_id": 15,
+    "conteudo_id": 40,
+    "tipo_interacao": "conclusão",
+    "data_hora": "2026-05-14T20:40:37",
+    "tempo_consumido": 16,
+    "percentual_conclusao": 100.0,
+    "avaliacao_atribuida": 4
+  },
+  {
+    "usuario_id": 119,
+    "conteudo_id": 331,
+    "tipo_interacao": "conclusão",
+    "data_hora": "2026-02-09T05:24:43",
+    "tempo_consumido": 86,
+    "percentual_conclusao": 100.0,
+    "avaliacao_atribuida": 4
+  },
+  {
+    "usuario_id": 116,
+    "conteudo_id": 474,
+    "tipo_interacao": "curtida",
+    "data_hora": "2026-01-15T01:24:22",
+    "tempo_consumido": 27,
+    "percentual_conclusao": 88.1,
+    "avaliacao_atribuida": 5
+  },
+  {
+    "usuario_id": 29,
+    "conteudo_id": 369,
+    "tipo_interacao": "curtida",
+    "data_hora": "2026-03-14T19:20:45",
+    "tempo_consumido": 14,
+    "percentual_conclusao": 48.0,
+    "avaliacao_atribuida": 5
+  },
+  {
+ 

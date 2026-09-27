@@ -1,0 +1,11 @@
+{
+  "engineRunConfiguration": {
+    "Local": {
+      "safe_mode": false
+    }
+  },
+  "name": "local",
+  "description": "Motor local do Hop",
+  "executionInfoLocationName": "",
+  "defaultSelection": true
+}

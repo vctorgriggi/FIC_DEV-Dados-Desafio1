@@ -1,0 +1,31 @@
+usuario_id,nome,email,cpf,data_nascimento,telefone,cidade,uf,data_cadastro,atualizado_em
+151,Diego Almeida Silva,diego.silva2@email.example,321.687.078-21,1996-09-26,(00) 95708-5295,Florianópolis,SC,2026-08-28,2026-08-28 10:00:00
+152,Mariana Ribeiro,mariana.ribeiro2@email.example,512.725.556-16,1979-08-09,(00) 92824-8204,Londrina,PR,2026-08-27,2026-08-27 10:00:00
+153,Vinícius Pereira Freitas,vinicius.freitas@email.example,202.662.797-50,1974-05-05,(00) 97856-8319,Belém,PA,2026-09-05,2026-09-05 10:00:00
+154,Gustavo Araújo Cardoso,gustavo.cardoso@email.example,731.648.919-71,1987-12-22,(00) 95570-1511,Goiânia,GO,2026-08-27,2026-08-27 10:00:00
+155,Thiago Pinto,thiago.pinto@email.example,962.245.900-53,1976-05-19,(00) 98311-2868,Goiânia,GO,2026-08-27,2026-08-27 10:00:00
+156,Otávio Teixeira Monteiro,otavio.monteiro@email.example,269.550.439-01,1999-11-21,(00) 99117-5129,Vitória,ES,2026-08-27,2026-08-27 10:00:00
+157,Vinícius Pereira,vinicius.pereira2@email.example,607.638.653-39,1980-08-14,(00) 92815-1760,Recife,PE,2026-09-01,2026-09-01 10:00:00
+158,Tatiane Souza Rocha,tatiane.rocha@email.example,375.049.979-95,1969-10-05,(00) 97505-3759,Manaus,AM,2026-09-03,2026-09-03 10:00:00
+159,Isabela Mendes Lima,isabela.lima3@email.example,707.887.454-42,1990-09-14,(00) 93153-9960,Florianópolis,SC,2026-09-02,2026-09-02 10:00:00
+160,Rafaela Pereira Lima,rafaela.lima@email.example,351.976.043-61,1977-11-12,(00) 94402-2457,Salvador,BA,2026-08-28,2026-08-28 10:00:00
+161,Helena Pinto,helena.pinto@email.example,995.681.621-36,2005-12-08,(00) 91260-5286,Rio de Janeiro,RJ,2026-09-03,2026-09-03 10:00:00
+162,Letícia Souza,leticia.souza@email.example,787.530.050-91,1973-03-05,(00) 99044-8435,Londrina,PR,2026-09-05,2026-09-05 10:00:00
+163,Caio Almeida Rocha,caio.rocha@email.example,108.102.320-15,1992-06-10,(00) 94363-1980,Vitória,ES,2026-08-31,2026-08-31 10:00:00
+164,Gustavo Pinto Rodrigues,gustavo.rodrigues@email.example,376.287.204-05,1980-10-07,(00) 95070-4301,Goiânia,GO,2026-08-30,2026-08-30 10:00:00
+165,Eduarda Santos Rocha,eduarda.rocha@email.example,337.600.121-92,1973-03-19,(00) 91818-7213,Vitória,ES,2026-08-26,2026-08-26 10:00:00
+166,Débora Santos Pereira,debora.pereira@email.example,932.825.070-63,1969-01-06,(00) 95117-7704,São Paulo,SP,2026-08-27,2026-08-27 10:00:00
+167,Caio Araújo Oliveira,caio.oliveira@email.example,491.381.146-08,1994-07-21,(00) 93835-1722,Belo Horizonte,MG,2026-08-31,2026-08-31 10:00:00
+168,Nicolas Pinto,nicolas.pinto@email.example,832.716.339-68,1971-03-26,(00) 99798-6382,Salvador,BA,2026-09-01,2026-09-01 10:00:00
+169,Gabriela Souza,gabriela.souza@email.example,244.214.313-55,1979-03-27,(00) 98742-8733,Uberlândia,MG,2026-09-02,2026-09-02 10:00:00
+170,João Silva,joao.silva@email.example,999.619.530-97,1991-11-06,(00) 96567-6921,Vitória,ES,2026-08-28,2026-08-28 10:00:00
+171,OTAVIO SOUZA CARVALHO,otavio.carvalho.novo@email.example,073.702.838-61,2005-02-17,(00) 92733-7934,Uberlândia,MG,2026-09-01,2026-09-01 09:30:00
+172,Beatriz Araújo Vieira,  BEATRIZ.VIEIRA@EMAIL.EXAMPLE ,112.116.844-24,2002-09-25,(00) 98281-5319,Santos,SP,2026-09-01,2026-09-01 09:30:00
+173,Beatriz Dias Teixeira,maria.souza#email.example,570.834.098-39,1974-11-08,(00) 95945-4610,Porto Alegre,RS,2026-09-01,2026-09-01 09:30:00
+174,Renato Cardoso Oliveira,renato.oliveira@email.example,123.456.789-0,1966-07-11,(00) 95793-1503,Niterói,RJ,2026-09-01,2026-09-01 09:30:00
+175,Tatiane Rocha,tatiane.rocha2@email.example,019.196.520-01,2031-05-10,(00) 95049-5825,São Paulo,SP,2026-09-01,2026-09-01 09:30:00
+176,,enzo.silva@email.example,641.524.977-01,1966-01-17,(00) 96494-4778,Curitiba,PR,2026-09-01,2026-09-01 09:30:00
+155,Thiago Pinto,thiago.pinto@email.example,962.245.900-53,1976-05-19,(00) 98311-2868,Goiânia,GO,2026-08-27,2026-08-27 10:00:00
+12,Otávio Souza Carvalho,otavio.carvalho@email.example,073.702.838-61,2005-02-17,(00) 93256-3627,São Paulo,SP,2026-01-06,2026-09-20 14:00:00
+177,Olívia Costa Martins,olivia.martins@email.example,110.875.307-85,2012-03-15,(00) 91195-1198,Belo Horizonte,MG,2026-09-01,2026-09-01 09:30:00
+178,Heitor Mendes Carvalho,heitor.carvalho@email.example,172.717.224-84,1997-12-20,(00) 96222-5644,Goiânia,XX,2026-09-01,2026-09-01 09:30:00

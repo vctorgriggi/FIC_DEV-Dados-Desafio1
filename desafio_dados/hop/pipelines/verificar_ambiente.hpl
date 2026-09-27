@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pipeline>
+  <info>
+    <name>verificar_ambiente</name>
+    <name_sync_with_filename>Y</name_sync_with_filename>
+    <description>Confere conexao, variaveis do ambiente e schemas do Desafio 2</description>
+    <extended_description/>
+    <pipeline_version/>
+    <pipeline_type>Normal</pipeline_type>
+    <pipeline_status>0</pipeline_status>
+    <parameters>
+      <parameter>
+        <name>EXECUCAO_ID</name>
+        <default_value>verificacao</default_value>
+        <description>identificador da execucao (contrato: documentacao/contratos.md)</description>
+      </parameter>
+    </parameters>
+    <capture_transform_performance>N</capture_transform_performance>
+    <transform_performance_capturing_delay>1000</transform_performance_capturing_delay>
+    <transform_performance_capturing_size_limit>100</transform_performance_capturing_size_limit>
+    <created_user>-</created_user>
+    <modified_user>-</modified_user>
+    <key_for_session_key/>
+    <is_key_private>N</is_key_private>
+  </info>
+  <notepads/>
+  <order>
+    <hop>
+      <from>consultar postgres</from>
+      <to>registrar no log</to>
+      <enabled>Y</enabled>
+    </hop>
+  </order>
+  <transform>
+    <name>consultar postgres</name>
+    <type>TableInput</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <connection>postgres_desafio</connection>
+    <sql>SELECT current_database() AS banco,
+       current_user AS usuario,
+       '${EXECUCAO_ID}' AS execucao_id,
+       '${PROJECT_HOME}' AS projeto,
+       (SELECT count(*) FROM information_schema.schemata
+         WHERE schema_name IN ('bronze', 'silver', 'gold', 'quarentena', 'qualidade', 'controle', 'restrito', 'lgpd')) AS schemas_desafio2,
+       (SELECT count(*) FROM information_schema.tables WHERE table_schema = 'public') AS objetos_desafio1</sql>
+    <limit>0</limit>
+    <lookup/>
+    <execute_each_row>N</execute_each_row>
+    <variables_active>Y</variables_active>
+    <attributes/>
+    <GUI>
+      <xloc>128</xloc>
+      <yloc>96</yloc>
+    </GUI>
+  </transform>
+  <transform>
+    <name>registrar no log</name>
+    <type>WriteToLog</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <loglevel>log_level_basic</loglevel>
+    <displayHeader>Y</displayHeader>
+    <limitRows>N</limitRows>
+    <limitRowsNumber>0</limitRowsNumber>
+    <logmessage>ambiente do Desafio 2</logmessage>
+    <fields>
+    </fields>
+    <attributes/>
+    <GUI>
+      <xloc>352</xloc>
+      <yloc>96</yloc>
+    </GUI>
+  </transform>
+  <transform_error_handling>
+  </transform_error_handling>
+  <attributes/>
+</pipeline>
