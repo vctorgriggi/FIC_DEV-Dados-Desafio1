@@ -5,6 +5,7 @@
 -- Tabelas da camada Gold e regras de transformacao ficam com cada responsavel (sql/camada_gold.sql, hop/).
 
 CREATE EXTENSION IF NOT EXISTS pgcrypto;  -- digest() e hmac() para as tecnicas de protecao (RF33)
+CREATE EXTENSION IF NOT EXISTS unaccent;  -- comparacao sem acento nas validacoes da Silver
 
 CREATE SCHEMA IF NOT EXISTS controle;    -- execucoes e etapas do workflow (RF22)
 CREATE SCHEMA IF NOT EXISTS bronze;      -- copia auditavel das fontes (RF20)
@@ -90,6 +91,32 @@ CREATE INDEX IF NOT EXISTS ix_bronze_interacoes_exec    ON bronze.interacoes (_e
 CREATE INDEX IF NOT EXISTS ix_bronze_comentarios_exec   ON bronze.comentarios (_execucao_id);
 CREATE INDEX IF NOT EXISTS ix_bronze_usuarios_exec      ON bronze.usuarios (_execucao_id);
 CREATE INDEX IF NOT EXISTS ix_bronze_recomendacoes_exec ON bronze.recomendacoes (_execucao_id);
+CREATE UNIQUE INDEX IF NOT EXISTS ux_bronze_catalogo_exec_origem_linha
+    ON bronze.catalogo (_execucao_id, _origem, _linha);
+
+CREATE OR REPLACE FUNCTION bronze.ignorar_catalogo_repetido()
+RETURNS trigger
+LANGUAGE plpgsql
+AS $$
+BEGIN
+    IF EXISTS (
+        SELECT 1
+        FROM bronze.catalogo
+        WHERE _execucao_id = NEW._execucao_id
+          AND _origem = NEW._origem
+          AND _linha = NEW._linha
+    ) THEN
+        RETURN NULL;
+    END IF;
+    RETURN NEW;
+END;
+$$;
+
+DROP TRIGGER IF EXISTS trg_bronze_catalogo_idempotencia ON bronze.catalogo;
+CREATE TRIGGER trg_bronze_catalogo_idempotencia
+BEFORE INSERT ON bronze.catalogo
+FOR EACH ROW
+EXECUTE FUNCTION bronze.ignorar_catalogo_repetido();
 
 -- ---------------------------------------------------------------
 -- silver: tipada, padronizada, deduplicada; recarga completa a cada execucao, em transacao.

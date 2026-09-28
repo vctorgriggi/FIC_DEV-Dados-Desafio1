@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<workflow>
+  <info>
+    <name>principal</name>
+    <description>Orquestra o fluxo do Desafio 2 e deixa a publicacao de metadados preparada</description>
+    <extended_description>O agendamento e externo. EXECUCAO_ID e MODO entram como parametros do workflow.</extended_description>
+    <workflow_version/>
+    <workflow_status>0</workflow_status>
+    <parameters>
+      <parameter><name>EXECUCAO_ID</name><default_value/><description>UUID da execucao</description></parameter>
+      <parameter><name>MODO</name><default_value>manual</default_value><description>manual ou agendado</description></parameter>
+    </parameters>
+    <created_user>-</created_user><created_date>2026/09/27 00:00:00.000</created_date><modified_user>-</modified_user><modified_date>2026/09/27 00:00:00.000</modified_date>
+  </info>
+  <notepads/>
+  <order>
+    <hop><from>inicio</from><to>abrir execucao</to><enabled>Y</enabled></hop>
+    <hop><from>abrir execucao</from><to>bronze catalogo</to><enabled>Y</enabled></hop>
+    <hop><from>bronze catalogo</from><to>bronze usuarios</to><enabled>Y</enabled></hop>
+    <hop><from>bronze usuarios</from><to>bronze interacoes</to><enabled>Y</enabled></hop>
+    <hop><from>bronze interacoes</from><to>bronze comentarios</to><enabled>Y</enabled></hop>
+    <hop><from>bronze comentarios</from><to>bronze recomendacoes</to><enabled>Y</enabled></hop>
+    <hop><from>bronze recomendacoes</from><to>silver conteudo</to><enabled>Y</enabled></hop>
+    <hop><from>silver conteudo</from><to>preparar metadados</to><enabled>Y</enabled></hop>
+    <hop><from>preparar metadados</from><to>fim</to><enabled>Y</enabled></hop>
+  </order>
+  <action><name>inicio</name><type>START</type><description>Inicio do fluxo</description><start>Y</start><dummy>N</dummy><repeat>N</repeat><success_condition>success</success_condition><attributes/><GUI><xloc>64</xloc><yloc>192</yloc></GUI></action>
+  <action><name>abrir execucao</name><type>PIPELINE</type><description>Abre controle.execucao</description><filename>${PROJECT_HOME}/pipelines/controle_execucao.hpl</filename><work_directory/><exec_per_row>N</exec_per_row><params><pass_all_parameters>Y</pass_all_parameters></params><parallel>N</parallel><wait_until_finished>Y</wait_until_finished><logging_remote_work>N</logging_remote_work><set_logfile>N</set_logfile><logfile/><logext>log</logext><add_date>N</add_date><add_time>N</add_time><create_parent_folder>N</create_parent_folder><remote_filename/><attributes/><GUI><xloc>256</xloc><yloc>192</yloc></GUI></action>
+  <action><name>bronze catalogo</name><type>PIPELINE</type><description>Bronze catalogo</description><filename>${PROJECT_HOME}/pipelines/bronze_catalogo.hpl</filename><work_directory/><exec_per_row>N</exec_per_row><params><pass_all_parameters>Y</pass_all_parameters></params><parallel>N</parallel><wait_until_finished>Y</wait_until_finished><logging_remote_work>N</logging_remote_work><set_logfile>N</set_logfile><logfile/><logext>log</logext><add_date>N</add_date><add_time>N</add_time><create_parent_folder>N</create_parent_folder><remote_filename/><attributes/><GUI><xloc>448</xloc><yloc>192</yloc></GUI></action>
+  <action><name>bronze usuarios</name><type>PIPELINE</type><description>Bronze usuarios</description><filename>${PROJECT_HOME}/pipelines/bronze_usuarios.hpl</filename><work_directory/><exec_per_row>N</exec_per_row><params><pass_all_parameters>Y</pass_all_parameters></params><parallel>N</parallel><wait_until_finished>Y</wait_until_finished><logging_remote_work>N</logging_remote_work><set_logfile>N</set_logfile><logfile/><logext>log</logext><add_date>N</add_date><add_time>N</add_time><create_parent_folder>N</create_parent_folder><remote_filename/><attributes/><GUI><xloc>640</xloc><yloc>192</yloc></GUI></action>
+  <action><name>bronze interacoes</name><type>PIPELINE</type><description>Bronze interacoes</description><filename>${PROJECT_HOME}/pipelines/bronze_interacoes.hpl</filename><work_directory/><exec_per_row>N</exec_per_row><params><pass_all_parameters>Y</pass_all_parameters></params><parallel>N</parallel><wait_until_finished>Y</wait_until_finished><logging_remote_work>N</logging_remote_work><set_logfile>N</set_logfile><logfile/><logext>log</logext><add_date>N</add_date><add_time>N</add_time><create_parent_folder>N</create_parent_folder><remote_filename/><attributes/><GUI><xloc>832</xloc><yloc>192</yloc></GUI></action>
+  <action><name>bronze comentarios</name><type>PIPELINE</type><description>Bronze comentarios</description><filename>${PROJECT_HOME}/pipelines/bronze_comentarios.hpl</filename><work_directory/><exec_per_row>N</exec_per_row><params><pass_all_parameters>Y</pass_all_parameters></params><parallel>N</parallel><wait_until_finished>Y</wait_until_finished><logging_remote_work>N</logging_remote_work><set_logfile>N</set_logfile><logfile/><logext>log</logext><add_date>N</add_date><add_time>N</add_time><create_parent_folder>N</create_parent_folder><remote_filename/><attributes/><GUI><xloc>1024</xloc><yloc>192</yloc></GUI></action>
+  <action><name>bronze recomendacoes</name><type>PIPELINE</type><description>Bronze recomendacoes</description><filename>${PROJECT_HOME}/pipelines/bronze_recomendacoes.hpl</filename><work_directory/><exec_per_row>N</exec_per_row><params><pass_all_parameters>Y</pass_all_parameters></params><parallel>N</parallel><wait_until_finished>Y</wait_until_finished><logging_remote_work>N</logging_remote_work><set_logfile>N</set_logfile><logfile/><logext>log</logext><add_date>N</add_date><add_time>N</add_time><create_parent_folder>N</create_parent_folder><remote_filename/><attributes/><GUI><xloc>1216</xloc><yloc>192</yloc></GUI></action>
+  <action><name>silver conteudo</name><type>PIPELINE</type><description>Silver conteudo</description><filename>${PROJECT_HOME}/pipelines/silver_conteudo.hpl</filename><work_directory/><exec_per_row>N</exec_per_row><params><pass_all_parameters>Y</pass_all_parameters></params><parallel>N</parallel><wait_until_finished>Y</wait_until_finished><logging_remote_work>N</logging_remote_work><set_logfile>N</set_logfile><logfile/><logext>log</logext><add_date>N</add_date><add_time>N</add_time><create_parent_folder>N</create_parent_folder><remote_filename/><attributes/><GUI><xloc>1408</xloc><yloc>192</yloc></GUI></action>
+  <action><name>preparar metadados</name><type>WRITE_TO_LOG</type><description>Placeholder para futura chamada REST ao OpenMetadata</description><loglevel>basic</loglevel><logmessage>Etapa de metadados preparada; publicacao REST ainda nao habilitada nesta entrega. execucao=${EXECUCAO_ID}</logmessage><attributes/><GUI><xloc>1600</xloc><yloc>192</yloc></GUI></action>
+  <action><name>fim</name><type>SUCCESS</type><description>Fluxo concluido</description><attributes/><GUI><xloc>1792</xloc><yloc>192</yloc></GUI></action>
+  <attributes/>
+</workflow>

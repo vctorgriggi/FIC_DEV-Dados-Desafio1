@@ -6,6 +6,29 @@ A seção 5 do enunciado pede que a equipe trabalhe em paralelo "com dados de te
 - **Mudou o contrato?** Combine com quem consome, altere `sql/camadas.sql` e este documento no mesmo commit.
 - A camada Gold ainda é uma **proposta**: o Estudante 2 implementa em `sql/camada_gold.sql` e pode ajustar, avisando o Estudante 3.
 
+## Implementação Hop registrada nesta entrega
+
+Esta entrega registra dez arquivos alterados para o trabalho do Estudante 1. As transformações de leitura, auditoria, carga e a primeira padronização da Silver são feitas com transformações nativas do Apache Hop sempre que possível.
+
+| Arquivo | Implementação |
+| --- | --- |
+| `hop/pipelines/bronze_catalogo.hpl` | Lê os CSVs do Desafio 1 e do `lote_2`, acrescenta `_execucao_id`, `_origem` e `_linha`, e grava em `bronze.catalogo`. |
+| `hop/pipelines/bronze_usuarios.hpl` | Lê os CSVs de usuários das duas fontes e grava os dados brutos em `bronze.usuarios`, mantendo o fluxo restrito por conter dados pessoais. |
+| `hop/pipelines/bronze_interacoes.hpl` | Lê os arrays JSON de interações das duas fontes com `JsonInput` e paths `$.*.campo`, registra auditoria e grava em `bronze.interacoes`. |
+| `hop/pipelines/bronze_comentarios.hpl` | Lê os arrays JSON de comentários das duas fontes, preserva `tags` como texto e grava em `bronze.comentarios`. |
+| `hop/pipelines/bronze_recomendacoes.hpl` | Lê o snapshot fixo `recomendacoes_desafio1.json` e grava em `bronze.recomendacoes`, sem usar a recomendação recalculada do Desafio 1. |
+| `hop/pipelines/controle_execucao.hpl` | Abre uma execução em `controle.execucao` usando `EXECUCAO_ID`, `FLUXO` e `MODO`. |
+| `hop/pipelines/silver_conteudo.hpl` | Lê `bronze.catalogo` da execução corrente, valida e normaliza tipos, níveis, datas e números, resolve a sobrevivência por `conteudo_id` e grava em `silver.conteudo`. |
+| `hop/workflows/principal.hwf` | Orquestra controle, Bronze e Silver em sequência. Recebe `EXECUCAO_ID` e `MODO`; a etapa de metadados é apenas um placeholder de log para futura integração com OpenMetadata. |
+| `sql/camadas.sql` | Habilita `unaccent` para comparações sem acento e cria índice único, função e trigger de idempotência para registros repetidos de `bronze.catalogo`. |
+| `hop/project-config.json` | Define a exportação automática de metadados para `metadata.json` e mantém as variáveis do projeto preparadas para configuração posterior. |
+
+### Limites atuais da implementação
+
+- O agendamento é externo ao Hop: o workflow não possui gatilho interno e deve ser executado por Hop Run, Hop Web ou outro orquestrador, passando os parâmetros necessários.
+- A publicação no OpenMetadata ainda não é chamada pelo workflow. A ação `preparar metadados` apenas registra a intenção e mantém o ponto de integração para uma etapa futura.
+- A cobertura Silver inicial desta entrega é `silver.conteudo`; as demais tabelas Silver, as regras completas de quarentena e o fechamento de status de cada etapa continuam sendo evolução do plano.
+
 ## Quem produz e quem consome
 
 | Etapa | RF | Responsável | Lê | Escreve |
