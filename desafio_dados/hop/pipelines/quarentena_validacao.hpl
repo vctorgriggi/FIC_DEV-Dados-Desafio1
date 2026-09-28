@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pipeline>
+  <info>
+    <pipeline_version/>
+    <capture_transform_performance>N</capture_transform_performance>
+    <transform_performance_capturing_delay>1000</transform_performance_capturing_delay>
+    <transform_performance_capturing_size_limit>100</transform_performance_capturing_size_limit>
+    <pipeline_type>Normal</pipeline_type>
+    <pipeline_status>0</pipeline_status>
+    <parameters>
+      <parameter>
+        <name>EXECUCAO_ID</name>
+        <description>UUID da execucao Bronze corrente</description>
+        <default_value/>
+      </parameter>
+    </parameters>
+    <name>quarentena_validacao</name>
+    <name_sync_with_filename>Y</name_sync_with_filename>
+    <description>Registra rejeicoes da validacao Silver</description>
+    <extended_description>Preserva o registro original e nao interrompe as cargas aprovadas.</extended_description>
+    <created_user>-</created_user>
+    <modified_user>-</modified_user>
+    <created_date>2026/09/28 01:55:39.277</created_date>
+    <modified_date>2026/09/28 01:55:39.277</modified_date>
+  </info>
+  <transform>
+    <type>TableInput</type>
+    <name>rejeicoes</name>
+    <sql>WITH rejeicoes AS (
+ SELECT u._execucao_id AS execucao_id, 'silver' AS camada, 'usuarios' AS fonte, COALESCE(NULLIF(btrim(u.usuario_id), ''), u._linha::text) AS chave_registro, 'VALIDACAO_SILVER' AS regra, 'alta' AS severidade, 'Usuario nao atende aos campos ou formatos obrigatorios' AS mensagem, jsonb_build_object('usuario_id',u.usuario_id,'nome',u.nome,'email',u.email,'cpf',u.cpf,'data_nascimento',u.data_nascimento,'telefone',u.telefone,'cidade',u.cidade,'uf',u.uf,'data_cadastro',u.data_cadastro,'atualizado_em',u.atualizado_em,'_origem',u._origem,'_linha',u._linha)::text AS registro
+ FROM bronze.usuarios u WHERE u._execucao_id = '${EXECUCAO_ID}' AND (btrim(u.usuario_id) !~ '^[0-9]+$' OR NULLIF(btrim(u.nome), '') IS NULL OR btrim(u.email) !~* '^[^@[:space:]]+@[^@[:space:]]+\.[^@[:space:]]+$')
+ UNION ALL
+ SELECT i._execucao_id, 'silver', 'interacoes', COALESCE(NULLIF(btrim(i.usuario_id) || ':' || NULLIF(btrim(i.conteudo_id), ''), ''), i._linha::text), 'VALIDACAO_SILVER', 'media', 'Interacao invalida ou sem referencia valida', jsonb_build_object('usuario_id',i.usuario_id,'conteudo_id',i.conteudo_id,'tipo_interacao',i.tipo_interacao,'data_hora',i.data_hora,'tempo_consumido',i.tempo_consumido,'percentual_conclusao',i.percentual_conclusao,'avaliacao_atribuida',i.avaliacao_atribuida,'_origem',i._origem,'_linha',i._linha)::text
+ FROM bronze.interacoes i LEFT JOIN silver.usuario u ON u.usuario_id = NULLIF(btrim(i.usuario_id), '')::integer AND u._execucao_id = i._execucao_id LEFT JOIN silver.conteudo c ON c.conteudo_id = NULLIF(btrim(i.conteudo_id), '')::integer AND c._execucao_id = i._execucao_id WHERE i._execucao_id = '${EXECUCAO_ID}' AND (u.usuario_id IS NULL OR c.conteudo_id IS NULL OR lower(unaccent(btrim(i.tipo_interacao))) NOT IN ('visualizacao','inicio','conclusao','curtida','avaliacao','compartilhamento') OR btrim(i.data_hora) !~ '^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}$')
+ UNION ALL
+ SELECT c._execucao_id, 'silver', 'comentarios', COALESCE(NULLIF(btrim(c.usuario_id) || ':' || NULLIF(btrim(c.conteudo_id), ''), ''), c._linha::text), 'VALIDACAO_SILVER', 'media', 'Comentario invalido ou sem referencia valida', jsonb_build_object('usuario_id',c.usuario_id,'conteudo_id',c.conteudo_id,'avaliacao',c.avaliacao,'comentario',c.comentario,'tags',c.tags,'data',c.data,'_origem',c._origem,'_linha',c._linha)::text
+ FROM bronze.comentarios c LEFT JOIN silver.usuario u ON u.usuario_id = NULLIF(btrim(c.usuario_id), '')::integer AND u._execucao_id = c._execucao_id LEFT JOIN silver.conteudo k ON k.conteudo_id = NULLIF(btrim(c.conteudo_id), '')::integer AND k._execucao_id = c._execucao_id WHERE c._execucao_id = '${EXECUCAO_ID}' AND (u.usuario_id IS NULL OR k.conteudo_id IS NULL OR btrim(c.avaliacao) !~ '^[1-5]$' OR btrim(c.data) !~ '^[0-9]{4}-[0-9]{2}-[0-9]{2}$' OR NULLIF(btrim(c.comentario), '') IS NULL OR jsonb_typeof(c.tags::jsonb) IS DISTINCT FROM 'array')
+ UNION ALL
+ SELECT r._execucao_id, 'silver', 'recomendacoes', COALESCE(NULLIF(btrim(r.usuario_id) || ':' || NULLIF(btrim(r.conteudo_id), ''), ''), r._linha::text), 'VALIDACAO_SILVER', 'media', 'Recomendacao invalida ou sem referencia valida', jsonb_build_object('usuario_id',r.usuario_id,'conteudo_id',r.conteudo_id,'pontuacao',r.pontuacao,'classificacao',r.classificacao,'posicao',r.posicao,'gerado_em',r.gerado_em,'_origem',r._origem,'_linha',r._linha)::text
+ FROM bronze.recomendacoes r LEFT JOIN silver.usuario u ON u.usuario_id = NULLIF(btrim(r.usuario_id), '')::integer AND u._execucao_id = r._execucao_id LEFT JOIN silver.conteudo c ON c.conteudo_id = NULLIF(btrim(r.conteudo_id), '')::integer AND c._execucao_id = r._execucao_id WHERE r._execucao_id = '${EXECUCAO_ID}' AND (u.usuario_id IS NULL OR c.conteudo_id IS NULL OR btrim(r.pontuacao) !~ '^[0-9]+(\.[0-9]+)?$' OR btrim(r.posicao) !~ '^[1-9][0-9]*$' OR lower(unaccent(btrim(r.classificacao))) NOT IN ('positivo','estavel','negativo'))
+)
+SELECT r.execucao_id, r.camada, r.fonte, r.chave_registro, r.regra, r.severidade, r.mensagem, r.registro, 'pendente' AS status FROM rejeicoes r WHERE NOT EXISTS (SELECT 1 FROM quarentena.registro q WHERE q.execucao_id = r.execucao_id AND q.fonte = r.fonte AND q.chave_registro = r.chave_registro AND q.regra = r.regra AND q.status IN ('pendente','corrigido'))</sql>
+    <limit>0</limit>
+    <execute_each_row>N</execute_each_row>
+    <variables_active>Y</variables_active>
+    <connection>postgres_desafio</connection>
+    <lookup/>
+    <sql_from_file/>
+    <distribute>Y</distribute>
+    <copies>1</copies>
+    <GUI>
+      <xloc>128</xloc>
+      <yloc>96</yloc>
+    </GUI>
+    <description>Regras estruturais e referencias</description>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <attributes/>
+  </transform>
+  <transform>
+    <type>TableOutput</type>
+    <name>gravar quarentena</name>
+    <connection>postgres_desafio</connection>
+    <schema>quarentena</schema>
+    <table>registro</table>
+    <commit>1000</commit>
+    <truncate>N</truncate>
+    <only_when_have_rows>N</only_when_have_rows>
+    <ignore_errors>N</ignore_errors>
+    <use_batch>Y</use_batch>
+    <partitioning_enabled>N</partitioning_enabled>
+    <partitioning_daily>N</partitioning_daily>
+    <partitioning_monthly>N</partitioning_monthly>
+    <tablename_in_field>N</tablename_in_field>
+    <tablename_in_table>N</tablename_in_table>
+    <return_keys>N</return_keys>
+    <specify_fields>Y</specify_fields>
+    <auto_update_table_structure>N</auto_update_table_structure>
+    <always_drop_and_recreate>N</always_drop_and_recreate>
+    <add_columns>N</add_columns>
+    <drop_columns>N</drop_columns>
+    <change_column_types>N</change_column_types>
+    <fields>
+      <field>
+        <stream_name>execucao_id</stream_name>
+        <column_name>execucao_id</column_name>
+      </field>
+      <field>
+        <stream_name>camada</stream_name>
+        <column_name>camada</column_name>
+      </field>
+      <field>
+        <stream_name>fonte</stream_name>
+        <column_name>fonte</column_name>
+      </field>
+      <field>
+        <stream_name>chave_registro</stream_name>
+        <column_name>chave_registro</column_name>
+      </field>
+      <field>
+        <stream_name>regra</stream_name>
+        <column_name>regra</column_name>
+      </field>
+      <field>
+        <stream_name>severidade</stream_name>
+        <column_name>severidade</column_name>
+      </field>
+      <field>
+        <stream_name>mensagem</stream_name>
+        <column_name>mensagem</column_name>
+      </field>
+      <field>
+        <stream_name>registro</stream_name>
+        <column_name>registro</column_name>
+      </field>
+      <field>
+        <stream_name>status</stream_name>
+        <column_name>status</column_name>
+      </field>
+    </fields>
+    <distribute>Y</distribute>
+    <copies>1</copies>
+    <GUI>
+      <xloc>416</xloc>
+      <yloc>96</yloc>
+    </GUI>
+    <description>quarentena.registro</description>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <attributes/>
+  </transform>
+  <order>
+    <hop>
+      <from>rejeicoes</from>
+      <to>gravar quarentena</to>
+      <enabled>Y</enabled>
+    </hop>
+  </order>
+  <notepads/>
+  <attributes/>
+  <transform_error_handling/>
+</pipeline>

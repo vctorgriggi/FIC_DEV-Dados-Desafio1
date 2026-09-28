@@ -239,6 +239,36 @@ CREATE TABLE IF NOT EXISTS quarentena.registro (
 CREATE INDEX IF NOT EXISTS ix_quarentena_status   ON quarentena.registro (status);
 CREATE INDEX IF NOT EXISTS ix_quarentena_execucao ON quarentena.registro (execucao_id);
 
+CREATE OR REPLACE FUNCTION controle.finalizar_execucao(p_execucao_id TEXT)
+RETURNS TEXT
+LANGUAGE plpgsql
+AS $$
+DECLARE
+    v_status TEXT;
+BEGIN
+    v_status := CASE
+        WHEN EXISTS (
+            SELECT 1 FROM quarentena.registro
+             WHERE execucao_id = p_execucao_id
+               AND status = 'pendente'
+        ) THEN 'sucesso_com_ressalvas'
+        ELSE 'sucesso'
+    END;
+
+    UPDATE controle.execucao
+       SET status = v_status,
+           fim = COALESCE(fim, now()),
+           mensagem = CASE WHEN v_status = 'sucesso_com_ressalvas'
+                           THEN 'Execucao concluida com registros pendentes na quarentena'
+                           ELSE 'Execucao concluida'
+                      END
+     WHERE execucao_id = p_execucao_id
+       AND status = 'em_andamento';
+
+    RETURN v_status;
+END;
+$$;
+
 -- ---------------------------------------------------------------
 -- qualidade (RF31): definicao dos testes e resultado por execucao e por fonte
 -- ---------------------------------------------------------------

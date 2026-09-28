@@ -8,7 +8,7 @@ A seção 5 do enunciado pede que a equipe trabalhe em paralelo "com dados de te
 
 ## Implementação Hop registrada nesta entrega
 
-Esta entrega registra dez arquivos alterados para o trabalho do Estudante 1. As transformações de leitura, auditoria, carga e a primeira padronização da Silver são feitas com transformações nativas do Apache Hop sempre que possível.
+Esta entrega registra dezesseis arquivos de implementação alterados para o trabalho do Estudante 1. A Silver tem uma implementação híbrida: os transformers nativos do Apache Hop fazem a limpeza textual e o encadeamento da carga, enquanto o `TableInput` ainda concentra validações, conversões, deduplicação, regras relacionais e parte da normalização que depende do PostgreSQL.
 
 | Arquivo | Implementação |
 | --- | --- |
@@ -18,8 +18,14 @@ Esta entrega registra dez arquivos alterados para o trabalho do Estudante 1. As 
 | `hop/pipelines/bronze_comentarios.hpl` | Lê os arrays JSON de comentários das duas fontes, preserva `tags` como texto e grava em `bronze.comentarios`. |
 | `hop/pipelines/bronze_recomendacoes.hpl` | Lê o snapshot fixo `recomendacoes_desafio1.json` e grava em `bronze.recomendacoes`, sem usar a recomendação recalculada do Desafio 1. |
 | `hop/pipelines/controle_execucao.hpl` | Abre uma execução em `controle.execucao` usando `EXECUCAO_ID`, `FLUXO` e `MODO`. |
-| `hop/pipelines/silver_conteudo.hpl` | Lê `bronze.catalogo` da execução corrente, valida e normaliza tipos, níveis, datas e números, resolve a sobrevivência por `conteudo_id` e grava em `silver.conteudo`. |
-| `hop/workflows/principal.hwf` | Orquestra controle, Bronze e Silver em sequência. Recebe `EXECUCAO_ID` e `MODO`; a etapa de metadados é apenas um placeholder de log para futura integração com OpenMetadata. |
+| `hop/pipelines/silver_conteudo.hpl` | Lê a Bronze, aplica `StringOperations` para limpeza textual e mantém no `TableInput` as validações, conversões, normalização de domínios e sobrevivência por `conteudo_id`. |
+| `hop/pipelines/silver_usuario.hpl` | Usa `StringOperations` para limpeza textual; o `TableInput` ainda aplica deduplicação, conversões e as funções LGPD de pseudonimização, mascaramento e hashing. |
+| `hop/pipelines/silver_interacao.hpl` | Usa `StringOperations` para limpeza de `tipo_interacao`; o `TableInput` ainda concentra conversões, regras de domínio e referências a usuário/conteúdo. |
+| `hop/pipelines/silver_comentario.hpl` | Usa `StringOperations` para limpeza do texto; o `TableInput` ainda valida referências, data, avaliação, tags e aplica a anonimização. |
+| `hop/pipelines/silver_recomendacao.hpl` | Usa `StringOperations` para limpeza de `classificacao`; o `TableInput` ainda valida chaves, pontuação, posição e classificação. |
+| `hop/pipelines/quarentena_validacao.hpl` | Registra em `quarentena.registro` os registros que falham nas regras estruturais ou nas referências da Silver, preservando o payload original e evitando duplicar pendências. |
+| `hop/pipelines/controle_finalizacao.hpl` | Executa a finalização da execução no banco e produz o estado operacional `sucesso` ou `sucesso_com_ressalvas`. |
+| `hop/workflows/principal.hwf` | Orquestra controle, Bronze e todas as etapas Silver em sequência. Recebe `EXECUCAO_ID` e `MODO`; a etapa de metadados é apenas um placeholder de log para futura integração com OpenMetadata. |
 | `sql/camadas.sql` | Habilita `unaccent` para comparações sem acento e cria índice único, função e trigger de idempotência para registros repetidos de `bronze.catalogo`. |
 | `hop/project-config.json` | Define a exportação automática de metadados para `metadata.json` e mantém as variáveis do projeto preparadas para configuração posterior. |
 
@@ -27,14 +33,14 @@ Esta entrega registra dez arquivos alterados para o trabalho do Estudante 1. As 
 
 - O agendamento é externo ao Hop: o workflow não possui gatilho interno e deve ser executado por Hop Run, Hop Web ou outro orquestrador, passando os parâmetros necessários.
 - A publicação no OpenMetadata ainda não é chamada pelo workflow. A ação `preparar metadados` apenas registra a intenção e mantém o ponto de integração para uma etapa futura.
-- A cobertura Silver inicial desta entrega é `silver.conteudo`; as demais tabelas Silver, as regras completas de quarentena e o fechamento de status de cada etapa continuam sendo evolução do plano.
+- A cobertura Silver desta entrega inclui `conteudo`, `usuario`, `interacao`, `comentario` e `recomendacao`. O encaminhamento automático das rejeições estruturais e referenciais para `quarentena.registro` e o fechamento de `controle.execucao` estão implementados; o reprocessamento de registros corrigidos e o fechamento detalhado de cada etapa em `controle.etapa` continuam como a próxima extensão operacional.
 
 ## Quem produz e quem consome
 
 | Etapa | RF | Responsável | Lê | Escreve |
 | --- | --- | --- | --- | --- |
 | Bronze | RF20 | Estudante 1 | `dados/brutos/` (D1, `lote_2/` e `recomendacoes_desafio1.json`) | `bronze.*` |
-| Silver | RF21, RF30 | Estudante 1 | `bronze.*` da execução corrente e `quarentena.registro` com status `corrigido` | `silver.*`, `quarentena.registro`, `restrito.usuario_pseudonimo` |
+| Silver | RF21, RF30 | Estudante 1 | `bronze.*` da execução corrente; leitura de `quarentena.registro` com status `corrigido` ainda prevista | `silver.*`, `quarentena.registro`, `restrito.usuario_pseudonimo` |
 | Qualidade | RF31 | Estudante 2 | `silver.*` | `qualidade.teste`, `qualidade.resultado` |
 | Parquet | RF24 | Estudante 2 | `silver.*` | `dados/silver/*.parquet` |
 | Beam | RF25 | Estudante 2 | `dados/silver/*.parquet` | Parquet e evidências em `beam/evidencias/` |
