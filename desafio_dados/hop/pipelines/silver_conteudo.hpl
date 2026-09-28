@@ -43,19 +43,15 @@
        AND lower(unaccent(btrim(c.nivel))) IN ('basico', 'intermediario', 'avancado')
        AND btrim(c.carga_horaria_min) ~ '^[0-9]+$'
        AND btrim(c.carga_horaria_min)::integer >= 0
-       AND (
-           btrim(c.data_publicacao) ~ '^[0-9]{4}-[0-9]{2}-[0-9]{2}$'
-           OR btrim(c.data_publicacao) ~ '^[0-9]{2}/[0-9]{2}/[0-9]{4}$'
-           OR btrim(c.data_publicacao) ~ '^[0-9]{4}/[0-9]{2}/[0-9]{2}$'
-       )
+         AND controle.data_segura(btrim(c.data_publicacao)) IS NOT NULL
 ), padronizados AS (
     SELECT conteudo_id,
            regexp_replace(btrim(titulo), '\\s+', ' ', 'g') AS titulo,
-           CASE lower(unaccent(btrim(tipo))) WHEN 'video' THEN 'VÃ­deo' ELSE initcap(lower(unaccent(btrim(tipo)))) END AS tipo,
+           CASE lower(unaccent(btrim(tipo))) WHEN 'video' THEN 'Vídeo' ELSE initcap(lower(unaccent(btrim(tipo)))) END AS tipo,
            regexp_replace(btrim(categoria), '\\s+', ' ', 'g') AS categoria,
-           CASE lower(unaccent(btrim(nivel))) WHEN 'basico' THEN 'BÃ¡sico' WHEN 'intermediario' THEN 'IntermediÃ¡rio' ELSE 'AvanÃ§ado' END AS nivel,
+           CASE lower(unaccent(btrim(nivel))) WHEN 'basico' THEN 'Básico' WHEN 'intermediario' THEN 'Intermediário' ELSE 'Avançado' END AS nivel,
            carga_horaria_min::integer,
-           CASE WHEN data_publicacao LIKE '____-__-__' THEN data_publicacao::date WHEN data_publicacao LIKE '__/__/____' THEN to_date(data_publicacao, 'DD/MM/YYYY') ELSE to_date(data_publicacao, 'YYYY/MM/DD') END AS data_publicacao,
+           controle.data_segura(data_publicacao) AS data_publicacao,
            NULLIF(regexp_replace(btrim(descricao), '\\s+', ' ', 'g'), '') AS descricao,
            NULLIF(regexp_replace(btrim(autor), '\\s+', ' ', 'g'), '') AS autor,
            _execucao_id, _origem, _ingerido_em, sobrevivencia

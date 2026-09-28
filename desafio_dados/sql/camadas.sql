@@ -16,6 +16,67 @@ CREATE SCHEMA IF NOT EXISTS gold;        -- consumo analitico (RF26); objetos em
 CREATE SCHEMA IF NOT EXISTS restrito;    -- tabelas de correspondencia de pseudonimos (RF33)
 CREATE SCHEMA IF NOT EXISTS lgpd;        -- funcoes de protecao (RF33)
 
+CREATE OR REPLACE FUNCTION controle.data_segura(p_valor TEXT)
+RETURNS DATE
+LANGUAGE plpgsql
+AS $$
+BEGIN
+    IF p_valor IS NULL OR btrim(p_valor) = '' THEN
+        RETURN NULL;
+    END IF;
+    IF btrim(p_valor) ~ '^[0-9]{4}-[0-9]{2}-[0-9]{2}$' THEN
+        RETURN make_date(
+            substring(btrim(p_valor), 1, 4)::integer,
+            substring(btrim(p_valor), 6, 2)::integer,
+            substring(btrim(p_valor), 9, 2)::integer
+        );
+    ELSIF btrim(p_valor) ~ '^[0-9]{2}/[0-9]{2}/[0-9]{4}$' THEN
+        RETURN make_date(
+            substring(btrim(p_valor), 7, 4)::integer,
+            substring(btrim(p_valor), 4, 2)::integer,
+            substring(btrim(p_valor), 1, 2)::integer
+        );
+    ELSIF btrim(p_valor) ~ '^[0-9]{4}/[0-9]{2}/[0-9]{2}$' THEN
+        RETURN make_date(
+            substring(btrim(p_valor), 1, 4)::integer,
+            substring(btrim(p_valor), 6, 2)::integer,
+            substring(btrim(p_valor), 9, 2)::integer
+        );
+    END IF;
+    RETURN NULL;
+EXCEPTION WHEN OTHERS THEN
+    RETURN NULL;
+END;
+$$;
+
+CREATE OR REPLACE FUNCTION controle.timestamp_seguro(p_valor TEXT)
+RETURNS TIMESTAMP
+LANGUAGE plpgsql
+AS $$
+BEGIN
+    IF p_valor IS NULL OR btrim(p_valor) = '' THEN
+        RETURN NULL;
+    END IF;
+    RETURN btrim(p_valor)::timestamp;
+EXCEPTION WHEN OTHERS THEN
+    RETURN NULL;
+END;
+$$;
+
+CREATE OR REPLACE FUNCTION controle.jsonb_seguro(p_valor TEXT)
+RETURNS JSONB
+LANGUAGE plpgsql
+AS $$
+BEGIN
+    IF p_valor IS NULL OR btrim(p_valor) = '' THEN
+        RETURN NULL;
+    END IF;
+    RETURN btrim(p_valor)::jsonb;
+EXCEPTION WHEN OTHERS THEN
+    RETURN NULL;
+END;
+$$;
+
 -- ---------------------------------------------------------------
 -- controle: toda execucao, completa ou de uma etapa isolada, abre uma linha em execucao
 -- ---------------------------------------------------------------
@@ -45,6 +106,80 @@ CREATE TABLE IF NOT EXISTS controle.etapa (
     mensagem     TEXT,
     PRIMARY KEY (execucao_id, etapa)
 );
+
+CREATE OR REPLACE FUNCTION controle.iniciar_etapa(p_execucao_id TEXT, p_etapa TEXT)
+RETURNS VOID
+LANGUAGE plpgsql
+AS $$
+BEGIN
+    INSERT INTO controle.etapa (execucao_id, etapa, status)
+    VALUES (p_execucao_id, p_etapa, 'em_andamento')
+    ON CONFLICT (execucao_id, etapa) DO UPDATE
+       SET inicio = now(),
+           fim = NULL,
+           status = 'em_andamento',
+           lidos = NULL,
+           gravados = NULL,
+           quarentena = NULL,
+           mensagem = NULL;
+END;
+$$;
+
+CREATE OR REPLACE FUNCTION controle.finalizar_etapa(
+    p_execucao_id TEXT,
+    p_etapa TEXT,
+    p_status TEXT,
+    p_lidos INTEGER DEFAULT NULL,
+    p_gravados INTEGER DEFAULT NULL,
+    p_quarentena INTEGER DEFAULT NULL,
+    p_mensagem TEXT DEFAULT NULL
+)
+RETURNS VOID
+LANGUAGE plpgsql
+AS $$
+BEGIN
+    IF p_status NOT IN ('sucesso', 'sucesso_com_ressalvas', 'falha', 'ignorada') THEN
+        RAISE EXCEPTION 'Status de etapa invalido: %', p_status;
+    END IF;
+
+    UPDATE controle.etapa
+       SET fim = now(),
+           status = p_status,
+           lidos = p_lidos,
+           gravados = p_gravados,
+           quarentena = p_quarentena,
+           mensagem = p_mensagem
+     WHERE execucao_id = p_execucao_id
+       AND etapa = p_etapa;
+
+    IF NOT FOUND THEN
+        RAISE EXCEPTION 'Etapa nao iniciada: %/%', p_execucao_id, p_etapa;
+    END IF;
+END;
+$$;
+
+CREATE OR REPLACE FUNCTION controle.registrar_falha(
+    p_execucao_id TEXT,
+    p_etapa TEXT,
+    p_mensagem TEXT
+)
+RETURNS VOID
+LANGUAGE plpgsql
+AS $$
+BEGIN
+    PERFORM controle.iniciar_etapa(p_execucao_id, p_etapa);
+    PERFORM controle.finalizar_etapa(
+        p_execucao_id, p_etapa, 'falha', NULL, NULL, NULL, p_mensagem
+    );
+
+    UPDATE controle.execucao
+       SET status = 'falha',
+           fim = COALESCE(fim, now()),
+           mensagem = p_mensagem
+     WHERE execucao_id = p_execucao_id
+       AND status = 'em_andamento';
+END;
+$$;
 
 -- ---------------------------------------------------------------
 -- bronze: campos como TEXT, exatamente como vieram; append-only.
@@ -248,6 +383,11 @@ DECLARE
 BEGIN
     v_status := CASE
         WHEN EXISTS (
+            SELECT 1 FROM controle.etapa
+             WHERE execucao_id = p_execucao_id
+               AND status = 'falha'
+        ) THEN 'falha'
+        WHEN EXISTS (
             SELECT 1 FROM quarentena.registro
              WHERE execucao_id = p_execucao_id
                AND status = 'pendente'
@@ -258,7 +398,9 @@ BEGIN
     UPDATE controle.execucao
        SET status = v_status,
            fim = COALESCE(fim, now()),
-           mensagem = CASE WHEN v_status = 'sucesso_com_ressalvas'
+           mensagem = CASE WHEN v_status = 'falha'
+                           THEN 'Execucao encerrada por falha em uma etapa'
+                           WHEN v_status = 'sucesso_com_ressalvas'
                            THEN 'Execucao concluida com registros pendentes na quarentena'
                            ELSE 'Execucao concluida'
                       END
