@@ -8,7 +8,7 @@ A seção 5 do enunciado pede que a equipe trabalhe em paralelo "com dados de te
 
 ## Implementação Hop registrada nesta entrega
 
-Esta entrega registra dezesseis arquivos de implementação alterados para o trabalho do Estudante 1. A Silver tem uma implementação híbrida: os transformers nativos do Apache Hop fazem a limpeza textual e o encadeamento da carga, enquanto o `TableInput` ainda concentra validações, conversões, deduplicação, regras relacionais e parte da normalização que depende do PostgreSQL.
+Esta entrega registra dezessete arquivos de implementação alterados para o trabalho do Estudante 1. A Silver tem uma implementação híbrida: os transformers nativos do Apache Hop fazem a limpeza textual e o encadeamento da carga, enquanto o `TableInput` ainda concentra validações, conversões, deduplicação, regras relacionais e parte da normalização que depende do PostgreSQL.
 
 | Arquivo | Implementação |
 | --- | --- |
@@ -18,6 +18,7 @@ Esta entrega registra dezesseis arquivos de implementação alterados para o tra
 | `hop/pipelines/bronze_comentarios.hpl` | Lê os arrays JSON de comentários das duas fontes, preserva `tags` como texto e grava em `bronze.comentarios`. |
 | `hop/pipelines/bronze_recomendacoes.hpl` | Lê o snapshot fixo `recomendacoes_desafio1.json` e grava em `bronze.recomendacoes`, sem usar a recomendação recalculada do Desafio 1. |
 | `hop/pipelines/controle_execucao.hpl` | Abre uma execução em `controle.execucao` usando `EXECUCAO_ID`, `FLUXO` e `MODO`. |
+| `hop/pipelines/controle_etapa.hpl` | Expõe operações `INICIO` e `FIM` para registrar uma etapa em `controle.etapa`, usando as funções de controle do PostgreSQL. |
 | `hop/pipelines/silver_conteudo.hpl` | Lê a Bronze, aplica `StringOperations` para limpeza textual e mantém no `TableInput` as validações, conversões, normalização de domínios e sobrevivência por `conteudo_id`. |
 | `hop/pipelines/silver_usuario.hpl` | Usa `StringOperations` para limpeza textual; o `TableInput` ainda aplica deduplicação, conversões e as funções LGPD de pseudonimização, mascaramento e hashing. |
 | `hop/pipelines/silver_interacao.hpl` | Usa `StringOperations` para limpeza de `tipo_interacao`; o `TableInput` ainda concentra conversões, regras de domínio e referências a usuário/conteúdo. |
@@ -29,11 +30,32 @@ Esta entrega registra dezesseis arquivos de implementação alterados para o tra
 | `sql/camadas.sql` | Habilita `unaccent` para comparações sem acento e cria índice único, função e trigger de idempotência para registros repetidos de `bronze.catalogo`. |
 | `hop/project-config.json` | Define a exportação automática de metadados para `metadata.json` e mantém as variáveis do projeto preparadas para configuração posterior. |
 
+### Alterações staged analisadas
+
+- `bronze_recomendacoes.hpl` passou a usar paths JSON no formato `$.*.campo`, compatível com o snapshot que contém um array de recomendações.
+- `sql/camadas.sql` passou a oferecer `controle.data_segura`, `controle.timestamp_seguro` e `controle.jsonb_seguro`, para que valores inválidos possam ser classificados sem abortar a consulta; também foram adicionadas as funções `controle.iniciar_etapa`, `controle.finalizar_etapa` e `controle.registrar_falha`.
+- `controle.finalizar_execucao` passou a priorizar `falha` quando existe uma etapa com esse status.
+- `principal.hwf` foi convertido para o formato de ações e hops reconhecido pelo Hop 2.19 e as ações de pipeline receberam a configuração de execução `local`.
+- `silver_conteudo.hpl` e `silver_comentario.hpl` passaram a usar os helpers seguros para datas e JSON. Isso evita casts diretos para datas impossíveis e tags que não são JSON válido.
+
+Essas alterações foram validadas com os containers do projeto. Os helpers SQL retornam `NULL` para `31/02/2026` e JSON inválido e convertem corretamente `2026/08/02`. O pipeline de controle de etapa ainda exige que a execução exista previamente, como imposto pela chave estrangeira.
+
+### Bloqueios encontrados na validação staged
+
+- `controle_etapa.hpl` ainda não está conectado ao `principal.hwf`; portanto, a tabela `controle.etapa` não é preenchida pela execução completa.
+- Os hops do workflow estão marcados como incondicionais. Assim, uma falha em `bronze_recomendacoes` ou em uma Silver não interrompe as etapas dependentes, e a execução pode terminar com `sucesso` indevidamente.
+- O workflow staged ainda encontrou erro de arquivo no JSON de recomendações, apesar da alteração dos paths, e precisa de uma nova validação da configuração de arquivo no container.
+- A Silver ainda apresenta incompatibilidade de tipos ao gravar `conteudo_id` como texto em uma coluna `INTEGER`.
+- A quarentena ainda envia o payload como texto para a coluna `JSONB`; deve usar `controle.jsonb_seguro` ou conversão explícita no fluxo.
+- A codificação de textos exibida nos logs do PostgreSQL continua incorreta em valores acentuados, como `Niterói`, `Vídeo` e `Avançado`.
+
+Até esses pontos serem corrigidos e revalidados, o staged deve ser tratado como uma etapa intermediária de implementação, não como uma execução completa aprovada.
+
 ### Limites atuais da implementação
 
 - O agendamento é externo ao Hop: o workflow não possui gatilho interno e deve ser executado por Hop Run, Hop Web ou outro orquestrador, passando os parâmetros necessários.
 - A publicação no OpenMetadata ainda não é chamada pelo workflow. A ação `preparar metadados` apenas registra a intenção e mantém o ponto de integração para uma etapa futura.
-- A cobertura Silver desta entrega inclui `conteudo`, `usuario`, `interacao`, `comentario` e `recomendacao`. O encaminhamento automático das rejeições estruturais e referenciais para `quarentena.registro` e o fechamento de `controle.execucao` estão implementados; o reprocessamento de registros corrigidos e o fechamento detalhado de cada etapa em `controle.etapa` continuam como a próxima extensão operacional.
+- A cobertura Silver desta entrega inclui `conteudo`, `usuario`, `interacao`, `comentario` e `recomendacao`. O encaminhamento automático das rejeições estruturais e referenciais para `quarentena.registro` e o fechamento de `controle.execucao` estão implementados de forma parcial; o reprocessamento de registros corrigidos e a conexão efetiva de `controle_etapa.hpl` ao workflow continuam pendentes.
 
 ## Quem produz e quem consome
 
