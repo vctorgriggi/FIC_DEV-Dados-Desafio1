@@ -2,6 +2,7 @@
 # Desafio 2: servicos novos em perfis, para cada integrante subir so o que usa:
 #   (sem perfil)  postgres, mongo, superset, db-init
 #   hop           hop-web (designer no navegador)
+#   agendamento   hop-agendador (fluxo completo todo dia as 05:00 UTC)
 #   beam          spark-master, spark-worker, beam-job-server, beam-worker-pool
 #   governanca    elasticsearch, om-migrar, openmetadata, om-ingestao
 #   pipeline      executores avulsos: app, hop, beam (docker compose run --rm <servico>)
@@ -171,6 +172,24 @@ services:
       mongo:
         condition: service_healthy
     profiles: ["pipeline"]
+
+  # agendamento nativo do Hop (acao Start repetida diariamente): hop/workflows/agendado.hwf
+  hop-agendador:
+    image: apache/hop:2.19.0
+    env_file: .env
+    environment:
+      <<: *hop-env
+      HOP_RUN_CONFIG: local
+      HOP_OPTIONS: -Xmx1g
+    volumes:
+      - .:/app
+    entrypoint: ["bash", "/app/docker/hop/executar.sh"]
+    command: ["workflows/agendado.hwf"]
+    restart: unless-stopped
+    depends_on:
+      db-init:
+        condition: service_completed_successfully
+    profiles: ["agendamento"]
 
   # ---------------------------------------------------------------
   # Desafio 2 — Apache Beam com runtime Spark (a versao do Spark e a mesma embutida no job server)

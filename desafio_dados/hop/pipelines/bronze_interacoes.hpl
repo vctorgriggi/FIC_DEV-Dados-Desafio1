@@ -51,17 +51,10 @@
     <rootUriNameFieldName/>
     <files>
       <file>
-        <name>/app/dados/brutos/interacoes.json</name>
-        <filemask/>
-        <exclude_filemask/>
-        <file_required>Y</file_required>
-        <include_subfolders>N</include_subfolders>
-      </file>
-      <file>
         <name>${DIR_BRUTOS}/interacoes.json</name>
         <filemask/>
         <exclude_filemask/>
-        <file_required>N</file_required>
+        <file_required>Y</file_required>
         <include_subfolders>N</include_subfolders>
       </file>
     </files>
@@ -199,17 +192,10 @@
     <rootUriNameFieldName/>
     <files>
       <file>
-        <name>/app/dados/brutos/lote_2/interacoes.json</name>
-        <filemask/>
-        <exclude_filemask/>
-        <file_required>Y</file_required>
-        <include_subfolders>N</include_subfolders>
-      </file>
-      <file>
         <name>${DIR_BRUTOS}/lote_2/interacoes.json</name>
         <filemask/>
         <exclude_filemask/>
-        <file_required>N</file_required>
+        <file_required>Y</file_required>
         <include_subfolders>N</include_subfolders>
       </file>
     </files>

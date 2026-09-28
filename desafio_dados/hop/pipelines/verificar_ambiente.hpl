@@ -48,7 +48,7 @@
        '${EXECUCAO_ID}' AS execucao_id,
        '${PROJECT_HOME}' AS projeto,
        (SELECT count(*) FROM information_schema.schemata
-         WHERE schema_name IN ('bronze', 'silver', 'gold', 'quarentena', 'qualidade', 'controle', 'restrito', 'lgpd')) AS schemas_desafio2,
+         WHERE schema_name IN ('bronze', 'silver', 'gold', 'quarentena', 'qualidade', 'controle', 'restrito', 'lgpd', 'validacao')) AS schemas_desafio2,
        (SELECT count(*) FROM information_schema.tables WHERE table_schema = 'public') AS objetos_desafio1</sql>
     <limit>0</limit>
     <lookup/>

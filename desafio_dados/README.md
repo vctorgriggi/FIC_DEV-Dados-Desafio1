@@ -97,6 +97,8 @@ O Desafio 2 evolui esta mesma pasta. Nada do Desafio 1 foi alterado: o schema `p
 
 **Contratos entre as etapas** (quem lê e escreve o quê, convenções, códigos de regra, proposta da Gold): [`documentacao/contratos.md`](documentacao/contratos.md). Leitura obrigatória antes de começar.
 
+**Bronze, Silver, workflow e quarentena no Apache Hop** (arquitetura ELT, como executar, como corrigir e reprocessar, roteiro de demonstração do RF23): [`documentacao/pipeline_hop.md`](documentacao/pipeline_hop.md).
+
 ### Serviços e perfis
 
 Os serviços novos ficam em perfis do Compose, para cada integrante subir só o que usa:
@@ -107,9 +109,10 @@ Os serviços novos ficam em perfis do Compose, para cada integrante subir só o 
 | `hop` | `hop-web` (designer do Apache Hop no navegador) | http://localhost:8081/ui (`HOP_WEB_HOST_PORT`) |
 | `beam` | `spark-master`, `spark-worker`, `beam-job-server`, `beam-worker-pool` | UI do Spark em http://localhost:8090 (`SPARK_UI_HOST_PORT`) |
 | `governanca` | `elasticsearch`, `om-migrar`, `openmetadata`, `om-ingestao` (Airflow) | http://localhost:8585 (`admin@open-metadata.org` / `admin`); Airflow em http://localhost:8082 |
+| `agendamento` | `hop-agendador`: fluxo completo todo dia às 05:00 UTC (02:00 de Brasília) | `docker compose --profile agendamento up -d` |
 | `pipeline` | executores avulsos: `app` (Desafio 1), `hop`, `beam` | `docker compose run --rm <serviço> ...` |
 
-`db-init` roda a cada `up` e é idempotente: cria os bancos do OpenMetadata e do Airflow no mesmo PostgreSQL e aplica [`sql/camadas.sql`](sql/camadas.sql) (schemas `bronze`, `silver`, `gold`, `quarentena`, `qualidade`, `controle`, `restrito`, funções `lgpd.*` e o papel somente leitura `consumo`). Funciona também sobre um volume já criado no Desafio 1.
+`db-init` roda a cada `up` (e a cada `docker compose run` de um serviço que depende dele) e é idempotente e não destrutivo. Ele cria os bancos do OpenMetadata e do Airflow no mesmo PostgreSQL e aplica [`sql/camadas.sql`](sql/camadas.sql) e [`sql/silver.sql`](sql/silver.sql): schemas das camadas, quarentena, controle, funções `lgpd.*`, regras da Silver e o papel somente leitura `consumo`. Funciona também sobre um volume já criado no Desafio 1.
 
 ```bash
 cp .env.example .env                               # quem já tem .env: copie as variáveis novas do bloco "Desafio 2"
@@ -119,6 +122,7 @@ docker compose --profile beam up -d                # + cluster Spark para o Beam
 docker compose --profile governanca up -d          # + OpenMetadata (a primeira subida migra o banco e demora mais)
 
 docker compose run --rm hop pipelines/verificar_ambiente.hpl           # Hop: conexão, variáveis e schemas
+docker compose run --rm hop workflows/principal.hwf                    # fluxo Bronze → Silver com controle e quarentena
 docker compose run --rm beam beam/verificar_runtime.py --runner direct # Beam no DirectRunner
 docker compose run --rm beam beam/verificar_runtime.py --runner spark  # Beam no cluster Spark (perfil beam)
 docker compose run --rm beam -m ferramentas.gerar_dados                # regenera os dados de teste
@@ -183,9 +187,10 @@ desafio_dados/
 │   Desafio 2
 ├── dados/bronze|silver|gold|quarentena/   amostras e Parquet das camadas (as tabelas ficam no PostgreSQL)
 ├── dados/brutos/usuarios.csv, lote_2/, falhas/, recomendacoes_desafio1.json   fontes novas
-├── hop/                    projeto Apache Hop: pipelines/, workflows/, environments/, metadata/
+├── hop/                    projeto Apache Hop: workflows/ (principal, bronze, silver, agendado...), pipelines/, environments/, metadata/
 ├── beam/                   pipeline Apache Beam, verificar_runtime.py, evidencias/
-├── sql/camadas.sql         schemas e tabelas compartilhadas, funções lgpd.*, papel consumo
+├── sql/camadas.sql         schemas e tabelas compartilhadas, controle, quarentena, funções lgpd.*, papel consumo
+├── sql/silver.sql          regras de validação da Silver, área de preparo e publicação atômica
 ├── superset/, openmetadata/, qualidade/, lgpd/   evidências e documentação por requisito
 └── ferramentas/            gerar_dados.py
 ```

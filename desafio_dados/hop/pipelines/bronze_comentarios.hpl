@@ -51,24 +51,10 @@
     <rootUriNameFieldName/>
     <files>
       <file>
-        <name>/app/dados/brutos/comentarios.json</name>
-        <filemask/>
-        <exclude_filemask/>
-        <file_required>Y</file_required>
-        <include_subfolders>N</include_subfolders>
-      </file>
-      <file>
-        <name/>
-        <filemask/>
-        <exclude_filemask/>
-        <file_required>N</file_required>
-        <include_subfolders>N</include_subfolders>
-      </file>
-      <file>
         <name>${DIR_BRUTOS}/comentarios.json</name>
         <filemask/>
         <exclude_filemask/>
-        <file_required>N</file_required>
+        <file_required>Y</file_required>
         <include_subfolders>N</include_subfolders>
       </file>
     </files>
@@ -186,17 +172,10 @@
     <shortFileFieldName>N</shortFileFieldName>
     <files>
       <file>
-        <name>/app/dados/brutos/lote_2/comentarios.json</name>
+        <name>${DIR_BRUTOS}/lote_2/comentarios.json</name>
         <filemask/>
         <exclude_filemask/>
         <file_required>Y</file_required>
-        <include_subfolders>N</include_subfolders>
-      </file>
-      <file>
-        <name>${DIR_BRUTOS}/lote2/comentarios.json</name>
-        <filemask/>
-        <exclude_filemask/>
-        <file_required>N</file_required>
         <include_subfolders>N</include_subfolders>
       </file>
     </files>

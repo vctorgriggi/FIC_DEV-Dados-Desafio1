@@ -2,67 +2,17 @@
 
 A seção 5 do enunciado pede que a equipe trabalhe em paralelo "com dados de teste e contratos de entrada e saída previamente definidos". Este documento é esse contrato: o que cada etapa lê, o que escreve e em que formato. Assim, cada integrante desenvolve a sua parte sem esperar a do outro.
 
-- **Fonte da verdade das estruturas:** [`sql/camadas.sql`](../sql/camadas.sql), aplicado automaticamente pelo serviço `db-init` a cada `docker compose up`. Aqui fica o resumo e as regras que o SQL não expressa.
+- **Fonte da verdade:** [`sql/camadas.sql`](../sql/camadas.sql) (estruturas e controle) e [`sql/silver.sql`](../sql/silver.sql) (regras de validação e publicação da Silver), aplicados automaticamente pelo serviço `db-init` a cada `docker compose up`. Aqui fica o resumo e as regras que o SQL não expressa.
+- **Como a parte do Estudante 1 funciona e como demonstrá-la:** [`pipeline_hop.md`](pipeline_hop.md).
 - **Mudou o contrato?** Combine com quem consome, altere `sql/camadas.sql` e este documento no mesmo commit.
 - A camada Gold ainda é uma **proposta**: o Estudante 2 implementa em `sql/camada_gold.sql` e pode ajustar, avisando o Estudante 3.
-
-## Implementação Hop registrada nesta entrega
-
-Esta entrega registra dezessete arquivos de implementação alterados para o trabalho do Estudante 1. A Silver tem uma implementação híbrida: os transformers nativos do Apache Hop fazem a limpeza textual e o encadeamento da carga, enquanto o `TableInput` ainda concentra validações, conversões, deduplicação, regras relacionais e parte da normalização que depende do PostgreSQL.
-
-| Arquivo | Implementação |
-| --- | --- |
-| `hop/pipelines/bronze_catalogo.hpl` | Lê os CSVs do Desafio 1 e do `lote_2`, acrescenta `_execucao_id`, `_origem` e `_linha`, e grava em `bronze.catalogo`. |
-| `hop/pipelines/bronze_usuarios.hpl` | Lê os CSVs de usuários das duas fontes e grava os dados brutos em `bronze.usuarios`, mantendo o fluxo restrito por conter dados pessoais. |
-| `hop/pipelines/bronze_interacoes.hpl` | Lê os arrays JSON de interações das duas fontes com `JsonInput` e paths `$.*.campo`, registra auditoria e grava em `bronze.interacoes`. |
-| `hop/pipelines/bronze_comentarios.hpl` | Lê os arrays JSON de comentários das duas fontes, preserva `tags` como texto e grava em `bronze.comentarios`. |
-| `hop/pipelines/bronze_recomendacoes.hpl` | Lê o snapshot fixo `recomendacoes_desafio1.json` e grava em `bronze.recomendacoes`, sem usar a recomendação recalculada do Desafio 1. |
-| `hop/pipelines/controle_execucao.hpl` | Abre uma execução em `controle.execucao` usando `EXECUCAO_ID`, `FLUXO` e `MODO`. |
-| `hop/pipelines/controle_etapa.hpl` | Expõe operações `INICIO` e `FIM` para registrar uma etapa em `controle.etapa`, usando as funções de controle do PostgreSQL. |
-| `hop/pipelines/silver_conteudo.hpl` | Lê a Bronze, aplica `StringOperations` para limpeza textual e mantém no `TableInput` as validações, conversões, normalização de domínios e sobrevivência por `conteudo_id`. |
-| `hop/pipelines/silver_usuario.hpl` | Usa `StringOperations` para limpeza textual; o `TableInput` ainda aplica deduplicação, conversões e as funções LGPD de pseudonimização, mascaramento e hashing. |
-| `hop/pipelines/silver_interacao.hpl` | Usa `StringOperations` para limpeza de `tipo_interacao`; o `TableInput` ainda concentra conversões, regras de domínio e referências a usuário/conteúdo. |
-| `hop/pipelines/silver_comentario.hpl` | Usa `StringOperations` para limpeza do texto; o `TableInput` ainda valida referências, data, avaliação, tags e aplica a anonimização. |
-| `hop/pipelines/silver_recomendacao.hpl` | Usa `StringOperations` para limpeza de `classificacao`; o `TableInput` ainda valida chaves, pontuação, posição e classificação. |
-| `hop/pipelines/quarentena_validacao.hpl` | Registra em `quarentena.registro` os registros que falham nas regras estruturais ou nas referências da Silver, preservando o payload original e evitando duplicar pendências. |
-| `hop/pipelines/controle_finalizacao.hpl` | Executa a finalização da execução no banco e produz o estado operacional `sucesso` ou `sucesso_com_ressalvas`. |
-| `hop/workflows/principal.hwf` | Orquestra controle, Bronze e todas as etapas Silver em sequência. Recebe `EXECUCAO_ID` e `MODO`; a etapa de metadados é apenas um placeholder de log para futura integração com OpenMetadata. |
-| `sql/camadas.sql` | Habilita `unaccent` para comparações sem acento e cria índice único, função e trigger de idempotência para registros repetidos de `bronze.catalogo`. |
-| `hop/project-config.json` | Define a exportação automática de metadados para `metadata.json` e mantém as variáveis do projeto preparadas para configuração posterior. |
-
-### Alterações staged analisadas
-
-- `bronze_recomendacoes.hpl` passou a usar paths JSON no formato `$.*.campo`, compatível com o snapshot que contém um array de recomendações.
-- `sql/camadas.sql` passou a oferecer `controle.data_segura`, `controle.timestamp_seguro` e `controle.jsonb_seguro`, para que valores inválidos possam ser classificados sem abortar a consulta; também foram adicionadas as funções `controle.iniciar_etapa`, `controle.finalizar_etapa` e `controle.registrar_falha`.
-- `controle.finalizar_execucao` passou a priorizar `falha` quando existe uma etapa com esse status.
-- `principal.hwf` foi convertido para o formato de ações e hops reconhecido pelo Hop 2.19 e as ações de pipeline receberam a configuração de execução `local`.
-- `silver_conteudo.hpl` e `silver_comentario.hpl` passaram a usar os helpers seguros para datas e JSON. Isso evita casts diretos para datas impossíveis e tags que não são JSON válido.
-
-Essas alterações foram validadas com os containers do projeto. Os helpers SQL retornam `NULL` para `31/02/2026` e JSON inválido e convertem corretamente `2026/08/02`. O pipeline de controle de etapa ainda exige que a execução exista previamente, como imposto pela chave estrangeira.
-
-### Bloqueios encontrados na validação staged
-
-- `controle_etapa.hpl` ainda não está conectado ao `principal.hwf`; portanto, a tabela `controle.etapa` não é preenchida pela execução completa.
-- Os hops do workflow estão marcados como incondicionais. Assim, uma falha em `bronze_recomendacoes` ou em uma Silver não interrompe as etapas dependentes, e a execução pode terminar com `sucesso` indevidamente.
-- O workflow staged ainda encontrou erro de arquivo no JSON de recomendações, apesar da alteração dos paths, e precisa de uma nova validação da configuração de arquivo no container.
-- A Silver ainda apresenta incompatibilidade de tipos ao gravar `conteudo_id` como texto em uma coluna `INTEGER`.
-- A quarentena ainda envia o payload como texto para a coluna `JSONB`; deve usar `controle.jsonb_seguro` ou conversão explícita no fluxo.
-- A codificação de textos exibida nos logs do PostgreSQL continua incorreta em valores acentuados, como `Niterói`, `Vídeo` e `Avançado`.
-
-Até esses pontos serem corrigidos e revalidados, o staged deve ser tratado como uma etapa intermediária de implementação, não como uma execução completa aprovada.
-
-### Limites atuais da implementação
-
-- O agendamento é externo ao Hop: o workflow não possui gatilho interno e deve ser executado por Hop Run, Hop Web ou outro orquestrador, passando os parâmetros necessários.
-- A publicação no OpenMetadata ainda não é chamada pelo workflow. A ação `preparar metadados` apenas registra a intenção e mantém o ponto de integração para uma etapa futura.
-- A cobertura Silver desta entrega inclui `conteudo`, `usuario`, `interacao`, `comentario` e `recomendacao`. O encaminhamento automático das rejeições estruturais e referenciais para `quarentena.registro` e o fechamento de `controle.execucao` estão implementados de forma parcial; o reprocessamento de registros corrigidos e a conexão efetiva de `controle_etapa.hpl` ao workflow continuam pendentes.
 
 ## Quem produz e quem consome
 
 | Etapa | RF | Responsável | Lê | Escreve |
 | --- | --- | --- | --- | --- |
 | Bronze | RF20 | Estudante 1 | `dados/brutos/` (D1, `lote_2/` e `recomendacoes_desafio1.json`) | `bronze.*` |
-| Silver | RF21, RF30 | Estudante 1 | `bronze.*` da execução corrente; leitura de `quarentena.registro` com status `corrigido` ainda prevista | `silver.*`, `quarentena.registro`, `restrito.usuario_pseudonimo` |
+| Silver | RF21, RF30 | Estudante 1 | `bronze.*` da execução corrente, com as correções de `quarentena.registro` aplicadas | `silver.*`, `quarentena.registro`, `restrito.usuario_pseudonimo` |
 | Qualidade | RF31 | Estudante 2 | `silver.*` | `qualidade.teste`, `qualidade.resultado` |
 | Parquet | RF24 | Estudante 2 | `silver.*` | `dados/silver/*.parquet` |
 | Beam | RF25 | Estudante 2 | `dados/silver/*.parquet` | Parquet e evidências em `beam/evidencias/` |
@@ -72,22 +22,25 @@ Até esses pontos serem corrigidos e revalidados, o staged deve ser tratado como
 | LGPD | RF32, RF33 | Estudante 3 | `bronze.usuarios`, `silver.*` | funções `lgpd.*` (revisão), `lgpd/*.md` |
 | Consumo | RF16–RF18 | Estudante 3 | `gold.*`, `qualidade.*`, `controle.*` com o papel `consumo` | SQL Lab, datasets virtuais, dashboard, alerta |
 
-A publicação de metadados no workflow (RF22) é uma fronteira entre dois responsáveis. O Estudante 3 cria no OpenMetadata o pipeline de ingestão do PostgreSQL, e o workflow do Estudante 1 dispara esse pipeline pela API REST do OpenMetadata (`POST /api/v1/services/ingestionPipelines/trigger/{id}`).
+A publicação de metadados no workflow (RF22) é uma fronteira entre dois responsáveis. O Estudante 3 cria no OpenMetadata o pipeline de ingestão do PostgreSQL e entrega `hop/workflows/metadados.hwf`, que o dispara pela API REST do OpenMetadata (`POST /api/v1/services/ingestionPipelines/trigger/{id}`). O workflow principal já chama esse arquivo quando ele existir (veja "Como plugar uma etapa no fluxo").
 
 ## Convenções comuns
 
-**Identificador de execução.** Um UUID v4, recebido como parâmetro `EXECUCAO_ID` em todo pipeline e workflow do Hop, e como `--execucao_id` nos scripts Python e Beam. O workflow principal gera o UUID e o repassa. Uma etapa rodada isoladamente sem esse parâmetro gera o próprio UUID e abre a sua execução com `fluxo` igual ao nome da etapa.
+**Identificador de execução.** Um UUID v4, recebido como parâmetro `EXECUCAO_ID` em todo pipeline e workflow do Hop, e como `--execucao_id` nos scripts Python e Beam. Quando o parâmetro vem vazio, o workflow gera o UUID (`pipelines/definir_execucao.hpl`) e o repassa às etapas. Para reprocessar uma camada de uma execução existente, informe o `EXECUCAO_ID` dela: a execução é reaberta e o status final é recalculado.
 
 **Controle (RF22).** Toda execução, completa ou isolada, segue o mesmo ciclo:
 
 1. Abre uma linha em `controle.execucao` com status `em_andamento`.
 2. Cada etapa insere a sua linha em `controle.etapa` ao começar e a atualiza ao terminar, com `fim`, `status`, `lidos`, `gravados`, `quarentena` e `mensagem`. A coluna `duracao_s` é calculada pelo banco.
-3. O status final da execução é:
-   - `falha` quando uma etapa falha;
-   - `sucesso_com_ressalvas` quando houve registros em quarentena ou teste de qualidade não crítico reprovado;
+3. O status de cada etapa é `sucesso`, `sucesso_com_ressalvas` (terminou, mas mandou registros para a quarentena ou reprovou um teste não crítico), `falha` ou `ignorada` (prevista no fluxo, mas o workflow do responsável ainda não existe).
+4. O status final da execução é:
+   - `falha` quando alguma etapa falhou ou ficou `em_andamento` (processo interrompido);
+   - `sucesso_com_ressalvas` quando alguma etapa terminou com ressalvas;
    - `sucesso` nos demais casos.
 
-**Logs correlacionados.** Toda linha de log inclui o `execucao_id`. As tabelas de `controle`, `quarentena` e `qualidade` também o carregam, então basta um filtro por ele para reconstituir uma execução.
+As funções `controle.abrir_execucao`, `iniciar_etapa`, `concluir_etapa`, `registrar_falha`, `registrar_ignorada` e `finalizar_execucao` fazem esse ciclo. `concluir_etapa` mede `lidos`, `gravados` e `quarentena` no próprio banco (`controle.medir_etapa`).
+
+**Logs correlacionados.** Os workflows escrevem o `execucao_id` no log do Hop ao abrir a execução e ao iniciar cada etapa (`[<uuid>] etapa silver_conteudo: inicio`). As tabelas de `controle`, `quarentena` e `qualidade` também o carregam, então basta um filtro por ele para reconstituir uma execução.
 
 **Auditoria nas camadas.**
 
@@ -101,13 +54,16 @@ A publicação de metadados no workflow (RF22) é uma fronteira entre dois respo
 **Modo de carga.**
 
 - **Bronze:** só acrescenta (append-only), uma carga por execução.
-- **Silver:** recarga completa numa transação, a partir da Bronze da execução corrente. Se falhar, nada muda.
+- **Silver:** cada entidade é validada para a área de preparo (schema `validacao`), e `silver.publicar()` troca a Silver inteira numa única transação. Se qualquer passo falhar, a Silver anterior continua publicada.
 - **Gold:** recriada só depois que a qualidade aprova (RF31).
 
-**Ordem das fontes e sobrevivência (proposta padrão; RF30 pode refinar):**
+**Deduplicação e sobrevivência** (implementadas em `sql/silver.sql`):
 
-- **Conteúdos:** quando a mesma chave aparece em mais de uma fonte, o lote 2 prevalece sobre o Desafio 1. Dentro do mesmo arquivo, prevalece a última ocorrência.
-- **Usuários:** prevalece o maior `atualizado_em`.
+- **Cópia idêntica** do mesmo registro: fica a primeira ocorrência; as outras vão para a quarentena como `DUPLICADO`.
+- **Conteúdos** com o mesmo id e valores diferentes: o lote 2 prevalece sobre o Desafio 1, sem erro (a versão vencida continua só na Bronze). No mesmo arquivo, prevalece a última ocorrência, e as anteriores vão para a quarentena como `CONFLITO_VERSAO`, para alguém revisar.
+- **Usuários** com o mesmo id: prevalece o maior `atualizado_em`, com o mesmo tratamento de conflito no mesmo arquivo.
+- **Interações, comentários e recomendações** (eventos): na mesma chave de negócio, fica a primeira ocorrência.
+- **Pessoas** (RF30): ids diferentes com o mesmo `cpf_hash` ou `email_hash` são a mesma pessoa. O mestre é o menor id do grupo, e os atributos vêm do cadastro atualizado mais recentemente.
 
 **Segredos.**
 
@@ -151,7 +107,7 @@ As recomendações vêm de `dados/brutos/recomendacoes_desafio1.json`, uma cópi
 | `silver.comentario` | (`usuario_id`, `conteudo_id`, `data`, md5 do texto) | texto já anonimizado com `lgpd.anonimizar_texto`; `tags` como `TEXT[]` |
 | `silver.recomendacao` | (`usuario_id`, `conteudo_id`, `gerado_em`) | |
 
-As restrições (`CHECK`, chaves estrangeiras, unicidade) são a última barreira. O pipeline valida antes e manda o que viola uma regra para a quarentena. Se algo inválido escapar, a transação falha inteira e nenhuma carga parcial fica gravada (RF23).
+As regras de validação ficam só em `sql/silver.sql`, uma função `validacao.classificar_<fonte>` por fonte. As restrições das tabelas (`CHECK`, chaves estrangeiras, unicidade) são a última barreira: se algo inválido escapar, a publicação falha inteira e nenhuma carga parcial fica gravada (RF23). `faixa_etaria` usa as faixas `0-17`, `18-24`, `25-34`, `35-44`, `45-59` e `60+`; `0-17` identifica dado de criança ou adolescente (LGPD, art. 14).
 
 **Proteção aplicada na Silver.** As funções recebem a chave e o salt como parâmetro, vindos do `.env`:
 
@@ -168,32 +124,37 @@ As funções em `sql/camadas.sql` são uma implementação inicial. O Estudante 
 
 ### Quarentena (RF23)
 
-Uma única tabela, `quarentena.registro`, recebe os registros rejeitados de todas as fontes, com o registro original em `JSONB` e os campos `execucao_id`, `camada`, `fonte`, `chave_registro`, `regra`, `severidade` e `mensagem`.
+Uma única tabela, `quarentena.registro`, recebe os registros rejeitados de todas as fontes, com `regra`, `severidade`, `mensagem`, o registro em `JSONB` (`registro`, editável) e a versão original (`registro_original`, que nunca muda).
 
-O ciclo de vida é `pendente` → `corrigido` → `reprocessado`, ou `pendente` → `descartado`:
+**Identidade.** Cada rejeição é identificada por (`fonte`, `origem`, `linha`, `hash_origem`): o arquivo, a linha e o md5 do conteúdo original. Como as fontes não mudam, a mesma rejeição encontrada de novo em outra execução só atualiza `ultima_execucao_id`, sem criar outra linha.
 
-1. **Corrigir:** editar `registro`, mudar `status` para `corrigido` e preencher `corrigido_em`.
-2. **Reprocessar:** a próxima Silver lê a Bronze corrente mais os registros `corrigido`. Os que passarem viram `reprocessado`, com `reprocessado_em` e `reprocessado_execucao_id`. Os que falharem de novo geram uma nova linha `pendente`.
+**Ciclo de vida.**
+
+1. **`pendente`:** detectado. A Silver continua sem o registro.
+2. **`corrigido`:** alguém editou `registro` e mudou o status. Na próxima Silver, a versão corrigida substitui a da Bronze.
+3. **`reprocessado`:** o registro passou. Isso acontece tanto por correção quanto quando a causa era outro registro (ex.: `L2-I13` entra sozinho depois que o conteúdo 1041 é corrigido). A versão corrigida continua substituindo a da Bronze nas execuções seguintes. Se ela voltar a falhar, o registro volta a `pendente`.
+4. **`descartado`:** decisão de não aproveitar; o registro sai do fluxo.
 
 Uma falha de arquivo ou de conexão não vai para a quarentena. A etapa termina com `status = 'falha'` em `controle.etapa`, e a mensagem registra a causa.
 
-**Códigos de regra.** São a lista inicial; o Estudante 1 pode acrescentar códigos, registrando-os aqui.
+**Códigos de regra.** Um código novo entra em `sql/silver.sql` (regra e `validacao.severidade`) e nesta tabela, no mesmo commit.
 
 | Código | Quando | Severidade | Exemplos no lote 2 |
 | --- | --- | --- | --- |
 | `CAMPO_OBRIGATORIO` | campo obrigatório ausente ou vazio (registro "incompleto") | alta | C07, U06, I07, K02 |
-| `TIPO_INVALIDO` | valor que não converte para o tipo, ex. id não numérico | alta | C08 |
+| `TIPO_INVALIDO` | valor que não converte para o tipo, ex. id não numérico ou fracionário | alta | C08 |
 | `DATA_INVALIDA` | data inexistente ou em formato não reconhecido | alta | C06, I06, K09 |
 | `REF_USUARIO` | usuário inexistente | alta | I01, K07 |
 | `REF_CONTEUDO` | conteúdo inexistente ou em quarentena | alta | I02, I13 |
-| `DOMINIO` | valor fora do domínio (tipo, nível, tipo de interação, UF) | média | C05, I05, U10 |
-| `FAIXA` | número fora da faixa: avaliação fora de 1–5, percentual fora de 0–100 | média | I04, I09, K01 |
+| `DOMINIO` | valor fora do domínio (tipo, nível, tipo de interação, classificação, UF) | média | C05, I05, U10 |
+| `FAIXA` | número fora da faixa: avaliação fora de 1–5, percentual ou pontuação fora de 0–100, id ou posição não positivos | média | I04, I09, K01 |
 | `VALOR_NEGATIVO` | carga horária ou tempo consumido negativo | média | C04, I03 |
 | `DATA_FUTURA` | data ou data e hora depois de agora | média | I10, U05 |
 | `DATA_ANTES_PUBLICACAO` | interação ou comentário anterior à publicação do conteúdo | média | I14, K06 |
 | `CONSISTENCIA` | combinação incoerente, ex. conclusão com percentual < 100 | média | I11 |
 | `FORMATO` | e-mail sem `@`, CPF fora de `000.000.000-00`, tags que não são lista | média | U03, U04, K03 |
 | `DUPLICADO` | cópia idêntica de outro registro da mesma chave | baixa | C01, U07, I08, K08 |
+| `CONFLITO_VERSAO` | mesma chave repetida no mesmo arquivo com outros valores; vale a última ocorrência (conteúdos, usuários) ou a primeira (eventos) | baixa | C02 |
 
 O CPF dos dados de teste tem formato válido, mas dígito verificador propositalmente inválido, para nunca coincidir com um CPF real. A validação é só de formato.
 
@@ -255,14 +216,24 @@ Tudo é gerado por `ferramentas/gerar_dados.py` com semente fixa: rodar de novo 
 
 Como referência, as regras de validação do Desafio 1 aplicadas ao lote 2 aceitam 43 de 50 conteúdos, 404 de 416 interações e 113 de 119 comentários. A Silver do Desafio 2 deve rejeitar também `L2-I01` e `L2-K07` (usuário 999), que o Desafio 1 não conseguia verificar por falta de uma fonte de usuários.
 
-## Como executar cada etapa isoladamente (RF15)
+## Como plugar uma etapa no fluxo (Estudantes 2 e 3)
+
+O workflow principal (`hop/workflows/principal.hwf`) já prevê, depois da Silver e nesta ordem, as etapas `qualidade`, `gold` e `metadados`. Para cada uma, ele procura `hop/workflows/<etapa>.hwf`: se o arquivo existe, executa; se não, registra a etapa como `ignorada` e segue. Para plugar a sua:
+
+1. Crie `hop/workflows/<etapa>.hwf` com o parâmetro `EXECUCAO_ID`.
+2. Execute cada pipeline por meio de `hop/workflows/etapa.hwf` (parâmetros `EXECUCAO_ID`, `ETAPA` e `PIPELINE`), para que início, fim, contagens e falhas fiquem em `controle.etapa`. Para medir `lidos`, `gravados` e `quarentena` da sua etapa, acrescente um ramo em `controle.medir_etapa` (`sql/silver.sql`).
+3. Em caso de falha, termine o workflow com falha (action Abort). É isso que impede as etapas dependentes, por exemplo a Gold depois de um teste crítico reprovado (RF31).
+
+## Como executar (RF15)
 
 ```bash
-docker compose up -d                                              # postgres, mongo, superset, db-init
-docker compose run --rm hop pipelines/<pipeline>.hpl EXECUCAO_ID=<uuid>
-docker compose run --rm hop workflows/<workflow>.hwf
-docker compose run --rm beam beam/pipeline.py --runner direct     # ou --runner spark, com o perfil beam no ar
-docker compose run --rm beam -m ferramentas.gerar_dados            # regenera os dados de teste (só biblioteca padrão)
+docker compose up -d                                                # postgres, mongo, superset, db-init
+docker compose run --rm hop workflows/principal.hwf                 # fluxo completo, com EXECUCAO_ID novo
+docker compose run --rm hop workflows/isolado.hwf FLUXO=bronze      # só a Bronze, numa execução nova
+docker compose run --rm hop workflows/isolado.hwf FLUXO=silver EXECUCAO_ID=<uuid>   # reprocessa a Silver
+docker compose --profile agendamento up -d                          # agendamento diário (hop-agendador)
+docker compose run --rm beam beam/pipeline.py --runner direct       # ou --runner spark, com o perfil beam no ar
+docker compose run --rm beam -m ferramentas.gerar_dados              # regenera os dados de teste (só biblioteca padrão)
 ```
 
 Verificações da infraestrutura: `docker compose run --rm hop pipelines/verificar_ambiente.hpl` e `docker compose run --rm beam beam/verificar_runtime.py --runner {direct|spark}`.

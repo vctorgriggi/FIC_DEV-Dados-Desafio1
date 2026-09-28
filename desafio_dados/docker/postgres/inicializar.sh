@@ -3,6 +3,7 @@
 # entao tambem atualiza volumes criados no Desafio 1.
 #   - bancos e papeis do OpenMetadata e do Airflow (perfil governanca)
 #   - schemas das camadas e papel de consumo (sql/camadas.sql)
+#   - regras de validacao e publicacao da Silver (sql/silver.sql)
 set -euo pipefail
 
 export PGHOST=postgres PGUSER="$POSTGRES_USER" PGPASSWORD="$POSTGRES_PASSWORD"
@@ -30,5 +31,6 @@ papel_e_banco airflow_db "$AIRFLOW_DB_USER" "$AIRFLOW_DB_PASSWORD"
 "${PSQL[@]}" -d "$POSTGRES_DB" \
     -v consumo_usuario="$CONSUMO_DB_USER" -v consumo_senha="$CONSUMO_DB_PASSWORD" \
     -f /sql/camadas.sql
+"${PSQL[@]}" -d "$POSTGRES_DB" -f /sql/silver.sql
 
 echo "db-init: bancos auxiliares e camadas do Desafio 2 prontos"

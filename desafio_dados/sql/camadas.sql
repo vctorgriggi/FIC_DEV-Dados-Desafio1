@@ -2,10 +2,10 @@
 -- Idempotente. Aplicado pelo servico db-init (docker/postgres/inicializar.sh), que define as
 -- variaveis psql :consumo_usuario e :consumo_senha.
 -- O schema public continua sendo o banco do Desafio 1 e e tratado como fonte, nunca alterado aqui.
--- Tabelas da camada Gold e regras de transformacao ficam com cada responsavel (sql/camada_gold.sql, hop/).
+-- Regras de validacao e publicacao da Silver: sql/silver.sql. Gold: sql/camada_gold.sql (Estudante 2).
 
 CREATE EXTENSION IF NOT EXISTS pgcrypto;  -- digest() e hmac() para as tecnicas de protecao (RF33)
-CREATE EXTENSION IF NOT EXISTS unaccent;  -- comparacao sem acento nas validacoes da Silver
+CREATE EXTENSION IF NOT EXISTS unaccent;  -- comparacao de dominios sem acento (sql/silver.sql)
 
 CREATE SCHEMA IF NOT EXISTS controle;    -- execucoes e etapas do workflow (RF22)
 CREATE SCHEMA IF NOT EXISTS bronze;      -- copia auditavel das fontes (RF20)
@@ -15,67 +15,6 @@ CREATE SCHEMA IF NOT EXISTS qualidade;   -- testes e resultados por execucao (RF
 CREATE SCHEMA IF NOT EXISTS gold;        -- consumo analitico (RF26); objetos em sql/camada_gold.sql
 CREATE SCHEMA IF NOT EXISTS restrito;    -- tabelas de correspondencia de pseudonimos (RF33)
 CREATE SCHEMA IF NOT EXISTS lgpd;        -- funcoes de protecao (RF33)
-
-CREATE OR REPLACE FUNCTION controle.data_segura(p_valor TEXT)
-RETURNS DATE
-LANGUAGE plpgsql
-AS $$
-BEGIN
-    IF p_valor IS NULL OR btrim(p_valor) = '' THEN
-        RETURN NULL;
-    END IF;
-    IF btrim(p_valor) ~ '^[0-9]{4}-[0-9]{2}-[0-9]{2}$' THEN
-        RETURN make_date(
-            substring(btrim(p_valor), 1, 4)::integer,
-            substring(btrim(p_valor), 6, 2)::integer,
-            substring(btrim(p_valor), 9, 2)::integer
-        );
-    ELSIF btrim(p_valor) ~ '^[0-9]{2}/[0-9]{2}/[0-9]{4}$' THEN
-        RETURN make_date(
-            substring(btrim(p_valor), 7, 4)::integer,
-            substring(btrim(p_valor), 4, 2)::integer,
-            substring(btrim(p_valor), 1, 2)::integer
-        );
-    ELSIF btrim(p_valor) ~ '^[0-9]{4}/[0-9]{2}/[0-9]{2}$' THEN
-        RETURN make_date(
-            substring(btrim(p_valor), 1, 4)::integer,
-            substring(btrim(p_valor), 6, 2)::integer,
-            substring(btrim(p_valor), 9, 2)::integer
-        );
-    END IF;
-    RETURN NULL;
-EXCEPTION WHEN OTHERS THEN
-    RETURN NULL;
-END;
-$$;
-
-CREATE OR REPLACE FUNCTION controle.timestamp_seguro(p_valor TEXT)
-RETURNS TIMESTAMP
-LANGUAGE plpgsql
-AS $$
-BEGIN
-    IF p_valor IS NULL OR btrim(p_valor) = '' THEN
-        RETURN NULL;
-    END IF;
-    RETURN btrim(p_valor)::timestamp;
-EXCEPTION WHEN OTHERS THEN
-    RETURN NULL;
-END;
-$$;
-
-CREATE OR REPLACE FUNCTION controle.jsonb_seguro(p_valor TEXT)
-RETURNS JSONB
-LANGUAGE plpgsql
-AS $$
-BEGIN
-    IF p_valor IS NULL OR btrim(p_valor) = '' THEN
-        RETURN NULL;
-    END IF;
-    RETURN btrim(p_valor)::jsonb;
-EXCEPTION WHEN OTHERS THEN
-    RETURN NULL;
-END;
-$$;
 
 -- ---------------------------------------------------------------
 -- controle: toda execucao, completa ou de uma etapa isolada, abre uma linha em execucao
@@ -107,6 +46,25 @@ CREATE TABLE IF NOT EXISTS controle.etapa (
     PRIMARY KEY (execucao_id, etapa)
 );
 
+-- Ciclo de controle usado pelos workflows do Hop (hop/workflows/):
+--   abrir_execucao -> iniciar_etapa -> concluir_etapa | registrar_falha | registrar_ignorada -> finalizar_execucao
+
+-- abre uma execucao, ou reabre uma existente para reprocessar etapas; gera o UUID quando vazio
+CREATE OR REPLACE FUNCTION controle.abrir_execucao(p_execucao_id TEXT, p_fluxo TEXT, p_modo TEXT DEFAULT 'manual')
+RETURNS TEXT
+LANGUAGE plpgsql
+AS $$
+DECLARE
+    v_id TEXT := COALESCE(NULLIF(btrim(p_execucao_id), ''), gen_random_uuid()::text);
+BEGIN
+    INSERT INTO controle.execucao (execucao_id, fluxo, modo)
+    VALUES (v_id, p_fluxo, COALESCE(NULLIF(btrim(p_modo), ''), 'manual'))
+    ON CONFLICT (execucao_id) DO UPDATE
+       SET status = 'em_andamento', fim = NULL, mensagem = NULL;
+    RETURN v_id;
+END;
+$$;
+
 CREATE OR REPLACE FUNCTION controle.iniciar_etapa(p_execucao_id TEXT, p_etapa TEXT)
 RETURNS VOID
 LANGUAGE plpgsql
@@ -115,69 +73,91 @@ BEGIN
     INSERT INTO controle.etapa (execucao_id, etapa, status)
     VALUES (p_execucao_id, p_etapa, 'em_andamento')
     ON CONFLICT (execucao_id, etapa) DO UPDATE
-       SET inicio = now(),
-           fim = NULL,
-           status = 'em_andamento',
-           lidos = NULL,
-           gravados = NULL,
-           quarentena = NULL,
-           mensagem = NULL;
+       SET inicio = now(), fim = NULL, status = 'em_andamento',
+           lidos = NULL, gravados = NULL, quarentena = NULL, mensagem = NULL;
 END;
 $$;
 
-CREATE OR REPLACE FUNCTION controle.finalizar_etapa(
-    p_execucao_id TEXT,
-    p_etapa TEXT,
-    p_status TEXT,
-    p_lidos INTEGER DEFAULT NULL,
-    p_gravados INTEGER DEFAULT NULL,
-    p_quarentena INTEGER DEFAULT NULL,
-    p_mensagem TEXT DEFAULT NULL
-)
-RETURNS VOID
+-- encerra a etapa com as contagens medidas no banco (controle.medir_etapa, em sql/silver.sql);
+-- registros em quarentena tornam a etapa 'sucesso_com_ressalvas'
+CREATE OR REPLACE FUNCTION controle.concluir_etapa(p_execucao_id TEXT, p_etapa TEXT)
+RETURNS TEXT
 LANGUAGE plpgsql
 AS $$
+DECLARE
+    m RECORD;
+    v_status TEXT;
 BEGIN
-    IF p_status NOT IN ('sucesso', 'sucesso_com_ressalvas', 'falha', 'ignorada') THEN
-        RAISE EXCEPTION 'Status de etapa invalido: %', p_status;
-    END IF;
-
+    SELECT * INTO m FROM controle.medir_etapa(p_execucao_id, p_etapa);
+    v_status := CASE WHEN COALESCE(m.quarentena, 0) > 0 THEN 'sucesso_com_ressalvas' ELSE 'sucesso' END;
     UPDATE controle.etapa
-       SET fim = now(),
-           status = p_status,
-           lidos = p_lidos,
-           gravados = p_gravados,
-           quarentena = p_quarentena,
-           mensagem = p_mensagem
-     WHERE execucao_id = p_execucao_id
-       AND etapa = p_etapa;
-
+       SET fim = now(), status = v_status,
+           lidos = m.lidos, gravados = m.gravados, quarentena = m.quarentena, mensagem = m.mensagem
+     WHERE execucao_id = p_execucao_id AND etapa = p_etapa;
     IF NOT FOUND THEN
-        RAISE EXCEPTION 'Etapa nao iniciada: %/%', p_execucao_id, p_etapa;
+        RAISE EXCEPTION 'etapa % nao foi iniciada na execucao %', p_etapa, p_execucao_id;
     END IF;
+    RETURN v_status;
 END;
 $$;
 
-CREATE OR REPLACE FUNCTION controle.registrar_falha(
-    p_execucao_id TEXT,
-    p_etapa TEXT,
-    p_mensagem TEXT
-)
+CREATE OR REPLACE FUNCTION controle.registrar_falha(p_execucao_id TEXT, p_etapa TEXT, p_mensagem TEXT)
 RETURNS VOID
 LANGUAGE plpgsql
 AS $$
 BEGIN
-    PERFORM controle.iniciar_etapa(p_execucao_id, p_etapa);
-    PERFORM controle.finalizar_etapa(
-        p_execucao_id, p_etapa, 'falha', NULL, NULL, NULL, p_mensagem
-    );
+    INSERT INTO controle.etapa (execucao_id, etapa, status, fim, mensagem)
+    VALUES (p_execucao_id, p_etapa, 'falha', now(), p_mensagem)
+    ON CONFLICT (execucao_id, etapa) DO UPDATE
+       SET status = 'falha', fim = now(), mensagem = EXCLUDED.mensagem;
+END;
+$$;
+
+-- etapa prevista no fluxo que ainda nao existe no projeto (ex.: workflow de outro integrante)
+CREATE OR REPLACE FUNCTION controle.registrar_ignorada(p_execucao_id TEXT, p_etapa TEXT, p_motivo TEXT)
+RETURNS VOID
+LANGUAGE plpgsql
+AS $$
+BEGIN
+    INSERT INTO controle.etapa (execucao_id, etapa, status, fim, mensagem)
+    VALUES (p_execucao_id, p_etapa, 'ignorada', now(), p_motivo)
+    ON CONFLICT (execucao_id, etapa) DO UPDATE
+       SET inicio = now(), status = 'ignorada', fim = now(), mensagem = EXCLUDED.mensagem,
+           lidos = NULL, gravados = NULL, quarentena = NULL;
+END;
+$$;
+
+-- status final a partir das etapas: falha > sucesso_com_ressalvas > sucesso.
+-- Etapa ainda 'em_andamento' no fechamento significa que o processo foi interrompido: conta como falha.
+CREATE OR REPLACE FUNCTION controle.finalizar_execucao(p_execucao_id TEXT)
+RETURNS TEXT
+LANGUAGE plpgsql
+AS $$
+DECLARE
+    v_status TEXT;
+BEGIN
+    SELECT CASE
+             WHEN bool_or(status IN ('falha', 'em_andamento')) THEN 'falha'
+             WHEN bool_or(status = 'sucesso_com_ressalvas') THEN 'sucesso_com_ressalvas'
+             ELSE 'sucesso'
+           END
+      INTO v_status
+      FROM controle.etapa
+     WHERE execucao_id = p_execucao_id;
 
     UPDATE controle.execucao
-       SET status = 'falha',
-           fim = COALESCE(fim, now()),
-           mensagem = p_mensagem
-     WHERE execucao_id = p_execucao_id
-       AND status = 'em_andamento';
+       SET status = COALESCE(v_status, 'falha'),
+           fim = now(),
+           mensagem = CASE COALESCE(v_status, 'falha')
+                        WHEN 'falha' THEN 'encerrada por falha; ver controle.etapa'
+                        WHEN 'sucesso_com_ressalvas' THEN 'concluida com registros em quarentena'
+                        ELSE 'concluida'
+                      END
+     WHERE execucao_id = p_execucao_id;
+    IF NOT FOUND THEN
+        RAISE EXCEPTION 'execucao % nao existe', p_execucao_id;
+    END IF;
+    RETURN COALESCE(v_status, 'falha');
 END;
 $$;
 
@@ -226,32 +206,16 @@ CREATE INDEX IF NOT EXISTS ix_bronze_interacoes_exec    ON bronze.interacoes (_e
 CREATE INDEX IF NOT EXISTS ix_bronze_comentarios_exec   ON bronze.comentarios (_execucao_id);
 CREATE INDEX IF NOT EXISTS ix_bronze_usuarios_exec      ON bronze.usuarios (_execucao_id);
 CREATE INDEX IF NOT EXISTS ix_bronze_recomendacoes_exec ON bronze.recomendacoes (_execucao_id);
-CREATE UNIQUE INDEX IF NOT EXISTS ux_bronze_catalogo_exec_origem_linha
-    ON bronze.catalogo (_execucao_id, _origem, _linha);
 
-CREATE OR REPLACE FUNCTION bronze.ignorar_catalogo_repetido()
-RETURNS trigger
-LANGUAGE plpgsql
-AS $$
-BEGIN
-    IF EXISTS (
-        SELECT 1
-        FROM bronze.catalogo
-        WHERE _execucao_id = NEW._execucao_id
-          AND _origem = NEW._origem
-          AND _linha = NEW._linha
-    ) THEN
-        RETURN NULL;
-    END IF;
-    RETURN NEW;
-END;
-$$;
-
+-- objetos de versoes anteriores desta base, removidos de bancos ja criados:
+-- a bronze e append-only por execucao e nao precisa de trigger para ignorar repeticoes
 DROP TRIGGER IF EXISTS trg_bronze_catalogo_idempotencia ON bronze.catalogo;
-CREATE TRIGGER trg_bronze_catalogo_idempotencia
-BEFORE INSERT ON bronze.catalogo
-FOR EACH ROW
-EXECUTE FUNCTION bronze.ignorar_catalogo_repetido();
+DROP FUNCTION IF EXISTS bronze.ignorar_catalogo_repetido();
+DROP INDEX IF EXISTS bronze.ux_bronze_catalogo_exec_origem_linha;
+DROP FUNCTION IF EXISTS controle.data_segura(TEXT);
+DROP FUNCTION IF EXISTS controle.timestamp_seguro(TEXT);
+DROP FUNCTION IF EXISTS controle.jsonb_seguro(TEXT);
+DROP FUNCTION IF EXISTS controle.finalizar_etapa(TEXT, TEXT, TEXT, INTEGER, INTEGER, INTEGER, TEXT);
 
 -- ---------------------------------------------------------------
 -- silver: tipada, padronizada, deduplicada; recarga completa a cada execucao, em transacao.
@@ -350,8 +314,12 @@ CREATE TABLE IF NOT EXISTS silver.recomendacao (
 );
 
 -- ---------------------------------------------------------------
--- quarentena (RF23): uma tabela para todas as fontes; o registro original vai em JSONB.
--- Correcao: editar registro, status -> 'corrigido'; a proxima silver o reprocessa e marca 'reprocessado'.
+-- quarentena (RF23): uma linha por registro de origem rejeitado, para todas as fontes.
+-- Identidade: (fonte, origem, linha, hash_origem). Como os arquivos de origem nao mudam, a mesma
+-- rejeicao detectada de novo em outra execucao atualiza ultima_execucao_id em vez de duplicar.
+-- Correcao: editar registro e mudar status para 'corrigido'. Da proxima vez que a Silver roda, a
+-- versao corrigida substitui a da bronze; se passar, vira 'reprocessado' (e continua substituindo
+-- nas execucoes seguintes). 'descartado' tira o registro do fluxo.
 -- ---------------------------------------------------------------
 
 CREATE TABLE IF NOT EXISTS quarentena.registro (
@@ -363,7 +331,12 @@ CREATE TABLE IF NOT EXISTS quarentena.registro (
     regra                     TEXT NOT NULL,  -- codigo da regra violada (documentacao/contratos.md)
     severidade                TEXT NOT NULL CHECK (severidade IN ('critica', 'alta', 'media', 'baixa')),
     mensagem                  TEXT NOT NULL,
-    registro                  JSONB NOT NULL,
+    registro                  JSONB NOT NULL,  -- editavel: e a versao usada no reprocessamento
+    registro_original         JSONB,           -- como veio da bronze; nunca muda
+    origem                    TEXT,            -- _origem da bronze
+    linha                     INTEGER,         -- _linha da bronze
+    hash_origem               TEXT,            -- md5 do registro original
+    ultima_execucao_id        TEXT,            -- ultima execucao que ainda encontrou o problema
     criado_em                 TIMESTAMPTZ NOT NULL DEFAULT now(),
     status                    TEXT NOT NULL DEFAULT 'pendente'
                               CHECK (status IN ('pendente', 'corrigido', 'reprocessado', 'descartado')),
@@ -371,45 +344,17 @@ CREATE TABLE IF NOT EXISTS quarentena.registro (
     reprocessado_em           TIMESTAMPTZ,
     reprocessado_execucao_id  TEXT
 );
+-- bancos criados antes das colunas de identidade
+ALTER TABLE quarentena.registro
+    ADD COLUMN IF NOT EXISTS registro_original JSONB,
+    ADD COLUMN IF NOT EXISTS origem TEXT,
+    ADD COLUMN IF NOT EXISTS linha INTEGER,
+    ADD COLUMN IF NOT EXISTS hash_origem TEXT,
+    ADD COLUMN IF NOT EXISTS ultima_execucao_id TEXT;
 CREATE INDEX IF NOT EXISTS ix_quarentena_status   ON quarentena.registro (status);
 CREATE INDEX IF NOT EXISTS ix_quarentena_execucao ON quarentena.registro (execucao_id);
-
-CREATE OR REPLACE FUNCTION controle.finalizar_execucao(p_execucao_id TEXT)
-RETURNS TEXT
-LANGUAGE plpgsql
-AS $$
-DECLARE
-    v_status TEXT;
-BEGIN
-    v_status := CASE
-        WHEN EXISTS (
-            SELECT 1 FROM controle.etapa
-             WHERE execucao_id = p_execucao_id
-               AND status = 'falha'
-        ) THEN 'falha'
-        WHEN EXISTS (
-            SELECT 1 FROM quarentena.registro
-             WHERE execucao_id = p_execucao_id
-               AND status = 'pendente'
-        ) THEN 'sucesso_com_ressalvas'
-        ELSE 'sucesso'
-    END;
-
-    UPDATE controle.execucao
-       SET status = v_status,
-           fim = COALESCE(fim, now()),
-           mensagem = CASE WHEN v_status = 'falha'
-                           THEN 'Execucao encerrada por falha em uma etapa'
-                           WHEN v_status = 'sucesso_com_ressalvas'
-                           THEN 'Execucao concluida com registros pendentes na quarentena'
-                           ELSE 'Execucao concluida'
-                      END
-     WHERE execucao_id = p_execucao_id
-       AND status = 'em_andamento';
-
-    RETURN v_status;
-END;
-$$;
+CREATE UNIQUE INDEX IF NOT EXISTS ux_quarentena_origem
+    ON quarentena.registro (fonte, origem, linha, hash_origem);
 
 -- ---------------------------------------------------------------
 -- qualidade (RF31): definicao dos testes e resultado por execucao e por fonte

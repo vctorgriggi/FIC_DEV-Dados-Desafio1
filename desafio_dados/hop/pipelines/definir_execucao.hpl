@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pipeline>
+  <info>
+    <name>definir_execucao</name>
+    <name_sync_with_filename>Y</name_sync_with_filename>
+    <description>Usa o EXECUCAO_ID recebido ou gera um UUID e o publica para o workflow que chamou</description>
+    <extended_description/>
+    <pipeline_version/>
+    <pipeline_type>Normal</pipeline_type>
+    <pipeline_status>0</pipeline_status>
+    <parameters>
+      <parameter>
+        <name>EXECUCAO_ID</name>
+        <default_value/>
+        <description>vazio = gerar um novo</description>
+      </parameter>
+    </parameters>
+    <capture_transform_performance>N</capture_transform_performance>
+    <transform_performance_capturing_delay>1000</transform_performance_capturing_delay>
+    <transform_performance_capturing_size_limit>100</transform_performance_capturing_size_limit>
+    <created_user>-</created_user>
+    <modified_user>-</modified_user>
+    <key_for_session_key/>
+    <is_key_private>N</is_key_private>
+  </info>
+  <notepads/>
+  <order>
+    <hop><from>identificador</from><to>publicar variavel</to><enabled>Y</enabled></hop>
+  </order>
+  <transform>
+    <name>identificador</name>
+    <type>TableInput</type>
+    <description>UUID v4 gerado pelo PostgreSQL quando o parametro vem vazio</description>
+    <distribute>Y</distribute><custom_distribution/><copies>1</copies><partitioning><method>none</method><schema_name/></partitioning>
+    <connection>postgres_desafio</connection>
+    <sql>SELECT COALESCE(NULLIF(btrim('${EXECUCAO_ID}'), ''), gen_random_uuid()::text) AS execucao_id</sql>
+    <limit>0</limit>
+    <lookup/>
+    <execute_each_row>N</execute_each_row>
+    <variables_active>Y</variables_active>
+    <attributes/>
+    <GUI><xloc>96</xloc><yloc>96</yloc></GUI>
+  </transform>
+  <transform>
+    <name>publicar variavel</name>
+    <type>SetVariable</type>
+    <description>EXECUCAO_ID no workflow que executou este pipeline</description>
+    <distribute>Y</distribute><custom_distribution/><copies>1</copies><partitioning><method>none</method><schema_name/></partitioning>
+    <fields>
+      <field>
+        <field_name>execucao_id</field_name>
+        <variable_name>EXECUCAO_ID</variable_name>
+        <variable_type>PARENT_WORKFLOW</variable_type>
+        <default_value/>
+      </field>
+    </fields>
+    <use_formatting>N</use_formatting>
+    <attributes/>
+    <GUI><xloc>288</xloc><yloc>96</yloc></GUI>
+  </transform>
+  <transform_error_handling>
+  </transform_error_handling>
+  <attributes/>
+</pipeline>

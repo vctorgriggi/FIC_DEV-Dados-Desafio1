@@ -1,267 +1,145 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <pipeline>
   <info>
+    <name>silver_conteudo</name>
+    <name_sync_with_filename>Y</name_sync_with_filename>
+    <description>Valida catalogo da bronze e separa aprovados e rejeitados</description>
+    <extended_description/>
     <pipeline_version/>
-    <capture_transform_performance>N</capture_transform_performance>
-    <transform_performance_capturing_delay>1000</transform_performance_capturing_delay>
-    <transform_performance_capturing_size_limit>100</transform_performance_capturing_size_limit>
     <pipeline_type>Normal</pipeline_type>
     <pipeline_status>0</pipeline_status>
     <parameters>
       <parameter>
         <name>EXECUCAO_ID</name>
-        <description>UUID da execucao Bronze corrente</description>
         <default_value/>
+        <description>execucao cuja bronze sera validada</description>
       </parameter>
     </parameters>
-    <name>silver_conteudo</name>
-    <name_sync_with_filename>Y</name_sync_with_filename>
-    <description>Padroniza e carrega conteudos na Silver</description>
-    <extended_description>Usa transformers nativos para limpeza textual e selecao do fluxo. A consulta fica restrita a leitura da Bronze e regras relacionais que dependem do banco.</extended_description>
+    <capture_transform_performance>N</capture_transform_performance>
+    <transform_performance_capturing_delay>1000</transform_performance_capturing_delay>
+    <transform_performance_capturing_size_limit>100</transform_performance_capturing_size_limit>
     <created_user>-</created_user>
     <modified_user>-</modified_user>
-    <created_date>2026/09/28 01:51:17.675</created_date>
-    <modified_date>2026/09/28 01:51:17.675</modified_date>
+    <key_for_session_key/>
+    <is_key_private>N</is_key_private>
   </info>
+  <notepads>
+    <notepad>
+      <note>Silver - conteudo (RF21, RF23)
+1. classificar: validacao.classificar_catalogo aplica as regras (sql/silver.sql) sobre a bronze da execucao,
+   ja com as correcoes da quarentena; regra vazia = aprovado.
+2. aprovado?: separa aprovados e rejeitados.
+3. grava na area de preparo; silver.publicar() troca a Silver numa transacao unica.</note>
+      <xloc>64</xloc>
+      <yloc>32</yloc>
+      <width>560</width>
+      <heigth>96</heigth>
+      <fontname>Noto Sans</fontname>
+      <fontsize>10</fontsize>
+      <fontbold>N</fontbold>
+      <fontitalic>N</fontitalic>
+      <fontcolorred>14</fontcolorred>
+      <fontcolorgreen>58</fontcolorgreen>
+      <fontcolorblue>90</fontcolorblue>
+      <backgroundcolorred>201</backgroundcolorred>
+      <backgroundcolorgreen>232</backgroundcolorgreen>
+      <backgroundcolorblue>251</backgroundcolorblue>
+      <bordercolorred>14</bordercolorred>
+      <bordercolorgreen>58</bordercolorgreen>
+      <bordercolorblue>90</bordercolorblue>
+    </notepad>
+  </notepads>
+  <order>
+    <hop><from>classificar</from><to>aprovado?</to><enabled>Y</enabled></hop>
+    <hop><from>aprovado?</from><to>gravar aprovados</to><enabled>Y</enabled></hop>
+    <hop><from>aprovado?</from><to>gravar rejeitados</to><enabled>Y</enabled></hop>
+  </order>
   <transform>
+    <name>classificar</name>
     <type>TableInput</type>
-    <name>conteudos validos</name>
-    <sql>WITH candidatos AS (
-    SELECT c.*,
-           CASE WHEN c._origem LIKE '%/lote_2/%' THEN 1 ELSE 0 END AS prioridade_fonte,
-           row_number() OVER (
-               PARTITION BY NULLIF(btrim(c.conteudo_id), '')::integer
-               ORDER BY CASE WHEN c._origem LIKE '%/lote_2/%' THEN 1 ELSE 0 END DESC,
-                        c._linha DESC
-           ) AS sobrevivencia
-      FROM bronze.catalogo c
-     WHERE c._execucao_id = '${EXECUCAO_ID}'
-       AND btrim(c.conteudo_id) ~ '^[0-9]+$'
-       AND btrim(c.conteudo_id)::integer > 0
-       AND NULLIF(btrim(c.titulo), '') IS NOT NULL
-       AND lower(unaccent(btrim(c.tipo))) IN ('curso', 'video', 'artigo', 'podcast')
-       AND lower(unaccent(btrim(c.nivel))) IN ('basico', 'intermediario', 'avancado')
-       AND btrim(c.carga_horaria_min) ~ '^[0-9]+$'
-       AND btrim(c.carga_horaria_min)::integer >= 0
-         AND controle.data_segura(btrim(c.data_publicacao)) IS NOT NULL
-), padronizados AS (
-    SELECT conteudo_id,
-           regexp_replace(btrim(titulo), '\\s+', ' ', 'g') AS titulo,
-           CASE lower(unaccent(btrim(tipo))) WHEN 'video' THEN 'Vídeo' ELSE initcap(lower(unaccent(btrim(tipo)))) END AS tipo,
-           regexp_replace(btrim(categoria), '\\s+', ' ', 'g') AS categoria,
-           CASE lower(unaccent(btrim(nivel))) WHEN 'basico' THEN 'Básico' WHEN 'intermediario' THEN 'Intermediário' ELSE 'Avançado' END AS nivel,
-           carga_horaria_min::integer,
-           controle.data_segura(data_publicacao) AS data_publicacao,
-           NULLIF(regexp_replace(btrim(descricao), '\\s+', ' ', 'g'), '') AS descricao,
-           NULLIF(regexp_replace(btrim(autor), '\\s+', ' ', 'g'), '') AS autor,
-           _execucao_id, _origem, _ingerido_em, sobrevivencia
-      FROM candidatos
-)
-SELECT conteudo_id, titulo, tipo, categoria, nivel, carga_horaria_min,
-       data_publicacao, descricao, autor, _execucao_id, _origem, _ingerido_em
-  FROM padronizados
- WHERE sobrevivencia = 1</sql>
+    <description>regras em sql/silver.sql</description>
+    <distribute>Y</distribute><custom_distribution/><copies>1</copies><partitioning><method>none</method><schema_name/></partitioning>
+    <connection>postgres_desafio</connection>
+    <sql>SELECT * FROM validacao.classificar_catalogo('${EXECUCAO_ID}')</sql>
     <limit>0</limit>
+    <lookup/>
     <execute_each_row>N</execute_each_row>
     <variables_active>Y</variables_active>
-    <connection>postgres_desafio</connection>
-    <lookup/>
-    <distribute>Y</distribute>
-    <copies>1</copies>
-    <GUI>
-      <xloc>112</xloc>
-      <yloc>96</yloc>
-    </GUI>
-    <description>Normalizacao, validacao e sobrevivencia de conteudo</description>
-    <partitioning>
-      <method>none</method>
-      <schema_name/>
-    </partitioning>
     <attributes/>
+    <GUI><xloc>96</xloc><yloc>192</yloc></GUI>
   </transform>
   <transform>
-    <type>StringOperations</type>
-    <name>normalizar textos</name>
-    <fields>
-      <field>
-        <in_stream_name>titulo</in_stream_name>
-        <out_stream_name>titulo</out_stream_name>
-        <trim_type>both</trim_type>
-        <lower_upper>none</lower_upper>
-        <init_cap>no</init_cap>
-        <mask_xml>none</mask_xml>
-        <digits>none</digits>
-        <remove_special_characters>none</remove_special_characters>
-        <padding_type>none</padding_type>
-      </field>
-      <field>
-        <in_stream_name>tipo</in_stream_name>
-        <out_stream_name>tipo</out_stream_name>
-        <trim_type>both</trim_type>
-        <lower_upper>none</lower_upper>
-        <init_cap>no</init_cap>
-        <mask_xml>none</mask_xml>
-        <digits>none</digits>
-        <remove_special_characters>none</remove_special_characters>
-        <padding_type>none</padding_type>
-      </field>
-      <field>
-        <in_stream_name>categoria</in_stream_name>
-        <out_stream_name>categoria</out_stream_name>
-        <trim_type>both</trim_type>
-        <lower_upper>none</lower_upper>
-        <init_cap>no</init_cap>
-        <mask_xml>none</mask_xml>
-        <digits>none</digits>
-        <remove_special_characters>none</remove_special_characters>
-        <padding_type>none</padding_type>
-      </field>
-      <field>
-        <in_stream_name>nivel</in_stream_name>
-        <out_stream_name>nivel</out_stream_name>
-        <trim_type>both</trim_type>
-        <lower_upper>none</lower_upper>
-        <init_cap>no</init_cap>
-        <mask_xml>none</mask_xml>
-        <digits>none</digits>
-        <remove_special_characters>none</remove_special_characters>
-        <padding_type>none</padding_type>
-      </field>
-      <field>
-        <in_stream_name>descricao</in_stream_name>
-        <out_stream_name>descricao</out_stream_name>
-        <trim_type>both</trim_type>
-        <lower_upper>none</lower_upper>
-        <init_cap>no</init_cap>
-        <mask_xml>none</mask_xml>
-        <digits>none</digits>
-        <remove_special_characters>none</remove_special_characters>
-        <padding_type>none</padding_type>
-      </field>
-      <field>
-        <in_stream_name>autor</in_stream_name>
-        <out_stream_name>autor</out_stream_name>
-        <trim_type>both</trim_type>
-        <lower_upper>none</lower_upper>
-        <init_cap>no</init_cap>
-        <mask_xml>none</mask_xml>
-        <digits>none</digits>
-        <remove_special_characters>none</remove_special_characters>
-        <padding_type>none</padding_type>
-      </field>
-    </fields>
-    <distribute>Y</distribute>
-    <copies>1</copies>
-    <GUI>
-      <xloc>288</xloc>
-      <yloc>96</yloc>
-    </GUI>
-    <description>Limpeza textual com transformer nativo do Hop</description>
-    <partitioning>
-      <method>none</method>
-      <schema_name/>
-    </partitioning>
+    <name>aprovado?</name>
+    <type>FilterRows</type>
+    <description>regra vazia = aprovado</description>
+    <distribute>Y</distribute><custom_distribution/><copies>1</copies><partitioning><method>none</method><schema_name/></partitioning>
+    <send_true_to>gravar aprovados</send_true_to>
+    <send_false_to>gravar rejeitados</send_false_to>
+    <compare>
+      <condition>
+        <conditions/>
+        <function>IS NULL</function>
+        <leftvalue>regra</leftvalue>
+        <negated>N</negated>
+        <operator>-</operator>
+      </condition>
+    </compare>
     <attributes/>
+    <GUI><xloc>288</xloc><yloc>192</yloc></GUI>
   </transform>
   <transform>
+    <name>gravar aprovados</name>
     <type>TableOutput</type>
-    <name>gravar silver</name>
+    <description>validacao.conteudo: esvaziada no inicio do pipeline</description>
+    <distribute>Y</distribute><custom_distribution/><copies>1</copies><partitioning><method>none</method><schema_name/></partitioning>
     <connection>postgres_desafio</connection>
-    <schema>silver</schema>
+    <schema>validacao</schema>
     <table>conteudo</table>
     <commit>1000</commit>
-    <truncate>N</truncate>
-    <only_when_have_rows>N</only_when_have_rows>
+    <truncate>Y</truncate>
     <ignore_errors>N</ignore_errors>
     <use_batch>Y</use_batch>
-    <partitioning_enabled>N</partitioning_enabled>
-    <partitioning_daily>N</partitioning_daily>
-    <partitioning_monthly>N</partitioning_monthly>
-    <tablename_in_field>N</tablename_in_field>
-    <tablename_in_table>N</tablename_in_table>
-    <return_keys>N</return_keys>
     <specify_fields>Y</specify_fields>
-    <auto_update_table_structure>N</auto_update_table_structure>
-    <always_drop_and_recreate>N</always_drop_and_recreate>
-    <add_columns>N</add_columns>
-    <drop_columns>N</drop_columns>
-    <change_column_types>N</change_column_types>
-    <fields>
-      <field>
-        <stream_name>conteudo_id</stream_name>
-        <column_name>conteudo_id</column_name>
-      </field>
-      <field>
-        <stream_name>titulo</stream_name>
-        <column_name>titulo</column_name>
-      </field>
-      <field>
-        <stream_name>tipo</stream_name>
-        <column_name>tipo</column_name>
-      </field>
-      <field>
-        <stream_name>categoria</stream_name>
-        <column_name>categoria</column_name>
-      </field>
-      <field>
-        <stream_name>nivel</stream_name>
-        <column_name>nivel</column_name>
-      </field>
-      <field>
-        <stream_name>carga_horaria_min</stream_name>
-        <column_name>carga_horaria_min</column_name>
-      </field>
-      <field>
-        <stream_name>data_publicacao</stream_name>
-        <column_name>data_publicacao</column_name>
-      </field>
-      <field>
-        <stream_name>descricao</stream_name>
-        <column_name>descricao</column_name>
-      </field>
-      <field>
-        <stream_name>autor</stream_name>
-        <column_name>autor</column_name>
-      </field>
-      <field>
-        <stream_name>_execucao_id</stream_name>
-        <column_name>_execucao_id</column_name>
-      </field>
-      <field>
-        <stream_name>_origem</stream_name>
-        <column_name>_origem</column_name>
-      </field>
-      <field>
-        <stream_name>_ingerido_em</stream_name>
-        <column_name>_ingerido_em</column_name>
-      </field>
-    </fields>
-    <distribute>Y</distribute>
-    <copies>1</copies>
-    <GUI>
-      <xloc>416</xloc>
-      <yloc>96</yloc>
-    </GUI>
-    <description>silver.conteudo</description>
-    <partitioning>
-      <method>none</method>
-      <schema_name/>
-    </partitioning>
+    <partitioning_enabled>N</partitioning_enabled>
+    <partitioning_field/>
+    <partitioning_daily>N</partitioning_daily>
+    <partitioning_monthly>Y</partitioning_monthly>
+    <tablename_in_field>N</tablename_in_field>
+    <tablename_field/>
+    <tablename_in_table>Y</tablename_in_table>
+    <return_keys>N</return_keys>
+    <return_field/>
+    <fields><field><column_name>conteudo_id</column_name><stream_name>conteudo_id</stream_name></field><field><column_name>titulo</column_name><stream_name>titulo</stream_name></field><field><column_name>tipo</column_name><stream_name>tipo</stream_name></field><field><column_name>categoria</column_name><stream_name>categoria</stream_name></field><field><column_name>nivel</column_name><stream_name>nivel</stream_name></field><field><column_name>carga_horaria_min</column_name><stream_name>carga_horaria_min</stream_name></field><field><column_name>data_publicacao</column_name><stream_name>data_publicacao</stream_name></field><field><column_name>descricao</column_name><stream_name>descricao</stream_name></field><field><column_name>autor</column_name><stream_name>autor</stream_name></field><field><column_name>_execucao_id</column_name><stream_name>_execucao_id</stream_name></field><field><column_name>_origem</column_name><stream_name>_origem</stream_name></field><field><column_name>_linha</column_name><stream_name>_linha</stream_name></field><field><column_name>_ingerido_em</column_name><stream_name>_ingerido_em</stream_name></field><field><column_name>_hash_origem</column_name><stream_name>_hash_origem</stream_name></field></fields>
     <attributes/>
+    <GUI><xloc>480</xloc><yloc>128</yloc></GUI>
   </transform>
-  <order>
-    <hop>
-      <from>conteudos validos</from>
-      <to>normalizar textos</to>
-      <enabled>Y</enabled>
-    </hop>
-    <hop>
-      <from>normalizar textos</from>
-      <to>gravar silver</to>
-      <enabled>Y</enabled>
-    </hop>
-  </order>
-  <notepads/>
+  <transform>
+    <name>gravar rejeitados</name>
+    <type>TableOutput</type>
+    <description>validacao.conteudo_rejeitado: esvaziada no inicio do pipeline</description>
+    <distribute>Y</distribute><custom_distribution/><copies>1</copies><partitioning><method>none</method><schema_name/></partitioning>
+    <connection>postgres_desafio</connection>
+    <schema>validacao</schema>
+    <table>conteudo_rejeitado</table>
+    <commit>1000</commit>
+    <truncate>Y</truncate>
+    <ignore_errors>N</ignore_errors>
+    <use_batch>Y</use_batch>
+    <specify_fields>Y</specify_fields>
+    <partitioning_enabled>N</partitioning_enabled>
+    <partitioning_field/>
+    <partitioning_daily>N</partitioning_daily>
+    <partitioning_monthly>Y</partitioning_monthly>
+    <tablename_in_field>N</tablename_in_field>
+    <tablename_field/>
+    <tablename_in_table>Y</tablename_in_table>
+    <return_keys>N</return_keys>
+    <return_field/>
+    <fields><field><column_name>execucao_id</column_name><stream_name>_execucao_id</stream_name></field><field><column_name>fonte</column_name><stream_name>fonte</stream_name></field><field><column_name>origem</column_name><stream_name>_origem</stream_name></field><field><column_name>linha</column_name><stream_name>_linha</stream_name></field><field><column_name>hash_origem</column_name><stream_name>_hash_origem</stream_name></field><field><column_name>chave_registro</column_name><stream_name>chave_registro</stream_name></field><field><column_name>regra</column_name><stream_name>regra</stream_name></field><field><column_name>severidade</column_name><stream_name>severidade</stream_name></field><field><column_name>mensagem</column_name><stream_name>mensagem</stream_name></field><field><column_name>registro</column_name><stream_name>registro</stream_name></field><field><column_name>registro_original</column_name><stream_name>registro_original</stream_name></field></fields>
+    <attributes/>
+    <GUI><xloc>480</xloc><yloc>256</yloc></GUI>
+  </transform>
+  <transform_error_handling>
+  </transform_error_handling>
   <attributes/>
-  <transform_error_handling/>
 </pipeline>
