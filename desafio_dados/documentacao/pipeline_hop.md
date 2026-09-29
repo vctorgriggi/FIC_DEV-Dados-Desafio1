@@ -33,16 +33,21 @@ Por que ELT neste projeto:
 
 | Arquivo | Papel |
 | --- | --- |
-| `hop/workflows/principal.hwf` | Fluxo completo: abre a execução, roda Bronze e Silver, as etapas opcionais (qualidade, gold, metadados) e fecha com o status final |
+| `hop/workflows/principal.hwf` | Fluxo completo: abre a execução, roda Bronze, Silver, qualidade, Gold e metadados e fecha com o status final |
 | `hop/workflows/bronze.hwf` | Confere se as nove fontes existem e ingere uma fonte por etapa |
 | `hop/workflows/silver.hwf` | Valida as cinco entidades e publica a Silver |
 | `hop/workflows/etapa.hwf` | Executa um pipeline como etapa registrada: início, contagens, status ou falha |
-| `hop/workflows/opcional.hwf` | Executa `workflows/<etapa>.hwf` se existir; senão registra a etapa como `ignorada` |
+| `hop/workflows/qualidade.hwf` | Roda os testes (`qualidade.executar`) e aborta se algum teste crítico reprovar, o que impede a Gold (RF31, Estudante 2) |
+| `hop/workflows/gold.hwf` | Publica a Gold (`gold.publicar`) numa transação (RF26, Estudante 2) |
+| `hop/workflows/metadados.hwf` | Se o OpenMetadata responde, dispara as ingestões do PostgreSQL e do Superset (`pipelines/publicar_metadados.hpl`); senão, marca a etapa como `ignorada` (RF27, Estudante 3) |
+| `hop/workflows/opcional.hwf` | Executa `workflows/<etapa>.hwf` se existir; senão registra a etapa como `ignorada`. Hoje as três etapas existem; o mecanismo ficou para etapas futuras |
 | `hop/workflows/isolado.hwf` | Executa uma camada isoladamente (`FLUXO=bronze` ou `FLUXO=silver`) |
 | `hop/workflows/agendado.hwf` | Agendamento nativo do Hop: roda o fluxo completo todo dia às 05:00 UTC (02:00 de Brasília) |
 | `hop/pipelines/bronze_<fonte>.hpl` | Lê o arquivo do Desafio 1 e o do lote 2, acrescenta `_execucao_id`, `_origem` e `_linha` e grava em `bronze.<fonte>` |
 | `hop/pipelines/silver_<entidade>.hpl` | Classifica, separa aprovados e rejeitados e grava na área de preparo |
 | `hop/pipelines/definir_execucao.hpl` | Usa o `EXECUCAO_ID` recebido ou gera um UUID |
+| `hop/pipelines/publicar_metadados.hpl` | Procura cada ingestão pelo nome na API do OpenMetadata e a dispara; um disparo recusado aborta a etapa |
+| `hop/evidencias/` | Triagem da quarentena usada na demonstração e as tabelas `controle.execucao` e `controle.etapa` exportadas |
 | `sql/silver.sql` | Regras de validação, área de preparo, `silver.publicar()` e medição das etapas |
 | `sql/camadas.sql` | Tabelas das camadas, quarentena e funções de controle |
 
@@ -87,6 +92,21 @@ Números de referência com os dados de teste (primeira execução completa):
 
 Cada anomalia de `dados/brutos/lote_2/ANOMALIAS.md` cai na regra esperada.
 
+Depois das duas rodadas de triagem ([`hop/evidencias/triagem_quarentena.sql`](../hop/evidencias/triagem_quarentena.sql)), a execução de referência (`5696f833`) fica assim:
+
+| Etapa | Lidos | Gravados | Quarentena | Mensagem |
+| --- | --- | --- | --- | --- |
+| silver_conteudo | 1050 | 1043 | 4 | versões vencidas por sobrevivência: 1; descartados na triagem da quarentena: 2 |
+| silver_usuario | 180 | 173 | 5 | versões vencidas: 1; descartados: 1 |
+| silver_interacao | 1416 | 1327 | 88 | descartados: 1 |
+| silver_comentario | 1119 | 1061 | 57 | descartados: 1 |
+| silver_publicacao | — | 4804 | 154 pendentes | 173 usuários consolidados em 171 pessoas |
+| qualidade | 18 | 18 aprovados | 0 | todos os testes aprovados |
+| gold | — | 3965 | — | |
+| metadados | — | — | — | ingestões do PostgreSQL e do Superset disparadas no OpenMetadata |
+
+A quarentena fica com 162 registros: 154 pendentes, 5 descartados e 3 reprocessados (o conteúdo 1041 do `L2-C04`, a interação `L2-I13` e o comentário `L2-K09`). As seis execuções da demonstração, inclusive a que foi bloqueada pela qualidade, estão em [`hop/evidencias/execucoes.csv`](../hop/evidencias/execucoes.csv) e [`etapas.csv`](../hop/evidencias/etapas.csv).
+
 ## Quarentena: consultar, corrigir e reprocessar
 
 ```sql
@@ -126,7 +146,7 @@ Cada passo foi executado e conferido. Rode os comandos a partir de `desafio_dado
    `bronze_interacoes` falha com `Error parsing file`, as etapas seguintes não rodam e a Silver continua intacta.
 4. **Falha de regra.** Está no passo 1: registros inválidos vão para a quarentena sem interromper o processamento.
 5. **Falha de conexão.** `docker compose stop postgres && docker compose run --rm --no-deps hop workflows/principal.hwf` → o fluxo para na primeira consulta, com erro de conexão no log e código 1. Depois, `docker compose start postgres`.
-6. **Correção e reprocessamento.** A seção anterior mostra como: corrija a `L2-C04` e reprocesse. O conteúdo 1041 e a interação `L2-I13` passam a `reprocessado`.
+6. **Correção e reprocessamento.** A seção anterior mostra como: corrija a `L2-C04` e reprocesse. O conteúdo 1041 e a interação `L2-I13` passam a `reprocessado`. Uma correção que ainda viola uma regra não entra: o registro volta a `pendente` com a regra nova. Foi o que aconteceu com a primeira correção do `L2-K09` (31/09 → 30/09, ainda uma data futura quando a execução rodou); a segunda, para 20/09, entrou. As duas rodadas estão em [`hop/evidencias/triagem_quarentena.sql`](../hop/evidencias/triagem_quarentena.sql).
 7. **Sem carga parcial.** A publicação é uma transação única. Um erro no meio dela, mesmo depois de a Silver ter sido esvaziada, desfaz tudo. Isso foi testado inserindo na área de preparo uma interação com conteúdo inexistente: a publicação falhou por chave estrangeira e a Silver permaneceu com as mesmas contagens.
 
 ## Decisões técnicas

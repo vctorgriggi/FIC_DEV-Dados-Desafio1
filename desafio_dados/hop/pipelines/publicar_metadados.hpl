@@ -1,0 +1,262 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pipeline>
+  <info>
+    <name>publicar_metadados</name>
+    <name_sync_with_filename>Y</name_sync_with_filename>
+    <description>Dispara no OpenMetadata a pipeline de ingestao OM_PIPELINE (RF22, RF27)</description>
+    <extended_description/>
+    <pipeline_version/>
+    <pipeline_type>Normal</pipeline_type>
+    <pipeline_status>0</pipeline_status>
+    <parameters>
+      <parameter><name>EXECUCAO_ID</name><default_value/><description>execucao em andamento</description></parameter>
+      <parameter><name>OM_PIPELINE</name><default_value/><description>nome completo (FQN) da pipeline de ingestao, ex.: postgres_desafio.postgres_desafio_metadata</description></parameter>
+    </parameters>
+    <capture_transform_performance>N</capture_transform_performance>
+    <transform_performance_capturing_delay>1000</transform_performance_capturing_delay>
+    <transform_performance_capturing_size_limit>100</transform_performance_capturing_size_limit>
+    <created_user>-</created_user>
+    <modified_user>-</modified_user>
+    <key_for_session_key/>
+    <is_key_private>N</is_key_private>
+  </info>
+  <notepads/>
+  <order>
+    <hop><from>requisicao</from><to>buscar pipeline de ingestao</to><enabled>Y</enabled></hop>
+    <hop><from>buscar pipeline de ingestao</from><to>encontrada?</to><enabled>Y</enabled></hop>
+    <hop><from>encontrada?</from><to>id da pipeline</to><enabled>Y</enabled></hop>
+    <hop><from>encontrada?</from><to>registrar erro na busca</to><enabled>Y</enabled></hop>
+    <hop><from>registrar erro na busca</from><to>falha na busca</to><enabled>Y</enabled></hop>
+    <hop><from>id da pipeline</from><to>url de disparo</to><enabled>Y</enabled></hop>
+    <hop><from>url de disparo</from><to>disparar ingestao</to><enabled>Y</enabled></hop>
+    <hop><from>disparar ingestao</from><to>disparada?</to><enabled>Y</enabled></hop>
+    <hop><from>disparada?</from><to>registrar disparo</to><enabled>Y</enabled></hop>
+    <hop><from>disparada?</from><to>registrar erro no disparo</to><enabled>Y</enabled></hop>
+    <hop><from>registrar erro no disparo</from><to>falha no disparo</to><enabled>Y</enabled></hop>
+  </order>
+  <transform>
+    <name>requisicao</name>
+    <type>GetVariable</type>
+    <description>URLs e token (OM_BOT_TOKEN vem do .env)</description>
+    <distribute>Y</distribute><custom_distribution/><copies>1</copies><partitioning><method>none</method><schema_name/></partitioning>
+    <fields><field><name>url_busca</name><variable>http://openmetadata:8585/api/v1/services/ingestionPipelines/name/${OM_PIPELINE}</variable><type>String</type><format/><currency/><decimal/><group/><length>-1</length><precision>-1</precision><trim_type>none</trim_type></field><field><name>url_disparo_base</name><variable>http://openmetadata:8585/api/v1/services/ingestionPipelines/trigger/</variable><type>String</type><format/><currency/><decimal/><group/><length>-1</length><precision>-1</precision><trim_type>none</trim_type></field><field><name>autorizacao</name><variable>Bearer ${OM_BOT_TOKEN}</variable><type>String</type><format/><currency/><decimal/><group/><length>-1</length><precision>-1</precision><trim_type>none</trim_type></field></fields>
+    <attributes/>
+    <GUI><xloc>64</xloc><yloc>160</yloc></GUI>
+  </transform>
+  <transform>
+    <name>buscar pipeline de ingestao</name>
+    <type>Rest</type>
+    <description>GET pelo nome (FQN)</description>
+    <distribute>Y</distribute><custom_distribution/><copies>1</copies><partitioning><method>none</method><schema_name/></partitioning>
+    <applicationType>JSON</applicationType>
+    <method>GET</method>
+    <url/>
+    <urlInField>Y</urlInField>
+    <dynamicMethod>N</dynamicMethod>
+    <methodFieldName/>
+    <urlField>url_busca</urlField>
+    <bodyField/>
+    <httpLogin/>
+    <httpPassword/>
+    <proxyHost/>
+    <proxyPort/>
+    <trustStoreFile/>
+    <trustStorePassword/>
+    <ignoreSsl>N</ignoreSsl>
+    <headers><header><field>autorizacao</field><name>Authorization</name></header></headers>
+    <parameters/>
+    <matrixParameters/>
+    <result><name>resposta_busca</name><code>status_busca</code><response_time/><response_header/></result>
+    <attributes/>
+    <GUI><xloc>240</xloc><yloc>160</yloc></GUI>
+  </transform>
+  <transform>
+    <name>encontrada?</name>
+    <type>FilterRows</type>
+    <description>HTTP 200 = ok</description>
+    <distribute>Y</distribute><custom_distribution/><copies>1</copies><partitioning><method>none</method><schema_name/></partitioning>
+    <send_true_to>id da pipeline</send_true_to>
+    <send_false_to>registrar erro na busca</send_false_to>
+    <compare>
+      <condition>
+        <conditions/>
+        <function>=</function>
+        <leftvalue>status_busca</leftvalue>
+        <negated>N</negated>
+        <operator>-</operator>
+        <value><name>constant</name><type>Integer</type><text>200</text><length>-1</length><precision>0</precision><isnull>N</isnull><mask>####0;-####0</mask></value>
+      </condition>
+    </compare>
+    <attributes/>
+    <GUI><xloc>416</xloc><yloc>160</yloc></GUI>
+  </transform>
+  <transform>
+    <name>id da pipeline</name>
+    <type>JsonInput</type>
+    <description>extrai $.id da resposta</description>
+    <distribute>Y</distribute><custom_distribution/><copies>1</copies><partitioning><method>none</method><schema_name/></partitioning>
+    <include>N</include>
+    <include_field/>
+    <rownum>N</rownum>
+    <addresultfile>N</addresultfile>
+    <readurl>N</readurl>
+    <removeSourceField>Y</removeSourceField>
+    <IsIgnoreEmptyFile>N</IsIgnoreEmptyFile>
+    <doNotFailIfNoFile>Y</doNotFailIfNoFile>
+    <ignoreMissingPath>N</ignoreMissingPath>
+    <defaultPathLeafToNull>N</defaultPathLeafToNull>
+    <rownum_field/>
+    <file><name/><filemask/><exclude_filemask/><file_required>N</file_required><include_subfolders>N</include_subfolders></file>
+    <fields><field><name>pipeline_id</name><path>$.id</path><type>String</type><format/><currency/><decimal/><group/><length>-1</length><precision>-1</precision><trim_type>none</trim_type><repeat>N</repeat></field></fields>
+    <limit>0</limit>
+    <IsInFields>Y</IsInFields>
+    <IsAFile>N</IsAFile>
+    <valueField>resposta_busca</valueField>
+    <shortFileFieldName/>
+    <pathFieldName/>
+    <hiddenFieldName/>
+    <lastModificationTimeFieldName/>
+    <uriNameFieldName/>
+    <rootUriNameFieldName/>
+    <extensionFieldName/>
+    <sizeFieldName/>
+    <attributes/>
+    <GUI><xloc>592</xloc><yloc>160</yloc></GUI>
+  </transform>
+  <transform>
+    <name>url de disparo</name>
+    <type>ConcatFields</type>
+    <description></description>
+    <distribute>Y</distribute><custom_distribution/><copies>1</copies><partitioning><method>none</method><schema_name/></partitioning>
+    <ConcatFields>
+      <removeSelectedFields>N</removeSelectedFields>
+      <targetFieldLength>0</targetFieldLength>
+      <targetFieldName>url_disparo</targetFieldName>
+    </ConcatFields>
+    <separator/>
+    <enclosure/>
+    <force_enclosure>N</force_enclosure>
+    <fields>
+      <field><name>url_disparo_base</name><type>String</type><format/><currency/><decimal/><group/><nullif/><trim_type>none</trim_type><length>-1</length><precision>-1</precision></field>
+      <field><name>pipeline_id</name><type>String</type><format/><currency/><decimal/><group/><nullif/><trim_type>none</trim_type><length>-1</length><precision>-1</precision></field>
+    </fields>
+    <attributes/>
+    <GUI><xloc>768</xloc><yloc>160</yloc></GUI>
+  </transform>
+  <transform>
+    <name>disparar ingestao</name>
+    <type>Rest</type>
+    <description>o Airflow do OpenMetadata executa a ingestao</description>
+    <distribute>Y</distribute><custom_distribution/><copies>1</copies><partitioning><method>none</method><schema_name/></partitioning>
+    <applicationType>JSON</applicationType>
+    <method>POST</method>
+    <url/>
+    <urlInField>Y</urlInField>
+    <dynamicMethod>N</dynamicMethod>
+    <methodFieldName/>
+    <urlField>url_disparo</urlField>
+    <bodyField/>
+    <httpLogin/>
+    <httpPassword/>
+    <proxyHost/>
+    <proxyPort/>
+    <trustStoreFile/>
+    <trustStorePassword/>
+    <ignoreSsl>N</ignoreSsl>
+    <headers><header><field>autorizacao</field><name>Authorization</name></header></headers>
+    <parameters/>
+    <matrixParameters/>
+    <result><name>resposta_disparo</name><code>status_disparo</code><response_time/><response_header/></result>
+    <attributes/>
+    <GUI><xloc>944</xloc><yloc>160</yloc></GUI>
+  </transform>
+  <transform>
+    <name>disparada?</name>
+    <type>FilterRows</type>
+    <description>HTTP 200 = ok</description>
+    <distribute>Y</distribute><custom_distribution/><copies>1</copies><partitioning><method>none</method><schema_name/></partitioning>
+    <send_true_to>registrar disparo</send_true_to>
+    <send_false_to>registrar erro no disparo</send_false_to>
+    <compare>
+      <condition>
+        <conditions/>
+        <function>=</function>
+        <leftvalue>status_disparo</leftvalue>
+        <negated>N</negated>
+        <operator>-</operator>
+        <value><name>constant</name><type>Integer</type><text>200</text><length>-1</length><precision>0</precision><isnull>N</isnull><mask>####0;-####0</mask></value>
+      </condition>
+    </compare>
+    <attributes/>
+    <GUI><xloc>1120</xloc><yloc>160</yloc></GUI>
+  </transform>
+  <transform>
+    <name>registrar disparo</name>
+    <type>WriteToLog</type>
+    <description></description>
+    <distribute>Y</distribute><custom_distribution/><copies>1</copies><partitioning><method>none</method><schema_name/></partitioning>
+    <loglevel>log_level_basic</loglevel>
+    <displayHeader>Y</displayHeader>
+    <limitRows>N</limitRows>
+    <limitRowsNumber>0</limitRowsNumber>
+    <logmessage>ingestao ${OM_PIPELINE} disparada no OpenMetadata (execucao ${EXECUCAO_ID})</logmessage>
+    <fields><field><name>pipeline_id</name></field><field><name>status_disparo</name></field></fields>
+    <attributes/>
+    <GUI><xloc>1296</xloc><yloc>96</yloc></GUI>
+  </transform>
+  <transform>
+    <name>registrar erro na busca</name>
+    <type>WriteToLog</type>
+    <description></description>
+    <distribute>Y</distribute><custom_distribution/><copies>1</copies><partitioning><method>none</method><schema_name/></partitioning>
+    <loglevel>log_level_basic</loglevel>
+    <displayHeader>Y</displayHeader>
+    <limitRows>N</limitRows>
+    <limitRowsNumber>0</limitRowsNumber>
+    <logmessage>pipeline de ingestao ${OM_PIPELINE} nao encontrada ou token invalido</logmessage>
+    <fields><field><name>status_busca</name></field><field><name>resposta_busca</name></field></fields>
+    <attributes/>
+    <GUI><xloc>592</xloc><yloc>320</yloc></GUI>
+  </transform>
+  <transform>
+    <name>falha na busca</name>
+    <type>Abort</type>
+    <description></description>
+    <distribute>Y</distribute><custom_distribution/><copies>1</copies><partitioning><method>none</method><schema_name/></partitioning>
+    <abort_option>ABORT_WITH_ERROR</abort_option>
+    <always_log_rows>N</always_log_rows>
+    <message>pipeline de ingestao nao encontrada ou OM_BOT_TOKEN invalido (rode openmetadata/provisionar.py)</message>
+    <row_threshold>0</row_threshold>
+    <attributes/>
+    <GUI><xloc>768</xloc><yloc>320</yloc></GUI>
+  </transform>
+  <transform>
+    <name>registrar erro no disparo</name>
+    <type>WriteToLog</type>
+    <description></description>
+    <distribute>Y</distribute><custom_distribution/><copies>1</copies><partitioning><method>none</method><schema_name/></partitioning>
+    <loglevel>log_level_basic</loglevel>
+    <displayHeader>Y</displayHeader>
+    <limitRows>N</limitRows>
+    <limitRowsNumber>0</limitRowsNumber>
+    <logmessage>nao foi possivel disparar ${OM_PIPELINE}</logmessage>
+    <fields><field><name>status_disparo</name></field><field><name>resposta_disparo</name></field></fields>
+    <attributes/>
+    <GUI><xloc>1296</xloc><yloc>256</yloc></GUI>
+  </transform>
+  <transform>
+    <name>falha no disparo</name>
+    <type>Abort</type>
+    <description></description>
+    <distribute>Y</distribute><custom_distribution/><copies>1</copies><partitioning><method>none</method><schema_name/></partitioning>
+    <abort_option>ABORT_WITH_ERROR</abort_option>
+    <always_log_rows>N</always_log_rows>
+    <message>o OpenMetadata recusou o disparo da ingestao</message>
+    <row_threshold>0</row_threshold>
+    <attributes/>
+    <GUI><xloc>1472</xloc><yloc>256</yloc></GUI>
+  </transform>
+  <transform_error_handling>
+  </transform_error_handling>
+  <attributes/>
+</pipeline>

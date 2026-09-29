@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<workflow>
+  <name>gold</name>
+  <name_sync_with_filename>Y</name_sync_with_filename>
+  <description>Gold (RF26): publica as tabelas de consumo numa unica transacao a partir da Silver aprovada</description>
+  <extended_description/>
+  <workflow_version/>
+  <created_user>-</created_user>
+  <modified_user>-</modified_user>
+  <parameters><parameter><name>EXECUCAO_ID</name><default_value></default_value><description>UUID da execucao (vazio = gerar um novo)</description></parameter></parameters>
+  <actions>
+    <action>
+      <name>inicio</name>
+      <description></description>
+      <type>SPECIAL</type>
+      <attributes/>
+      <DayOfMonth>1</DayOfMonth>
+      <doNotWaitOnFirstExecution>N</doNotWaitOnFirstExecution>
+      <hour>12</hour>
+      <intervalMinutes>60</intervalMinutes>
+      <intervalSeconds>0</intervalSeconds>
+      <minutes>0</minutes>
+      <repeat>N</repeat>
+      <schedulerType>0</schedulerType>
+      <weekDay>1</weekDay>
+      <parallel>N</parallel>
+      <xloc>64</xloc>
+      <yloc>160</yloc>
+      <attributes_hac/>
+    </action>
+    <action>
+      <name>iniciar etapa</name>
+      <description></description>
+      <type>SQL</type>
+      <attributes/>
+      <sql>SELECT controle.iniciar_etapa('${EXECUCAO_ID}', 'gold')</sql>
+      <useVariableSubstitution>Y</useVariableSubstitution>
+      <sqlfromfile>N</sqlfromfile>
+      <sqlfilename/>
+      <sendOneStatement>Y</sendOneStatement>
+      <connection>postgres_desafio</connection>
+      <parallel>N</parallel>
+      <xloc>192</xloc>
+      <yloc>160</yloc>
+      <attributes_hac/>
+    </action>
+    <action>
+      <name>publicar gold</name>
+      <description>recusa publicar se a Silver for de outra execucao ou se um teste critico reprovou</description>
+      <type>SQL</type>
+      <attributes/>
+      <sql>SELECT * FROM gold.publicar('${EXECUCAO_ID}')</sql>
+      <useVariableSubstitution>Y</useVariableSubstitution>
+      <sqlfromfile>N</sqlfromfile>
+      <sqlfilename/>
+      <sendOneStatement>Y</sendOneStatement>
+      <connection>postgres_desafio</connection>
+      <parallel>N</parallel>
+      <xloc>352</xloc>
+      <yloc>160</yloc>
+      <attributes_hac/>
+    </action>
+    <action>
+      <name>concluir etapa</name>
+      <description></description>
+      <type>SQL</type>
+      <attributes/>
+      <sql>SELECT controle.concluir_etapa('${EXECUCAO_ID}', 'gold')</sql>
+      <useVariableSubstitution>Y</useVariableSubstitution>
+      <sqlfromfile>N</sqlfromfile>
+      <sqlfilename/>
+      <sendOneStatement>Y</sendOneStatement>
+      <connection>postgres_desafio</connection>
+      <parallel>N</parallel>
+      <xloc>512</xloc>
+      <yloc>160</yloc>
+      <attributes_hac/>
+    </action>
+    <action>
+      <name>fim</name>
+      <description></description>
+      <type>SUCCESS</type>
+      <attributes/>
+      <parallel>N</parallel>
+      <xloc>672</xloc>
+      <yloc>160</yloc>
+      <attributes_hac/>
+    </action>
+    <action>
+      <name>registrar falha</name>
+      <description></description>
+      <type>SQL</type>
+      <attributes/>
+      <sql>SELECT controle.registrar_falha('${EXECUCAO_ID}', 'gold', 'publicacao da Gold desfeita; detalhes no log do Hop')</sql>
+      <useVariableSubstitution>Y</useVariableSubstitution>
+      <sqlfromfile>N</sqlfromfile>
+      <sqlfilename/>
+      <sendOneStatement>Y</sendOneStatement>
+      <connection>postgres_desafio</connection>
+      <parallel>N</parallel>
+      <xloc>432</xloc>
+      <yloc>320</yloc>
+      <attributes_hac/>
+    </action>
+    <action>
+      <name>abortar</name>
+      <description></description>
+      <type>ABORT</type>
+      <attributes/>
+      <message>[${EXECUCAO_ID}] gold nao publicada; a Gold anterior continua valendo</message>
+      <always_log_rows>N</always_log_rows>
+      <parallel>N</parallel>
+      <xloc>592</xloc>
+      <yloc>320</yloc>
+      <attributes_hac/>
+    </action>
+  </actions>
+  <hops>
+    <hop>
+      <from>inicio</from>
+      <to>iniciar etapa</to>
+      <enabled>Y</enabled>
+      <evaluation>Y</evaluation>
+      <unconditional>Y</unconditional>
+    </hop>
+    <hop>
+      <from>iniciar etapa</from>
+      <to>publicar gold</to>
+      <enabled>Y</enabled>
+      <evaluation>Y</evaluation>
+      <unconditional>N</unconditional>
+    </hop>
+    <hop>
+      <from>publicar gold</from>
+      <to>concluir etapa</to>
+      <enabled>Y</enabled>
+      <evaluation>Y</evaluation>
+      <unconditional>N</unconditional>
+    </hop>
+    <hop>
+      <from>concluir etapa</from>
+      <to>fim</to>
+      <enabled>Y</enabled>
+      <evaluation>Y</evaluation>
+      <unconditional>N</unconditional>
+    </hop>
+    <hop>
+      <from>iniciar etapa</from>
+      <to>abortar</to>
+      <enabled>Y</enabled>
+      <evaluation>N</evaluation>
+      <unconditional>N</unconditional>
+    </hop>
+    <hop>
+      <from>publicar gold</from>
+      <to>registrar falha</to>
+      <enabled>Y</enabled>
+      <evaluation>N</evaluation>
+      <unconditional>N</unconditional>
+    </hop>
+    <hop>
+      <from>concluir etapa</from>
+      <to>registrar falha</to>
+      <enabled>Y</enabled>
+      <evaluation>N</evaluation>
+      <unconditional>N</unconditional>
+    </hop>
+    <hop>
+      <from>registrar falha</from>
+      <to>abortar</to>
+      <enabled>Y</enabled>
+      <evaluation>Y</evaluation>
+      <unconditional>Y</unconditional>
+    </hop>
+  </hops>
+  <notepads/>
+  <attributes/>
+</workflow>

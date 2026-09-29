@@ -1,0 +1,23 @@
+{
+  "assunto": "[Report]  Taxa de conclusão de alguma categoria abaixo de 18%: D2 · Taxa de conclusão por categoria (conteúdo do alerta)",
+  "de": "alertas@plataforma.example",
+  "para": [
+    "coordenacao.conteudo@plataforma.example"
+  ],
+  "enviado_em": "2026-09-29T01:59:00Z",
+  "condicao": "SELECT min(taxa) FROM (SELECT categoria, 100.0 * sum(pares_concluidos) / sum(pares_consumo) AS taxa FROM gold.kpi_taxa_conclusao GROUP BY categoria) t < 18",
+  "log_do_alerta": [
+    {
+      "end_dttm": "2026-09-29T01:59:00.370356",
+      "error_message": null,
+      "id": 4,
+      "scheduled_dttm": "2026-09-29T01:59:00",
+      "start_dttm": "2026-09-29T01:59:00.150854",
+      "state": "Success",
+      "uuid": "130dfdc1-16f6-4b23-8037-c9d37c0755f7",
+      "value": 15.0,
+      "value_row_json": null
+    }
+  ],
+  "segundos_ate_o_envio": 51
+}

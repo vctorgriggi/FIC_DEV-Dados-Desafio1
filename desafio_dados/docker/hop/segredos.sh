@@ -21,7 +21,8 @@ variavel() {  # nome_no_hop valor
     variavel MONGO_USER "${MONGO_USER:-}";                echo ','
     variavel MONGO_PASSWORD "${MONGO_PASSWORD:-}";        echo ','
     variavel LGPD_SALT "${LGPD_SALT:-}";                  echo ','
-    variavel LGPD_CHAVE_PSEUDONIMO "${LGPD_CHAVE_PSEUDONIMO:-}"
+    variavel LGPD_CHAVE_PSEUDONIMO "${LGPD_CHAVE_PSEUDONIMO:-}"; echo ','
+    variavel OM_BOT_TOKEN "${OM_BOT_TOKEN:-}"
     echo
     echo '  ]'
     echo '}'

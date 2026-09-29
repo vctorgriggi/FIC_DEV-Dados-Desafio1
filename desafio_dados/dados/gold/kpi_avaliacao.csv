@@ -1,0 +1,33 @@
+categoria,tipo,avaliacoes,avaliacao_media,pct_positivas
+Banco de Dados,Artigo,20,4.30,80.0
+Banco de Dados,Curso,9,4.44,88.9
+Banco de Dados,Podcast,14,4.86,100.0
+Banco de Dados,Vídeo,18,4.22,83.3
+Business Intelligence,Artigo,10,4.30,90.0
+Business Intelligence,Curso,13,4.46,84.6
+Business Intelligence,Podcast,12,4.33,75.0
+Business Intelligence,Vídeo,19,4.79,100.0
+Ciência de Dados,Artigo,15,4.40,86.7
+Ciência de Dados,Curso,13,4.15,69.2
+Ciência de Dados,Podcast,11,4.00,63.6
+Ciência de Dados,Vídeo,17,4.47,82.4
+DevOps & Cloud,Artigo,19,4.68,89.5
+DevOps & Cloud,Curso,13,4.00,76.9
+DevOps & Cloud,Podcast,17,4.18,76.5
+DevOps & Cloud,Vídeo,21,4.71,100.0
+Engenharia de Dados,Artigo,13,4.62,92.3
+Engenharia de Dados,Curso,14,4.79,100.0
+Engenharia de Dados,Podcast,17,4.71,94.1
+Engenharia de Dados,Vídeo,12,4.50,91.7
+Inteligência Artificial,Artigo,17,4.59,100.0
+Inteligência Artificial,Curso,16,4.13,68.8
+Inteligência Artificial,Podcast,18,4.44,83.3
+Inteligência Artificial,Vídeo,17,4.59,88.2
+Programação & Software,Artigo,16,4.81,100.0
+Programação & Software,Curso,9,4.56,77.8
+Programação & Software,Podcast,17,4.53,82.4
+Programação & Software,Vídeo,15,4.13,66.7
+Segurança & Governança,Artigo,14,4.57,92.9
+Segurança & Governança,Curso,14,4.43,85.7
+Segurança & Governança,Podcast,7,4.86,100.0
+Segurança & Governança,Vídeo,8,4.63,100.0

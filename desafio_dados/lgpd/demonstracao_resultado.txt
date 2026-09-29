@@ -1,0 +1,59 @@
+=== 1. O consumo (papel do Superset e do SQL Lab) nao le dado pessoal
+SET
+  papel  
+---------
+ consumo
+
+psql:<stdin>:9: ERROR:  permission denied for schema bronze
+LINE 1: SELECT nome, email, cpf FROM bronze.usuarios LIMIT 1;
+                                     ^
+psql:<stdin>:10: ERROR:  permission denied for schema silver
+LINE 1: SELECT usuario_id, email_hash FROM silver.usuario LIMIT 1;
+                                           ^
+o que o consumo ve da pessoa:
+psql:<stdin>:11: ERROR:  permission denied for schema restrito
+LINE 1: SELECT * FROM restrito.usuario_pseudonimo LIMIT 1;
+                      ^
+ nome_mascarado |     pseudonimo      | faixa_etaria | uf 
+----------------+---------------------+--------------+----
+ Enzo C***      | 0103a57d8c6871ea... | 45-59        | MS
+ Leonardo M***  | 011bf3208f6190a7... | 35-44        | MS
+ Beatriz F***   | 01dfd4aa25350de2... | 45-59        | SP
+
+=== 2. Nenhum e-mail, CPF ou telefone em texto na Gold (varredura de todas as linhas)
+         tabela         | ocorrencias | linhas 
+------------------------+-------------+--------
+ gold.dim_usuario       |           0 |    171
+ gold.fato_interacao    |           0 |   1327
+ gold.fato_recomendacao |           0 |   1200
+
+RESET
+=== 3. Mascaramento: o original fica na bronze; o consumo ve so a versao mascarada
+ nome_original_bronze  | nome_mascarado |     email_original_bronze     |  email_mascarado   
+-----------------------+----------------+-------------------------------+--------------------
+ Otávio Souza Carvalho | Otávio C***    | otavio.carvalho@email.example | o***@email.example
+
+=== 4. Hash com salt: comparar sem revelar (usuarios 12 e 171 tem o mesmo CPF: L2-U01)
+ usuario_id |      cpf_hash       | mesmo_cpf_que_12 
+------------+---------------------+------------------
+         12 | 2574401a09b92f8b... | t
+         30 | 6f0fa82f16001a53... | f
+        171 | 2574401a09b92f8b... | t
+
+sem o salt secreto, o mesmo CPF gera outro hash (sem salt, bastaria calcular o hash dos 10^9 CPFs possiveis para reverter):
+   sha256_sem_salt   
+---------------------
+ 9ee37993e24736bb...
+
+=== 5. Pseudonimizacao: associacao controlada so pela tabela restrita (dono do banco)
+ usuario_mestre_id | pseudonimo_na_gold  | reidentificado_por_restrito 
+-------------------+---------------------+-----------------------------
+                30 | e2696c6bbc0008d9... |                          30
+                12 | 4caab5ed9357430b... |                          12
+
+=== 6. Anonimizacao do texto livre (L2-K04 e L2-K05)
+                                 original_bronze                                 |                            silver                             
+---------------------------------------------------------------------------------+---------------------------------------------------------------
+ Gostei muito! Quem quiser trocar material me chama em lucas.prado@email.example | Gostei muito! Quem quiser trocar material me chama em [email]
+ Excelente conteúdo, dúvidas no zap (00) 91234-5678                              | Excelente conteúdo, dúvidas no zap [telefone]
+

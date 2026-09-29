@@ -743,53 +743,9 @@ BEGIN
 END;
 $$;
 
--- ---------------------------------------------------------------
--- medicao das etapas para controle.concluir_etapa (RF22)
--- ---------------------------------------------------------------
-
+-- entidade da Silver -> fonte da bronze (usada por controle.medir_etapa, em sql/camadas.sql)
 CREATE OR REPLACE FUNCTION validacao.fonte_da_entidade(p_entidade TEXT) RETURNS TEXT
     LANGUAGE sql IMMUTABLE
     RETURN CASE p_entidade WHEN 'conteudo' THEN 'catalogo' WHEN 'usuario' THEN 'usuarios'
                            WHEN 'interacao' THEN 'interacoes' WHEN 'comentario' THEN 'comentarios'
                            WHEN 'recomendacao' THEN 'recomendacoes' END;
-
--- etapas conhecidas: bronze_<fonte>, silver_<entidade>, silver_publicacao. Outras (qualidade, gold,
--- metadados) ficam sem contagem ate o responsavel acrescentar a medicao aqui.
-CREATE OR REPLACE FUNCTION controle.medir_etapa(p_execucao_id TEXT, p_etapa TEXT)
-RETURNS TABLE (lidos INTEGER, gravados INTEGER, quarentena INTEGER, mensagem TEXT)
-LANGUAGE plpgsql STABLE
-AS $$
-DECLARE
-    v_nome TEXT := substr(p_etapa, 8);
-    v_fonte TEXT;
-    v_lidos INTEGER;
-    v_gravados INTEGER;
-    v_quarentena INTEGER;
-BEGIN
-    IF p_etapa LIKE 'bronze\_%' THEN
-        EXECUTE format('SELECT count(*) FROM bronze.%I WHERE _execucao_id = $1', v_nome) INTO v_lidos USING p_execucao_id;
-        RETURN QUERY SELECT v_lidos, v_lidos, 0, NULL::text;
-    ELSIF p_etapa = 'silver_publicacao' THEN
-        SELECT (SELECT count(*) FROM silver.conteudo) + (SELECT count(*) FROM silver.usuario)
-             + (SELECT count(*) FROM silver.interacao) + (SELECT count(*) FROM silver.comentario)
-             + (SELECT count(*) FROM silver.recomendacao)
-          INTO v_gravados;
-        SELECT count(*) INTO v_quarentena FROM quarentena.registro q
-         WHERE q.ultima_execucao_id = p_execucao_id AND q.status = 'pendente';
-        RETURN QUERY SELECT NULL::integer, v_gravados, v_quarentena,
-            format('%s usuarios consolidados em %s pessoas', (SELECT count(*) FROM silver.usuario),
-                   (SELECT count(*) FROM silver.usuario_mestre));
-    ELSIF p_etapa LIKE 'silver\_%' AND validacao.fonte_da_entidade(v_nome) IS NOT NULL THEN
-        v_fonte := validacao.fonte_da_entidade(v_nome);
-        EXECUTE format('SELECT count(*) FROM bronze.%I WHERE _execucao_id = $1', v_fonte) INTO v_lidos USING p_execucao_id;
-        EXECUTE format('SELECT count(*) FROM validacao.%I WHERE _execucao_id = $1', v_nome) INTO v_gravados USING p_execucao_id;
-        EXECUTE format('SELECT count(*) FROM validacao.%I WHERE execucao_id = $1', v_nome || '_rejeitado') INTO v_quarentena USING p_execucao_id;
-        RETURN QUERY SELECT v_lidos, v_gravados, v_quarentena,
-            CASE WHEN v_lidos > v_gravados + v_quarentena
-                 THEN format('%s versoes substituidas por sobrevivencia (continuam na bronze)', v_lidos - v_gravados - v_quarentena)
-            END;
-    ELSE
-        RETURN QUERY SELECT NULL::integer, NULL::integer, NULL::integer, NULL::text;
-    END IF;
-END;
-$$;

@@ -4,6 +4,7 @@
 #   - bancos e papeis do OpenMetadata e do Airflow (perfil governanca)
 #   - schemas das camadas e papel de consumo (sql/camadas.sql)
 #   - regras de validacao e publicacao da Silver (sql/silver.sql)
+#   - testes de qualidade (sql/qualidade.sql), camada Gold (sql/camada_gold.sql) e descricoes do catalogo (sql/catalogo.sql)
 set -euo pipefail
 
 export PGHOST=postgres PGUSER="$POSTGRES_USER" PGPASSWORD="$POSTGRES_PASSWORD"
@@ -32,5 +33,8 @@ papel_e_banco airflow_db "$AIRFLOW_DB_USER" "$AIRFLOW_DB_PASSWORD"
     -v consumo_usuario="$CONSUMO_DB_USER" -v consumo_senha="$CONSUMO_DB_PASSWORD" \
     -f /sql/camadas.sql
 "${PSQL[@]}" -d "$POSTGRES_DB" -f /sql/silver.sql
+"${PSQL[@]}" -d "$POSTGRES_DB" -f /sql/qualidade.sql
+"${PSQL[@]}" -d "$POSTGRES_DB" -f /sql/camada_gold.sql
+"${PSQL[@]}" -d "$POSTGRES_DB" -f /sql/catalogo.sql
 
 echo "db-init: bancos auxiliares e camadas do Desafio 2 prontos"

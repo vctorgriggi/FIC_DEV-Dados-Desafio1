@@ -1,0 +1,97 @@
+categoria,tipo,nivel,pares_consumo,pares_concluidos,taxa_conclusao_pct
+Banco de Dados,Artigo,Avançado,17,4,23.5
+Banco de Dados,Artigo,Básico,14,4,28.6
+Banco de Dados,Artigo,Intermediário,10,3,30.0
+Banco de Dados,Curso,Avançado,8,0,0.0
+Banco de Dados,Curso,Básico,20,8,40.0
+Banco de Dados,Curso,Intermediário,10,2,20.0
+Banco de Dados,Podcast,Avançado,3,0,0.0
+Banco de Dados,Podcast,Básico,11,3,27.3
+Banco de Dados,Podcast,Intermediário,5,0,0.0
+Banco de Dados,Vídeo,Avançado,12,3,25.0
+Banco de Dados,Vídeo,Básico,7,3,42.9
+Banco de Dados,Vídeo,Intermediário,11,4,36.4
+Business Intelligence,Artigo,Avançado,10,0,0.0
+Business Intelligence,Artigo,Básico,10,1,10.0
+Business Intelligence,Artigo,Intermediário,9,3,33.3
+Business Intelligence,Curso,Avançado,10,0,0.0
+Business Intelligence,Curso,Básico,20,3,15.0
+Business Intelligence,Curso,Intermediário,6,1,16.7
+Business Intelligence,Podcast,Avançado,7,1,14.3
+Business Intelligence,Podcast,Básico,11,5,45.5
+Business Intelligence,Podcast,Intermediário,13,2,15.4
+Business Intelligence,Vídeo,Avançado,10,1,10.0
+Business Intelligence,Vídeo,Básico,14,2,14.3
+Business Intelligence,Vídeo,Intermediário,16,3,18.8
+Ciência de Dados,Artigo,Avançado,14,4,28.6
+Ciência de Dados,Artigo,Básico,6,1,16.7
+Ciência de Dados,Artigo,Intermediário,11,4,36.4
+Ciência de Dados,Curso,Avançado,5,1,20.0
+Ciência de Dados,Curso,Básico,13,3,23.1
+Ciência de Dados,Curso,Intermediário,6,1,16.7
+Ciência de Dados,Podcast,Avançado,10,3,30.0
+Ciência de Dados,Podcast,Básico,6,1,16.7
+Ciência de Dados,Podcast,Intermediário,12,1,8.3
+Ciência de Dados,Vídeo,Avançado,10,2,20.0
+Ciência de Dados,Vídeo,Básico,5,3,60.0
+Ciência de Dados,Vídeo,Intermediário,1,0,0.0
+DevOps & Cloud,Artigo,Avançado,8,3,37.5
+DevOps & Cloud,Artigo,Básico,7,2,28.6
+DevOps & Cloud,Artigo,Intermediário,8,2,25.0
+DevOps & Cloud,Curso,Avançado,7,1,14.3
+DevOps & Cloud,Curso,Básico,8,2,25.0
+DevOps & Cloud,Curso,Intermediário,7,1,14.3
+DevOps & Cloud,Podcast,Avançado,6,1,16.7
+DevOps & Cloud,Podcast,Básico,9,0,0.0
+DevOps & Cloud,Podcast,Intermediário,10,5,50.0
+DevOps & Cloud,Vídeo,Avançado,10,3,30.0
+DevOps & Cloud,Vídeo,Básico,13,2,15.4
+DevOps & Cloud,Vídeo,Intermediário,7,3,42.9
+Engenharia de Dados,Artigo,Avançado,14,5,35.7
+Engenharia de Dados,Artigo,Básico,4,0,0.0
+Engenharia de Dados,Artigo,Intermediário,8,2,25.0
+Engenharia de Dados,Curso,Avançado,9,1,11.1
+Engenharia de Dados,Curso,Básico,15,2,13.3
+Engenharia de Dados,Curso,Intermediário,11,1,9.1
+Engenharia de Dados,Podcast,Avançado,16,2,12.5
+Engenharia de Dados,Podcast,Básico,15,4,26.7
+Engenharia de Dados,Podcast,Intermediário,6,2,33.3
+Engenharia de Dados,Vídeo,Avançado,8,2,25.0
+Engenharia de Dados,Vídeo,Básico,16,6,37.5
+Engenharia de Dados,Vídeo,Intermediário,6,2,33.3
+Inteligência Artificial,Artigo,Avançado,9,2,22.2
+Inteligência Artificial,Artigo,Básico,10,5,50.0
+Inteligência Artificial,Artigo,Intermediário,13,4,30.8
+Inteligência Artificial,Curso,Avançado,1,1,100.0
+Inteligência Artificial,Curso,Básico,8,2,25.0
+Inteligência Artificial,Curso,Intermediário,5,1,20.0
+Inteligência Artificial,Podcast,Avançado,5,1,20.0
+Inteligência Artificial,Podcast,Básico,13,1,7.7
+Inteligência Artificial,Podcast,Intermediário,19,4,21.1
+Inteligência Artificial,Vídeo,Avançado,5,0,0.0
+Inteligência Artificial,Vídeo,Básico,14,4,28.6
+Inteligência Artificial,Vídeo,Intermediário,3,1,33.3
+Programação & Software,Artigo,Avançado,13,3,23.1
+Programação & Software,Artigo,Básico,8,1,12.5
+Programação & Software,Artigo,Intermediário,7,3,42.9
+Programação & Software,Curso,Avançado,2,0,0.0
+Programação & Software,Curso,Básico,7,2,28.6
+Programação & Software,Curso,Intermediário,14,3,21.4
+Programação & Software,Podcast,Avançado,10,2,20.0
+Programação & Software,Podcast,Básico,6,2,33.3
+Programação & Software,Podcast,Intermediário,14,6,42.9
+Programação & Software,Vídeo,Avançado,9,1,11.1
+Programação & Software,Vídeo,Básico,9,2,22.2
+Programação & Software,Vídeo,Intermediário,13,4,30.8
+Segurança & Governança,Artigo,Avançado,4,1,25.0
+Segurança & Governança,Artigo,Básico,18,4,22.2
+Segurança & Governança,Artigo,Intermediário,16,2,12.5
+Segurança & Governança,Curso,Avançado,6,1,16.7
+Segurança & Governança,Curso,Básico,7,1,14.3
+Segurança & Governança,Curso,Intermediário,20,5,25.0
+Segurança & Governança,Podcast,Avançado,8,0,0.0
+Segurança & Governança,Podcast,Básico,5,1,20.0
+Segurança & Governança,Podcast,Intermediário,10,1,10.0
+Segurança & Governança,Vídeo,Avançado,10,0,0.0
+Segurança & Governança,Vídeo,Básico,6,1,16.7
+Segurança & Governança,Vídeo,Intermediário,10,1,10.0

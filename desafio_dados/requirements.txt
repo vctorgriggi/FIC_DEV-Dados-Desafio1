@@ -5,3 +5,10 @@ pgvector==0.5.0
 pymongo==4.18.1
 pandas==3.0.5
 sentence-transformers==6.0.1
+
+# Desafio 2: as dependencias Python ficam nas imagens, com versao fixa, e nao nesta imagem do app
+#   docker/beam.Dockerfile (servico beam: Parquet, Beam, provisionamento do Superset e do OpenMetadata, amostras)
+#     apache/beam_python3.12_sdk:2.77.0 -> apache-beam 2.77.0, pyarrow 25.0.1, pyyaml 6.0.3, requests 2.34.2
+#     + psycopg[binary] 3.3.5
+#   docker/evidencias.Dockerfile (servico evidencias: capturas e PDFs)
+#     mcr.microsoft.com/playwright/python:v1.59.0-noble -> playwright 1.59.0; + markdown-it-py 4.2.0, mermaid 11.4.1

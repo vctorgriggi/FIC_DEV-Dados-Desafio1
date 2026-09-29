@@ -2,7 +2,7 @@
 
 FIC_DEV — Programador de Sistemas com IA · Fundamentos de Dados para IA · Desafio Prático 1
 
-> **Desafio Prático 2 em andamento.** A solução do Desafio 1 continua funcionando como está; a base do Desafio 2 (infraestrutura, contratos e dados de teste) está na seção [Desafio 2](#desafio-2--base-de-infraestrutura-contratos-e-dados-de-teste). Enunciado em [`../docs/desafio-2/`](../docs/desafio-2/README.md).
+> **Desafio Prático 2.** A solução do Desafio 1 continua funcionando como está. O Desafio 2 (camadas Bronze, Silver e Gold no Apache Hop, Parquet e Apache Beam, qualidade, OpenMetadata, LGPD e storytelling) está na seção [Desafio 2](#desafio-2--plataforma-de-dados-em-camadas). Enunciado em [`../docs/desafio-2/`](../docs/desafio-2/README.md).
 
 **Equipe**
 
@@ -91,44 +91,110 @@ docker compose down -v                              # apaga bancos e volumes
 
 Se uma porta já estiver em uso na máquina, mude `*_HOST_PORT` no `.env`. Configurações não sensíveis (caminhos, modelo, `top_k`, consultas de demonstração) ficam em `config.yaml`; senhas só no `.env`, que está no `.gitignore`.
 
-## Desafio 2 — base de infraestrutura, contratos e dados de teste
+## Desafio 2 — plataforma de dados em camadas
 
-O Desafio 2 evolui esta mesma pasta. Nada do Desafio 1 foi alterado: o schema `public`, os arquivos de `dados/brutos/` e `python -m src.main` seguem iguais e passam a ser **fontes** das camadas novas. A base prepara o terreno para os três integrantes trabalharem em paralelo; os requisitos RF15–RF34 ainda são implementados por cada responsável.
+O Desafio 2 evolui esta mesma pasta. Nada do Desafio 1 foi alterado: o schema `public`, os arquivos de `dados/brutos/` e `python -m src.main` seguem iguais e passam a ser **fontes** das camadas novas.
 
-**Contratos entre as etapas** (quem lê e escreve o quê, convenções, códigos de regra, proposta da Gold): [`documentacao/contratos.md`](documentacao/contratos.md). Leitura obrigatória antes de começar.
+**Visão geral e decisão ELT/híbrida (RF19):** [`documentacao/arquitetura_desafio2.md`](documentacao/arquitetura_desafio2.md), também em PDF.
 
-**Bronze, Silver, workflow e quarentena no Apache Hop** (arquitetura ELT, como executar, como corrigir e reprocessar, roteiro de demonstração do RF23): [`documentacao/pipeline_hop.md`](documentacao/pipeline_hop.md).
+| Integrante | Parte no Desafio 2 |
+|---|---|
+| Kevin da Silva Medeiros (Estudante 1) | Apache Hop: Bronze, Silver, workflow, quarentena (RF20–RF23), aplicação dos dados mestres (RF30) |
+| Vinycius Yuji Mogami (Estudante 2) | Parquet, Apache Beam, Gold e qualidade (RF24–RF26, RF31) |
+| Victor Griggi Moreira Regis da Silva (Estudante 3) | OpenMetadata, LGPD, SQL Lab, Superset e storytelling (RF16–RF18, RF27–RF29, RF32, RF33) |
+
+### Requisitos e onde estão
+
+| RF | O que foi feito | Documento | Evidência |
+|---|---|---|---|
+| RF15 | configuração fora do código, segredos só no `.env`, etapas isoladas, versões registradas | [`arquitetura_desafio2.md`](documentacao/arquitetura_desafio2.md) | `.env.example`, `config.yaml`, `hop/environments/` |
+| RF16 | storytelling: pergunta, contexto → evidência → descoberta → ação, fato × hipótese × recomendação | [`storytelling.md`](documentacao/storytelling.md) (+ PDF) | `superset/exportacao_e_evidencias/01_storytelling.png` |
+| RF17 | 4 consultas no SQL Lab, salvas e como datasets virtuais | [`storytelling.md`](documentacao/storytelling.md), [`sql/sql_lab.sql`](sql/sql_lab.sql) | `06_sql_lab_consultas_salvas.png`, `consultas_sql_lab.zip` |
+| RF18 | filtros de período e categoria, filtro cruzado, alerta com e-mail entregue | [`storytelling.md`](documentacao/storytelling.md) | capturas 02–08, `alerta_execucao.json`, `alerta_email.html` |
+| RF19 | ELT no fluxo principal, híbrido com o ramo Beam; justificativa e limites do Desafio 1 | [`arquitetura_desafio2.md`](documentacao/arquitetura_desafio2.md) (+ PDF) | — |
+| RF20–RF23 | Bronze, Silver, workflow com agendamento, quarentena, correção e reprocessamento, falhas de arquivo, regra e conexão | [`pipeline_hop.md`](documentacao/pipeline_hop.md), [`contratos.md`](documentacao/contratos.md) | `hop/` exportado, `hop/evidencias/`, `dados/bronze/`, `dados/silver/amostras/`, `dados/quarentena/` |
+| RF24 | Silver em Parquet particionado por mês; comparação com CSV e JSON | [`parquet_beam.md`](documentacao/parquet_beam.md) | `dados/silver/`, `beam/evidencias/rf24_medicoes.json` |
+| RF25 | pipeline Beam no DirectRunner e no Spark, mesmo resultado, conferido com a Gold | [`parquet_beam.md`](documentacao/parquet_beam.md) | `beam/evidencias/rf25_*.json`, `dados/gold/engajamento_mensal_beam/` |
+| RF26 | Gold: 2 dimensões, 2 fatos, 5 KPIs; o dashboard só lê a Gold | [`camada_gold.md`](documentacao/camada_gold.md), [`sql/camada_gold.sql`](sql/camada_gold.sql) | `dados/gold/` |
+| RF27, RF28 | OpenMetadata com PostgreSQL e Superset ingeridos, donos, descrições, glossário com 5 termos, classificações LGPD e Camada | [`governanca.md`](documentacao/governanca.md) | `openmetadata/evidencias/01–04, 07–09, 11` |
+| RF29 | linhagem arquivo → Bronze → Silver → Gold → dataset → dashboard, com um KPI até a coluna | [`linhagem.md`](documentacao/linhagem.md) (+ PDF) | `openmetadata/evidencias/05, 06, 10` |
+| RF30 | pessoa mestre por CPF ou e-mail (hash), sobrevivência, dois conflitos demonstrados | [`governanca.md`](documentacao/governanca.md) | `dados/silver/amostras/usuario_mestre.csv`, `usuario_correspondencia.csv` |
+| RF31 | 7 testes nas 5 dimensões; resultado por execução e fonte; bloqueio da Gold demonstrado | [`qualidade/regras.md`](qualidade/regras.md) | `qualidade/resultados/resultados.csv`, captura 02 (evolução) |
+| RF32, RF33 | inventário, mascaramento, pseudonimização, hash com salt, papel `consumo` | [`lgpd/`](lgpd/) | `lgpd/demonstracao_resultado.txt` |
+| RF34 | evidências de todos os itens acima | esta tabela | — |
+
+### Execução completa
+
+```bash
+cp .env.example .env                    # quem já tem .env: copie as variáveis novas do bloco "Desafio 2"
+                                        # e preencha LGPD_SALT e LGPD_CHAVE_PSEUDONIMO (valores combinados em privado)
+docker compose up -d                                          # base: PostgreSQL, MongoDB, Superset, db-init
+docker compose --profile governanca up -d                     # OpenMetadata (a primeira subida migra o banco e demora)
+docker compose run --rm beam openmetadata/provisionar.py      # serviços, ingestões, donos, tags, glossário, linhagem
+
+docker compose run --rm hop workflows/principal.hwf           # Bronze → Silver → qualidade → Gold → metadados
+docker compose run --rm beam beam/exportar_silver.py --volume # RF24 (o volume vem de ferramentas.gerar_dados --volume 200000)
+docker compose run --rm beam beam/pipeline.py --runner direct # RF25
+docker compose --profile beam up -d                           # cluster Spark
+docker compose run --rm beam beam/pipeline.py --runner spark
+
+docker compose run --rm beam superset/provisionar.py          # datasets, consultas, dashboards e alerta
+docker compose --profile alertas up -d                        # Celery + Mailpit para o alerta
+docker compose run --rm beam superset/provisionar.py --demonstrar-alerta
+
+docker compose run --rm beam ferramentas/exportar_amostras.py                 # amostras das camadas e registros
+docker compose run --rm evidencias ferramentas/evidencias.py superset         # capturas (também: alerta, openmetadata)
+docker compose run --rm evidencias ferramentas/gerar_pdfs.py                  # PDFs da documentação
+docker compose exec -T postgres psql -U desafio -d desafio -f - < lgpd/demonstracao.sql
+```
+
+Os testes rodam com `docker compose run --rm app python -m unittest` (Desafio 1) e `docker compose run --rm beam -m unittest tests.test_beam tests.test_gerar_dados`.
+
+**Demonstrações** com o passo a passo:
+
+- falhas de arquivo, regra e conexão; correção e reprocessamento (RF23): [`pipeline_hop.md`](documentacao/pipeline_hop.md#roteiro-de-demonstração-do-rf23);
+- bloqueio da Gold por teste crítico (RF31): [`qualidade/regras.md`](qualidade/regras.md#demonstração-do-bloqueio-da-gold-execução-d);
+- origem de um valor do dashboard (RF29): [`linhagem.md`](documentacao/linhagem.md#como-localizar-a-origem-de-um-valor-do-dashboard);
+- dois cadastros conflitantes (RF30): [`governanca.md`](documentacao/governanca.md#demonstração-dois-pares-conflitantes);
+- técnicas de proteção (RF33): [`lgpd/demonstracao_resultado.txt`](lgpd/demonstracao_resultado.txt).
+
+**Números da execução de referência** (`5696f833`, 29/09/2026), a mesma em todas as evidências:
+
+- 4804 registros na Silver e 154 pendentes na quarentena;
+- 173 cadastros em 171 pessoas;
+- 18 de 18 testes aprovados;
+- 3965 linhas na Gold;
+- taxa de conclusão 22,3%, conversão 3,3%, avaliação 4,48;
+- Beam: 72 grupos (mês × categoria), iguais no DirectRunner, no Spark e na Gold.
 
 ### Serviços e perfis
 
-Os serviços novos ficam em perfis do Compose, para cada integrante subir só o que usa:
+Os serviços ficam em perfis do Compose, para subir só o que se usa:
 
 | Perfil | Serviços | Acesso |
 |---|---|---|
 | *(nenhum)* | `postgres`, `mongo`, `superset`, `db-init` | como no Desafio 1 |
 | `hop` | `hop-web` (designer do Apache Hop no navegador) | http://localhost:8081/ui (`HOP_WEB_HOST_PORT`) |
 | `beam` | `spark-master`, `spark-worker`, `beam-job-server`, `beam-worker-pool` | UI do Spark em http://localhost:8090 (`SPARK_UI_HOST_PORT`) |
-| `governanca` | `elasticsearch`, `om-migrar`, `openmetadata`, `om-ingestao` (Airflow) | http://localhost:8585 (`admin@open-metadata.org` / `admin`); Airflow em http://localhost:8082 |
+| `governanca` | `elasticsearch`, `om-migrar`, `openmetadata`, `om-ingestao` (Airflow) | http://localhost:8585 (`OM_ADMIN_EMAIL` / `OM_ADMIN_PASSWORD`); Airflow em http://localhost:8082 |
+| `alertas` | `redis`, `superset-worker`, `superset-beat` (Celery), `mailpit` (e-mail de teste) | caixa de entrada em http://localhost:8025 (`MAILPIT_HOST_PORT`) |
 | `agendamento` | `hop-agendador`: fluxo completo todo dia às 05:00 UTC (02:00 de Brasília) | `docker compose --profile agendamento up -d` |
-| `pipeline` | executores avulsos: `app` (Desafio 1), `hop`, `beam` | `docker compose run --rm <serviço> ...` |
+| `pipeline` | executores avulsos: `app` (Desafio 1), `hop`, `beam`, `evidencias` (Playwright: capturas e PDFs) | `docker compose run --rm <serviço> ...` |
 
-`db-init` roda a cada `up` (e a cada `docker compose run` de um serviço que depende dele) e é idempotente e não destrutivo. Ele cria os bancos do OpenMetadata e do Airflow no mesmo PostgreSQL e aplica [`sql/camadas.sql`](sql/camadas.sql) e [`sql/silver.sql`](sql/silver.sql): schemas das camadas, quarentena, controle, funções `lgpd.*`, regras da Silver e o papel somente leitura `consumo`. Funciona também sobre um volume já criado no Desafio 1.
+`db-init` roda a cada `up` (e a cada `docker compose run` de um serviço que depende dele) e é idempotente e não destrutivo. Ele cria os bancos do OpenMetadata e do Airflow no mesmo PostgreSQL e aplica, nesta ordem, [`sql/camadas.sql`](sql/camadas.sql), [`sql/silver.sql`](sql/silver.sql), [`sql/qualidade.sql`](sql/qualidade.sql), [`sql/camada_gold.sql`](sql/camada_gold.sql) e [`sql/catalogo.sql`](sql/catalogo.sql). Funciona também sobre um volume já criado no Desafio 1. Nunca use `docker compose down -v` para "limpar": isso apaga os bancos.
 
-```bash
-cp .env.example .env                               # quem já tem .env: copie as variáveis novas do bloco "Desafio 2"
-docker compose up -d                               # base
-docker compose --profile hop up -d                 # + Hop Web
-docker compose --profile beam up -d                # + cluster Spark para o Beam
-docker compose --profile governanca up -d          # + OpenMetadata (a primeira subida migra o banco e demora mais)
+Verificações da infraestrutura: `docker compose run --rm hop pipelines/verificar_ambiente.hpl` e `docker compose run --rm beam beam/verificar_runtime.py --runner {direct|spark}`.
 
-docker compose run --rm hop pipelines/verificar_ambiente.hpl           # Hop: conexão, variáveis e schemas
-docker compose run --rm hop workflows/principal.hwf                    # fluxo Bronze → Silver com controle e quarentena
-docker compose run --rm beam beam/verificar_runtime.py --runner direct # Beam no DirectRunner
-docker compose run --rm beam beam/verificar_runtime.py --runner spark  # Beam no cluster Spark (perfil beam)
-docker compose run --rm beam -m ferramentas.gerar_dados                # regenera os dados de teste
-```
+**Memória** (medida em repouso):
 
-**Memória** (medida em repouso): a base usa ~0,7 GB; o perfil `governanca` ~3,5 GB (OpenMetadata, Elasticsearch e Airflow); o perfil `beam` ~1,3 GB, mais até 2 GB do executor durante um job (`SPARK_WORKER_MEMORY`). Com tudo no ar, reserve pelo menos 10 GB no Docker Desktop; com menos, suba um perfil de cada vez (`docker compose --profile <perfil> stop` libera).
+| Parte | Memória |
+|---|---|
+| base | ~0,7 GB |
+| perfil `governanca` (OpenMetadata, Elasticsearch e Airflow) | ~3,5 GB |
+| perfil `beam` | ~1,3 GB, mais até 2 GB do executor durante um job (`SPARK_WORKER_MEMORY`) |
+| perfil `alertas` | ~0,5 GB |
+
+Com tudo no ar, reserve 10 a 12 GB no Docker Desktop. Com 8 GB, suba um perfil de cada vez (`docker compose --profile <perfil> stop` libera); foi assim que as evidências foram produzidas.
 
 ### Versões (RF15)
 
@@ -169,8 +235,8 @@ desafio_dados/
 ├── config.yaml             parâmetros do pipeline
 ├── .env.example            modelo do .env (senhas e portas)
 ├── requirements.txt
-├── docker-compose.yml      postgres, mongo, superset-init, superset, app
-├── docker/                 Dockerfiles do app e do Superset, init do Postgres
+├── docker-compose.yml      serviços do Desafio 1 e, em perfis, os do Desafio 2
+├── docker/                 Dockerfiles (app, Superset, Beam, evidências), init do Postgres, segredos do Hop
 ├── src/                    main.py (orquestrador), config.py, logger.py, db.py, metricas.py
 ├── ingestao/               pipeline.py — RF02 a RF06
 ├── mongodb/                comentarios.py (carga e consultas), consultas.js — RF07
@@ -181,18 +247,24 @@ desafio_dados/
 ├── dados/processados/      tratados, rejeitados, resumo, busca, recomendações, kpis
 ├── logs/                   execucao.log
 ├── dashboard/evidencias/   export e capturas do dashboard
-├── documentacao/           ingestao.md, recomendacao.md, kpis.md, uso_da_ia.md, modelo_de_dados.pdf, arquitetura.pdf,
-│                           contratos.md (Desafio 2)
+├── documentacao/           ingestao.md, recomendacao.md, kpis.md, uso_da_ia.md, modelo_de_dados.pdf, arquitetura.pdf
 │
 │   Desafio 2
-├── dados/bronze|silver|gold|quarentena/   amostras e Parquet das camadas (as tabelas ficam no PostgreSQL)
-├── dados/brutos/usuarios.csv, lote_2/, falhas/, recomendacoes_desafio1.json   fontes novas
-├── hop/                    projeto Apache Hop: workflows/ (principal, bronze, silver, agendado...), pipelines/, environments/, metadata/
-├── beam/                   pipeline Apache Beam, verificar_runtime.py, evidencias/
-├── sql/camadas.sql         schemas e tabelas compartilhadas, controle, quarentena, funções lgpd.*, papel consumo
-├── sql/silver.sql          regras de validação da Silver, área de preparo e publicação atômica
-├── superset/, openmetadata/, qualidade/, lgpd/   evidências e documentação por requisito
-└── ferramentas/            gerar_dados.py
+├── documentacao/           arquitetura_desafio2 (.md/.pdf), linhagem (.md/.pdf), storytelling (.md/.pdf),
+│                           contratos.md, pipeline_hop.md, parquet_beam.md, camada_gold.md, governanca.md
+├── dados/brutos/           + usuarios.csv, lote_2/, falhas/, recomendacoes_desafio1.json (fontes novas)
+├── dados/bronze/           amostras da Bronze (sem as colunas pessoais)
+├── dados/silver/           Parquet particionado (interacao/mes=AAAA-MM/), manifesto e amostras/ em CSV
+├── dados/gold/             amostras e KPIs completos; engajamento_mensal_beam/ (saída do Beam)
+├── dados/quarentena/       registros da quarentena e o seu status
+├── hop/                    projeto Apache Hop: workflows/, pipelines/, environments/, metadata/, evidencias/
+├── beam/                   exportar_silver.py (RF24), pipeline.py (RF25), verificar_runtime.py, evidencias/
+├── sql/                    camadas.sql, silver.sql, qualidade.sql, camada_gold.sql, catalogo.sql, sql_lab.sql
+├── qualidade/              regras.md, resultados/
+├── lgpd/                   inventário, técnicas de proteção, demonstração e o seu resultado
+├── superset/               provisionar.py, exportacao_e_evidencias/
+├── openmetadata/           provisionar.py, evidencias/
+└── ferramentas/            gerar_dados.py, exportar_amostras.py, evidencias.py, gerar_pdfs.py
 ```
 
 O enunciado sugere `ingestao/` e `recomendacao/` na raiz e exige `python -m src.main`; por isso o orquestrador e o código comum ficam em `src/` e os módulos de domínio nas pastas sugeridas.

@@ -1,0 +1,155 @@
+{
+  "gerado_em": "2026-09-29T02:16:00+00:00",
+  "execucao_silver": "5696f833-18ca-47bb-bf57-b6bf6b57699f",
+  "leitor": "pyarrow 25.0.1",
+  "experimentos": [
+    {
+      "experimento": "silver",
+      "linhas": 1327,
+      "consulta_seletiva": "mes = 2026-08, colunas ['usuario_id', 'tipo_interacao', 'tempo_consumido']",
+      "repeticoes": 7,
+      "formatos": {
+        "parquet": {
+          "bytes": 73312,
+          "arquivos": 9,
+          "leitura_completa": {
+            "mediana_ms": 4.03,
+            "minimo_ms": 3.15,
+            "linhas": 1327
+          },
+          "consulta_seletiva": {
+            "mediana_ms": 1.86,
+            "minimo_ms": 1.64,
+            "linhas": 164
+          },
+          "linhas": 1327,
+          "soma_interacao_id": 9684446,
+          "tipos_lidos": {
+            "data_hora": "timestamp[us]",
+            "percentual_conclusao": "decimal128(5, 2)",
+            "avaliacao_atribuida": "int16",
+            "_ingerido_em": "timestamp[us, tz=UTC]"
+          }
+        },
+        "csv": {
+          "bytes": 230802,
+          "arquivos": 1,
+          "leitura_completa": {
+            "mediana_ms": 2.63,
+            "minimo_ms": 1.9,
+            "linhas": 1327
+          },
+          "consulta_seletiva": {
+            "mediana_ms": 1.67,
+            "minimo_ms": 1.43,
+            "linhas": 164
+          },
+          "linhas": 1327,
+          "soma_interacao_id": 9684446,
+          "tipos_lidos": {
+            "data_hora": "timestamp[ns]",
+            "percentual_conclusao": "double",
+            "avaliacao_atribuida": "int64",
+            "_ingerido_em": "timestamp[ns, tz=UTC]"
+          }
+        },
+        "json": {
+          "bytes": 511413,
+          "arquivos": 1,
+          "leitura_completa": {
+            "mediana_ms": 2.93,
+            "minimo_ms": 2.5,
+            "linhas": 1327
+          },
+          "consulta_seletiva": {
+            "mediana_ms": 2.56,
+            "minimo_ms": 2.41,
+            "linhas": 164
+          },
+          "linhas": 1327,
+          "soma_interacao_id": 9684446,
+          "tipos_lidos": {
+            "data_hora": "timestamp[s]",
+            "percentual_conclusao": "string",
+            "avaliacao_atribuida": "int64",
+            "_ingerido_em": "string"
+          }
+        }
+      }
+    },
+    {
+      "experimento": "volume sintetico",
+      "linhas": 200000,
+      "consulta_seletiva": "mes = 2026-08, colunas ['usuario_id', 'tipo_interacao', 'tempo_consumido']",
+      "repeticoes": 7,
+      "formatos": {
+        "parquet": {
+          "bytes": 5078526,
+          "arquivos": 20,
+          "leitura_completa": {
+            "mediana_ms": 30.15,
+            "minimo_ms": 19.61,
+            "linhas": 200000
+          },
+          "consulta_seletiva": {
+            "mediana_ms": 3.57,
+            "minimo_ms": 3.21,
+            "linhas": 16364
+          },
+          "linhas": 200000,
+          "soma_interacao_id": 20000100000,
+          "tipos_lidos": {
+            "data_hora": "timestamp[us]",
+            "percentual_conclusao": "decimal128(5, 2)",
+            "avaliacao_atribuida": "int16",
+            "_ingerido_em": "timestamp[us, tz=UTC]"
+          }
+        },
+        "csv": {
+          "bytes": 30615708,
+          "arquivos": 1,
+          "leitura_completa": {
+            "mediana_ms": 18.74,
+            "minimo_ms": 17.23,
+            "linhas": 200000
+          },
+          "consulta_seletiva": {
+            "mediana_ms": 18.66,
+            "minimo_ms": 17.64,
+            "linhas": 16364
+          },
+          "linhas": 200000,
+          "soma_interacao_id": 20000100000,
+          "tipos_lidos": {
+            "data_hora": "timestamp[ns]",
+            "percentual_conclusao": "double",
+            "avaliacao_atribuida": "int64",
+            "_ingerido_em": "timestamp[ns, tz=UTC]"
+          }
+        },
+        "json": {
+          "bytes": 72929316,
+          "arquivos": 1,
+          "leitura_completa": {
+            "mediana_ms": 46.22,
+            "minimo_ms": 40.36,
+            "linhas": 200000
+          },
+          "consulta_seletiva": {
+            "mediana_ms": 45.29,
+            "minimo_ms": 40.45,
+            "linhas": 16364
+          },
+          "linhas": 200000,
+          "soma_interacao_id": 20000100000,
+          "tipos_lidos": {
+            "data_hora": "timestamp[s]",
+            "percentual_conclusao": "string",
+            "avaliacao_atribuida": "int64",
+            "_ingerido_em": "string"
+          }
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+interacao_id,usuario_id,conteudo_id,tipo_interacao,data_hora,tempo_consumido,percentual_conclusao,avaliacao_atribuida,_execucao_id,_origem,_ingerido_em
+7102,55,937,visualização,2026-09-26 22:38:25,27,75.80,,5696f833-18ca-47bb-bf57-b6bf6b57699f,dados/brutos/lote_2/interacoes.json,2026-09-29 02:15:20.251592+00:00
+7905,148,897,visualização,2026-09-26 20:56:45,862,60.00,,5696f833-18ca-47bb-bf57-b6bf6b57699f,dados/brutos/lote_2/interacoes.json,2026-09-29 02:15:20.251592+00:00
+7947,163,645,visualização,2026-09-26 19:51:07,20,65.50,,5696f833-18ca-47bb-bf57-b6bf6b57699f,dados/brutos/lote_2/interacoes.json,2026-09-29 02:15:20.251592+00:00
+7590,112,818,início,2026-09-26 18:15:02,1,2.40,,5696f833-18ca-47bb-bf57-b6bf6b57699f,dados/brutos/lote_2/interacoes.json,2026-09-29 02:15:20.251592+00:00
+7945,162,784,início,2026-09-26 17:33:16,26,3.30,,5696f833-18ca-47bb-bf57-b6bf6b57699f,dados/brutos/lote_2/interacoes.json,2026-09-29 02:15:20.251592+00:00
+7869,144,466,início,2026-09-26 14:30:54,1,1.10,,5696f833-18ca-47bb-bf57-b6bf6b57699f,dados/brutos/lote_2/interacoes.json,2026-09-29 02:15:20.251592+00:00
+7915,149,582,início,2026-09-26 13:04:29,3,11.40,,5696f833-18ca-47bb-bf57-b6bf6b57699f,dados/brutos/lote_2/interacoes.json,2026-09-29 02:15:20.251592+00:00
+6867,29,878,início,2026-09-26 10:00:22,27,6.30,,5696f833-18ca-47bb-bf57-b6bf6b57699f,dados/brutos/lote_2/interacoes.json,2026-09-29 02:15:20.251592+00:00
+6857,28,618,visualização,2026-09-26 08:26:04,105,30.50,,5696f833-18ca-47bb-bf57-b6bf6b57699f,dados/brutos/lote_2/interacoes.json,2026-09-29 02:15:20.251592+00:00
+6980,42,358,visualização,2026-09-26 08:04:58,465,79.30,,5696f833-18ca-47bb-bf57-b6bf6b57699f,dados/brutos/lote_2/interacoes.json,2026-09-29 02:15:20.251592+00:00
+6949,40,11,início,2026-09-26 07:00:58,5,11.30,,5696f833-18ca-47bb-bf57-b6bf6b57699f,dados/brutos/lote_2/interacoes.json,2026-09-29 02:15:20.251592+00:00
+7529,106,406,curtida,2026-09-26 06:15:08,8,89.00,5,5696f833-18ca-47bb-bf57-b6bf6b57699f,dados/brutos/lote_2/interacoes.json,2026-09-29 02:15:20.251592+00:00
+7072,53,676,início,2026-09-25 16:59:45,102,13.70,,5696f833-18ca-47bb-bf57-b6bf6b57699f,dados/brutos/lote_2/interacoes.json,2026-09-29 02:15:20.251592+00:00
+6672,5,934,conclusão,2026-09-25 15:58:21,14,100.00,4,5696f833-18ca-47bb-bf57-b6bf6b57699f,dados/brutos/lote_2/interacoes.json,2026-09-29 02:15:20.251592+00:00
+7864,144,77,visualização,2026-09-25 15:22:55,30,41.80,,5696f833-18ca-47bb-bf57-b6bf6b57699f,dados/brutos/lote_2/interacoes.json,2026-09-29 02:15:20.251592+00:00
+7790,135,718,visualização,2026-09-25 14:16:11,62,84.40,,5696f833-18ca-47bb-bf57-b6bf6b57699f,dados/brutos/lote_2/interacoes.json,2026-09-29 02:15:20.251592+00:00
+7419,92,778,avaliação,2026-09-25 14:12:55,1944,90.40,5,5696f833-18ca-47bb-bf57-b6bf6b57699f,dados/brutos/lote_2/interacoes.json,2026-09-29 02:15:20.251592+00:00
+7275,74,600,avaliação,2026-09-25 11:56:45,49,85.10,5,5696f833-18ca-47bb-bf57-b6bf6b57699f,dados/brutos/lote_2/interacoes.json,2026-09-29 02:15:20.251592+00:00
+7158,62,1024,início,2026-09-25 11:12:24,2,10.80,,5696f833-18ca-47bb-bf57-b6bf6b57699f,dados/brutos/lote_2/interacoes.json,2026-09-29 02:15:20.251592+00:00
+7932,157,374,conclusão,2026-09-25 10:48:01,21,100.00,5,5696f833-18ca-47bb-bf57-b6bf6b57699f,dados/brutos/lote_2/interacoes.json,2026-09-29 02:15:20.251592+00:00

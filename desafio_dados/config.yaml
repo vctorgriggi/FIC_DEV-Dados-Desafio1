@@ -58,6 +58,14 @@ camadas:
     gold: dados/gold                 # amostras exportadas (RF34)
     quarentena: dados/quarentena     # amostras exportadas (RF34)
 
+parquet:                             # RF24: beam/exportar_silver.py
+  destino: dados/silver              # interacao/ particionado + conteudo e usuario_correspondencia
+  comparacao: dados/silver/comparacao  # mesmo recorte em CSV e JSON
+  volume: dados/volume               # experimento de escala (nao versionado)
+  particao: mes                      # AAAA-MM, derivado de data_hora
+  mes_consulta: "2026-08"            # consulta seletiva do experimento
+  repeticoes: 7
+
 beam:
   runners:
     direct:

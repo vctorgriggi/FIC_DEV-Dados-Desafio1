@@ -78,7 +78,7 @@ BEGIN
 END;
 $$;
 
--- encerra a etapa com as contagens medidas no banco (controle.medir_etapa, em sql/silver.sql);
+-- encerra a etapa com as contagens medidas no banco (controle.medir_etapa, abaixo);
 -- registros em quarentena tornam a etapa 'sucesso_com_ressalvas'
 CREATE OR REPLACE FUNCTION controle.concluir_etapa(p_execucao_id TEXT, p_etapa TEXT)
 RETURNS TEXT
@@ -98,6 +98,78 @@ BEGIN
         RAISE EXCEPTION 'etapa % nao foi iniciada na execucao %', p_etapa, p_execucao_id;
     END IF;
     RETURN v_status;
+END;
+$$;
+
+-- lidos, gravados e quarentena de cada etapa, medidos no banco. Cada etapa nova do fluxo ganha um ramo aqui.
+--   bronze_<fonte>        linhas ingeridas nesta execucao
+--   silver_<entidade>     bronze lida, aprovados e rejeitados na area de preparo (sql/silver.sql)
+--   silver_publicacao     linhas publicadas e pendencias da quarentena encontradas nesta execucao
+--   qualidade             testes avaliados, aprovados e reprovados (sql/qualidade.sql)
+--   gold                  linhas publicadas na camada Gold (sql/camada_gold.sql)
+CREATE OR REPLACE FUNCTION controle.medir_etapa(p_execucao_id TEXT, p_etapa TEXT)
+RETURNS TABLE (lidos INTEGER, gravados INTEGER, quarentena INTEGER, mensagem TEXT)
+LANGUAGE plpgsql STABLE
+AS $$
+DECLARE
+    v_nome TEXT := substr(p_etapa, 8);
+    v_fonte TEXT;
+    v_lidos INTEGER;
+    v_gravados INTEGER;
+    v_quarentena INTEGER;
+    v_descartados INTEGER;
+BEGIN
+    IF p_etapa LIKE 'bronze\_%' THEN
+        EXECUTE format('SELECT count(*) FROM bronze.%I WHERE _execucao_id = $1', v_nome) INTO v_lidos USING p_execucao_id;
+        RETURN QUERY SELECT v_lidos, v_lidos, 0, NULL::text;
+    ELSIF p_etapa = 'silver_publicacao' THEN
+        SELECT (SELECT count(*) FROM silver.conteudo) + (SELECT count(*) FROM silver.usuario)
+             + (SELECT count(*) FROM silver.interacao) + (SELECT count(*) FROM silver.comentario)
+             + (SELECT count(*) FROM silver.recomendacao)
+          INTO v_gravados;
+        SELECT count(*) INTO v_quarentena FROM quarentena.registro q
+         WHERE q.ultima_execucao_id = p_execucao_id AND q.status = 'pendente';
+        RETURN QUERY SELECT NULL::integer, v_gravados, v_quarentena,
+            format('%s usuarios consolidados em %s pessoas', (SELECT count(*) FROM silver.usuario),
+                   (SELECT count(*) FROM silver.usuario_mestre));
+    ELSIF p_etapa LIKE 'silver\_%' AND validacao.fonte_da_entidade(v_nome) IS NOT NULL THEN
+        v_fonte := validacao.fonte_da_entidade(v_nome);
+        EXECUTE format('SELECT count(*) FROM bronze.%I WHERE _execucao_id = $1', v_fonte) INTO v_lidos USING p_execucao_id;
+        EXECUTE format('SELECT count(*) FROM validacao.%I WHERE _execucao_id = $1', v_nome) INTO v_gravados USING p_execucao_id;
+        EXECUTE format('SELECT count(*) FROM validacao.%I WHERE execucao_id = $1', v_nome || '_rejeitado') INTO v_quarentena USING p_execucao_id;
+        -- o que foi lido e nao esta nem na silver nem na quarentena: descartado na triagem, ou versao vencida
+        -- por sobrevivencia (outra versao do mesmo registro prevaleceu); os dois continuam na bronze
+        EXECUTE format($q$
+            SELECT count(*) FROM bronze.%I b
+              JOIN quarentena.registro q
+                ON q.fonte = %L AND q.origem = b._origem AND q.linha = b._linha AND q.status = 'descartado'
+               AND q.hash_origem = md5((to_jsonb(b) - '_execucao_id' - '_origem' - '_linha' - '_ingerido_em')::text)
+             WHERE b._execucao_id = $1$q$, v_fonte, v_fonte) INTO v_descartados USING p_execucao_id;
+        RETURN QUERY SELECT v_lidos, v_gravados, v_quarentena,
+            NULLIF(concat_ws('; ',
+                CASE WHEN v_lidos - v_gravados - v_quarentena - v_descartados > 0
+                     THEN format('versoes vencidas por sobrevivencia: %s', v_lidos - v_gravados - v_quarentena - v_descartados) END,
+                CASE WHEN v_descartados > 0
+                     THEN format('descartados na triagem da quarentena: %s', v_descartados) END), '')
+            || ' (continuam na bronze)';
+    ELSIF p_etapa = 'qualidade' THEN
+        -- reprovado nao critico deixa a etapa com ressalvas; reprovado critico e tratado pelo workflow como falha
+        RETURN QUERY
+            SELECT count(*)::integer, (count(*) FILTER (WHERE r.aprovado))::integer,
+                   (count(*) FILTER (WHERE NOT r.aprovado))::integer,
+                   CASE WHEN bool_and(r.aprovado) THEN 'todos os testes aprovados'
+                        ELSE 'reprovados: ' || string_agg(DISTINCT r.teste_id || ' (' || r.fonte || ')', ', ')
+                                               FILTER (WHERE NOT r.aprovado) END
+              FROM qualidade.resultado r WHERE r.execucao_id = p_execucao_id;
+    ELSIF p_etapa = 'metadados' THEN
+        RETURN QUERY SELECT NULL::integer, NULL::integer, 0,
+            'ingestoes do PostgreSQL e do Superset disparadas no OpenMetadata'::text;
+    ELSIF p_etapa = 'gold' THEN
+        RETURN QUERY
+            SELECT NULL::integer, gold.contar_linhas()::integer, 0, NULL::text;
+    ELSE
+        RETURN QUERY SELECT NULL::integer, NULL::integer, NULL::integer, NULL::text;
+    END IF;
 END;
 $$;
 
@@ -370,8 +442,10 @@ CREATE TABLE IF NOT EXISTS qualidade.teste (
     operador          TEXT NOT NULL CHECK (operador IN ('>=', '<=')),
     limite_aceitavel  NUMERIC NOT NULL,  -- valor_medido <operador> limite_aceitavel => aprovado
     severidade        TEXT NOT NULL CHECK (severidade IN ('critica', 'alta', 'media', 'baixa')),
-    acao              TEXT NOT NULL      -- o que acontece quando reprova (critica bloqueia a gold)
+    acao              TEXT NOT NULL,     -- o que acontece quando reprova (critica bloqueia a gold)
+    consulta          TEXT NOT NULL      -- SQL que devolve (fonte, total, falhos); $1 = execucao_id
 );
+ALTER TABLE qualidade.teste ADD COLUMN IF NOT EXISTS consulta TEXT;  -- bancos criados antes da coluna
 
 CREATE TABLE IF NOT EXISTS qualidade.resultado (
     resultado_id       BIGSERIAL PRIMARY KEY,
@@ -383,8 +457,16 @@ CREATE TABLE IF NOT EXISTS qualidade.resultado (
     valor_medido       NUMERIC NOT NULL,
     aprovado           BOOLEAN NOT NULL,
     executado_em       TIMESTAMPTZ NOT NULL DEFAULT now(),
+    -- configuracao do teste quando ele rodou: o teste pode mudar depois, o historico nao
+    operador           TEXT,
+    limite_aceitavel   NUMERIC,
+    severidade         TEXT,
     UNIQUE (execucao_id, teste_id, fonte)
 );
+ALTER TABLE qualidade.resultado  -- bancos criados antes das colunas; o preenchimento fica em sql/qualidade.sql
+    ADD COLUMN IF NOT EXISTS operador TEXT,
+    ADD COLUMN IF NOT EXISTS limite_aceitavel NUMERIC,
+    ADD COLUMN IF NOT EXISTS severidade TEXT;
 
 -- ---------------------------------------------------------------
 -- restrito (RF33): correspondencia usuario_id <-> pseudonimo, para reidentificacao controlada

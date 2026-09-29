@@ -1,0 +1,16 @@
+classificacao,categoria,recomendacoes,convertidas,conversao_pct
+estavel,Banco de Dados,130,3,2.3
+estavel,Business Intelligence,90,4,4.4
+estavel,Ciência de Dados,85,2,2.4
+estavel,DevOps & Cloud,113,1,0.9
+estavel,Engenharia de Dados,169,4,2.4
+estavel,Inteligência Artificial,193,7,3.6
+estavel,Programação & Software,120,6,5.0
+estavel,Segurança & Governança,110,8,7.3
+positivo,Banco de Dados,30,3,10.0
+positivo,Business Intelligence,30,1,3.3
+positivo,Ciência de Dados,20,0,0.0
+positivo,DevOps & Cloud,40,0,0.0
+positivo,Engenharia de Dados,10,1,10.0
+positivo,Inteligência Artificial,10,0,0.0
+positivo,Segurança & Governança,50,0,0.0

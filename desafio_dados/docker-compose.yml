@@ -3,6 +3,7 @@
 #   (sem perfil)  postgres, mongo, superset, db-init
 #   hop           hop-web (designer no navegador)
 #   agendamento   hop-agendador (fluxo completo todo dia as 05:00 UTC)
+#   alertas       redis, mailpit, superset-worker, superset-beat (alertas do Superset)
 #   beam          spark-master, spark-worker, beam-job-server, beam-worker-pool
 #   governanca    elasticsearch, om-migrar, openmetadata, om-ingestao
 #   pipeline      executores avulsos: app, hop, beam (docker compose run --rm <servico>)
@@ -41,6 +42,7 @@ x-hop-env: &hop-env
 services:
   postgres:
     image: pgvector/pgvector:pg17
+    restart: unless-stopped
     env_file: .env
     ports:
       - "${POSTGRES_HOST_PORT:-5432}:5432"
@@ -68,6 +70,7 @@ services:
 
   mongo:
     image: mongo:8.2
+    restart: unless-stopped
     environment:
       MONGO_INITDB_ROOT_USERNAME: ${MONGO_USER}
       MONGO_INITDB_ROOT_PASSWORD: ${MONGO_PASSWORD}
@@ -106,6 +109,7 @@ services:
 
   superset:
     image: desafio-superset
+    restart: unless-stopped
     env_file: .env
     environment:
       SUPERSET_CONFIG_PATH: /app/superset_config.py
@@ -117,6 +121,54 @@ services:
     depends_on:
       superset-init:
         condition: service_completed_successfully
+
+  # ---------------------------------------------------------------
+  # Desafio 2 — alertas do Superset (RF18): Celery + Redis + SMTP ficticio
+  # ---------------------------------------------------------------
+
+  redis:
+    image: redis:7.4-alpine
+    restart: unless-stopped
+    profiles: ["alertas"]
+
+  # caixa de entrada dos e-mails de alerta: http://localhost:8025
+  mailpit:
+    image: axllent/mailpit:v1.31.3
+    restart: unless-stopped
+    ports:
+      - "${MAILPIT_HOST_PORT:-8025}:8025"
+    profiles: ["alertas"]
+
+  superset-worker:
+    image: desafio-superset
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      SUPERSET_CONFIG_PATH: /app/superset_config.py
+    volumes:
+      - ./docker/superset/superset_config.py:/app/superset_config.py:ro
+      - superset_home:/app/superset_home
+    command: ["celery", "--app=superset.tasks.celery_app:app", "worker", "--pool=prefork", "-O", "fair", "-c", "2"]
+    depends_on:
+      - redis
+      - mailpit
+      - superset
+    profiles: ["alertas"]
+
+  superset-beat:
+    image: desafio-superset
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      SUPERSET_CONFIG_PATH: /app/superset_config.py
+    volumes:
+      - ./docker/superset/superset_config.py:/app/superset_config.py:ro
+      - superset_home:/app/superset_home
+    command: ["celery", "--app=superset.tasks.celery_app:app", "beat", "--pidfile", "/tmp/celerybeat.pid",
+              "--schedule", "/tmp/celerybeat-schedule"]
+    depends_on:
+      - redis
+    profiles: ["alertas"]
 
   # pipeline: docker compose run --rm app
   app:
@@ -141,6 +193,7 @@ services:
   # designer no navegador: http://localhost:8081/ui
   hop-web:
     image: apache/hop-web:2.19.0
+    restart: unless-stopped
     env_file: .env
     environment:
       <<: *hop-env
@@ -197,6 +250,7 @@ services:
 
   spark-master:
     image: apache/spark:3.5.0-scala2.12-java11-ubuntu
+    restart: unless-stopped
     hostname: spark-master
     command: ["/opt/spark/bin/spark-class", "org.apache.spark.deploy.master.Master"]
     ports:
@@ -205,6 +259,7 @@ services:
 
   spark-worker:
     image: apache/spark:3.5.0-scala2.12-java11-ubuntu
+    restart: unless-stopped
     hostname: spark-worker
     command: ["/opt/spark/bin/spark-class", "org.apache.spark.deploy.worker.Worker", "spark://spark-master:7077"]
     environment:
@@ -220,6 +275,7 @@ services:
   # SDK Python que executa o codigo do pipeline; divide a rede com o worker, que o chama em localhost:50000
   beam-worker-pool:
     image: apache/beam_python3.12_sdk:2.77.0
+    restart: unless-stopped
     command: ["--worker_pool"]
     network_mode: service:spark-worker
     volumes:
@@ -231,6 +287,7 @@ services:
 
   beam-job-server:
     image: apache/beam_spark3_job_server:2.77.0
+    restart: unless-stopped
     hostname: beam-job-server
     command: ["--spark-master-url=spark://spark-master:7077", "--job-host=0.0.0.0"]
     volumes:
@@ -239,10 +296,13 @@ services:
       - spark-master
     profiles: ["beam"]
 
-  # executa um pipeline Beam: docker compose run --rm beam <script.py> [opcoes]
-  # mesma imagem e versao do SDK do worker pool, para o codigo rodar igual nos dois runners
+  # executa um script Python do Desafio 2 (Parquet, Beam): docker compose run --rm beam <script.py> [opcoes]
+  # imagem oficial do SDK + psycopg: mesma versao do Beam do worker pool, para o codigo rodar igual nos dois runners
   beam:
-    image: apache/beam_python3.12_sdk:2.77.0
+    build:
+      context: .
+      dockerfile: docker/beam.Dockerfile
+    image: desafio-beam
     env_file: .env
     working_dir: /app
     entrypoint: ["python"]
@@ -251,12 +311,27 @@ services:
       - beam_artefatos:/tmp/beam-artifact-staging
     profiles: ["pipeline"]
 
+  # capturas de tela das evidencias e PDFs da documentacao: docker compose run --rm evidencias <script.py>
+  evidencias:
+    build:
+      context: .
+      dockerfile: docker/evidencias.Dockerfile
+    image: desafio-evidencias
+    env_file: .env
+    shm_size: "1gb"  # o Chromium renderiza em /dev/shm; o padrao de 64 MB derruba paginas pesadas
+    working_dir: /app
+    entrypoint: ["python3"]
+    volumes:
+      - .:/app
+    profiles: ["pipeline"]
+
   # ---------------------------------------------------------------
   # Desafio 2 — OpenMetadata (bancos proprios no mesmo PostgreSQL)
   # ---------------------------------------------------------------
 
   elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:9.3.0
+    restart: unless-stopped
     environment:
       discovery.type: single-node
       ES_JAVA_OPTS: -Xms512m -Xmx512m
@@ -304,6 +379,7 @@ services:
   # Airflow que executa as ingestoes configuradas na interface do OpenMetadata
   om-ingestao:
     image: docker.getcollate.io/openmetadata/ingestion:2.0.2
+    restart: unless-stopped
     environment:
       AIRFLOW__CORE__EXECUTOR: LocalExecutor
       AIRFLOW__OPENMETADATA_AIRFLOW_APIS__DAG_GENERATED_CONFIGS: /opt/airflow/dag_generated_configs

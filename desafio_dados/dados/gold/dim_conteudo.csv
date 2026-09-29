@@ -1,0 +1,21 @@
+conteudo_id,titulo,tipo,categoria,nivel,carga_horaria_min,data_publicacao
+1,Curso Completo de Segurança de Redes e Controle de Acesso: Da Teoria à Prática,Curso,DevOps & Cloud,Avançado,3479,2025-03-06
+2,Deep Dive Ep. 21: Casos de Sucesso em Linhagem de Dados e Rastreabilidade de Origem,Podcast,Segurança & Governança,Básico,39,2024-10-21
+3,Data Insights Ep. 54: Experiências Reais com Práticas de DataOps e Qualidade de Dados,Podcast,Engenharia de Dados,Avançado,75,2024-09-14
+4,Guia Definitivo e Boas Práticas sobre Integração de Conectores com SQLAlchemy e Psycopg3,Artigo,Programação & Software,Avançado,7,2025-07-24
+5,Análise Comparativa e Padrões Recomendados em Design de Dashboards e Eliminação de Chartjunk,Artigo,Business Intelligence,Básico,5,2026-05-18
+6,Estudo Técnico e Decisões de Arquitetura em Auditoria e Monitoramento de Logs de Acesso,Artigo,Segurança & Governança,Básico,22,2025-05-25
+7,Data Insights Ep. 108: Experiências Reais com Auditoria e Monitoramento de Logs de Acesso (edição revisada),Podcast,Segurança & Governança,Avançado,86,2025-06-09
+8,Construindo Aplicações Robustas com Estatística Descritiva e Inferencial para Decisão,Curso,Ciência de Dados,Básico,619,2025-04-26
+9,Arquitetura & Código Ep. 121: Inovações em Machine Learning Supervisionado com Scikit-Learn,Podcast,Ciência de Dados,Avançado,57,2025-07-27
+10,Princípios Essenciais e Arquitetura de Auditoria e Monitoramento de Logs de Acesso,Artigo,Segurança & Governança,Intermediário,13,2024-01-10
+11,Análise Prática e Demonstração de Prevenção contra Vazamentos e Segurança em APIs,Vídeo,Segurança & Governança,Intermediário,46,2025-12-10
+12,Papo de Dados Ep. 75: Desvendando Auditoria e Monitoramento de Logs de Acesso,Podcast,Segurança & Governança,Avançado,65,2025-04-13
+13,Arquitetura & Código Ep. 123: Inovações em Design de Dashboards e Eliminação de Chartjunk,Podcast,Business Intelligence,Básico,33,2025-10-26
+14,Arquitetura & Código Ep. 38: Inovações em Orquestração de Microsserviços com Kubernetes,Podcast,DevOps & Cloud,Básico,82,2024-01-15
+15,Curso Completo de Governança de Dados para Aplicações de IA: Da Teoria à Prática,Curso,Segurança & Governança,Avançado,2215,2024-05-03
+16,Curso Completo de Filtros Interativos e Exploração Granular em BI: Da Teoria à Prática,Curso,Business Intelligence,Básico,683,2025-12-07
+17,Melhores Práticas e Arquitetura de Governança de Dados para Aplicações de IA,Vídeo,Segurança & Governança,Básico,28,2024-03-27
+18,Melhores Práticas e Arquitetura de Estratégias de Indexação e Performance de Bancos,Vídeo,Banco de Dados,Intermediário,54,2026-04-07
+19,"Solucionando Desafios do Dia a Dia em Python Avançado: POO, Decorators e Geradores",Vídeo,Programação & Software,Básico,13,2026-05-03
+20,Estudo Técnico e Decisões de Arquitetura em Pipelines de Ingestão Batch e Streaming,Artigo,Engenharia de Dados,Avançado,26,2024-11-06

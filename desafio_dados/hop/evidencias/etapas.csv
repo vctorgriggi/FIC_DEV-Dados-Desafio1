@@ -1,0 +1,83 @@
+execucao_id,etapa,inicio,fim,duracao_s,status,lidos,gravados,quarentena,mensagem
+1cac1195-0ba2-4fd5-9cbd-5fd4b0f48bfc,bronze_catalogo,2026-09-29 00:38:27.783514+00:00,2026-09-29 00:38:27.881895+00:00,0.098,sucesso,1050,1050,0,
+1cac1195-0ba2-4fd5-9cbd-5fd4b0f48bfc,bronze_usuarios,2026-09-29 00:38:27.899749+00:00,2026-09-29 00:38:27.940615+00:00,0.041,sucesso,180,180,0,
+1cac1195-0ba2-4fd5-9cbd-5fd4b0f48bfc,bronze_interacoes,2026-09-29 00:38:27.954962+00:00,2026-09-29 00:38:28.112403+00:00,0.157,sucesso,1416,1416,0,
+1cac1195-0ba2-4fd5-9cbd-5fd4b0f48bfc,bronze_comentarios,2026-09-29 00:38:28.131427+00:00,2026-09-29 00:38:28.209850+00:00,0.078,sucesso,1119,1119,0,
+1cac1195-0ba2-4fd5-9cbd-5fd4b0f48bfc,bronze_recomendacoes,2026-09-29 00:38:28.222794+00:00,2026-09-29 00:38:28.279207+00:00,0.056,sucesso,1200,1200,0,
+1cac1195-0ba2-4fd5-9cbd-5fd4b0f48bfc,silver_usuario,2026-09-29 00:38:28.296890+00:00,2026-09-29 00:38:28.352903+00:00,0.056,sucesso_com_ressalvas,180,173,6,1 versoes substituidas por sobrevivencia (continuam na bronze)
+1cac1195-0ba2-4fd5-9cbd-5fd4b0f48bfc,silver_conteudo,2026-09-29 00:38:28.365471+00:00,2026-09-29 00:38:28.489667+00:00,0.124,sucesso_com_ressalvas,1050,1042,7,1 versoes substituidas por sobrevivencia (continuam na bronze)
+1cac1195-0ba2-4fd5-9cbd-5fd4b0f48bfc,silver_interacao,2026-09-29 00:38:28.501170+00:00,2026-09-29 00:38:28.630049+00:00,0.129,sucesso_com_ressalvas,1416,1326,90,
+1cac1195-0ba2-4fd5-9cbd-5fd4b0f48bfc,silver_comentario,2026-09-29 00:38:28.642555+00:00,2026-09-29 00:38:28.741574+00:00,0.099,sucesso_com_ressalvas,1119,1060,59,
+1cac1195-0ba2-4fd5-9cbd-5fd4b0f48bfc,silver_recomendacao,2026-09-29 00:38:28.753610+00:00,2026-09-29 00:38:28.845226+00:00,0.092,sucesso,1200,1200,0,
+1cac1195-0ba2-4fd5-9cbd-5fd4b0f48bfc,silver_publicacao,2026-09-29 00:38:28.852205+00:00,2026-09-29 00:38:28.908785+00:00,0.057,sucesso_com_ressalvas,,4801,162,173 usuarios consolidados em 171 pessoas
+1cac1195-0ba2-4fd5-9cbd-5fd4b0f48bfc,qualidade,2026-09-29 00:38:28.931722+00:00,2026-09-29 00:38:28.960386+00:00,0.029,sucesso,18,18,0,todos os testes aprovados
+1cac1195-0ba2-4fd5-9cbd-5fd4b0f48bfc,gold,2026-09-29 00:38:28.974366+00:00,2026-09-29 00:38:29.071685+00:00,0.097,sucesso,,3963,0,
+1cac1195-0ba2-4fd5-9cbd-5fd4b0f48bfc,metadados,2026-09-29 00:38:29.101171+00:00,2026-09-29 00:38:29.545129+00:00,0.444,sucesso,,,0,ingestoes do PostgreSQL e do Superset disparadas no OpenMetadata
+fc6374ce-5b9b-45b6-bf6a-f5dbed4d3530,bronze_catalogo,2026-09-29 00:39:02.131729+00:00,2026-09-29 00:39:02.248423+00:00,0.117,sucesso,1050,1050,0,
+fc6374ce-5b9b-45b6-bf6a-f5dbed4d3530,bronze_usuarios,2026-09-29 00:39:02.268825+00:00,2026-09-29 00:39:02.316618+00:00,0.048,sucesso,180,180,0,
+fc6374ce-5b9b-45b6-bf6a-f5dbed4d3530,bronze_interacoes,2026-09-29 00:39:02.332558+00:00,2026-09-29 00:39:02.603399+00:00,0.271,sucesso,1416,1416,0,
+fc6374ce-5b9b-45b6-bf6a-f5dbed4d3530,bronze_comentarios,2026-09-29 00:39:02.618232+00:00,2026-09-29 00:39:02.673368+00:00,0.055,sucesso,1119,1119,0,
+fc6374ce-5b9b-45b6-bf6a-f5dbed4d3530,bronze_recomendacoes,2026-09-29 00:39:02.685801+00:00,2026-09-29 00:39:02.739029+00:00,0.053,sucesso,1200,1200,0,
+fc6374ce-5b9b-45b6-bf6a-f5dbed4d3530,silver_usuario,2026-09-29 00:39:02.758461+00:00,2026-09-29 00:39:02.811985+00:00,0.054,sucesso_com_ressalvas,180,173,5,2 versoes substituidas por sobrevivencia (continuam na bronze)
+fc6374ce-5b9b-45b6-bf6a-f5dbed4d3530,silver_conteudo,2026-09-29 00:39:02.823846+00:00,2026-09-29 00:39:02.945753+00:00,0.122,sucesso_com_ressalvas,1050,1043,4,3 versoes substituidas por sobrevivencia (continuam na bronze)
+fc6374ce-5b9b-45b6-bf6a-f5dbed4d3530,silver_interacao,2026-09-29 00:39:02.957499+00:00,2026-09-29 00:39:03.095795+00:00,0.138,sucesso_com_ressalvas,1416,1327,88,1 versoes substituidas por sobrevivencia (continuam na bronze)
+fc6374ce-5b9b-45b6-bf6a-f5dbed4d3530,silver_comentario,2026-09-29 00:39:03.108149+00:00,2026-09-29 00:39:03.205860+00:00,0.098,sucesso_com_ressalvas,1119,1060,58,1 versoes substituidas por sobrevivencia (continuam na bronze)
+fc6374ce-5b9b-45b6-bf6a-f5dbed4d3530,silver_recomendacao,2026-09-29 00:39:03.217084+00:00,2026-09-29 00:39:03.310123+00:00,0.093,sucesso,1200,1200,0,
+fc6374ce-5b9b-45b6-bf6a-f5dbed4d3530,silver_publicacao,2026-09-29 00:39:03.316514+00:00,2026-09-29 00:39:03.367511+00:00,0.051,sucesso_com_ressalvas,,4803,155,173 usuarios consolidados em 171 pessoas
+fc6374ce-5b9b-45b6-bf6a-f5dbed4d3530,qualidade,2026-09-29 00:39:03.387538+00:00,2026-09-29 00:39:03.423585+00:00,0.036,sucesso,18,18,0,todos os testes aprovados
+fc6374ce-5b9b-45b6-bf6a-f5dbed4d3530,gold,2026-09-29 00:39:03.438804+00:00,2026-09-29 00:39:03.539403+00:00,0.101,sucesso,,3965,0,
+fc6374ce-5b9b-45b6-bf6a-f5dbed4d3530,metadados,2026-09-29 00:39:03.573461+00:00,2026-09-29 00:39:03.905763+00:00,0.332,sucesso,,,0,ingestoes do PostgreSQL e do Superset disparadas no OpenMetadata
+7dbd4209-12c0-42bf-92ff-ebe0ff16c4c1,bronze_catalogo,2026-09-29 00:39:54.721909+00:00,2026-09-29 00:39:54.809711+00:00,0.088,sucesso,1050,1050,0,
+7dbd4209-12c0-42bf-92ff-ebe0ff16c4c1,bronze_usuarios,2026-09-29 00:39:54.824023+00:00,2026-09-29 00:39:54.859250+00:00,0.035,sucesso,180,180,0,
+7dbd4209-12c0-42bf-92ff-ebe0ff16c4c1,bronze_interacoes,2026-09-29 00:39:54.874862+00:00,2026-09-29 00:39:55.046430+00:00,0.172,sucesso,1416,1416,0,
+7dbd4209-12c0-42bf-92ff-ebe0ff16c4c1,bronze_comentarios,2026-09-29 00:39:55.060548+00:00,2026-09-29 00:39:55.134052+00:00,0.074,sucesso,1119,1119,0,
+7dbd4209-12c0-42bf-92ff-ebe0ff16c4c1,bronze_recomendacoes,2026-09-29 00:39:55.152048+00:00,2026-09-29 00:39:55.221477+00:00,0.069,sucesso,1200,1200,0,
+7dbd4209-12c0-42bf-92ff-ebe0ff16c4c1,silver_usuario,2026-09-29 00:39:55.245406+00:00,2026-09-29 00:39:55.328600+00:00,0.083,sucesso_com_ressalvas,180,173,5,2 versoes substituidas por sobrevivencia (continuam na bronze)
+7dbd4209-12c0-42bf-92ff-ebe0ff16c4c1,silver_conteudo,2026-09-29 00:39:55.360911+00:00,2026-09-29 00:39:55.499885+00:00,0.139,sucesso_com_ressalvas,1050,1043,4,3 versoes substituidas por sobrevivencia (continuam na bronze)
+7dbd4209-12c0-42bf-92ff-ebe0ff16c4c1,silver_interacao,2026-09-29 00:39:55.515826+00:00,2026-09-29 00:39:55.684588+00:00,0.169,sucesso_com_ressalvas,1416,1327,88,1 versoes substituidas por sobrevivencia (continuam na bronze)
+7dbd4209-12c0-42bf-92ff-ebe0ff16c4c1,silver_comentario,2026-09-29 00:39:55.705927+00:00,2026-09-29 00:39:55.837576+00:00,0.132,sucesso_com_ressalvas,1119,1061,57,1 versoes substituidas por sobrevivencia (continuam na bronze)
+7dbd4209-12c0-42bf-92ff-ebe0ff16c4c1,silver_recomendacao,2026-09-29 00:39:55.855312+00:00,2026-09-29 00:39:55.956140+00:00,0.101,sucesso,1200,1200,0,
+7dbd4209-12c0-42bf-92ff-ebe0ff16c4c1,silver_publicacao,2026-09-29 00:39:55.964851+00:00,2026-09-29 00:39:56.036563+00:00,0.072,sucesso_com_ressalvas,,4804,154,173 usuarios consolidados em 171 pessoas
+7dbd4209-12c0-42bf-92ff-ebe0ff16c4c1,qualidade,2026-09-29 00:39:56.082992+00:00,2026-09-29 00:39:56.114228+00:00,0.031,sucesso,18,18,0,todos os testes aprovados
+7dbd4209-12c0-42bf-92ff-ebe0ff16c4c1,gold,2026-09-29 00:39:56.132873+00:00,2026-09-29 00:39:56.246299+00:00,0.113,sucesso,,3965,0,
+7dbd4209-12c0-42bf-92ff-ebe0ff16c4c1,metadados,2026-09-29 00:39:56.296144+00:00,2026-09-29 00:39:56.750775+00:00,0.455,sucesso,,,0,ingestoes do PostgreSQL e do Superset disparadas no OpenMetadata
+a98b2a5a-9e5e-42c9-bb59-5ded6cc09e16,bronze_catalogo,2026-09-29 00:40:30.699296+00:00,2026-09-29 00:40:30.810506+00:00,0.111,sucesso,1050,1050,0,
+a98b2a5a-9e5e-42c9-bb59-5ded6cc09e16,bronze_usuarios,2026-09-29 00:40:30.825856+00:00,2026-09-29 00:40:30.862325+00:00,0.036,sucesso,180,180,0,
+a98b2a5a-9e5e-42c9-bb59-5ded6cc09e16,bronze_interacoes,2026-09-29 00:40:30.875511+00:00,2026-09-29 00:40:31.075099+00:00,0.200,sucesso,1416,1416,0,
+a98b2a5a-9e5e-42c9-bb59-5ded6cc09e16,bronze_comentarios,2026-09-29 00:40:31.095483+00:00,2026-09-29 00:40:31.169768+00:00,0.074,sucesso,1119,1119,0,
+a98b2a5a-9e5e-42c9-bb59-5ded6cc09e16,bronze_recomendacoes,2026-09-29 00:40:31.182201+00:00,2026-09-29 00:40:31.233216+00:00,0.051,sucesso,1200,1200,0,
+a98b2a5a-9e5e-42c9-bb59-5ded6cc09e16,silver_usuario,2026-09-29 00:40:31.251582+00:00,2026-09-29 00:40:31.307389+00:00,0.056,sucesso_com_ressalvas,180,173,5,2 versoes substituidas por sobrevivencia (continuam na bronze)
+a98b2a5a-9e5e-42c9-bb59-5ded6cc09e16,silver_conteudo,2026-09-29 00:40:31.320196+00:00,2026-09-29 00:40:31.447413+00:00,0.127,sucesso_com_ressalvas,1050,1043,4,3 versoes substituidas por sobrevivencia (continuam na bronze)
+a98b2a5a-9e5e-42c9-bb59-5ded6cc09e16,silver_interacao,2026-09-29 00:40:31.459886+00:00,2026-09-29 00:40:31.584675+00:00,0.125,sucesso_com_ressalvas,1416,1327,88,1 versoes substituidas por sobrevivencia (continuam na bronze)
+a98b2a5a-9e5e-42c9-bb59-5ded6cc09e16,silver_comentario,2026-09-29 00:40:31.597054+00:00,2026-09-29 00:40:31.704079+00:00,0.107,sucesso_com_ressalvas,1119,1061,57,1 versoes substituidas por sobrevivencia (continuam na bronze)
+a98b2a5a-9e5e-42c9-bb59-5ded6cc09e16,silver_recomendacao,2026-09-29 00:40:31.719982+00:00,2026-09-29 00:40:31.814105+00:00,0.094,sucesso,1200,1200,0,
+a98b2a5a-9e5e-42c9-bb59-5ded6cc09e16,silver_publicacao,2026-09-29 00:40:31.821498+00:00,2026-09-29 00:40:31.883879+00:00,0.062,sucesso_com_ressalvas,,4804,154,173 usuarios consolidados em 171 pessoas
+a98b2a5a-9e5e-42c9-bb59-5ded6cc09e16,qualidade,2026-09-29 00:40:31.909936+00:00,2026-09-29 00:40:31.938805+00:00,0.029,falha,,,,teste critico reprovado; Gold bloqueada; ver qualidade.vw_resultado
+a2f8a3b3-1852-4e3d-864c-36a4f479fca0,bronze_catalogo,2026-09-29 00:40:55.065325+00:00,2026-09-29 00:40:55.168746+00:00,0.103,sucesso,1050,1050,0,
+a2f8a3b3-1852-4e3d-864c-36a4f479fca0,bronze_usuarios,2026-09-29 00:40:55.193354+00:00,2026-09-29 00:40:55.238906+00:00,0.046,sucesso,180,180,0,
+a2f8a3b3-1852-4e3d-864c-36a4f479fca0,bronze_interacoes,2026-09-29 00:40:55.254272+00:00,2026-09-29 00:40:55.418227+00:00,0.164,sucesso,1416,1416,0,
+a2f8a3b3-1852-4e3d-864c-36a4f479fca0,bronze_comentarios,2026-09-29 00:40:55.435655+00:00,2026-09-29 00:40:55.504442+00:00,0.069,sucesso,1119,1119,0,
+a2f8a3b3-1852-4e3d-864c-36a4f479fca0,bronze_recomendacoes,2026-09-29 00:40:55.518377+00:00,2026-09-29 00:40:55.575468+00:00,0.057,sucesso,1200,1200,0,
+a2f8a3b3-1852-4e3d-864c-36a4f479fca0,silver_usuario,2026-09-29 00:40:55.593790+00:00,2026-09-29 00:40:55.647968+00:00,0.054,sucesso_com_ressalvas,180,173,5,2 versoes substituidas por sobrevivencia (continuam na bronze)
+a2f8a3b3-1852-4e3d-864c-36a4f479fca0,silver_conteudo,2026-09-29 00:40:55.660008+00:00,2026-09-29 00:40:55.779776+00:00,0.120,sucesso_com_ressalvas,1050,1043,4,3 versoes substituidas por sobrevivencia (continuam na bronze)
+a2f8a3b3-1852-4e3d-864c-36a4f479fca0,silver_interacao,2026-09-29 00:40:55.800664+00:00,2026-09-29 00:40:55.930547+00:00,0.130,sucesso_com_ressalvas,1416,1327,88,1 versoes substituidas por sobrevivencia (continuam na bronze)
+a2f8a3b3-1852-4e3d-864c-36a4f479fca0,silver_comentario,2026-09-29 00:40:55.943145+00:00,2026-09-29 00:40:56.040890+00:00,0.098,sucesso_com_ressalvas,1119,1061,57,1 versoes substituidas por sobrevivencia (continuam na bronze)
+a2f8a3b3-1852-4e3d-864c-36a4f479fca0,silver_recomendacao,2026-09-29 00:40:56.051790+00:00,2026-09-29 00:40:56.144123+00:00,0.092,sucesso,1200,1200,0,
+a2f8a3b3-1852-4e3d-864c-36a4f479fca0,silver_publicacao,2026-09-29 00:40:56.150875+00:00,2026-09-29 00:40:56.208331+00:00,0.057,sucesso_com_ressalvas,,4804,154,173 usuarios consolidados em 171 pessoas
+a2f8a3b3-1852-4e3d-864c-36a4f479fca0,qualidade,2026-09-29 00:40:56.228072+00:00,2026-09-29 00:40:56.252569+00:00,0.024,sucesso,18,18,0,todos os testes aprovados
+a2f8a3b3-1852-4e3d-864c-36a4f479fca0,gold,2026-09-29 00:40:56.268078+00:00,2026-09-29 00:40:56.370514+00:00,0.102,sucesso,,3965,0,
+a2f8a3b3-1852-4e3d-864c-36a4f479fca0,metadados,2026-09-29 00:40:56.399541+00:00,2026-09-29 00:40:56.728894+00:00,0.329,sucesso,,,0,ingestoes do PostgreSQL e do Superset disparadas no OpenMetadata
+5696f833-18ca-47bb-bf57-b6bf6b57699f,bronze_catalogo,2026-09-29 02:15:20.009637+00:00,2026-09-29 02:15:20.104595+00:00,0.095,sucesso,1050,1050,0,
+5696f833-18ca-47bb-bf57-b6bf6b57699f,bronze_usuarios,2026-09-29 02:15:20.119194+00:00,2026-09-29 02:15:20.155019+00:00,0.036,sucesso,180,180,0,
+5696f833-18ca-47bb-bf57-b6bf6b57699f,bronze_interacoes,2026-09-29 02:15:20.167533+00:00,2026-09-29 02:15:20.272307+00:00,0.105,sucesso,1416,1416,0,
+5696f833-18ca-47bb-bf57-b6bf6b57699f,bronze_comentarios,2026-09-29 02:15:20.287819+00:00,2026-09-29 02:15:20.343388+00:00,0.056,sucesso,1119,1119,0,
+5696f833-18ca-47bb-bf57-b6bf6b57699f,bronze_recomendacoes,2026-09-29 02:15:20.355411+00:00,2026-09-29 02:15:20.402259+00:00,0.047,sucesso,1200,1200,0,
+5696f833-18ca-47bb-bf57-b6bf6b57699f,silver_usuario,2026-09-29 02:15:20.419932+00:00,2026-09-29 02:15:20.497199+00:00,0.077,sucesso_com_ressalvas,180,173,5,versoes vencidas por sobrevivencia: 1; descartados na triagem da quarentena: 1 (continuam na bronze)
+5696f833-18ca-47bb-bf57-b6bf6b57699f,silver_conteudo,2026-09-29 02:15:20.528650+00:00,2026-09-29 02:15:20.707116+00:00,0.178,sucesso_com_ressalvas,1050,1043,4,versoes vencidas por sobrevivencia: 1; descartados na triagem da quarentena: 2 (continuam na bronze)
+5696f833-18ca-47bb-bf57-b6bf6b57699f,silver_interacao,2026-09-29 02:15:20.726259+00:00,2026-09-29 02:15:20.877003+00:00,0.151,sucesso_com_ressalvas,1416,1327,88,descartados na triagem da quarentena: 1 (continuam na bronze)
+5696f833-18ca-47bb-bf57-b6bf6b57699f,silver_comentario,2026-09-29 02:15:20.894462+00:00,2026-09-29 02:15:20.990023+00:00,0.096,sucesso_com_ressalvas,1119,1061,57,descartados na triagem da quarentena: 1 (continuam na bronze)
+5696f833-18ca-47bb-bf57-b6bf6b57699f,silver_recomendacao,2026-09-29 02:15:21.004928+00:00,2026-09-29 02:15:21.098051+00:00,0.093,sucesso,1200,1200,0,
+5696f833-18ca-47bb-bf57-b6bf6b57699f,silver_publicacao,2026-09-29 02:15:21.107133+00:00,2026-09-29 02:15:21.181340+00:00,0.074,sucesso_com_ressalvas,,4804,154,173 usuarios consolidados em 171 pessoas
+5696f833-18ca-47bb-bf57-b6bf6b57699f,qualidade,2026-09-29 02:15:21.208328+00:00,2026-09-29 02:15:21.239572+00:00,0.031,sucesso,18,18,0,todos os testes aprovados
+5696f833-18ca-47bb-bf57-b6bf6b57699f,gold,2026-09-29 02:15:21.256782+00:00,2026-09-29 02:15:21.355978+00:00,0.099,sucesso,,3965,0,
+5696f833-18ca-47bb-bf57-b6bf6b57699f,metadados,2026-09-29 02:15:21.384055+00:00,2026-09-29 02:15:22.002225+00:00,0.618,sucesso,,,0,ingestoes do PostgreSQL e do Superset disparadas no OpenMetadata

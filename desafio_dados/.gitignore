@@ -52,3 +52,5 @@ Thumbs.db
 # e saida da verificacao do runtime do Beam
 dados/volume/
 dados/verificacao_beam/
+# RF24: copia do mesmo recorte em CSV e JSON, regenerada por beam/exportar_silver.py
+dados/silver/comparacao/

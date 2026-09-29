@@ -1,0 +1,37 @@
+{
+  "gerado_em": "2026-09-29T02:15:55+00:00",
+  "execucao_silver": [
+    "5696f833-18ca-47bb-bf57-b6bf6b57699f"
+  ],
+  "tabelas": {
+    "interacao": 1327,
+    "conteudo": 1043,
+    "usuario_correspondencia": 173
+  },
+  "particao": "mes",
+  "particoes": [
+    "2026-01",
+    "2026-02",
+    "2026-03",
+    "2026-04",
+    "2026-05",
+    "2026-06",
+    "2026-07",
+    "2026-08",
+    "2026-09"
+  ],
+  "esquema_interacao": {
+    "interacao_id": "int64",
+    "usuario_id": "int32",
+    "conteudo_id": "int32",
+    "tipo_interacao": "string",
+    "data_hora": "timestamp[us]",
+    "tempo_consumido": "int32",
+    "percentual_conclusao": "decimal128(5, 2)",
+    "avaliacao_atribuida": "int16",
+    "_execucao_id": "string",
+    "_origem": "string",
+    "_ingerido_em": "timestamp[us, tz=UTC]",
+    "mes": "string"
+  }
+}

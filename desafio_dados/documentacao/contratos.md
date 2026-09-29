@@ -5,7 +5,7 @@ A seção 5 do enunciado pede que a equipe trabalhe em paralelo "com dados de te
 - **Fonte da verdade:** [`sql/camadas.sql`](../sql/camadas.sql) (estruturas e controle) e [`sql/silver.sql`](../sql/silver.sql) (regras de validação e publicação da Silver), aplicados automaticamente pelo serviço `db-init` a cada `docker compose up`. Aqui fica o resumo e as regras que o SQL não expressa.
 - **Como a parte do Estudante 1 funciona e como demonstrá-la:** [`pipeline_hop.md`](pipeline_hop.md).
 - **Mudou o contrato?** Combine com quem consome, altere `sql/camadas.sql` e este documento no mesmo commit.
-- A camada Gold ainda é uma **proposta**: o Estudante 2 implementa em `sql/camada_gold.sql` e pode ajustar, avisando o Estudante 3.
+- A camada Gold está implementada em `sql/camada_gold.sql`; grão, chaves e regras em [`camada_gold.md`](camada_gold.md).
 
 ## Quem produz e quem consome
 
@@ -22,7 +22,7 @@ A seção 5 do enunciado pede que a equipe trabalhe em paralelo "com dados de te
 | LGPD | RF32, RF33 | Estudante 3 | `bronze.usuarios`, `silver.*` | funções `lgpd.*` (revisão), `lgpd/*.md` |
 | Consumo | RF16–RF18 | Estudante 3 | `gold.*`, `qualidade.*`, `controle.*` com o papel `consumo` | SQL Lab, datasets virtuais, dashboard, alerta |
 
-A publicação de metadados no workflow (RF22) é uma fronteira entre dois responsáveis. O Estudante 3 cria no OpenMetadata o pipeline de ingestão do PostgreSQL e entrega `hop/workflows/metadados.hwf`, que o dispara pela API REST do OpenMetadata (`POST /api/v1/services/ingestionPipelines/trigger/{id}`). O workflow principal já chama esse arquivo quando ele existir (veja "Como plugar uma etapa no fluxo").
+A publicação de metadados no workflow (RF22) é uma fronteira entre dois responsáveis. O Estudante 3 cria no OpenMetadata as ingestões do PostgreSQL e do Superset (`openmetadata/provisionar.py`), e `hop/workflows/metadados.hwf` as dispara pela API REST do OpenMetadata (`POST /api/v1/services/ingestionPipelines/trigger/{id}`), com o token do bot em `OM_BOT_TOKEN`. Se o OpenMetadata estiver fora do ar, a etapa fica `ignorada` e o fluxo segue.
 
 ## Convenções comuns
 
@@ -120,7 +120,7 @@ As regras de validação ficam só em `sql/silver.sql`, uma função `validacao.
 
 A normalização antes do hash segue duas regras: e-mail com `lower(btrim(email))` e CPF só com dígitos. Sem isso, `L2-U02` (o mesmo e-mail em maiúsculas) não casa.
 
-As funções em `sql/camadas.sql` são uma implementação inicial. O Estudante 3 é o dono da escolha das técnicas e da justificativa (RF33) e pode trocá-las, mantendo nome e assinatura.
+As funções ficam em `sql/camadas.sql`. A escolha de cada técnica e a comparação entre elas estão em [`lgpd/tecnicas_de_protecao.md`](../lgpd/tecnicas_de_protecao.md) (RF33).
 
 ### Quarentena (RF23)
 
@@ -161,8 +161,9 @@ O CPF dos dados de teste tem formato válido, mas dígito verificador proposital
 ### Qualidade (RF31)
 
 - **`qualidade.teste`:** um registro por teste, com dimensão, alvo, fórmula, operador, limite, severidade e ação. As dimensões aceitas são `completude`, `validade`, `unicidade`, `consistencia` e `integridade_referencial`.
-- **`qualidade.resultado`:** uma linha por execução, teste e fonte, com `valor_medido` e `aprovado`, em que aprovado = `valor_medido <operador> limite_aceitavel`.
-- **Bloqueio da Gold:** um teste com severidade `critica` reprovado impede a publicação da Gold na mesma execução.
+- **`qualidade.resultado`:** uma linha por execução, teste e fonte, com `valor_medido` e `aprovado`, em que aprovado = `valor_medido <operador> limite_aceitavel`. Cada linha guarda também o operador, o limite e a severidade vigentes quando o teste rodou, para o histórico não mudar se o teste mudar.
+- **Testes, limites e a demonstração do bloqueio:** [`qualidade/regras.md`](../qualidade/regras.md).
+- **Bloqueio da Gold:** um teste com severidade `critica` reprovado impede a publicação da Gold na mesma execução. O bloqueio é verificado no workflow (`qualidade.hwf`) e de novo dentro de `gold.publicar()`.
 - **Dashboard:** o painel lê `qualidade.resultado` para mostrar a evolução das métricas entre execuções.
 
 ### Controle e acesso
@@ -174,17 +175,17 @@ O CPF dos dados de teste tem formato válido, mas dígito verificador proposital
 
 URI do Superset para o Desafio 2: `postgresql+psycopg2://consumo:<senha>@postgres:5432/desafio`. A conexão do Desafio 1 continua a mesma. Com o papel `consumo`, o dashboard não consegue ler Bronze, Silver nem o schema `restrito`, e isso já é a evidência de que nenhum valor original protegido chega ao consumo (RF33).
 
-## Gold — proposta (RF26)
+## Gold (RF26)
 
-O Estudante 2 implementa em `sql/camada_gold.sql` e o Estudante 3 consome. Enquanto a Gold não existe, o Estudante 3 pode prototipar no SQL Lab sobre as views `public.vw_*` do Desafio 1 e trocar a fonte depois.
+Implementada em `sql/camada_gold.sql` (Estudante 2) e consumida pelo SQL Lab e pelo Superset (Estudante 3). Detalhes, contagens e decisões em [`camada_gold.md`](camada_gold.md).
 
 | Objeto | Grão | Colunas principais |
 | --- | --- | --- |
 | `gold.dim_conteudo` | 1 por conteúdo | `conteudo_id`, `titulo`, `tipo`, `categoria`, `nivel`, `carga_horaria_min`, `data_publicacao` |
-| `gold.dim_usuario` | 1 por pessoa (mestre) | `usuario_pseudo`, `faixa_etaria`, `uf` |
+| `gold.dim_usuario` | 1 por pessoa (mestre) | `usuario_pseudo`, `nome_mascarado` (único campo derivado de dado pessoal no consumo), `faixa_etaria`, `uf`, `data_cadastro`, `registros_origem` |
 | `gold.fato_interacao` | 1 por interação | `usuario_pseudo`, `conteudo_id`, `tipo_interacao`, `data_hora`, `data`, `mes`, `tempo_consumido`, `percentual_conclusao`, `avaliacao_atribuida` |
 | `gold.fato_recomendacao` | 1 por recomendação | `usuario_pseudo`, `conteudo_id`, `pontuacao`, `posicao`, `classificacao`, `gerado_em`, `convertida`, `convertida_em` |
-| `gold.kpi_*` | por período e dimensão | um objeto por KPI do glossário (abaixo) |
+| `gold.kpi_*` | por período e dimensão | `kpi_engajamento_mensal`, `kpi_usuarios_ativos_mensal`, `kpi_taxa_conclusao`, `kpi_conversao_recomendacao`, `kpi_avaliacao`; guardam numerador e denominador |
 
 **Regras da Gold:**
 
