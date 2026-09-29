@@ -1,11 +1,16 @@
 -- Demonstracao das tecnicas de protecao (RF33). Roda como dono do banco e troca de papel com SET ROLE.
---   docker compose exec -T postgres psql -U desafio -d desafio -f - < lgpd/demonstracao.sql
--- Os erros "permission denied" da parte 1 sao o resultado esperado.
+--   docker compose exec -T postgres sh -c 'stdbuf -o0 psql -U desafio -d desafio 2>&1' < lgpd/demonstracao.sql > lgpd/demonstracao_resultado.txt
+-- Os erros "permission denied" da parte 1 sao o resultado esperado. stdbuf tira o buffer da saida padrao, para
+-- os erros aparecerem logo depois do comando que os causou.
+-- Nenhuma parte imprime um usuario_id ao lado do seu pseudonimo: isso seria uma tabela de correspondencia (RF33).
 \pset footer off
 
 \echo '=== 1. O consumo (papel do Superset e do SQL Lab) nao le dado pessoal'
 SET ROLE consumo;
 SELECT current_user AS papel;
+SELECT s AS schema, has_schema_privilege('consumo', s, 'USAGE') AS consumo_pode_ler
+  FROM unnest(ARRAY['bronze', 'silver', 'quarentena', 'restrito', 'gold', 'qualidade', 'controle']) AS s;
+\echo 'tentativas de leitura (erro esperado):'
 SELECT nome, email, cpf FROM bronze.usuarios LIMIT 1;
 SELECT usuario_id, email_hash FROM silver.usuario LIMIT 1;
 SELECT * FROM restrito.usuario_pseudonimo LIMIT 1;
@@ -37,11 +42,13 @@ SELECT usuario_id, left(cpf_hash, 16) || '...' AS cpf_hash,
 SELECT left(encode(digest(regexp_replace(cpf, '[^0-9]', '', 'g'), 'sha256'), 'hex'), 16) || '...' AS sha256_sem_salt
   FROM bronze.usuarios WHERE btrim(usuario_id) = '12' LIMIT 1;
 
-\echo '=== 5. Pseudonimizacao: associacao controlada so pela tabela restrita (dono do banco)'
-SELECT m.usuario_mestre_id, left(m.usuario_pseudo, 16) || '...' AS pseudonimo_na_gold, r.usuario_id AS reidentificado_por_restrito
-  FROM silver.usuario_mestre m
-  JOIN restrito.usuario_pseudonimo r ON r.usuario_pseudo = m.usuario_pseudo
- WHERE m.usuario_mestre_id IN (12, 30);
+\echo '=== 5. Pseudonimizacao: a Gold so tem o pseudonimo; voltar ao id exige a tabela restrita (dono do banco)'
+SELECT g.nome_mascarado AS pessoa_na_gold, g.registros_origem AS cadastros_da_pessoa,
+       r.usuario_id AS reidentificado_pela_tabela_restrita
+  FROM gold.dim_usuario g
+  JOIN restrito.usuario_pseudonimo r ON r.usuario_pseudo = g.usuario_pseudo
+ WHERE r.usuario_id IN (12, 30)
+ ORDER BY r.usuario_id;
 
 \echo '=== 6. Anonimizacao do texto livre (L2-K04 e L2-K05)'
 SELECT b.comentario AS original_bronze, s.comentario AS silver

@@ -1,0 +1,8 @@
+execucao_id,fluxo,modo,status,inicio,fim,mensagem
+7d11e4ab-b386-444c-8525-c6a4e6e361f3,completo,manual,sucesso_com_ressalvas,2026-09-29 03:19:05.52207+00,2026-09-29 03:19:28.061066+00,concluida com registros em quarentena
+dfaa4ef3-fef2-4afc-adb9-65ea19758648,bronze,manual,sucesso,2026-09-29 03:19:17.245052+00,2026-09-29 03:19:17.673786+00,concluida
+a8ce1f59-5e23-459f-bd81-3677af5d6903,completo,manual,falha,2026-09-29 03:19:38.333877+00,2026-09-29 03:19:38.366777+00,encerrada por falha; ver controle.etapa
+33eea6f9-7820-444d-8c37-8c5c3274ede6,completo,manual,falha,2026-09-29 03:19:48.603327+00,2026-09-29 03:19:48.875437+00,encerrada por falha; ver controle.etapa
+28f6dca5-93b5-49aa-a6ca-8b088c45551d,completo,manual,falha,2026-09-29 03:19:59.366667+00,2026-09-29 03:20:00.45489+00,encerrada por falha; ver controle.etapa
+9a4d7a41-67c4-4569-8199-ed7ad6666767,completo,agendado,sucesso_com_ressalvas,2026-09-29 03:23:12.420626+00,2026-09-29 03:23:14.907474+00,concluida com registros em quarentena
+5ea8f409-7f6b-4cae-a7b7-a08e635604bb,completo,agendado,sucesso_com_ressalvas,2026-09-29 03:25:40.746772+00,2026-09-29 03:25:57.356672+00,concluida com registros em quarentena

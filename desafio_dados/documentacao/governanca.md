@@ -42,7 +42,9 @@ Os bancos do OpenMetadata e do Airflow ficam no mesmo PostgreSQL do projeto, cri
 | Estudante 2 - Analítico (Vinycius) | `gold`, `qualidade`; etapas de qualidade e Gold; termos de KPI |
 | Estudante 3 - Governança e consumo (Victor) | `restrito`; glossário; dashboards e datasets do Superset |
 
-**Descrições.** A fonte é o próprio banco: [`sql/catalogo.sql`](../sql/catalogo.sql) aplica `COMMENT ON` em schemas, tabelas e colunas, e a ingestão as traz. A descrição mora ao lado da estrutura, versionada no mesmo commit, e não se perde se o OpenMetadata for recriado. Todas as 28 tabelas e views dos 7 schemas têm descrição, e todas as colunas da Gold e do schema `restrito` também. Os dashboards recebem descrição e responsável pela API.
+Os serviços também têm dono e descrição: `postgres_desafio` e `superset_desafio` são do Estudante 3; `arquivos_desafio` e `apache_hop`, do Estudante 1. O banco `desafio` tem descrição e o Estudante 3 como dono (captura 01).
+
+**Descrições.** A fonte é o próprio banco: [`sql/catalogo.sql`](../sql/catalogo.sql) aplica `COMMENT ON` em schemas, tabelas e colunas, e a ingestão as traz. A descrição mora ao lado da estrutura, versionada no mesmo commit, e não se perde se o OpenMetadata for recriado. Todas as 29 tabelas e views dos 7 schemas têm descrição. Também têm descrição todas as colunas da Gold e do schema `restrito`, as colunas de auditoria e as colunas de usuários da Bronze e da Silver. Os dashboards recebem descrição e responsável pela API. A ingestão usa `overrideMetadata`: se uma descrição mudar no banco, a do catálogo acompanha. As tags aplicadas pelo provisionamento não são afetadas, o que foi verificado disparando a ingestão sozinha.
 
 ### Controles contra o Data Swamp
 
@@ -53,7 +55,7 @@ Um catálogo vira pântano quando entra qualquer coisa, sem dono, sem descriçã
 | **Só entra o que é governado** | a ingestão do PostgreSQL filtra os 7 schemas (`schemaFilterPattern`) e a do Superset só os dashboards "Desafio 2" (`dashboardFilterPattern`). O schema `public` do Desafio 1, os bancos do OpenMetadata e do Airflow e os dashboards de teste ficam de fora |
 | **Todo ativo tem dono** | o dono é definido por schema, e toda tabela nova herda o do seu schema na próxima execução do provisionamento |
 | **Todo ativo tem descrição** | as descrições vêm de `sql/catalogo.sql`. A consulta de verificação abaixo deve devolver zero |
-| **Todo ativo tem camada** | tag `Camada.Bronze/Silver/Gold/Operacional/Restrita` em todas as tabelas: dá para filtrar o que é consumo e o que é intermediário |
+| **Todo ativo tem camada e criticidade** | tag `Medalhao.Bronze/Silver/Gold/Operacional/Restrita` e o Tier nativo em todas as tabelas: Tier1 para a Gold (consumo), Tier2 para a Silver e o schema restrito, Tier3 para a Bronze e as tabelas operacionais. Dá para filtrar o que é consumo e o que é intermediário |
 | **Nada fica órfão** | `markDeletedTables` e `markDeletedDashboards`: o que some da fonte é marcado como apagado no catálogo e não fica como ativo fantasma |
 | **Catálogo atualizado** | a ingestão roda ao fim de cada execução do workflow |
 | **Significado único** | os KPIs têm termo no glossário, com definição, regra de cálculo e dono, ligado às colunas que os implementam |
@@ -93,7 +95,10 @@ As definições são as mesmas em três lugares, conferidos um contra o outro: o
 | --- | --- | --- |
 | `LGPD` (criada) | `DadoPessoal`, `IdentificadorIndireto`, `DadoDeCriancaOuAdolescente`, `Pseudonimizado`, `HashComSalt`, `Mascarado`, `Anonimizado`, `TabelaDeCorrespondencia` | colunas de `bronze.usuarios`, `bronze.comentarios`, `silver.usuario`, `silver.usuario_mestre`, `silver.comentario`, `quarentena.registro`, `restrito.usuario_pseudonimo` e das tabelas da Gold com `usuario_pseudo` e `nome_mascarado` |
 | `PII` (padrão do OpenMetadata) | `Sensitive`, `NonSensitive` | colunas de dado pessoal em `bronze.usuarios` e `bronze.comentarios` |
-| `Camada` (criada) | `Bronze`, `Silver`, `Gold`, `Operacional`, `Restrita` | todas as tabelas |
+| `Medalhao` (criada) | `Bronze`, `Silver`, `Gold`, `Operacional`, `Restrita` | todas as tabelas |
+| `Tier` (nativa) | `Tier1`, `Tier2`, `Tier3` | todas as tabelas (criticidade para o negócio; aparece no cabeçalho como "Camada") |
+
+A classificação criada se chama `Medalhao`, e não `Camada`, porque a interface do OpenMetadata em português já traduz o Tier nativo como "Camada".
 
 A classificação completa, com base legal e retenção, está no [inventário LGPD](../lgpd/inventario_de_dados.md). A captura `02_bronze_usuarios_dados_pessoais.png` mostra as tags nas colunas, e a `09_classificacao_lgpd.png` mostra a classificação.
 
@@ -148,5 +153,5 @@ A consulta 4 da [demonstração LGPD](../lgpd/demonstracao_resultado.txt) mostra
 ## Limitações
 
 - **Arquivos e etapas do Hop entram pela API.** O OpenMetadata não tem conector para arquivos locais nem para o Apache Hop, então eles são registrados pela API. Se um pipeline novo for criado no Hop, ele só aparece no catálogo depois de entrar em `PIPELINES` no script.
-- **Descrições de coluna fora da Gold.** A Bronze e a Silver têm descrição em todas as tabelas, mas não em todas as colunas; a prioridade foi a camada de consumo. A Bronze espelha os nomes das fontes, e a Silver está documentada em [`contratos.md`](contratos.md).
+- **Descrições de coluna fora da Gold.** A Bronze e a Silver têm descrição em todas as tabelas, mas não em todas as colunas: os campos de conteúdos, interações, comentários e recomendações repetem os nomes das fontes e estão documentados em [`contratos.md`](contratos.md). A prioridade foi a camada de consumo e os campos com dado pessoal.
 - **Glossário por API.** Os termos são aprovados na criação. Numa operação real, a mudança de um termo passaria por revisão no fluxo do próprio OpenMetadata.

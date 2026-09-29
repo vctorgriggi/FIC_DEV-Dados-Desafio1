@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<workflow>
+  <name>agendado_demonstracao</name>
+  <name_sync_with_filename>Y</name_sync_with_filename>
+  <description>Demonstracao do agendamento (RF22): o mesmo agendador nativo de agendado.hwf, a cada 2 minutos, para comprovar a execucao agendada sem esperar as 05:00 UTC</description>
+  <extended_description/>
+  <workflow_version/>
+  <created_user>-</created_user>
+  <modified_user>-</modified_user>
+  <parameters></parameters>
+  <actions>
+    <action>
+      <name>inicio</name>
+      <description></description>
+      <type>SPECIAL</type>
+      <attributes/>
+      <DayOfMonth>1</DayOfMonth>
+      <doNotWaitOnFirstExecution>N</doNotWaitOnFirstExecution>
+      <hour>5</hour>
+      <intervalMinutes>2</intervalMinutes>
+      <intervalSeconds>0</intervalSeconds>
+      <minutes>0</minutes>
+      <repeat>Y</repeat>
+      <schedulerType>1</schedulerType>
+      <weekDay>1</weekDay>
+      <parallel>N</parallel>
+      <xloc>64</xloc>
+      <yloc>160</yloc>
+      <attributes_hac/>
+    </action>
+    <action>
+      <name>fluxo completo</name>
+      <description></description>
+      <type>WORKFLOW</type>
+      <attributes/>
+      <filename>${PROJECT_HOME}/workflows/principal.hwf</filename>
+      <params_from_previous>N</params_from_previous>
+      <exec_per_row>N</exec_per_row>
+      <clear_rows>N</clear_rows>
+      <clear_files>N</clear_files>
+      <set_logfile>N</set_logfile>
+      <logfile/>
+      <logext/>
+      <add_date>N</add_date>
+      <add_time>N</add_time>
+      <loglevel>Basic</loglevel>
+      <set_append_logfile>N</set_append_logfile>
+      <wait_until_finished>Y</wait_until_finished>
+      <follow_abort_remote>N</follow_abort_remote>
+      <create_parent_folder>N</create_parent_folder>
+      <run_configuration>local</run_configuration>
+      <parameters><pass_all_parameters>N</pass_all_parameters><parameter><name>EXECUCAO_ID</name><stream_name/><value></value></parameter><parameter><name>MODO</name><stream_name/><value>agendado</value></parameter></parameters>
+      <parallel>N</parallel>
+      <xloc>256</xloc>
+      <yloc>160</yloc>
+      <attributes_hac/>
+    </action>
+    <action>
+      <name>registrar sucesso</name>
+      <description></description>
+      <type>WRITE_TO_LOG</type>
+      <attributes/>
+      <loglevel>Basic</loglevel>
+      <logmessage>execucao agendada concluida; aguardando o proximo horario</logmessage>
+      <logsubject/>
+      <parallel>N</parallel>
+      <xloc>448</xloc>
+      <yloc>96</yloc>
+      <attributes_hac/>
+    </action>
+    <action>
+      <name>registrar falha</name>
+      <description></description>
+      <type>WRITE_TO_LOG</type>
+      <attributes/>
+      <loglevel>Basic</loglevel>
+      <logmessage>execucao agendada falhou; ver controle.execucao; aguardando o proximo horario</logmessage>
+      <logsubject/>
+      <parallel>N</parallel>
+      <xloc>448</xloc>
+      <yloc>224</yloc>
+      <attributes_hac/>
+    </action>
+  </actions>
+  <hops>
+    <hop>
+      <from>inicio</from>
+      <to>fluxo completo</to>
+      <enabled>Y</enabled>
+      <evaluation>Y</evaluation>
+      <unconditional>Y</unconditional>
+    </hop>
+    <hop>
+      <from>fluxo completo</from>
+      <to>registrar sucesso</to>
+      <enabled>Y</enabled>
+      <evaluation>Y</evaluation>
+      <unconditional>N</unconditional>
+    </hop>
+    <hop>
+      <from>fluxo completo</from>
+      <to>registrar falha</to>
+      <enabled>Y</enabled>
+      <evaluation>N</evaluation>
+      <unconditional>N</unconditional>
+    </hop>
+  </hops>
+  <notepads/>
+  <attributes/>
+</workflow>

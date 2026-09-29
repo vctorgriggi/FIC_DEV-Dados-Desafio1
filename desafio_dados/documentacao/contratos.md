@@ -32,8 +32,9 @@ A publicação de metadados no workflow (RF22) é uma fronteira entre dois respo
 
 1. Abre uma linha em `controle.execucao` com status `em_andamento`.
 2. Cada etapa insere a sua linha em `controle.etapa` ao começar e a atualiza ao terminar, com `fim`, `status`, `lidos`, `gravados`, `quarentena` e `mensagem`. A coluna `duracao_s` é calculada pelo banco.
-3. O status de cada etapa é `sucesso`, `sucesso_com_ressalvas` (terminou, mas mandou registros para a quarentena ou reprovou um teste não crítico), `falha` ou `ignorada` (prevista no fluxo, mas o workflow do responsável ainda não existe).
-4. O status final da execução é:
+3. O status de cada etapa é `sucesso`, `sucesso_com_ressalvas` (terminou, mas mandou registros para a quarentena ou reprovou um teste não crítico), `falha` ou `ignorada` (prevista no fluxo, mas não executada nesta vez: workflow ausente ou, na etapa de metadados, o OpenMetadata fora do ar).
+4. Reprocessar uma etapa de uma execução existente (`isolado.hwf`) reabre a linha dela em `controle.etapa`; a tentativa anterior é guardada antes em `controle.etapa_historico`.
+5. O status final da execução é:
    - `falha` quando alguma etapa falhou ou ficou `em_andamento` (processo interrompido);
    - `sucesso_com_ressalvas` quando alguma etapa terminou com ressalvas;
    - `sucesso` nos demais casos.
@@ -121,6 +122,24 @@ As regras de validação ficam só em `sql/silver.sql`, uma função `validacao.
 A normalização antes do hash segue duas regras: e-mail com `lower(btrim(email))` e CPF só com dígitos. Sem isso, `L2-U02` (o mesmo e-mail em maiúsculas) não casa.
 
 As funções ficam em `sql/camadas.sql`. A escolha de cada técnica e a comparação entre elas estão em [`lgpd/tecnicas_de_protecao.md`](../lgpd/tecnicas_de_protecao.md) (RF33).
+
+### Valores ausentes (RF21)
+
+Um valor é **ausente** quando vem nulo, vazio ou só com espaços (`validacao.texto` apara e converte vazio em `NULL`). O tratamento depende do campo:
+
+| Fonte | Obrigatórios: ausente → quarentena (`CAMPO_OBRIGATORIO`) | Opcionais: ausente → `NULL` na Silver |
+| --- | --- | --- |
+| catálogo | `conteudo_id`, `titulo`, `tipo`, `categoria`, `nivel`, `carga_horaria_min`, `data_publicacao` | `descricao`, `autor` (medidos pelo teste Q04) |
+| usuários | `usuario_id`, `nome`, `email`, `cpf`, `data_nascimento`, `uf` | `cidade`, `telefone`, `data_cadastro`, `atualizado_em` (Q05 mede cidade, cadastro e faixa etária) |
+| interações | `usuario_id`, `conteudo_id`, `tipo_interacao`, `data_hora` | `tempo_consumido`, `percentual_conclusao`, `avaliacao_atribuida` (dependem do tipo de interação) |
+| comentários | `usuario_id`, `conteudo_id`, `avaliacao`, `comentario`, `data` | `tags` (lista vazia) |
+| recomendações | `usuario_id`, `conteudo_id`, `pontuacao`, `posicao`, `classificacao`, `gerado_em` | — |
+
+Três regras completam o tratamento:
+
+- Um opcional **preenchido com valor inválido** não vira `NULL`. Ele vai para a quarentena com a regra do erro, por exemplo `TIPO_INVALIDO` num `tempo_consumido` não numérico: ausente é diferente de errado.
+- Não há imputação. Nenhum valor ausente é preenchido com média ou valor padrão, porque inventaria dado. As métricas tratam o `NULL` explicitamente: a avaliação média ignora notas nulas, e os minutos consumidos somam `COALESCE(tempo, 0)`.
+- `usuario_id` sem cadastro correspondente não é "ausente": é referência inválida (`REF_USUARIO`).
 
 ### Quarentena (RF23)
 
@@ -232,6 +251,7 @@ docker compose up -d                                                # postgres, 
 docker compose run --rm hop workflows/principal.hwf                 # fluxo completo, com EXECUCAO_ID novo
 docker compose run --rm hop workflows/isolado.hwf FLUXO=bronze      # só a Bronze, numa execução nova
 docker compose run --rm hop workflows/isolado.hwf FLUXO=silver EXECUCAO_ID=<uuid>   # reprocessa a Silver
+docker compose run --rm hop workflows/isolado.hwf FLUXO=gold EXECUCAO_ID=<uuid>     # também qualidade e metadados
 docker compose --profile agendamento up -d                          # agendamento diário (hop-agendador)
 docker compose run --rm beam beam/pipeline.py --runner direct       # ou --runner spark, com o perfil beam no ar
 docker compose run --rm beam -m ferramentas.gerar_dados              # regenera os dados de teste (só biblioteca padrão)

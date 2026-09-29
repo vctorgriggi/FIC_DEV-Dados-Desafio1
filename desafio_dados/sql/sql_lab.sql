@@ -112,4 +112,6 @@ SELECT u.nome_mascarado,
        max(f.data_hora)::date AS ultima_interacao
   FROM gold.fato_interacao f
   JOIN gold.dim_usuario u ON u.usuario_pseudo = f.usuario_pseudo
- GROUP BY u.usuario_pseudo, u.nome_mascarado, u.faixa_etaria, u.uf;
+ GROUP BY u.usuario_pseudo, u.nome_mascarado, u.faixa_etaria, u.uf
+ ORDER BY interacoes DESC, conclusoes DESC, ultima_interacao DESC
+ LIMIT 10;

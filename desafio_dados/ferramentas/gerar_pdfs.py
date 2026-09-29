@@ -17,7 +17,7 @@ from playwright.sync_api import sync_playwright
 RAIZ = Path(__file__).resolve().parent.parent
 MERMAID = Path("/opt/mermaid/mermaid.min.js")
 DOCUMENTOS = [  # os tres PDFs pedidos na estrutura de entrega do enunciado
-    "documentacao/arquitetura_desafio2.md",
+    "documentacao/arquitetura.md",
     "documentacao/linhagem.md",
     "documentacao/storytelling.md",
 ]

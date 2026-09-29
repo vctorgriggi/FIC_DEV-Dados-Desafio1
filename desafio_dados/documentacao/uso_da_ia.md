@@ -69,6 +69,20 @@ Encontrados na verificação, fosse em respostas da IA, fosse no código:
 - Barras horizontais do Superset emitindo o valor numérico, em vez da categoria, no filtro cruzado.
 - Disparo da ingestão do OpenMetadata antes de o Airflow registrar o DAG, e o token do bot aparecendo no log do Hop numa falha.
 
+### Revisão independente antes da entrega
+
+Um segundo agente de IA revisou o projeto contra o enunciado, requisito por requisito, no papel de avaliador exigente. Os problemas que ele apontou foram conferidos um a um e corrigidos:
+
+- As amostras da Silver traziam `usuario_id` e pseudônimo na mesma linha: uma tabela de correspondência no repositório, o que o RF33 proíbe.
+- Com o filtro de período, a conclusão do storytelling se invertia (Segurança & Governança melhora, Business Intelligence piora). A narrativa passou a declarar isso e a tratar a ação como piloto medido.
+- O teste Q01 não detectava um arquivo inteiro quebrado, como a documentação dizia. Foi criado o Q08 (validade por arquivo), e o bloqueio foi demonstrado com o arquivo defeituoso.
+- As falhas de arquivo e de conexão e a execução agendada estavam descritas, mas sem evidência. Foram executadas num ambiente limpo, com os logs guardados.
+- Reprocessar uma etapa apagava a tentativa anterior; foi criado `controle.etapa_historico`.
+- Os gráficos de evolução da qualidade não mostravam a evolução, por causa do eixo de tempo contínuo e da escala de 0 a 120.
+- As descrições do catálogo estavam sem acento e não eram atualizadas pela ingestão.
+- Havia senhas padrão e a chave Fernet no `docker-compose.yml` e no `.env.example`.
+- O `arquitetura.pdf` exigido era o do Desafio 1.
+
 ### Alterações feitas pela equipe
 
 Cada entrega foi executada de ponta a ponta e conferida contra um resultado independente:

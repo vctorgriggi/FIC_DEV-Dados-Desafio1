@@ -4,16 +4,27 @@ SET
 ---------
  consumo
 
-psql:<stdin>:9: ERROR:  permission denied for schema bronze
+   schema   | consumo_pode_ler 
+------------+------------------
+ bronze     | f
+ silver     | f
+ quarentena | f
+ restrito   | f
+ gold       | t
+ qualidade  | t
+ controle   | t
+
+tentativas de leitura (erro esperado):
+ERROR:  permission denied for schema bronze
 LINE 1: SELECT nome, email, cpf FROM bronze.usuarios LIMIT 1;
                                      ^
-psql:<stdin>:10: ERROR:  permission denied for schema silver
+ERROR:  permission denied for schema silver
 LINE 1: SELECT usuario_id, email_hash FROM silver.usuario LIMIT 1;
                                            ^
-o que o consumo ve da pessoa:
-psql:<stdin>:11: ERROR:  permission denied for schema restrito
+ERROR:  permission denied for schema restrito
 LINE 1: SELECT * FROM restrito.usuario_pseudonimo LIMIT 1;
                       ^
+o que o consumo ve da pessoa:
  nome_mascarado |     pseudonimo      | faixa_etaria | uf 
 ----------------+---------------------+--------------+----
  Enzo C***      | 0103a57d8c6871ea... | 45-59        | MS
@@ -45,11 +56,11 @@ sem o salt secreto, o mesmo CPF gera outro hash (sem salt, bastaria calcular o h
 ---------------------
  9ee37993e24736bb...
 
-=== 5. Pseudonimizacao: associacao controlada so pela tabela restrita (dono do banco)
- usuario_mestre_id | pseudonimo_na_gold  | reidentificado_por_restrito 
--------------------+---------------------+-----------------------------
-                30 | e2696c6bbc0008d9... |                          30
-                12 | 4caab5ed9357430b... |                          12
+=== 5. Pseudonimizacao: a Gold so tem o pseudonimo; voltar ao id exige a tabela restrita (dono do banco)
+ pessoa_na_gold | cadastros_da_pessoa | reidentificado_pela_tabela_restrita 
+----------------+---------------------+-------------------------------------
+ Otávio C***    |                   2 |                                  12
+ Beatriz V***   |                   2 |                                  30
 
 === 6. Anonimizacao do texto livre (L2-K04 e L2-K05)
                                  original_bronze                                 |                            silver                             

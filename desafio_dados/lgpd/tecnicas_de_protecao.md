@@ -41,6 +41,7 @@ Resumo da escolha:
 
 A demonstração (`demonstracao_resultado.txt`) mostra, com o papel do Superset:
 
-1. A leitura de `bronze.usuarios`, `silver.usuario` e `restrito.usuario_pseudonimo` é negada (`permission denied`).
+1. O papel `consumo` não tem permissão nos schemas `bronze`, `silver`, `quarentena` e `restrito` (tabela de privilégios), e as tentativas de leitura são negadas (`permission denied`).
 2. A varredura de todas as linhas de `gold.dim_usuario`, `gold.fato_interacao` e `gold.fato_recomendacao` encontra zero ocorrências de padrões de e-mail, CPF ou telefone.
-3. A pessoa aparece só como `Otávio C***` e pelo pseudônimo, como no gráfico "Pessoas mais engajadas" do dashboard de exploração (`superset/exportacao_e_evidencias/`).
+3. A pessoa aparece só pelo nome mascarado e pelo pseudônimo (ex.: `André N***`, na tabela "Pessoas mais engajadas" do dashboard de exploração, em `superset/exportacao_e_evidencias/`).
+4. Voltar do pseudônimo ao `usuario_id` só é possível pela tabela restrita, com o dono do banco (seção 5). A demonstração não imprime nenhum `usuario_id` ao lado do seu pseudônimo, porque isso seria uma tabela de correspondência no repositório.

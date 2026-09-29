@@ -2,12 +2,12 @@
 <workflow>
   <name>isolado</name>
   <name_sync_with_filename>Y</name_sync_with_filename>
-  <description>Executa uma camada isoladamente (RF15): FLUXO=bronze abre uma execucao nova; FLUXO=silver reprocessa a execucao informada</description>
+  <description>Executa uma camada isoladamente (RF15): FLUXO=bronze abre uma execucao nova; FLUXO=silver, qualidade, gold ou metadados reprocessa a execucao informada</description>
   <extended_description/>
   <workflow_version/>
   <created_user>-</created_user>
   <modified_user>-</modified_user>
-  <parameters><parameter><name>EXECUCAO_ID</name><default_value></default_value><description>UUID da execucao (vazio = gerar um novo)</description></parameter><parameter><name>FLUXO</name><default_value></default_value><description>bronze ou silver (nome de um workflow em hop/workflows/)</description></parameter><parameter><name>MODO</name><default_value>manual</default_value><description>manual ou agendado</description></parameter></parameters>
+  <parameters><parameter><name>EXECUCAO_ID</name><default_value></default_value><description>UUID da execucao (vazio = gerar um novo)</description></parameter><parameter><name>FLUXO</name><default_value></default_value><description>bronze, silver, qualidade, gold ou metadados (nome de um workflow em hop/workflows/)</description></parameter><parameter><name>MODO</name><default_value>manual</default_value><description>manual ou agendado</description></parameter></parameters>
   <actions>
     <action>
       <name>inicio</name>

@@ -1,5 +1,5 @@
 {
-  "executado_em": "2026-09-29T02:18:00+00:00",
+  "executado_em": "2026-09-29T03:56:33+00:00",
   "runner": "direct",
   "opcoes": [
     "--runner=DirectRunner"
@@ -11,7 +11,7 @@
   "entrada": "dados/silver/interacao",
   "interacoes_lidas": 1327,
   "grupos_mes_categoria": 72,
-  "tempo_s": 0.69,
+  "tempo_s": 0.53,
   "saida": "dados/gold/engajamento_mensal_beam/silver_direct",
   "igual_ao_spark": true,
   "igual_a_gold": {

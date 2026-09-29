@@ -1,0 +1,11 @@
+# Dependencias Python do Desafio 2 (servico beam: Parquet, Beam, provisionamento do Superset e do OpenMetadata,
+# amostras). A imagem apache/beam_python3.12_sdk:2.77.0 ja traz as quatro primeiras nestas versoes;
+# docker/beam.Dockerfile instala este arquivo, entao a imagem e o arquivo nao divergem.
+apache-beam==2.77.0
+pyarrow==25.0.1
+pyyaml==6.0.3
+requests==2.34.2
+psycopg[binary]==3.3.5
+
+# servico evidencias (capturas de tela e PDFs), instalado em docker/evidencias.Dockerfile sobre a imagem do Playwright:
+#   playwright==1.59.0, markdown-it-py==4.2.0; Mermaid 11.4.1 (JavaScript) baixado no build

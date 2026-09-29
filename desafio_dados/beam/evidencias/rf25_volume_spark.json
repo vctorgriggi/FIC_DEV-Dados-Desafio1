@@ -1,5 +1,5 @@
 {
-  "executado_em": "2026-09-29T02:17:58+00:00",
+  "executado_em": "2026-09-29T03:56:06+00:00",
   "runner": "spark",
   "opcoes": [
     "--runner=PortableRunner",
@@ -10,7 +10,7 @@
   ],
   "beam": "2.77.0",
   "cluster": {
-    "master": "spark://172.21.0.4:7077",
+    "master": "spark://172.21.0.2:7077",
     "workers_ativos": 1,
     "cores": 2,
     "memoria_mb": 2048
@@ -18,7 +18,7 @@
   "entrada": "dados/volume/parquet/interacao",
   "interacoes_lidas": 200000,
   "grupos_mes_categoria": 160,
-  "tempo_s": 40.44,
+  "tempo_s": 43.1,
   "saida": "dados/gold/engajamento_mensal_beam/volume_spark",
   "igual_ao_direct": true,
   "igual_a_gold": "nao se aplica (volume sintetico)"

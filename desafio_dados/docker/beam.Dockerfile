@@ -2,4 +2,5 @@
 # do worker pool (versao identica do Beam nos dois lados), mais o driver do PostgreSQL.
 FROM apache/beam_python3.12_sdk:2.77.0
 
-RUN pip install --no-cache-dir "psycopg[binary]==3.3.5"
+COPY requirements-desafio2.txt /tmp/requirements-desafio2.txt
+RUN pip install --no-cache-dir -r /tmp/requirements-desafio2.txt

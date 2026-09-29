@@ -1,6 +1,6 @@
 {
-  "gerado_em": "2026-09-29T02:16:00+00:00",
-  "execucao_silver": "5696f833-18ca-47bb-bf57-b6bf6b57699f",
+  "gerado_em": "2026-09-29T03:54:14+00:00",
+  "execucao_silver": "943c1278-fb29-4b01-86ac-71df4dcaca49",
   "leitor": "pyarrow 25.0.1",
   "experimentos": [
     {
@@ -10,20 +10,20 @@
       "repeticoes": 7,
       "formatos": {
         "parquet": {
-          "bytes": 73312,
+          "bytes": 73318,
           "arquivos": 9,
           "leitura_completa": {
-            "mediana_ms": 4.03,
-            "minimo_ms": 3.15,
+            "mediana_ms": 4.3,
+            "minimo_ms": 3.23,
             "linhas": 1327
           },
           "consulta_seletiva": {
-            "mediana_ms": 1.86,
-            "minimo_ms": 1.64,
+            "mediana_ms": 1.53,
+            "minimo_ms": 1.42,
             "linhas": 164
           },
           "linhas": 1327,
-          "soma_interacao_id": 9684446,
+          "soma_interacao_id": 11445375,
           "tipos_lidos": {
             "data_hora": "timestamp[us]",
             "percentual_conclusao": "decimal128(5, 2)",
@@ -35,17 +35,17 @@
           "bytes": 230802,
           "arquivos": 1,
           "leitura_completa": {
-            "mediana_ms": 2.63,
-            "minimo_ms": 1.9,
+            "mediana_ms": 7.36,
+            "minimo_ms": 1.54,
             "linhas": 1327
           },
           "consulta_seletiva": {
-            "mediana_ms": 1.67,
-            "minimo_ms": 1.43,
+            "mediana_ms": 1.64,
+            "minimo_ms": 1.23,
             "linhas": 164
           },
           "linhas": 1327,
-          "soma_interacao_id": 9684446,
+          "soma_interacao_id": 11445375,
           "tipos_lidos": {
             "data_hora": "timestamp[ns]",
             "percentual_conclusao": "double",
@@ -57,17 +57,17 @@
           "bytes": 511413,
           "arquivos": 1,
           "leitura_completa": {
-            "mediana_ms": 2.93,
-            "minimo_ms": 2.5,
+            "mediana_ms": 2.42,
+            "minimo_ms": 2.27,
             "linhas": 1327
           },
           "consulta_seletiva": {
-            "mediana_ms": 2.56,
-            "minimo_ms": 2.41,
+            "mediana_ms": 2.48,
+            "minimo_ms": 2.14,
             "linhas": 164
           },
           "linhas": 1327,
-          "soma_interacao_id": 9684446,
+          "soma_interacao_id": 11445375,
           "tipos_lidos": {
             "data_hora": "timestamp[s]",
             "percentual_conclusao": "string",
@@ -84,16 +84,16 @@
       "repeticoes": 7,
       "formatos": {
         "parquet": {
-          "bytes": 5078526,
+          "bytes": 5078525,
           "arquivos": 20,
           "leitura_completa": {
-            "mediana_ms": 30.15,
-            "minimo_ms": 19.61,
+            "mediana_ms": 23.52,
+            "minimo_ms": 19.42,
             "linhas": 200000
           },
           "consulta_seletiva": {
-            "mediana_ms": 3.57,
-            "minimo_ms": 3.21,
+            "mediana_ms": 4.22,
+            "minimo_ms": 3.47,
             "linhas": 16364
           },
           "linhas": 200000,
@@ -109,13 +109,13 @@
           "bytes": 30615708,
           "arquivos": 1,
           "leitura_completa": {
-            "mediana_ms": 18.74,
-            "minimo_ms": 17.23,
+            "mediana_ms": 19.73,
+            "minimo_ms": 15.95,
             "linhas": 200000
           },
           "consulta_seletiva": {
-            "mediana_ms": 18.66,
-            "minimo_ms": 17.64,
+            "mediana_ms": 18.1,
+            "minimo_ms": 17.44,
             "linhas": 16364
           },
           "linhas": 200000,
@@ -131,13 +131,13 @@
           "bytes": 72929316,
           "arquivos": 1,
           "leitura_completa": {
-            "mediana_ms": 46.22,
-            "minimo_ms": 40.36,
+            "mediana_ms": 53.2,
+            "minimo_ms": 46.26,
             "linhas": 200000
           },
           "consulta_seletiva": {
-            "mediana_ms": 45.29,
-            "minimo_ms": 40.45,
+            "mediana_ms": 48.38,
+            "minimo_ms": 43.96,
             "linhas": 16364
           },
           "linhas": 200000,

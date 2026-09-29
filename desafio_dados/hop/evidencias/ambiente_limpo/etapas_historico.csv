@@ -1,0 +1,2 @@
+execucao_id,etapa,inicio,fim,duracao_s,status,lidos,gravados,quarentena,mensagem,substituida_em
+7d11e4ab-b386-444c-8525-c6a4e6e361f3,qualidade,2026-09-29 03:19:06.701197+00,2026-09-29 03:19:06.729945+00,0.029,sucesso,27,27,0,todos os testes aprovados,2026-09-29 03:19:28.018515+00

@@ -1,0 +1,3 @@
+execucao_id,teste_id,severidade,fonte,valor_medido,limite,aprovado
+28f6dca5-93b5-49aa-a6ca-8b088c45551d,Q02_INTEGRIDADE_REFERENCIAS,alta,interacoes,98.73,>= 99,f
+28f6dca5-93b5-49aa-a6ca-8b088c45551d,Q08_VALIDADE_POR_ARQUIVO,critica,lote_2/catalogo.csv,0.00,>= 50,f

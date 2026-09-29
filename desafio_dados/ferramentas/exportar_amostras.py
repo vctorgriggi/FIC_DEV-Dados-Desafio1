@@ -6,7 +6,9 @@ Le o banco com o papel dono e grava CSVs pequenos e versionaveis:
   dados/bronze/, dados/silver/amostras/, dados/gold/, dados/quarentena/  amostras da execucao mais recente
   qualidade/resultados/                                                 resultados de todas as execucoes
   hop/evidencias/                                                       execucoes e etapas do workflow
-Dados pessoais (ficticios) nao entram nas amostras: da bronze.usuarios saem so colunas nao pessoais.
+Dados pessoais (ficticios) nao entram nas amostras: da bronze.usuarios saem so colunas nao pessoais. As amostras da
+Silver nao trazem usuario_pseudo: junto do usuario_id, ele formaria uma tabela de correspondencia, que nao pode ir
+para o repositorio (RF33). O pseudonimo aparece so na Gold, onde nao ha usuario_id.
 """
 import csv
 import os
@@ -27,8 +29,12 @@ AMOSTRAS = {
     },
     "dados/silver/amostras": {
         "conteudo": "SELECT * FROM silver.conteudo ORDER BY conteudo_id DESC",
-        "usuario": "SELECT * FROM silver.usuario ORDER BY usuario_id DESC",
-        "usuario_mestre": "SELECT * FROM silver.usuario_mestre ORDER BY registros_origem DESC, usuario_mestre_id",
+        "usuario": "SELECT usuario_id, nome_mascarado, email_mascarado, email_hash, cpf_hash, faixa_etaria, cidade, uf, "
+                   "data_cadastro, atualizado_em, _execucao_id, _origem, _ingerido_em "
+                   "FROM silver.usuario ORDER BY usuario_id DESC",
+        "usuario_mestre": "SELECT usuario_mestre_id, nome_mascarado, email_mascarado, faixa_etaria, cidade, uf, data_cadastro, "
+                          "atualizado_em, registros_origem, _execucao_id "
+                          "FROM silver.usuario_mestre ORDER BY registros_origem DESC, usuario_mestre_id",
         "usuario_correspondencia": "SELECT * FROM silver.usuario_correspondencia ORDER BY (regra = 'proprio'), usuario_id",
         "interacao": "SELECT * FROM silver.interacao ORDER BY data_hora DESC",
         "comentario": "SELECT * FROM silver.comentario ORDER BY (comentario ~ '\\[(email|telefone)\\]') DESC, data DESC",
@@ -47,7 +53,17 @@ AMOSTRAS = {
     },
 }
 COMPLETOS = {  # sem limite de linhas
-    "dados/quarentena/registros": "SELECT quarentena_id, fonte, origem, linha, chave_registro, regra, severidade, mensagem, status, execucao_id, ultima_execucao_id, reprocessado_execucao_id FROM quarentena.registro ORDER BY fonte, origem, linha",
+    "dados/quarentena/registros": "SELECT quarentena_id, fonte, origem, linha, chave_registro, regra, severidade, mensagem, status, criado_em, corrigido_em, reprocessado_em, execucao_id, ultima_execucao_id, reprocessado_execucao_id FROM quarentena.registro ORDER BY fonte, origem, linha",
+    # o que a triagem fez: campo alterado, valor original e valor corrigido; valores de usuarios nao saem (dado pessoal)
+    "dados/quarentena/correcoes": """SELECT q.quarentena_id, q.fonte, q.origem, q.linha, q.chave_registro, q.regra, q.status, k.key AS campo_corrigido,
+               CASE WHEN q.fonte = 'usuarios' THEN '(dado pessoal omitido)' ELSE q.registro_original ->> k.key END AS valor_original,
+               CASE WHEN q.fonte = 'usuarios' THEN '(dado pessoal omitido)' ELSE q.registro ->> k.key END AS valor_corrigido,
+               q.criado_em, q.corrigido_em, q.reprocessado_em, q.reprocessado_execucao_id
+          FROM quarentena.registro q
+          LEFT JOIN LATERAL (SELECT e.key FROM jsonb_each(q.registro) e
+                              WHERE q.registro -> e.key IS DISTINCT FROM q.registro_original -> e.key) k ON TRUE
+         WHERE q.status <> 'pendente'
+         ORDER BY q.status, q.fonte, q.linha""",
     "qualidade/resultados/resultados": "SELECT * FROM qualidade.vw_resultado ORDER BY executado_em, teste_id, fonte",
     "hop/evidencias/execucoes": "SELECT * FROM controle.execucao ORDER BY inicio",
     "hop/evidencias/etapas": "SELECT * FROM controle.etapa ORDER BY inicio",

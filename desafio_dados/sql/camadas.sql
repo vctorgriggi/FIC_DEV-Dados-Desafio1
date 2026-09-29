@@ -46,6 +46,23 @@ CREATE TABLE IF NOT EXISTS controle.etapa (
     PRIMARY KEY (execucao_id, etapa)
 );
 
+-- tentativas anteriores de uma etapa: reprocessar uma etapa (workflows/isolado.hwf) reabre a linha de
+-- controle.etapa; a versao anterior vem para ca antes, para a auditoria nao perder a execucao original
+CREATE TABLE IF NOT EXISTS controle.etapa_historico (
+    execucao_id   TEXT NOT NULL,
+    etapa         TEXT NOT NULL,
+    inicio        TIMESTAMPTZ NOT NULL,
+    fim           TIMESTAMPTZ,
+    duracao_s     NUMERIC(12, 3),
+    status        TEXT NOT NULL,
+    lidos         INTEGER,
+    gravados      INTEGER,
+    quarentena    INTEGER,
+    mensagem      TEXT,
+    substituida_em TIMESTAMPTZ NOT NULL DEFAULT now(),
+    PRIMARY KEY (execucao_id, etapa, inicio)
+);
+
 -- Ciclo de controle usado pelos workflows do Hop (hop/workflows/):
 --   abrir_execucao -> iniciar_etapa -> concluir_etapa | registrar_falha | registrar_ignorada -> finalizar_execucao
 
@@ -65,11 +82,27 @@ BEGIN
 END;
 $$;
 
+-- guarda em controle.etapa_historico a tentativa anterior de uma etapa antes de ela ser sobrescrita;
+-- p_so_concluida: nao arquiva a tentativa em andamento (registrar_falha fecha a propria tentativa)
+CREATE OR REPLACE FUNCTION controle.arquivar_etapa(p_execucao_id TEXT, p_etapa TEXT, p_so_concluida BOOLEAN)
+RETURNS VOID
+LANGUAGE sql
+AS $$
+    INSERT INTO controle.etapa_historico (execucao_id, etapa, inicio, fim, duracao_s, status, lidos, gravados,
+                                          quarentena, mensagem)
+    SELECT execucao_id, etapa, inicio, fim, duracao_s, status, lidos, gravados, quarentena, mensagem
+      FROM controle.etapa
+     WHERE execucao_id = p_execucao_id AND etapa = p_etapa
+       AND NOT (p_so_concluida AND status = 'em_andamento')
+    ON CONFLICT DO NOTHING;
+$$;
+
 CREATE OR REPLACE FUNCTION controle.iniciar_etapa(p_execucao_id TEXT, p_etapa TEXT)
 RETURNS VOID
 LANGUAGE plpgsql
 AS $$
 BEGIN
+    PERFORM controle.arquivar_etapa(p_execucao_id, p_etapa, FALSE);
     INSERT INTO controle.etapa (execucao_id, etapa, status)
     VALUES (p_execucao_id, p_etapa, 'em_andamento')
     ON CONFLICT (execucao_id, etapa) DO UPDATE
@@ -178,6 +211,7 @@ RETURNS VOID
 LANGUAGE plpgsql
 AS $$
 BEGIN
+    PERFORM controle.arquivar_etapa(p_execucao_id, p_etapa, TRUE);
     INSERT INTO controle.etapa (execucao_id, etapa, status, fim, mensagem)
     VALUES (p_execucao_id, p_etapa, 'falha', now(), p_mensagem)
     ON CONFLICT (execucao_id, etapa) DO UPDATE
@@ -185,12 +219,14 @@ BEGIN
 END;
 $$;
 
--- etapa prevista no fluxo que ainda nao existe no projeto (ex.: workflow de outro integrante)
+-- etapa prevista no fluxo que nao roda nesta execucao: workflow ausente (opcional.hwf) ou servico fora do ar
+-- (metadados sem o OpenMetadata)
 CREATE OR REPLACE FUNCTION controle.registrar_ignorada(p_execucao_id TEXT, p_etapa TEXT, p_motivo TEXT)
 RETURNS VOID
 LANGUAGE plpgsql
 AS $$
 BEGIN
+    PERFORM controle.arquivar_etapa(p_execucao_id, p_etapa, TRUE);
     INSERT INTO controle.etapa (execucao_id, etapa, status, fim, mensagem)
     VALUES (p_execucao_id, p_etapa, 'ignorada', now(), p_motivo)
     ON CONFLICT (execucao_id, etapa) DO UPDATE

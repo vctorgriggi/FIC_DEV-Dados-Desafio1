@@ -14,6 +14,7 @@ import json
 import os
 import re
 import time
+from decimal import ROUND_HALF_UP, Decimal
 from pathlib import Path
 
 import psycopg
@@ -52,7 +53,7 @@ ROTULOS = {"categoria": "Categoria", "tipo": "Tipo", "nivel": "Nível", "avaliac
            "convertidas": "Convertidas", "dias_ate_converter": "Dias até converter",
            "nome_mascarado": "Pessoa (nome mascarado)", "pseudonimo": "Pseudônimo", "faixa_etaria": "Faixa etária",
            "uf": "UF", "interacoes": "Interações", "conteudos": "Conteúdos", "conclusoes": "Conclusões",
-           "ultima_interacao": "Última interação"}
+           "ultima_interacao": "Última interação", "execucao": "Execução"}
 TEMPORAL = {"vd_conclusao_coorte": "mes_inicio", "vd_recomendacoes": "data_geracao",
             "kpi_usuarios_ativos_mensal": "mes_referencia", "kpi_engajamento_mensal": "mes_referencia",
             "vw_resultado": "executado_em"}
@@ -169,13 +170,32 @@ def periodo(coluna):
     return filtro(coluna, "TEMPORAL_RANGE", "No filter")
 
 
-def barras(ds, x, metrica, titulo_y, filtros=(), horizontal=True, crescente=True, grupo=None):
-    return {"viz_type": "echarts_timeseries_bar", "datasource": f"{ds}__table", "x_axis": x,
+def anotacao(nome, valor):
+    """Linha de referencia (camada de anotacao do tipo formula): media do catalogo, limite de um teste."""
+    return {"name": nome, "annotationType": "FORMULA", "sourceType": "", "value": str(valor), "overrides": {},
+            "show": True, "showLabel": True, "titleColumn": "", "descriptionColumns": [], "timeColumn": "",
+            "intervalEndColumn": "", "color": "#e04355", "opacity": "", "style": "dashed", "width": 1.5,
+            "showMarkers": False, "hideLine": False}
+
+
+def barras(ds, x, metrica, titulo_y, filtros=(), horizontal=True, crescente=True, grupo=None, referencia=None):
+    return {"annotation_layers": [anotacao(*referencia)] if referencia else [],"viz_type": "echarts_timeseries_bar", "datasource": f"{ds}__table", "x_axis": x,
             "metrics": [metrica], "groupby": [grupo] if grupo else [], "adhoc_filters": list(filtros),
             "orientation": "horizontal" if horizontal else "vertical", "x_axis_sort": metrica,
             "x_axis_sort_asc": crescente, "x_axis_sort_series": "name", "row_limit": 1000,
             "show_value": True, "show_legend": bool(grupo), "rich_tooltip": True,
             "y_axis_title": titulo_y, "y_axis_title_margin": 30, "y_axis_format": ".1f",
+            "color_scheme": "supersetColors", "truncate_metric": True}
+
+
+def evolucao(ds, teste, titulo_y, minimo, limite):
+    """Um ponto por execucao (eixo categorico, em ordem; rotulo = inicio em UTC), por fonte; eixo Y so na faixa relevante."""
+    return {"viz_type": "echarts_timeseries_line", "datasource": f"{ds}__table", "x_axis": "execucao",
+            "x_axis_sort_asc": True, "metrics": ["valor_medido"], "groupby": ["fonte"],
+            "adhoc_filters": [filtro("teste_id", "==", teste)], "row_limit": 10000, "show_legend": True,
+            "rich_tooltip": True, "markerEnabled": True, "legendType": "plain", "y_axis_title": titulo_y, "y_axis_title_margin": 50,
+            "y_axis_bounds": [minimo, 100], "y_axis_format": ".2f", "xAxisLabelRotation": 30,
+            "annotation_layers": [anotacao(f"limite: {limite}%", limite)],
             "color_scheme": "supersetColors", "truncate_metric": True}
 
 
@@ -247,9 +267,15 @@ def dashboard(api: Superset, titulo: str, slug: str, pos: dict, meta: dict, graf
     return dash
 
 
+# cor fixa por fonte: o dashboard reparte as cores da paleta entre todos os rotulos e repetia cores nas
+# series da qualidade; com a cor fixada, a mesma fonte tem a mesma cor nos dois graficos de evolucao
+CORES_FONTE = {"catalogo": "#1f77b4", "usuarios": "#ff7f0e", "interacoes": "#2ca02c", "comentarios": "#d62728",
+               "recomendacoes": "#9467bd"}
+
+
 def metadados(filtros_nativos=None, cruzado=None) -> dict:
     meta = {"color_scheme": "supersetColors", "refresh_frequency": 0, "timed_refresh_immune_slices": [],
-            "expanded_slices": {}, "label_colors": {}, "shared_label_colors": [], "default_filters": "{}",
+            "expanded_slices": {}, "label_colors": dict(CORES_FONTE), "shared_label_colors": [], "default_filters": "{}",
             "native_filter_configuration": filtros_nativos or [], "cross_filters_enabled": bool(cruzado),
             "chart_configuration": {}, "global_chart_configuration": {
                 "scope": {"rootPath": ["ROOT_ID"], "excluded": []}, "chartsInScope": []}}
@@ -332,7 +358,10 @@ def demonstrar_alerta(api: Superset, db: int, grafico_id: int, alerta_id: int) -
 # ---------------------------------------------------------------- numeros da narrativa (RF16)
 
 def pct(v) -> str:
-    return f"{v:.1f}".replace(".", ",").replace(",0", "") + "%"
+    """Percentual com uma casa, arredondado como o ROUND do PostgreSQL (meio para cima), para o texto bater
+    com os graficos: 11,25 vira 11,3 nos dois lugares."""
+    v = Decimal(str(v)).quantize(Decimal("0.1"), rounding=ROUND_HALF_UP)
+    return f"{v}".replace(".", ",").replace(",0", "") + "%"
 
 
 def numeros() -> dict:
@@ -361,6 +390,17 @@ def numeros() -> dict:
             "WHERE d.categoria = %s AND f.tipo_interacao IN ('visualização', 'início', 'conclusão') GROUP BY 1, 2, 3) "
             "SELECT CASE WHEN minutos <= 30 THEN 'ate_30' WHEN minutos <= 90 THEN '31_90' ELSE 'mais_90' END, "
             "100.0 * count(*) FILTER (WHERE concluiu) / count(*), count(*) FROM pares GROUP BY 1", SG)}
+        # recorte recente (os 3 ultimos meses completos em diante), o mesmo que o filtro de periodo mostra:
+        # as taxas por periodo oscilam com amostras pequenas, e a narrativa precisa dizer isso
+        ultimo = ativos[-1][0]
+        inicio_recente = ultimo.replace(year=ultimo.year - (ultimo.month <= 2), month=(ultimo.month - 3) % 12 + 1)
+        recente = q(
+            "WITH pares AS (SELECT f.usuario_pseudo, f.conteudo_id, d.categoria, min(f.data_hora) AS inicio, "
+            "bool_or(f.tipo_interacao = 'conclusão' OR f.percentual_conclusao >= 100) AS concluiu "
+            "FROM gold.fato_interacao f JOIN gold.dim_conteudo d USING (conteudo_id) "
+            "WHERE f.tipo_interacao IN ('visualização', 'início', 'conclusão') GROUP BY 1, 2, 3) "
+            "SELECT categoria, 100.0 * count(*) FILTER (WHERE concluiu) / count(*), count(*) "
+            "FROM pares WHERE inicio >= %s GROUP BY 1 ORDER BY 2", inicio_recente)
     posicao_avaliacao = [c for c, _ in avaliacao].index(SG) + 1
     conv_sg = next(r for r in conversao if r[0] == SG)
     premissas = {
@@ -382,7 +422,7 @@ def numeros() -> dict:
         "ativos_inicio": ativos[0][1], "ativos_fim": ativos[-1][1],
         "mes_inicio": meses[ativos[0][0].month - 1], "mes_fim": meses[ativos[-1][0].month - 1],
         "conclusao_sg": pct(conclusao[0][1]), "conclusao_media": pct(media),
-        "avaliacao_sg": f"{avaliacao[posicao_avaliacao - 1][1]:.2f}".replace(".", ","),
+        "avaliacao_sg": f"{Decimal(str(avaliacao[posicao_avaliacao - 1][1])).quantize(Decimal('0.01'), ROUND_HALF_UP)}".replace(".", ","),
         "posicao_avaliacao": f"{posicao_avaliacao}ª",
         "avancado": pct(por["nivel"]["Avançado"][0]), "avancado_n": por["nivel"]["Avançado"][1],
         "audiovisual": f"{pct(audiovisual[0])} a {pct(audiovisual[1])}".replace("% a", " a"),
@@ -392,6 +432,11 @@ def numeros() -> dict:
         "meta": pct(round(float(media))),
         "sg_ate_30": pct(duracao["ate_30"][0]), "sg_31_90": pct(duracao["31_90"][0]),
         "sg_31_90_n": duracao["31_90"][1],
+        "media_valor": float(media),
+        "mes_recente": meses[inicio_recente.month - 1],
+        "recente_sg": pct(next(r[1] for r in recente if r[0] == SG)),
+        "recente_pior": recente[0][0], "recente_pior_taxa": pct(recente[0][1]),
+        "recente_n": f"{min(r[2] for r in recente)} a {max(r[2] for r in recente)}",
     }
 
 
@@ -440,11 +485,13 @@ def main() -> None:
           numero(ds["kpi_avaliacao"], "avaliacao_media", "nota de 1 a 5", formato=".2f"),
           "Fato. Média das avaliações atribuídas nas interações.", titulo="Avaliação média")
     criar("conclusao_categoria", "D2 · Taxa de conclusão por categoria (narrativa)",
-          barras(ds["vd_conclusao_coorte"], "categoria", "taxa_conclusao", "taxa de conclusão (%)"),
-          "Fato. Mesma definição de gold.kpi_taxa_conclusao.",
+          barras(ds["vd_conclusao_coorte"], "categoria", "taxa_conclusao", "taxa de conclusão (%)",
+                 referencia=(f"média do catálogo: {n['conclusao_media']}", round(n["media_valor"], 1))),
+          "Fato. Mesma definição de gold.kpi_taxa_conclusao. Linha tracejada: média do catálogo.",
           titulo=f"{SG} conclui {n['conclusao_sg']} do que começa: a menor taxa do catálogo")
     criar("quadrante", "D2 · Avaliação x conclusão por categoria",
-          tabela(ds["vd_avaliacao_x_conclusao"], ["categoria", "avaliacao_media", "taxa_conclusao", "quadrante"]),
+          tabela(ds["vd_avaliacao_x_conclusao"], ["categoria", "avaliacao_media", "taxa_conclusao", "quadrante"])
+          | {"column_config": {"avaliacao_media": {"d3NumberFormat": ",.2f"}, "taxa_conclusao": {"d3NumberFormat": ",.1f"}}},
           "Fato. Quadrante em relação às médias gerais de avaliação e de conclusão (sql/sql_lab.sql).",
           titulo=f"Mesmo assim é a {n['posicao_avaliacao']} categoria mais bem avaliada: o problema não parece ser qualidade")
     criar("sg_nivel", f"D2 · Conclusão por nível em {SG}",
@@ -481,14 +528,15 @@ def main() -> None:
                 [periodo("mes_referencia")], grupo="categoria"),
           "Mesma regra do pipeline Beam (RF25).")
     criar("x_qualidade", "D2 · Evolução da validade das fontes (Q01) por execução",
-          linha(ds["vw_resultado"], "executado_em", "valor_medido", "% aprovados na validação",
-                [filtro("teste_id", "==", "Q01_VALIDADE_FONTES")], grupo="fonte", formato="%d/%m %H:%M")
-          | {"time_grain_sqla": None},
+          evolucao(ds["vw_resultado"], "Q01_VALIDADE_FONTES", "% aprovados na validação", 85, 90),
           "RF31: resultado por execução e por fonte. Limite crítico: 90%.")
+    criar("x_qualidade_q02", "D2 · Evolução da integridade referencial (Q02) por execução",
+          evolucao(ds["vw_resultado"], "Q02_INTEGRIDADE_REFERENCIAS", "% de eventos com referências válidas", 98.5, 99),
+          "RF31: segunda métrica acompanhada. Eventos com usuário e conteúdo existentes, por fonte. Limite: 99% (alta).")
     criar("x_pessoas", "D2 · Pessoas mais engajadas (nomes mascarados)",
           tabela(ds["vd_pessoas_engajadas"], ["nome_mascarado", "pseudonimo", "faixa_etaria", "uf", "interacoes",
-                                              "conteudos", "conclusoes", "ultima_interacao"]) | {"row_limit": 10,
-          "order_by_cols": [json.dumps(["interacoes", False])]},
+                                              "conteudos", "conclusoes", "ultima_interacao"])
+          | {"order_by_cols": [json.dumps(["interacoes", False])]},
           "RF33: a pessoa aparece só pelo nome mascarado e pelo pseudônimo; nenhum valor original chega ao consumo.")
     alerta_form = {"viz_type": "table", "datasource": f"{ds['vd_conclusao_coorte']}__table", "query_mode": "aggregate",
                    "groupby": ["categoria"], "metrics": ["taxa_conclusao"], "all_columns": [],
@@ -534,6 +582,10 @@ A categoria não tem mais conteúdo avançado que as outras, então a explicaç�
 3. **Meta e acompanhamento.** Levar a taxa de conclusão da categoria de {n['conclusao_sg']} para {n['meta']} (média do catálogo),
    acompanhada pelo alerta diário "Taxa de conclusão de alguma categoria abaixo de 18%".
 
+**Ressalva.** As taxas por período oscilam: são {n['recente_n']} pares por categoria desde {n['mes_recente']}.
+Nesse recorte, {SG} sobe para {n['recente_sg']} e a menor taxa passa a ser de {n['recente_pior']} ({n['recente_pior_taxa']}).
+O acumulado é a base mais estável, mas não é definitivo; por isso a ação é um piloto medido, e o alerta acompanha todas as categorias.
+
 <small>Limites: amostras pequenas no recorte por nível e tipo, e conversão medida só duas semanas após as recomendações.</small>"""
 
     story = dashboard(api, f"Desafio 2 - Por que {SG} não é concluída?", "desafio2-storytelling",
@@ -554,25 +606,25 @@ A categoria não tem mais conteúdo avançado que as outras, então a explicaç�
     filtros_nativos = [
         filtro_nativo("NATIVE_FILTER-periodo", "Período", "filter_time",
                       "Mês de início do consumo, de geração da recomendação ou de referência",
-                      excluidos=[g["x_qualidade"], g["alerta"], g["x_pessoas"]]),
+                      excluidos=[g["x_qualidade"], g["x_qualidade_q02"], g["alerta"], g["x_pessoas"]]),
         filtro_nativo("NATIVE_FILTER-categoria", "Categoria", "filter_select", "Categoria do conteúdo",
                       {"datasetId": ds["vd_conclusao_coorte"], "column": {"name": "categoria"}},
-                      excluidos=[g["x_qualidade"], g["x_pessoas"]]),
+                      excluidos=[g["x_qualidade"], g["x_qualidade_q02"], g["x_pessoas"]]),
     ]
     md_exploracao = """**Como usar.** Filtros de **período** e **categoria** no painel à esquerda. Clique numa barra de
 *Taxa de conclusão por categoria* para filtrar os demais gráficos por aquela categoria (filtro cruzado).
-A evolução da qualidade (RF31) e a lista de pessoas não são afetadas pelos filtros; na lista, as pessoas aparecem
+A evolução da qualidade (RF31: validade e integridade referencial) e a lista de pessoas não são afetadas pelos filtros; na lista, as pessoas aparecem
 só pelo nome mascarado e pelo pseudônimo (RF33)."""
     explo = dashboard(api, "Desafio 2 - Exploração, filtros e qualidade", "desafio2-exploracao",
                       layout("Exploração, filtros e qualidade", [
                           [("markdown", md_exploracao, 12, 10)],
                           [("grafico", g["x_categoria"], 6, 56), ("grafico", g["x_tipo"], 6, 56)],
                           [("grafico", g["x_posicao"], 4, 56), ("grafico", g["x_engajamento"], 8, 56)],
-                          [("grafico", g["x_qualidade"], 8, 56), ("grafico", g["alerta"], 4, 56)],
-                          [("grafico", g["x_pessoas"], 12, 50)],
+                          [("grafico", g["x_qualidade"], 6, 56), ("grafico", g["x_qualidade_q02"], 6, 56)],
+                          [("grafico", g["alerta"], 4, 50), ("grafico", g["x_pessoas"], 8, 50)],
                       ], nomes, titulos),
                       metadados(filtros_nativos, ([g["x_categoria"]], receptores)),
-                      receptores + [g["x_qualidade"], g["x_pessoas"]])
+                      receptores + [g["x_qualidade"], g["x_qualidade_q02"], g["x_pessoas"]])
 
     alerta_id = alerta(api, db, g["alerta"], ALERTA["cron"])
     dados = api.chamar("GET", f"chart/{g['alerta']}/data/?format=json").json()["result"][0]["data"]

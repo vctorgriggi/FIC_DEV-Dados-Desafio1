@@ -1,0 +1,9 @@
+quarentena_id,fonte,origem,linha,chave_registro,regra,status,campo_corrigido,valor_original,valor_corrigido,criado_em,corrigido_em,reprocessado_em,reprocessado_execucao_id
+7,catalogo,dados/brutos/lote_2/catalogo.csv,10,1010,CONFLITO_VERSAO,descartado,,,,2026-09-29 00:38:28.857531+00:00,,,
+1,catalogo,dados/brutos/lote_2/catalogo.csv,41,1005,DUPLICADO,descartado,,,,2026-09-29 00:38:28.857531+00:00,,,
+162,comentarios,dados/brutos/lote_2/comentarios.json,118,"usuario 15, conteudo 864, 2026-09-10",DUPLICADO,descartado,,,,2026-09-29 00:38:28.857531+00:00,,,
+103,interacoes,dados/brutos/lote_2/interacoes.json,408,"usuario 3, conteudo 560, 2026-08-30T18:19:14",DUPLICADO,descartado,,,,2026-09-29 00:38:28.857531+00:00,,,
+8,usuarios,dados/brutos/lote_2/usuarios.csv,27,155,DUPLICADO,descartado,,(dado pessoal omitido),(dado pessoal omitido),2026-09-29 00:38:28.857531+00:00,,,
+2,catalogo,dados/brutos/lote_2/catalogo.csv,44,1041,VALOR_NEGATIVO,reprocessado,carga_horaria_min,-45,45,2026-09-29 00:38:28.857531+00:00,2026-09-29 00:38:49.462366+00:00,2026-09-29 00:39:03.321064+00:00,fc6374ce-5b9b-45b6-bf6a-f5dbed4d3530
+113,comentarios,dados/brutos/lote_2/comentarios.json,119,"usuario 28, conteudo 512, 2026-09-31",DATA_FUTURA,reprocessado,data,2026-09-31,2026-09-20,2026-09-29 00:38:28.857531+00:00,2026-09-29 00:39:41.400857+00:00,2026-09-29 00:39:55.971528+00:00,7dbd4209-12c0-42bf-92ff-ebe0ff16c4c1
+24,interacoes,dados/brutos/lote_2/interacoes.json,413,"usuario 13, conteudo 1041, 2026-09-15T20:00:00",REF_CONTEUDO,reprocessado,,,,2026-09-29 00:38:28.857531+00:00,,2026-09-29 00:39:03.321064+00:00,fc6374ce-5b9b-45b6-bf6a-f5dbed4d3530

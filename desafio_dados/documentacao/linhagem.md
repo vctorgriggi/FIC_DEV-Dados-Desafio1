@@ -11,7 +11,9 @@ Uma parte é extraída automaticamente pelos conectores; a outra é registrada p
 | `05_linhagem_kpi_taxa_conclusao.png` | o KPI com a Silver antes e o dataset virtual e o dashboard depois |
 | `06_linhagem_bronze_usuarios.png` | dos dois arquivos de usuários à Silver, aos dados mestres, ao schema restrito, à quarentena e à qualidade |
 | `10_dashboard_storytelling_linhagem.png` | o dashboard com os datasets e as tabelas da Gold que o alimentam |
-| `11_pipelines_hop.png` | as etapas do Hop registradas como pipelines, que aparecem nas arestas como a transformação |
+| `11_pipelines_hop.png` | as 13 etapas do Hop registradas como pipelines, que aparecem nas arestas como a transformação |
+| `12_linhagem_ponta_a_ponta.png` | **o caminho inteiro de um KPI**: arquivos de origem → Bronze → Silver → Gold → `kpi_taxa_conclusao` → dataset virtual → dashboard (4 níveis a montante e 2 a jusante) |
+| `13_linhagem_por_coluna.png` | a linhagem por coluna de `kpi_taxa_conclusao`, com as arestas de `fato_interacao` e `dim_conteudo` até cada coluna do KPI |
 
 ## Visão de ponta a ponta
 
@@ -74,7 +76,7 @@ Cada aresta registrada pela API carrega uma descrição e a pipeline do Hop que 
 | `bronze.usuarios` → `silver.usuario` | pseudonimização, hash com salt, mascaramento, faixa etária no lugar do nascimento (RF33) | `lgpd.*` em `sql/camadas.sql` |
 | `bronze.comentarios` → `silver.comentario` | anonimização do texto livre | `lgpd.anonimizar_texto` |
 | `silver.usuario` → `usuario_mestre`, `usuario_correspondencia`, `restrito.usuario_pseudonimo` | correspondência por `cpf_hash` ou `email_hash`, sobrevivência (RF30) | `silver.publicar()` |
-| `silver.*` → `qualidade.resultado` | 7 testes por execução e fonte | `qualidade.executar()` em `sql/qualidade.sql` |
+| `silver.*` → `qualidade.resultado` | 8 testes por execução e fonte ou arquivo | `qualidade.executar()` em `sql/qualidade.sql` |
 | `silver.*` → `gold.dim_*`, `gold.fato_*` | troca de `usuario_id` pelo pseudônimo da pessoa; `data` e `mes`; conversão da recomendação | `gold.publicar()` em `sql/camada_gold.sql` |
 | `gold.fato_*` + `dim_conteudo` → `gold.kpi_*` | agregações por mês, categoria, tipo e nível | `gold.publicar()` |
 | `gold.*` → datasets `vd_*` | consultas do SQL Lab (junção, agregação, `CASE`, funções de data) | `sql/sql_lab.sql` |
@@ -82,7 +84,7 @@ Cada aresta registrada pela API carrega uma descrição e a pipeline do Hop que 
 
 ## Um KPI e um dataset virtual, até a coluna
 
-**KPI `gold.kpi_taxa_conclusao`** (captura 05). Além da linhagem entre tabelas, a linhagem por coluna diz de onde vem cada número:
+**KPI `gold.kpi_taxa_conclusao`** (capturas 05 e 13). Além da linhagem entre tabelas, a linhagem por coluna diz de onde vem cada número:
 
 | Coluna do KPI | Vem de | Função |
 | --- | --- | --- |
@@ -118,8 +120,8 @@ Exemplo: no storytelling, o gráfico **"Segurança & Governança conclui 15% do 
    SELECT sum(pares_consumo), sum(pares_concluidos) FROM gold.kpi_taxa_conclusao
     WHERE categoria = 'Segurança & Governança';          -- 120 | 18
    ```
-3. **Gold → Silver.** A linhagem de `kpi_taxa_conclusao` (captura 05) leva a `fato_interacao`, que vem de `silver.interacao` mais a correspondência de pessoas. Uma das 18 conclusões é a interação 7305: uma conclusão do conteúdo 683 em 24/09/2026, de `dados/brutos/lote_2/interacoes.json`.
-4. **Silver → Bronze → arquivo.** A Silver guarda `_execucao_id` e `_origem`. Com a chave de negócio, a Bronze devolve a linha exata do arquivo:
+3. **Gold → Silver.** A linhagem de `kpi_taxa_conclusao` (capturas 05 e 12) leva a `fato_interacao`, que vem de `silver.interacao` mais a correspondência de pessoas. O `interacao_id` liga a Gold à Silver da mesma execução. Uma das 18 conclusões é a do usuário 78 no conteúdo 683, em 24/09/2026 às 22:11:23.
+4. **Silver → Bronze → arquivo.** A Silver guarda `_execucao_id` e `_origem`. Com a chave de negócio (usuário, conteúdo, tipo e data e hora), a Bronze devolve a linha exata do arquivo. O `interacao_id` não serve para isso: é uma chave técnica, gerada de novo a cada publicação da Silver.
    ```sql
    SELECT b._origem, b._linha, b._execucao_id, b._ingerido_em
      FROM silver.interacao s
@@ -127,8 +129,8 @@ Exemplo: no storytelling, o gráfico **"Segurança & Governança conclui 15% do 
        ON b._execucao_id = s._execucao_id AND b._origem = s._origem
       AND btrim(b.usuario_id) = s.usuario_id::text AND btrim(b.conteudo_id) = s.conteudo_id::text
       AND b.tipo_interacao = s.tipo_interacao AND b.data_hora::timestamp = s.data_hora
-    WHERE s.interacao_id = 7305;
-   -- dados/brutos/lote_2/interacoes.json | 212 | 5696f833-... | 2026-09-29 02:15:20+00
+    WHERE s.usuario_id = 78 AND s.conteudo_id = 683 AND s.tipo_interacao = 'conclusão';
+   -- dados/brutos/lote_2/interacoes.json | 212 | 943c1278-... | 2026-09-29 03:23:35+00
    ```
    O elemento 212 do array (base 1) é `{"usuario_id": 78, "conteudo_id": 683, "tipo_interacao": "conclusão", "data_hora": "2026-09-24T22:11:23", ...}`.
 5. **Execução.** O `_execucao_id` leva a `controle.execucao` e `controle.etapa`: quando a carga rodou, quanto cada etapa leu e gravou e se houve ressalvas. Se o registro tivesse sido corrigido na quarentena, `quarentena.registro` teria as duas versões, a original e a corrigida.
@@ -138,5 +140,5 @@ O caminho inverso é a **análise de impacto** do OpenMetadata: a partir de `bro
 ## Limitações
 
 - A linhagem registrada pela API descreve o que o código faz, mas não é extraída dele. Se `gold.publicar()` passar a ler uma tabela nova, a aresta precisa entrar no script, e o risco é esquecer. Por isso as arestas ficam no mesmo repositório das funções e são revisadas junto.
-- A linhagem por coluna cobre só o KPI de exemplo (`kpi_taxa_conclusao`) e a sua entrada. As demais arestas são por tabela.
+- A linhagem por coluna cobre só o KPI de exemplo (`kpi_taxa_conclusao`) e a sua entrada (captura 13). As demais arestas são por tabela.
 - A comparação `data_hora::timestamp = s.data_hora` no passo 4 depende de a Silver só converter o texto, sem arredondar. É o caso: a validação rejeita formatos que não convertem exatamente.

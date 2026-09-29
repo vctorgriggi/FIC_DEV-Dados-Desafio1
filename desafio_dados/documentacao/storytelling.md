@@ -33,6 +33,10 @@ Evidências em [`superset/exportacao_e_evidencias/`](../superset/exportacao_e_ev
 - conteúdos curtos concluem mais que os de média duração;
 - a taxa está abaixo do limite do alerta.
 
+A ressalva sobre o recorte recente também é calculada, e não escrita à mão: se a ordem das categorias mudar, o texto muda junto.
+
+De onde vem cada número do texto: `numeros()` em `superset/provisionar.py` consulta a Gold com o papel `consumo` e com as mesmas regras de `gold.kpi_taxa_conclusao` e de `vd_conclusao_coorte`. Os recortes por nível, tipo e período também podem ser refeitos no dashboard de exploração, com os filtros. O recorte por duração (31 a 90 minutos contra até 30) não tem gráfico próprio: é a mesma contagem de pares, agrupada por `dim_conteudo.carga_horaria_min`.
+
 ## RF16 — Narrativa executiva
 
 Dashboard **"Desafio 2 - Por que Segurança & Governança não é concluída?"** (`01_storytelling.png`).
@@ -72,11 +76,14 @@ A descrição de cada gráfico no Superset repete a classificação e avisa quan
    - **Recomendação.** Priorizar essa trilha na recomendação para quem já iniciou conteúdo da categoria.
    - **Meta e acompanhamento.** Levar a conclusão da categoria de 15% para 22%, a média do catálogo, acompanhada pelo alerta diário (RF18).
 
-**Limites declarados no próprio dashboard:**
+**Ressalva declarada no próprio dashboard.** As taxas por período oscilam, porque são 44 a 80 pares por categoria desde junho. Nesse recorte, Segurança & Governança sobe para 20,9%, e a menor taxa passa a ser a de Business Intelligence (11,3%). É o que qualquer pessoa vê ao aplicar o filtro de período na exploração (captura 04). O acumulado é a base mais estável, mas não é definitivo. Por isso a ação é um **piloto medido**, e o alerta acompanha todas as categorias: hoje ele dispara, com Segurança & Governança (15,0%) e Business Intelligence (16,2%) abaixo do limite.
+
+**Limites:**
 
 - os recortes por nível e tipo têm poucos pares (23 a 38 por tipo);
-- a conversão foi medida só duas semanas depois das recomendações (geradas em 13/09/2026);
-- Business Intelligence (16,2%) também está abaixo do limite do alerta e é a candidata seguinte.
+- a conversão foi medida só duas semanas depois das recomendações (geradas em 13/09/2026).
+
+**Anotações nos gráficos.** A linha tracejada vermelha marca a média do catálogo (22,3%) no gráfico de conclusão por categoria e o limite de cada teste nos gráficos de qualidade. Os números seguem o formato brasileiro (4,58; 15,0) em textos, tabelas e eixos.
 
 ## RF17 — SQL Lab e conjuntos de dados virtuais
 
@@ -105,8 +112,10 @@ Dashboard **"Desafio 2 - Exploração, filtros e qualidade"** (`02_exploracao.pn
 
 | Filtro | Tipo | Age sobre | Não age sobre |
 | --- | --- | --- | --- |
-| **Período** | intervalo de datas | o mês de início do consumo, de geração da recomendação ou de referência, conforme o gráfico | a evolução da qualidade (o eixo é a execução), a lista de pessoas e o conteúdo do alerta |
+| **Período** | intervalo de datas | o mês de início do consumo, de geração da recomendação ou de referência, conforme o gráfico | os dois gráficos de evolução da qualidade (o eixo é a execução), a lista de pessoas e o conteúdo do alerta |
 | **Categoria** (dimensão de negócio) | seleção múltipla, valores de `vd_conclusao_coorte` | todos os gráficos com categoria | a evolução da qualidade e a lista de pessoas |
+
+O painel de exploração também mostra a evolução de duas métricas de qualidade por execução (RF31): a validade das fontes (Q01) e a integridade referencial (Q02), cada uma com a linha do seu limite.
 
 Evidências:
 
@@ -145,7 +154,7 @@ O gráfico emissor usa barras verticais de propósito. No Superset 6.1, o clique
 Registrado em `alerta_execucao.json`:
 
 - estado `Success`, com valor medido 15,0, que é menor que 18;
-- enviado de `alertas@plataforma.example` para `coordenacao.conteudo@plataforma.example`, 51 s depois de agendado.
+- enviado de `alertas@plataforma.example` para `coordenacao.conteudo@plataforma.example`, 25 s depois de agendado, na demonstração refeita após a execução de referência `943c1278`.
 
 O e-mail (`alerta_email.html`, captura `08_alerta_email_recebido.png`) traz a descrição do alerta, com a ação esperada, e a tabela das oito categorias.
 

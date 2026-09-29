@@ -59,7 +59,7 @@ flowchart TB
 | --- | --- | --- | --- |
 | Fontes → Bronze | **E + L** | Hop (`bronze_*.hpl`) | lê CSV e JSON e grava como texto, sem transformar, com `_execucao_id`, `_origem`, `_linha` e `_ingerido_em`; append-only |
 | Bronze → Silver | **T** | SQL no PostgreSQL (`validacao.classificar_*`), roteado pelo Hop (`silver_*.hpl`) | tipagem, padronização, validação, deduplicação, dados mestres e proteção LGPD; rejeitados → quarentena; publicação atômica |
-| Silver → qualidade | **T** (verificação) | SQL (`qualidade.executar`) | 7 testes; um crítico reprovado bloqueia a Gold |
+| Silver → qualidade | **T** (verificação) | SQL (`qualidade.executar`) | 8 testes; um crítico reprovado bloqueia a Gold |
 | Silver → Gold | **T** | SQL (`gold.publicar`) | dimensões, fatos e KPIs, numa transação |
 | Silver → Parquet → Beam | **E**, **T**, **L** | `exportar_silver.py` + Apache Beam | extrai a Silver, transforma fora do banco (Beam) e carrega em Parquet |
 | Gold → Superset | consumo | SQL Lab e Superset, papel `consumo` | consultas, datasets virtuais, dashboards e alerta |
@@ -85,7 +85,7 @@ Por isso a arquitetura é **híbrida**, com o ELT como espinha dorsal.
 | Critério | Por que ETL no ramo Beam |
 | --- | --- |
 | **Escala** | o dia em que o volume de interações não couber num banco relacional, o cálculo mensal já existe em Beam, sobre Parquet, e roda num cluster Spark sem mudar o código (RF25) |
-| **Custo de leitura** | o Parquet particionado por mês lê só o mês e as colunas pedidos: 13 vezes mais rápido que o JSON e 5 vezes mais que o CSV no volume de 200 mil ([`parquet_beam.md`](parquet_beam.md)) |
+| **Custo de leitura** | o Parquet particionado por mês lê só o mês e as colunas pedidos: 11 vezes mais rápido que o JSON e 4 vezes mais que o CSV no volume de 200 mil ([`parquet_beam.md`](parquet_beam.md)) |
 | **Sem divergência** | o resultado do Beam é comparado com a Gold a cada execução (`igual_a_gold`) |
 
 ### Limitações da solução anterior (Desafio 1, scripts isolados)
@@ -96,7 +96,7 @@ Por isso a arquitetura é **híbrida**, com o ELT como espinha dorsal.
 | um único script, sem etapas registradas | uma falha no meio só aparecia no log; não se sabia o que tinha rodado | `controle.execucao` e `controle.etapa`, com início, fim, contagens e status de cada etapa; execução isolada de uma etapa |
 | rejeitados num arquivo JSON | não havia como corrigir e reprocessar um registro | quarentena com ciclo pendente → corrigido → reprocessado, ou descartado |
 | carga direto nas tabelas finais | uma falha no meio deixava os bancos parcialmente atualizados | preparo + publicação atômica |
-| nenhum teste de qualidade separado da validação | um lote ruim chegava ao dashboard | 7 testes; crítico reprovado bloqueia a Gold |
+| nenhum teste de qualidade separado da validação | um lote ruim chegava ao dashboard | 8 testes; crítico reprovado bloqueia a Gold |
 | sem catálogo nem linhagem | o significado dos KPIs estava só na documentação | OpenMetadata com glossário, donos, classificação e linhagem |
 | sem fonte de usuários; nenhuma proteção de dado pessoal | — | cadastro fictício, pseudonimização, hash com salt, mascaramento, papel `consumo` |
 | execução manual | — | agendamento nativo do Hop (`hop-agendador`) |
@@ -123,7 +123,7 @@ Por isso a arquitetura é **híbrida**, com o ELT como espinha dorsal.
 | base | ~0,7 GB |
 | governança | ~3,5 GB |
 | Spark | ~1,3 GB, mais até 2 GB por job |
-| Superset com alertas | ~1 GB |
+| Superset (~0,5 GB) com o perfil alertas (~0,5 GB) | ~1 GB |
 
 Com 8 GB, suba um perfil por vez (`docker compose --profile <perfil> stop` libera). Durante o desenvolvimento, uma VM de 8 GB com outros projetos no ar matou processos por falta de memória. Por isso todos os serviços têm `restart: unless-stopped`.
 

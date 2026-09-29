@@ -81,3 +81,17 @@ a2f8a3b3-1852-4e3d-864c-36a4f479fca0,metadados,2026-09-29 00:40:56.399541+00:00,
 5696f833-18ca-47bb-bf57-b6bf6b57699f,qualidade,2026-09-29 02:15:21.208328+00:00,2026-09-29 02:15:21.239572+00:00,0.031,sucesso,18,18,0,todos os testes aprovados
 5696f833-18ca-47bb-bf57-b6bf6b57699f,gold,2026-09-29 02:15:21.256782+00:00,2026-09-29 02:15:21.355978+00:00,0.099,sucesso,,3965,0,
 5696f833-18ca-47bb-bf57-b6bf6b57699f,metadados,2026-09-29 02:15:21.384055+00:00,2026-09-29 02:15:22.002225+00:00,0.618,sucesso,,,0,ingestoes do PostgreSQL e do Superset disparadas no OpenMetadata
+943c1278-fb29-4b01-86ac-71df4dcaca49,bronze_catalogo,2026-09-29 03:23:35.587978+00:00,2026-09-29 03:23:35.697910+00:00,0.110,sucesso,1050,1050,0,
+943c1278-fb29-4b01-86ac-71df4dcaca49,bronze_usuarios,2026-09-29 03:23:35.722260+00:00,2026-09-29 03:23:35.766626+00:00,0.044,sucesso,180,180,0,
+943c1278-fb29-4b01-86ac-71df4dcaca49,bronze_interacoes,2026-09-29 03:23:35.787269+00:00,2026-09-29 03:23:35.902269+00:00,0.115,sucesso,1416,1416,0,
+943c1278-fb29-4b01-86ac-71df4dcaca49,bronze_comentarios,2026-09-29 03:23:35.918397+00:00,2026-09-29 03:23:35.998127+00:00,0.080,sucesso,1119,1119,0,
+943c1278-fb29-4b01-86ac-71df4dcaca49,bronze_recomendacoes,2026-09-29 03:23:36.015136+00:00,2026-09-29 03:23:36.084707+00:00,0.070,sucesso,1200,1200,0,
+943c1278-fb29-4b01-86ac-71df4dcaca49,silver_usuario,2026-09-29 03:23:36.109540+00:00,2026-09-29 03:23:36.175801+00:00,0.066,sucesso_com_ressalvas,180,173,5,versoes vencidas por sobrevivencia: 1; descartados na triagem da quarentena: 1 (continuam na bronze)
+943c1278-fb29-4b01-86ac-71df4dcaca49,silver_conteudo,2026-09-29 03:23:36.194469+00:00,2026-09-29 03:23:36.361485+00:00,0.167,sucesso_com_ressalvas,1050,1043,4,versoes vencidas por sobrevivencia: 1; descartados na triagem da quarentena: 2 (continuam na bronze)
+943c1278-fb29-4b01-86ac-71df4dcaca49,silver_interacao,2026-09-29 03:23:36.381839+00:00,2026-09-29 03:23:36.539959+00:00,0.158,sucesso_com_ressalvas,1416,1327,88,descartados na triagem da quarentena: 1 (continuam na bronze)
+943c1278-fb29-4b01-86ac-71df4dcaca49,silver_comentario,2026-09-29 03:23:36.568546+00:00,2026-09-29 03:23:36.677267+00:00,0.109,sucesso_com_ressalvas,1119,1061,57,descartados na triagem da quarentena: 1 (continuam na bronze)
+943c1278-fb29-4b01-86ac-71df4dcaca49,silver_recomendacao,2026-09-29 03:23:36.695347+00:00,2026-09-29 03:23:36.798038+00:00,0.103,sucesso,1200,1200,0,
+943c1278-fb29-4b01-86ac-71df4dcaca49,silver_publicacao,2026-09-29 03:23:36.809409+00:00,2026-09-29 03:23:36.872053+00:00,0.063,sucesso_com_ressalvas,,4804,154,173 usuarios consolidados em 171 pessoas
+943c1278-fb29-4b01-86ac-71df4dcaca49,qualidade,2026-09-29 03:23:36.912149+00:00,2026-09-29 03:23:36.946736+00:00,0.035,sucesso,27,27,0,todos os testes aprovados
+943c1278-fb29-4b01-86ac-71df4dcaca49,gold,2026-09-29 03:23:36.964419+00:00,2026-09-29 03:23:37.117997+00:00,0.154,sucesso,,3965,0,
+943c1278-fb29-4b01-86ac-71df4dcaca49,metadados,2026-09-29 03:53:00.296714+00:00,2026-09-29 03:53:00.738736+00:00,0.442,sucesso,,,0,ingestoes do PostgreSQL e do Superset disparadas no OpenMetadata

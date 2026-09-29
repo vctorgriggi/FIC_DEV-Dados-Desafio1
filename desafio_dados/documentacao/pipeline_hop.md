@@ -40,9 +40,10 @@ Por que ELT neste projeto:
 | `hop/workflows/qualidade.hwf` | Roda os testes (`qualidade.executar`) e aborta se algum teste crítico reprovar, o que impede a Gold (RF31, Estudante 2) |
 | `hop/workflows/gold.hwf` | Publica a Gold (`gold.publicar`) numa transação (RF26, Estudante 2) |
 | `hop/workflows/metadados.hwf` | Se o OpenMetadata responde, dispara as ingestões do PostgreSQL e do Superset (`pipelines/publicar_metadados.hpl`); senão, marca a etapa como `ignorada` (RF27, Estudante 3) |
-| `hop/workflows/opcional.hwf` | Executa `workflows/<etapa>.hwf` se existir; senão registra a etapa como `ignorada`. Hoje as três etapas existem; o mecanismo ficou para etapas futuras |
-| `hop/workflows/isolado.hwf` | Executa uma camada isoladamente (`FLUXO=bronze` ou `FLUXO=silver`) |
+| `hop/workflows/opcional.hwf` | Executa `workflows/<etapa>.hwf` se existir; senão registra a etapa como `ignorada` (qualidade, Gold e metadados passam por ele) |
+| `hop/workflows/isolado.hwf` | Executa uma etapa isoladamente: `FLUXO=bronze` numa execução nova; `silver`, `qualidade`, `gold` ou `metadados` reprocessando uma execução existente |
 | `hop/workflows/agendado.hwf` | Agendamento nativo do Hop: roda o fluxo completo todo dia às 05:00 UTC (02:00 de Brasília) |
+| `hop/workflows/agendado_demonstracao.hwf` | O mesmo agendador, a cada 2 minutos, para demonstrar a execução agendada sem esperar as 05:00 |
 | `hop/pipelines/bronze_<fonte>.hpl` | Lê o arquivo do Desafio 1 e o do lote 2, acrescenta `_execucao_id`, `_origem` e `_linha` e grava em `bronze.<fonte>` |
 | `hop/pipelines/silver_<entidade>.hpl` | Classifica, separa aprovados e rejeitados e grava na área de preparo |
 | `hop/pipelines/definir_execucao.hpl` | Usa o `EXECUCAO_ID` recebido ou gera um UUID |
@@ -59,6 +60,7 @@ docker compose run --rm hop workflows/principal.hwf                   # fluxo co
 docker compose run --rm hop workflows/principal.hwf EXECUCAO_ID=<uuid> MODO=manual
 docker compose run --rm hop workflows/isolado.hwf FLUXO=bronze        # só a Bronze, execução nova
 docker compose run --rm hop workflows/isolado.hwf FLUXO=silver EXECUCAO_ID=<uuid>  # reprocessa a Silver de uma execução
+docker compose run --rm hop workflows/isolado.hwf FLUXO=qualidade EXECUCAO_ID=<uuid>  # só os testes (ou FLUXO=gold, FLUXO=metadados)
 docker compose --profile agendamento up -d                            # agendamento diário (serviço hop-agendador)
 docker compose --profile hop up -d                                    # Hop Web: http://localhost:8081/ui
 ```
@@ -92,7 +94,7 @@ Números de referência com os dados de teste (primeira execução completa):
 
 Cada anomalia de `dados/brutos/lote_2/ANOMALIAS.md` cai na regra esperada.
 
-Depois das duas rodadas de triagem ([`hop/evidencias/triagem_quarentena.sql`](../hop/evidencias/triagem_quarentena.sql)), a execução de referência (`5696f833`) fica assim:
+Depois das duas rodadas de triagem ([`hop/evidencias/triagem_quarentena.sql`](../hop/evidencias/triagem_quarentena.sql)), a execução de referência (`943c1278`) fica assim:
 
 | Etapa | Lidos | Gravados | Quarentena | Mensagem |
 | --- | --- | --- | --- | --- |
@@ -101,11 +103,13 @@ Depois das duas rodadas de triagem ([`hop/evidencias/triagem_quarentena.sql`](..
 | silver_interacao | 1416 | 1327 | 88 | descartados: 1 |
 | silver_comentario | 1119 | 1061 | 57 | descartados: 1 |
 | silver_publicacao | — | 4804 | 154 pendentes | 173 usuários consolidados em 171 pessoas |
-| qualidade | 18 | 18 aprovados | 0 | todos os testes aprovados |
+| qualidade | 27 | 27 aprovados | 0 | todos os testes aprovados (8 testes, por fonte ou arquivo) |
 | gold | — | 3965 | — | |
 | metadados | — | — | — | ingestões do PostgreSQL e do Superset disparadas no OpenMetadata |
 
-A quarentena fica com 162 registros: 154 pendentes, 5 descartados e 3 reprocessados (o conteúdo 1041 do `L2-C04`, a interação `L2-I13` e o comentário `L2-K09`). As seis execuções da demonstração, inclusive a que foi bloqueada pela qualidade, estão em [`hop/evidencias/execucoes.csv`](../hop/evidencias/execucoes.csv) e [`etapas.csv`](../hop/evidencias/etapas.csv).
+A quarentena fica com 162 registros: 154 pendentes, 5 descartados e 3 reprocessados (o conteúdo 1041 do `L2-C04`, a interação `L2-I13` e o comentário `L2-K09`). As sete execuções do banco de referência, inclusive a que foi bloqueada pela qualidade, estão em [`hop/evidencias/execucoes.csv`](../hop/evidencias/execucoes.csv) e [`etapas.csv`](../hop/evidencias/etapas.csv).
+
+**Etapa reprocessada.** Na execução de referência, a etapa `metadados` rodou três vezes. Na primeira, o OpenMetadata ainda subia, e a etapa ficou `ignorada`. As outras duas usaram `isolado.hwf FLUXO=metadados`. Reprocessar uma etapa reabre a sua linha em `controle.etapa`, mas a tentativa anterior vai antes para `controle.etapa_historico`, e a auditoria não perde nada.
 
 ## Quarentena: consultar, corrigir e reprocessar
 
@@ -132,6 +136,21 @@ Depois da correção, reprocesse a Silver com `workflows/isolado.hwf FLUXO=silve
 
 Cada passo foi executado e conferido. Rode os comandos a partir de `desafio_dados/`.
 
+**Evidências.** Todos os passos foram executados num **ambiente limpo**: um projeto do Compose separado (`-p d2teste`), com volumes novos e portas próprias, partindo de um clone do repositório. Isso prova também que o fluxo roda do zero. Os logs e as tabelas de controle estão em [`hop/evidencias/ambiente_limpo/`](../hop/evidencias/ambiente_limpo/):
+
+| Log | Demonstração | Resultado |
+| --- | --- | --- |
+| `01_execucao_completa.log` | fluxo completo num banco vazio | código 0, `sucesso_com_ressalvas`, 162 registros na quarentena, Gold publicada |
+| `02_so_bronze.log` | etapa isolada (`FLUXO=bronze`) | código 0, `sucesso`: sem quarentena, o estado final é sucesso pleno |
+| `03_reprocessar_qualidade.log` | reprocessar uma etapa (`FLUXO=qualidade`) | a tentativa anterior foi para `etapas_historico.csv` |
+| `04_falha_arquivo_ausente.log` | falha de arquivo: fonte ausente | código 1; `bronze_fontes` = `falha` antes de qualquer carga |
+| `05_falha_arquivo_corrompido.log` | falha de arquivo: JSON truncado | código 1; `bronze_interacoes` = `falha`; Silver e Gold intactas |
+| `06_falha_estrutura_do_arquivo.log` | falha de arquivo: CSV sem a coluna `categoria` | código 1; Q08 = 0% em `lote_2/catalogo.csv`; Gold bloqueada |
+| `07_falha_conexao.log` | falha de conexão: PostgreSQL parado | código 1; "The connection attempt failed"; nada é gravado, porque não há banco |
+| `08_agendamento_a_cada_2_minutos.log` | execução por agendamento | duas execuções com `modo = agendado`, disparadas pelo agendador nativo |
+
+A tabela [`execucoes.csv`](../hop/evidencias/ambiente_limpo/execucoes.csv) dessa pasta tem as 7 execuções registradas: completa, só Bronze, três falhas e duas agendadas. A falha de conexão só aparece no log.
+
 1. **Execução normal com quarentena.** `docker compose run --rm hop workflows/principal.hwf` → código 0, status `sucesso_com_ressalvas`, 162 registros em quarentena com a regra e a mensagem de cada um.
 2. **Falha de arquivo (ausente).** Tire temporariamente uma fonte do lugar e rode o fluxo:
    ```bash
@@ -156,10 +175,14 @@ Cada passo foi executado e conferido. Rode os comandos a partir de `desafio_dado
 - **Identidade da quarentena por (fonte, origem, linha, hash).** As fontes são imutáveis e relidas a cada execução. Sem essa identidade, cada execução duplicaria as pendências, e uma correção não teria como substituir o registro original.
 - **Verificação das fontes antes da Bronze.** No Hop 2.19, o `JsonInput` acusa "No file(s) specified" ao terminar a lista de arquivos, mesmo quando o arquivo existe, se a opção "não falhar se não houver arquivo" estiver desligada. Com ela ligada, um arquivo ausente passa em silêncio. Por isso a opção fica ligada, e a action nativa `Check if files exist` (`FILES_EXIST`) garante a pré-condição antes de qualquer carga.
 - **Segredos.** A chave de pseudonimização e o salt chegam às consultas como variáveis do Hop geradas do `.env` (`docker/hop/segredos.sh`). Valor vazio, curto ou de exemplo interrompe a etapa com mensagem clara.
-- **Agendamento nativo.** A action Start do Hop repete o workflow diariamente, no serviço `hop-agendador`. O horário está em UTC para que execuções manuais e agendadas usem o mesmo fuso nas regras de data.
+- **Agendamento nativo.** A action Start do Hop repete o workflow diariamente, no serviço `hop-agendador`. O horário está em UTC para que execuções manuais e agendadas usem o mesmo fuso nas regras de data. A action Start não aceita variáveis no horário. Por isso a demonstração usa uma cópia do workflow com intervalo de 2 minutos (`agendado_demonstracao.hwf`), em vez de mudar o agendamento real:
+  ```bash
+  docker compose run -d --name agendador_demo hop workflows/agendado_demonstracao.hwf   # ~5 min depois:
+  docker logs agendador_demo; docker rm -f agendador_demo
+  ```
 
 ## Limitações conhecidas
 
-- **CSV lido por posição.** O `CSV file input` do Hop ignora os nomes do cabeçalho. Um arquivo sem uma coluna (`dados/brutos/falhas/catalogo_sem_coluna_categoria.csv`) não para a Bronze: os valores se deslocam e a Silver manda as linhas para a quarentena por domínio inválido. O problema aparece, mas como quarentena em massa, não como falha de arquivo.
+- **CSV lido por posição.** O `CSV file input` do Hop ignora os nomes do cabeçalho. Um arquivo sem uma coluna (`dados/brutos/falhas/catalogo_sem_coluna_categoria.csv`) não para a Bronze: os valores se deslocam e a Silver manda as linhas para a quarentena. Quem para o fluxo é o teste crítico Q08 (validade por arquivo), antes da Gold. O arquivo quebrado fica registrado na Bronze e na quarentena, mas não chega ao consumo.
 - **Banco caindo no meio de uma execução.** A execução fica `em_andamento`, porque não há como registrar a falha. Ao reprocessar essa execução, `finalizar_execucao` a conclui como `falha` enquanto houver etapa nesse estado.
 - **Arquivo ausente não é nomeado no log.** A action `FILES_EXIST` só nomeia o arquivo que falta no nível de log Detailed. A mensagem da etapa lista as fontes a conferir.

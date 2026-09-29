@@ -1,8 +1,8 @@
 # Pipeline de Recomendação e Dashboard de Conteúdos Educacionais
 
-FIC_DEV — Programador de Sistemas com IA · Fundamentos de Dados para IA · Desafio Prático 1
+FIC_DEV — Programador de Sistemas com IA · Fundamentos de Dados para IA · Desafios Práticos 1 e 2
 
-> **Desafio Prático 2.** A solução do Desafio 1 continua funcionando como está. O Desafio 2 (camadas Bronze, Silver e Gold no Apache Hop, Parquet e Apache Beam, qualidade, OpenMetadata, LGPD e storytelling) está na seção [Desafio 2](#desafio-2--plataforma-de-dados-em-camadas). Enunciado em [`../docs/desafio-2/`](../docs/desafio-2/README.md).
+> **Desafio Prático 2.** A solução do Desafio 1 continua funcionando como está. O Desafio 2 (camadas Bronze, Silver e Gold no Apache Hop, Parquet e Apache Beam, qualidade, OpenMetadata, LGPD e storytelling) está na seção [Desafio 2](#desafio-2--plataforma-de-dados-em-camadas). Enunciado em [`../docs/desafio-2/`](../docs/desafio-2/README.md) (no repositório, fora desta pasta).
 
 **Equipe**
 
@@ -39,7 +39,7 @@ Um único comando (`python -m src.main`, dentro do container `app`) executa o fl
 | Apresentação | Apache Superset 6.1 conectado ao PostgreSQL |
 | Orquestração | Docker Compose — nada é instalado na máquina além do Docker |
 
-Diagrama e modelo de dados: `documentacao/arquitetura.pdf` e `documentacao/modelo_de_dados.pdf`.
+Diagrama e modelo de dados: `documentacao/arquitetura_desafio1.pdf` e `documentacao/modelo_de_dados.pdf`. A arquitetura do Desafio 2 está em `documentacao/arquitetura.pdf`.
 
 ## Instalação e execução
 
@@ -95,7 +95,7 @@ Se uma porta já estiver em uso na máquina, mude `*_HOST_PORT` no `.env`. Confi
 
 O Desafio 2 evolui esta mesma pasta. Nada do Desafio 1 foi alterado: o schema `public`, os arquivos de `dados/brutos/` e `python -m src.main` seguem iguais e passam a ser **fontes** das camadas novas.
 
-**Visão geral e decisão ELT/híbrida (RF19):** [`documentacao/arquitetura_desafio2.md`](documentacao/arquitetura_desafio2.md), também em PDF.
+**Visão geral e decisão ELT/híbrida (RF19):** [`documentacao/arquitetura.md`](documentacao/arquitetura.md), também em PDF (`arquitetura.pdf`).
 
 | Integrante | Parte no Desafio 2 |
 |---|---|
@@ -107,19 +107,19 @@ O Desafio 2 evolui esta mesma pasta. Nada do Desafio 1 foi alterado: o schema `p
 
 | RF | O que foi feito | Documento | Evidência |
 |---|---|---|---|
-| RF15 | configuração fora do código, segredos só no `.env`, etapas isoladas, versões registradas | [`arquitetura_desafio2.md`](documentacao/arquitetura_desafio2.md) | `.env.example`, `config.yaml`, `hop/environments/` |
+| RF15 | configuração fora do código, segredos só no `.env`, etapas isoladas, versões registradas | [`arquitetura.md`](documentacao/arquitetura.md) | `.env.example`, `config.yaml`, `hop/environments/` |
 | RF16 | storytelling: pergunta, contexto → evidência → descoberta → ação, fato × hipótese × recomendação | [`storytelling.md`](documentacao/storytelling.md) (+ PDF) | `superset/exportacao_e_evidencias/01_storytelling.png` |
 | RF17 | 4 consultas no SQL Lab, salvas e como datasets virtuais | [`storytelling.md`](documentacao/storytelling.md), [`sql/sql_lab.sql`](sql/sql_lab.sql) | `06_sql_lab_consultas_salvas.png`, `consultas_sql_lab.zip` |
 | RF18 | filtros de período e categoria, filtro cruzado, alerta com e-mail entregue | [`storytelling.md`](documentacao/storytelling.md) | capturas 02–08, `alerta_execucao.json`, `alerta_email.html` |
-| RF19 | ELT no fluxo principal, híbrido com o ramo Beam; justificativa e limites do Desafio 1 | [`arquitetura_desafio2.md`](documentacao/arquitetura_desafio2.md) (+ PDF) | — |
-| RF20–RF23 | Bronze, Silver, workflow com agendamento, quarentena, correção e reprocessamento, falhas de arquivo, regra e conexão | [`pipeline_hop.md`](documentacao/pipeline_hop.md), [`contratos.md`](documentacao/contratos.md) | `hop/` exportado, `hop/evidencias/`, `dados/bronze/`, `dados/silver/amostras/`, `dados/quarentena/` |
+| RF19 | ELT no fluxo principal, híbrido com o ramo Beam; justificativa e limites do Desafio 1 | [`arquitetura.md`](documentacao/arquitetura.md) (+ PDF) | — |
+| RF20–RF23 | Bronze, Silver (com regras de valores ausentes), workflow com execução manual, isolada e agendada, quarentena, correção e reprocessamento, falhas de arquivo, estrutura, regra e conexão | [`pipeline_hop.md`](documentacao/pipeline_hop.md), [`contratos.md`](documentacao/contratos.md) | `hop/` exportado, `hop/evidencias/` (inclusive `ambiente_limpo/`, com os logs de cada falha e do agendamento), `dados/bronze/`, `dados/silver/amostras/`, `dados/quarentena/` (registros e correções) |
 | RF24 | Silver em Parquet particionado por mês; comparação com CSV e JSON | [`parquet_beam.md`](documentacao/parquet_beam.md) | `dados/silver/`, `beam/evidencias/rf24_medicoes.json` |
-| RF25 | pipeline Beam no DirectRunner e no Spark, mesmo resultado, conferido com a Gold | [`parquet_beam.md`](documentacao/parquet_beam.md) | `beam/evidencias/rf25_*.json`, `dados/gold/engajamento_mensal_beam/` |
+| RF25 | pipeline Beam no DirectRunner e no Spark, mesmo resultado, conferido com a Gold | [`parquet_beam.md`](documentacao/parquet_beam.md) | `beam/evidencias/rf25_*.json`, `spark_master_aplicacoes.png`, `dados/gold/engajamento_mensal_beam/` |
 | RF26 | Gold: 2 dimensões, 2 fatos, 5 KPIs; o dashboard só lê a Gold | [`camada_gold.md`](documentacao/camada_gold.md), [`sql/camada_gold.sql`](sql/camada_gold.sql) | `dados/gold/` |
-| RF27, RF28 | OpenMetadata com PostgreSQL e Superset ingeridos, donos, descrições, glossário com 5 termos, classificações LGPD e Camada | [`governanca.md`](documentacao/governanca.md) | `openmetadata/evidencias/01–04, 07–09, 11` |
-| RF29 | linhagem arquivo → Bronze → Silver → Gold → dataset → dashboard, com um KPI até a coluna | [`linhagem.md`](documentacao/linhagem.md) (+ PDF) | `openmetadata/evidencias/05, 06, 10` |
+| RF27, RF28 | OpenMetadata com PostgreSQL e Superset ingeridos, donos, descrições, glossário com 5 termos, classificações LGPD, Medalhão e Tier | [`governanca.md`](documentacao/governanca.md) | `openmetadata/evidencias/01–04, 07–09, 11` |
+| RF29 | linhagem arquivo → Bronze → Silver → Gold → dataset → dashboard, com um KPI até a coluna | [`linhagem.md`](documentacao/linhagem.md) (+ PDF) | `openmetadata/evidencias/05, 06, 10, 12` (ponta a ponta), `13` (por coluna) |
 | RF30 | pessoa mestre por CPF ou e-mail (hash), sobrevivência, dois conflitos demonstrados | [`governanca.md`](documentacao/governanca.md) | `dados/silver/amostras/usuario_mestre.csv`, `usuario_correspondencia.csv` |
-| RF31 | 7 testes nas 5 dimensões; resultado por execução e fonte; bloqueio da Gold demonstrado | [`qualidade/regras.md`](qualidade/regras.md) | `qualidade/resultados/resultados.csv`, captura 02 (evolução) |
+| RF31 | 8 testes nas 5 dimensões; resultado por execução e fonte ou arquivo; evolução de duas métricas; bloqueio da Gold demonstrado duas vezes | [`qualidade/regras.md`](qualidade/regras.md) | `qualidade/resultados/resultados.csv`, captura 02 (evolução do Q01 e do Q02) |
 | RF32, RF33 | inventário, mascaramento, pseudonimização, hash com salt, papel `consumo` | [`lgpd/`](lgpd/) | `lgpd/demonstracao_resultado.txt` |
 | RF34 | evidências de todos os itens acima | esta tabela | — |
 
@@ -127,7 +127,8 @@ O Desafio 2 evolui esta mesma pasta. Nada do Desafio 1 foi alterado: o schema `p
 
 ```bash
 cp .env.example .env                    # quem já tem .env: copie as variáveis novas do bloco "Desafio 2"
-                                        # e preencha LGPD_SALT e LGPD_CHAVE_PSEUDONIMO (valores combinados em privado)
+                                        # preencha LGPD_SALT e LGPD_CHAVE_PSEUDONIMO (valores combinados em privado)
+                                        # e gere OM_FERNET_KEY (comando no .env.example) antes de subir a governança
 docker compose up -d                                          # base: PostgreSQL, MongoDB, Superset, db-init
 docker compose --profile governanca up -d                     # OpenMetadata (a primeira subida migra o banco e demora)
 docker compose run --rm beam openmetadata/provisionar.py      # serviços, ingestões, donos, tags, glossário, linhagem
@@ -145,27 +146,38 @@ docker compose run --rm beam superset/provisionar.py --demonstrar-alerta
 docker compose run --rm beam ferramentas/exportar_amostras.py                 # amostras das camadas e registros
 docker compose run --rm evidencias ferramentas/evidencias.py superset         # capturas (também: alerta, openmetadata)
 docker compose run --rm evidencias ferramentas/gerar_pdfs.py                  # PDFs da documentação
-docker compose exec -T postgres psql -U desafio -d desafio -f - < lgpd/demonstracao.sql
+docker compose exec -T postgres sh -c 'stdbuf -o0 psql -U desafio -d desafio 2>&1' < lgpd/demonstracao.sql > lgpd/demonstracao_resultado.txt
 ```
 
 Os testes rodam com `docker compose run --rm app python -m unittest` (Desafio 1) e `docker compose run --rm beam -m unittest tests.test_beam tests.test_gerar_dados`.
 
 **Demonstrações** com o passo a passo:
 
-- falhas de arquivo, regra e conexão; correção e reprocessamento (RF23): [`pipeline_hop.md`](documentacao/pipeline_hop.md#roteiro-de-demonstração-do-rf23);
-- bloqueio da Gold por teste crítico (RF31): [`qualidade/regras.md`](qualidade/regras.md#demonstração-do-bloqueio-da-gold-execução-d);
+- falhas de arquivo, estrutura, regra e conexão, execução agendada, correção e reprocessamento (RF22, RF23), todas num ambiente limpo: [`pipeline_hop.md`](documentacao/pipeline_hop.md#roteiro-de-demonstração-do-rf23);
+- bloqueio da Gold por teste crítico (RF31): [`qualidade/regras.md`](qualidade/regras.md#demonstração-do-bloqueio-da-gold-execução-d) e [por arquivo com estrutura errada](qualidade/regras.md#segunda-demonstração-arquivo-com-a-estrutura-errada-ambiente-limpo);
 - origem de um valor do dashboard (RF29): [`linhagem.md`](documentacao/linhagem.md#como-localizar-a-origem-de-um-valor-do-dashboard);
 - dois cadastros conflitantes (RF30): [`governanca.md`](documentacao/governanca.md#demonstração-dois-pares-conflitantes);
 - técnicas de proteção (RF33): [`lgpd/demonstracao_resultado.txt`](lgpd/demonstracao_resultado.txt).
 
-**Números da execução de referência** (`5696f833`, 29/09/2026), a mesma em todas as evidências:
+**Números da execução de referência** (`943c1278`, 29/09/2026), a mesma em todas as evidências do banco principal:
 
 - 4804 registros na Silver e 154 pendentes na quarentena;
 - 173 cadastros em 171 pessoas;
-- 18 de 18 testes aprovados;
+- 8 testes, com 27 resultados (por fonte ou arquivo), todos aprovados;
 - 3965 linhas na Gold;
 - taxa de conclusão 22,3%, conversão 3,3%, avaliação 4,48;
 - Beam: 72 grupos (mês × categoria), iguais no DirectRunner, no Spark e na Gold.
+
+### Limitações conhecidas do Desafio 2
+
+Cada documento tem as suas; as principais:
+
+- **Ambiente:** a memória total pedida é de 10 a 12 GB; com 8 GB, suba um perfil por vez.
+- **Evidências:** as do banco principal saem de uma mesma execução de referência, mas as medições de tempo (Parquet, Beam) variam de uma rodada para outra.
+- **Storytelling:** as taxas por categoria oscilam com amostras de 44 a 136 pares; a recomendação é um piloto medido, não uma conclusão definitiva ([`storytelling.md`](documentacao/storytelling.md)).
+- **Linhagem:** a parte que os conectores não enxergam (funções PL/pgSQL, Hop, arquivos) é registrada por código e precisa acompanhar o código que descreve ([`linhagem.md`](documentacao/linhagem.md)).
+- **Hop:** o CSV é lido por posição; um arquivo com coluna faltando só é barrado depois da Silver, pelo teste Q08 ([`pipeline_hop.md`](documentacao/pipeline_hop.md#limitações-conhecidas)).
+- **Spark:** o cluster é de demonstração (1 worker), então o Spark é mais lento que o DirectRunner neste volume ([`parquet_beam.md`](documentacao/parquet_beam.md)).
 
 ### Serviços e perfis
 
@@ -192,7 +204,7 @@ Verificações da infraestrutura: `docker compose run --rm hop pipelines/verific
 | base | ~0,7 GB |
 | perfil `governanca` (OpenMetadata, Elasticsearch e Airflow) | ~3,5 GB |
 | perfil `beam` | ~1,3 GB, mais até 2 GB do executor durante um job (`SPARK_WORKER_MEMORY`) |
-| perfil `alertas` | ~0,5 GB |
+| perfil `alertas` | ~0,5 GB, além do Superset |
 
 Com tudo no ar, reserve 10 a 12 GB no Docker Desktop. Com 8 GB, suba um perfil de cada vez (`docker compose --profile <perfil> stop` libera); foi assim que as evidências foram produzidas.
 
@@ -247,10 +259,10 @@ desafio_dados/
 ├── dados/processados/      tratados, rejeitados, resumo, busca, recomendações, kpis
 ├── logs/                   execucao.log
 ├── dashboard/evidencias/   export e capturas do dashboard
-├── documentacao/           ingestao.md, recomendacao.md, kpis.md, uso_da_ia.md, modelo_de_dados.pdf, arquitetura.pdf
+├── documentacao/           ingestao.md, recomendacao.md, kpis.md, uso_da_ia.md, modelo_de_dados.pdf, arquitetura_desafio1.pdf
 │
 │   Desafio 2
-├── documentacao/           arquitetura_desafio2 (.md/.pdf), linhagem (.md/.pdf), storytelling (.md/.pdf),
+├── documentacao/           arquitetura (.md/.pdf), linhagem (.md/.pdf), storytelling (.md/.pdf),
 │                           contratos.md, pipeline_hop.md, parquet_beam.md, camada_gold.md, governanca.md
 ├── dados/brutos/           + usuarios.csv, lote_2/, falhas/, recomendacoes_desafio1.json (fontes novas)
 ├── dados/bronze/           amostras da Bronze (sem as colunas pessoais)
@@ -269,9 +281,9 @@ desafio_dados/
 
 O enunciado sugere `ingestao/` e `recomendacao/` na raiz e exige `python -m src.main`; por isso o orquestrador e o código comum ficam em `src/` e os módulos de domínio nas pastas sugeridas.
 
-## Decisões e limitações
+## Decisões e limitações do Desafio 1
 
-Detalhes em `documentacao/`. Resumo do que vale saber antes de avaliar:
+Detalhes em `documentacao/`. Resumo do que vale saber antes de avaliar o Desafio 1. Duas limitações daqui foram resolvidas no Desafio 2: agora há uma fonte de usuários (`usuarios.csv`, fictícia), e a conversão de recomendações passou a ser mensurável (3,3%) com o lote 2.
 
 - **Campo a campo os dados são limpos; as rejeições vêm de regras cruzadas.** 77 interações e 52 comentários acontecem antes da data de publicação do conteúdo e são marcados inválidos com motivo (3000 lidos, 2871 válidos). As demais regras são demonstradas por testes com registros sujos (`tests/`). Não há fonte de usuários; a tabela `usuario` é derivada das interações e comentários. → `ingestao.md`
 - **Recarga reconcilia:** o que deixa de existir ou de ser válido nas fontes é removido dos bancos na execução seguinte (interações, comentários, conteúdos, usuários, embeddings e recomendações órfãos); o que continua válido é preservado por upsert, sem regerar embeddings. → `ingestao.md`

@@ -29,9 +29,9 @@ GLOSSARIO = "plataforma_conteudos"
 SCHEMAS = ["bronze", "silver", "gold", "quarentena", "qualidade", "controle", "restrito"]
 
 TIMES = {
-    "estudante1_ingestao": ("Estudante 1 - Ingestao (Kevin)", "Apache Hop, Bronze, Silver, workflow e quarentena."),
-    "estudante2_analitico": ("Estudante 2 - Analitico (Vinycius)", "Parquet, Beam, Gold e testes de qualidade."),
-    "estudante3_governanca": ("Estudante 3 - Governanca e consumo (Victor)",
+    "estudante1_ingestao": ("Estudante 1 - Ingestão (Kevin)", "Apache Hop, Bronze, Silver, workflow e quarentena."),
+    "estudante2_analitico": ("Estudante 2 - Analítico (Vinycius)", "Parquet, Beam, Gold e testes de qualidade."),
+    "estudante3_governanca": ("Estudante 3 - Governança e consumo (Victor)",
                               "OpenMetadata, LGPD, SQL Lab, dashboards e storytelling."),
 }
 DONOS = {"bronze": "estudante1_ingestao", "silver": "estudante1_ingestao", "quarentena": "estudante1_ingestao",
@@ -40,23 +40,28 @@ DONOS = {"bronze": "estudante1_ingestao", "silver": "estudante1_ingestao", "quar
 
 CLASSIFICACOES = {
     "LGPD": ("Tratamento de dados pessoais segundo a LGPD (RF32, RF33).", {
-        "DadoPessoal": "Identifica ou torna identificavel uma pessoa natural (art. 5, I): nome, e-mail, CPF, telefone, nascimento.",
-        "IdentificadorIndireto": "Sozinho nao identifica, mas combinado com outros dados pode identificar (ex.: cidade, UF, faixa etaria, usuario_id).",
-        "DadoDeCriancaOuAdolescente": "Permite identificar criancas e adolescentes, que exigem tratamento no melhor interesse (art. 14).",
-        "Pseudonimizado": "Substituido por pseudonimo (HMAC com chave secreta); reidentificavel so com a tabela de correspondencia (art. 13, par. 4).",
-        "HashComSalt": "SHA-256 com salt secreto: permite comparar valores sem revela-los; irreversivel.",
-        "Mascarado": "Exibicao parcial para consumo (ex.: a***@email.example).",
+        "DadoPessoal": "Identifica ou torna identificável uma pessoa natural (art. 5, I): nome, e-mail, CPF, telefone, nascimento.",
+        "IdentificadorIndireto": "Sozinho não identifica, mas combinado com outros dados pode identificar (ex.: cidade, UF, faixa etária, usuario_id).",
+        "DadoDeCriancaOuAdolescente": "Permite identificar crianças e adolescentes, que exigem tratamento no melhor interesse (art. 14).",
+        "Pseudonimizado": "Substituído por pseudônimo (HMAC com chave secreta); reidentificável só com a tabela de correspondência (art. 13, par. 4).",
+        "HashComSalt": "SHA-256 com salt secreto: permite comparar valores sem revelá-los; irreversível.",
+        "Mascarado": "Exibição parcial para consumo (ex.: a***@email.example).",
         "Anonimizado": "Texto livre com e-mails e telefones substituidos por marcadores.",
         "TabelaDeCorrespondencia": "Permite reverter a pseudonimizacao; acesso restrito ao controlador.",
     }),
-    "Camada": ("Camada da arquitetura medalhao a que o ativo pertence.", {
-        "Bronze": "Copia auditavel das fontes, sem transformacao.",
+    # "Medalhao", e nao "Camada": a interface em portugues ja chama de "Camada" o Tier nativo do OpenMetadata
+    "Medalhao": ("Camada da arquitetura medalhão (Bronze, Silver, Gold) a que o ativo pertence.", {
+        "Bronze": "Cópia auditável das fontes, sem transformação.",
         "Silver": "Dados padronizados, validados e deduplicados.",
         "Gold": "Tabelas de consumo orientadas aos KPIs.",
-        "Operacional": "Controle de execucao, quarentena e qualidade.",
-        "Restrita": "Acesso restrito por conter chave de reidentificacao.",
+        "Operacional": "Controle de execução, quarentena e qualidade.",
+        "Restrita": "Acesso restrito por conter chave de reidentificação.",
     }),
 }
+# Tier nativo do OpenMetadata (criticidade para o negocio): Tier1 = consumo, Tier2 = base do consumo e chave de
+# reidentificacao, Tier3 = operacional e copia bruta
+TIER_DO_SCHEMA = {"gold": "Tier.Tier1", "silver": "Tier.Tier2", "restrito": "Tier.Tier2", "bronze": "Tier.Tier3",
+                  "quarentena": "Tier.Tier3", "qualidade": "Tier.Tier3", "controle": "Tier.Tier3"}
 CAMADA_DO_SCHEMA = {"bronze": "Bronze", "silver": "Silver", "gold": "Gold", "quarentena": "Operacional",
                     "qualidade": "Operacional", "controle": "Operacional", "restrito": "Restrita"}
 
@@ -68,6 +73,7 @@ TAGS_COLUNA = {
         "data_nascimento": ["LGPD.DadoPessoal", "LGPD.DadoDeCriancaOuAdolescente", "PII.Sensitive"],
         "cidade": ["LGPD.IdentificadorIndireto", "PII.NonSensitive"], "uf": ["LGPD.IdentificadorIndireto", "PII.NonSensitive"],
         "usuario_id": ["LGPD.IdentificadorIndireto", "PII.NonSensitive"],
+        "data_cadastro": ["LGPD.IdentificadorIndireto"], "atualizado_em": ["LGPD.IdentificadorIndireto"],
     },
     "bronze.comentarios": {"comentario": ["LGPD.DadoPessoal", "PII.Sensitive"]},
     "silver.usuario": {
@@ -76,16 +82,18 @@ TAGS_COLUNA = {
         "faixa_etaria": ["LGPD.IdentificadorIndireto", "LGPD.DadoDeCriancaOuAdolescente"],
         "cidade": ["LGPD.IdentificadorIndireto"], "uf": ["LGPD.IdentificadorIndireto"],
         "usuario_id": ["LGPD.IdentificadorIndireto"],
+        "data_cadastro": ["LGPD.IdentificadorIndireto"], "atualizado_em": ["LGPD.IdentificadorIndireto"],
     },
     "silver.usuario_mestre": {"usuario_pseudo": ["LGPD.Pseudonimizado"], "nome_mascarado": ["LGPD.Mascarado"],
-                              "email_mascarado": ["LGPD.Mascarado"]},
+                              "email_mascarado": ["LGPD.Mascarado"], "data_cadastro": ["LGPD.IdentificadorIndireto"],
+                              "atualizado_em": ["LGPD.IdentificadorIndireto"]},
     "silver.comentario": {"comentario": ["LGPD.Anonimizado"]},
     "quarentena.registro": {"registro": ["LGPD.DadoPessoal"], "registro_original": ["LGPD.DadoPessoal"]},
     "restrito.usuario_pseudonimo": {"usuario_id": ["LGPD.TabelaDeCorrespondencia"],
                                     "usuario_pseudo": ["LGPD.TabelaDeCorrespondencia"]},
     "gold.dim_usuario": {"usuario_pseudo": ["LGPD.Pseudonimizado"], "nome_mascarado": ["LGPD.Mascarado"],
                          "faixa_etaria": ["LGPD.IdentificadorIndireto"],
-                         "uf": ["LGPD.IdentificadorIndireto"]},
+                         "uf": ["LGPD.IdentificadorIndireto"], "data_cadastro": ["LGPD.IdentificadorIndireto"]},
     "gold.fato_interacao": {"usuario_pseudo": ["LGPD.Pseudonimizado"]},
     "gold.fato_recomendacao": {"usuario_pseudo": ["LGPD.Pseudonimizado"]},
 }
@@ -139,14 +147,14 @@ FONTES = {  # arquivo de origem -> tabela bronze
     "dados/brutos/recomendacoes_desafio1.json": "recomendacoes",
 }
 PIPELINES = {  # pipelines do Hop (e etapas SQL orquestradas por ele) -> descricao
-    **{f"bronze_{f}": f"hop/pipelines/bronze_{f}.hpl: le os arquivos de {f}, acrescenta _execucao_id, _origem e _linha e grava em bronze.{f}."
+    **{f"bronze_{f}": f"hop/pipelines/bronze_{f}.hpl: lê os arquivos de {f}, acrescenta _execucao_id, _origem e _linha e grava em bronze.{f}."
        for f in ("catalogo", "usuarios", "interacoes", "comentarios", "recomendacoes")},
     **{f"silver_{e}": f"hop/pipelines/silver_{e}.hpl: aplica validacao.classificar_{f} (sql/silver.sql), separa aprovados e rejeitados (Filter rows)."
        for e, f in (("conteudo", "catalogo"), ("usuario", "usuarios"), ("interacao", "interacoes"),
                     ("comentario", "comentarios"), ("recomendacao", "recomendacoes"))},
-    "silver_publicacao": "silver.publicar() (hop/workflows/silver.hwf): troca a Silver numa transacao; dados mestres, pseudonimos e quarentena.",
-    "qualidade": "qualidade.executar() (hop/workflows/qualidade.hwf): testes de sql/qualidade.sql; critico reprovado bloqueia a Gold.",
-    "gold": "gold.publicar() (hop/workflows/gold.hwf): reconstroi as tabelas de consumo numa transacao.",
+    "silver_publicacao": "silver.publicar() (hop/workflows/silver.hwf): troca a Silver numa transação; dados mestres, pseudônimos e quarentena.",
+    "qualidade": "qualidade.executar() (hop/workflows/qualidade.hwf): testes de sql/qualidade.sql; crítico reprovado bloqueia a Gold.",
+    "gold": "gold.publicar() (hop/workflows/gold.hwf): reconstrói as tabelas de consumo numa transação.",
 }
 
 
@@ -258,6 +266,10 @@ def main() -> None:
              for n, (d, desc) in TIMES.items()}
     ref = {n: {"id": t["id"], "type": "team"} for n, t in times.items()}
 
+    # a classificacao antiga "Camada" foi renomeada para "Medalhao"; apagar remove tambem as tags aplicadas
+    antiga = om.s.get(f"{API}/classifications/name/Camada", timeout=30)
+    if antiga.status_code == 200:
+        om.chamar("DELETE", f"classifications/{antiga.json()['id']}", params={"hardDelete": "true", "recursive": "true"})
     for nome, (descricao, tags) in CLASSIFICACOES.items():
         om.put("classifications", {"name": nome, "description": descricao, "mutuallyExclusive": False})
         for tag, desc in tags.items():
@@ -266,15 +278,18 @@ def main() -> None:
     # --- servicos e ingestao de metadados tecnicos (RF27)
     banco = om.put("services/databaseServices", {
         "name": BANCO, "serviceType": "Postgres", "description": "PostgreSQL do projeto: camadas do Desafio 2 e banco do Desafio 1.",
+        "owners": [ref["estudante3_governanca"]],
         "connection": {"config": {"type": "Postgres", "scheme": "postgresql+psycopg2", "hostPort": "postgres:5432",
                                   "username": os.environ["POSTGRES_USER"], "database": "desafio",
                                   "authType": {"password": os.environ["POSTGRES_PASSWORD"]}}}})
     ingestao(om, banco, "databaseService", f"{BANCO}_metadata", {
-        "type": "DatabaseMetadata", "includeViews": True, "includeTags": True, "includeDDL": True,
+        # overrideMetadata: as descricoes vem de sql/catalogo.sql (COMMENT ON); a ingestao sobrescreve a versao do catalogo
+        "type": "DatabaseMetadata", "includeViews": True, "includeTags": True, "includeDDL": True, "overrideMetadata": True,
         "markDeletedTables": True, "schemaFilterPattern": {"includes": [f"^{s}$" for s in SCHEMAS]}})
 
     paineis = om.put("services/dashboardServices", {
         "name": PAINEIS, "serviceType": "Superset", "description": "Superset da camada de consumo (dashboards do Desafio 2).",
+        "owners": [ref["estudante3_governanca"]],
         "connection": {"config": {"type": "Superset", "hostPort": "http://superset:8088",
                                   "connection": {"provider": "db", "username": os.environ["SUPERSET_ADMIN_USER"],
                                                  "password": os.environ["SUPERSET_ADMIN_PASSWORD"]}}}})
@@ -291,8 +306,15 @@ def main() -> None:
         tabelas = om.get("tables", databaseSchema=f"{DB}.{schema}", limit=100)["data"]
         for t in tabelas:
             chave = f"{schema}.{t['name']}"
-            marcar_tabela(om, t["fullyQualifiedName"], [f"Camada.{CAMADA_DO_SCHEMA[schema]}"],
+            marcar_tabela(om, t["fullyQualifiedName"], [f"Medalhao.{CAMADA_DO_SCHEMA[schema]}", TIER_DO_SCHEMA[schema]],
                           TAGS_COLUNA.get(chave), ref[DONOS[schema]])
+    bd = om.get(f"databases/name/{DB}", fields="owners")
+    ops = [] if bd.get("owners") else [{"op": "add", "path": "/owners", "value": [ref["estudante3_governanca"]]}]
+    if not bd.get("description"):
+        ops.append({"op": "add", "path": "/description", "value":
+                    "Banco `desafio`: camadas Bronze, Silver e Gold do Desafio 2, quarentena, qualidade, controle e o "
+                    "schema restrito; o schema public (Desafio 1) é fonte e fica fora do catálogo."})
+    om.patch(f"databases/{bd['id']}", ops)
 
     # --- dashboards e datasets do Superset (vindos da ingestao): responsavel e descricao (RF27)
     for d in om.get("dashboards", service=PAINEIS, fields="owners", limit=50)["data"]:
@@ -320,9 +342,11 @@ def main() -> None:
     # --- linhagem (RF29): arquivos -> bronze -> silver -> gold, com as pipelines do Hop como transformacao
     om.put("services/storageServices", {"name": ARQUIVOS, "serviceType": "CustomStorage",
                                         "description": "Arquivos de origem em desafio_dados/dados/brutos/.",
+                                        "owners": [ref["estudante1_ingestao"]],
                                         "connection": {"config": {"type": "CustomStorage"}}})
     om.put("services/pipelineServices", {"name": HOP, "serviceType": "CustomPipeline",
                                          "description": "Pipelines e workflows do Apache Hop (hop/) e etapas SQL orquestradas por eles.",
+                                         "owners": [ref["estudante1_ingestao"]],
                                          "connection": {"config": {"type": "CustomPipeline"}}})
     pipes = {n: om.put("pipelines", {"name": n, "service": HOP, "description": d, "owners": [
         ref["estudante2_analitico"] if n in ("qualidade", "gold") else ref["estudante1_ingestao"]]})
@@ -337,20 +361,20 @@ def main() -> None:
                                   "fileFormats": ["csv" if caminho.endswith(".csv") else "json"],
                                   "description": f"Arquivo de origem `{caminho}` (fonte de bronze.{destino})."})
         aresta(om, {"id": c["id"], "type": "container"}, tabela(f"bronze.{destino}"),
-               f"Ingestao sem transformacao ({caminho}).", pipes[f"bronze_{destino}"])
+               f"Ingestão sem transformação ({caminho}).", pipes[f"bronze_{destino}"])
 
     for entidade, fonte in (("conteudo", "catalogo"), ("usuario", "usuarios"), ("interacao", "interacoes"),
                             ("comentario", "comentarios"), ("recomendacao", "recomendacoes")):
         aresta(om, tabela(f"bronze.{fonte}"), tabela(f"silver.{entidade}"),
-               "Validacao, padronizacao e deduplicacao; publicado por silver.publicar().", pipes[f"silver_{entidade}"])
+               "Validação, padronização e deduplicação; publicado por silver.publicar().", pipes[f"silver_{entidade}"])
         aresta(om, tabela(f"bronze.{fonte}"), tabela("quarentena.registro"),
-               "Registros que violam uma regra de validacao.", pipes[f"silver_{entidade}"])
+               "Registros que violam uma regra de validação.", pipes[f"silver_{entidade}"])
     for destino in ("silver.usuario_mestre", "silver.usuario_correspondencia", "restrito.usuario_pseudonimo"):
         aresta(om, tabela("silver.usuario"), tabela(destino),
-               "Dados mestres (mesmo cpf_hash ou email_hash) e pseudonimos.", pipes["silver_publicacao"])
+               "Dados mestres (mesmo cpf_hash ou email_hash) e pseudônimos.", pipes["silver_publicacao"])
     for origem in ("controle.etapa", "quarentena.registro", "silver.conteudo", "silver.usuario", "silver.interacao",
                    "silver.comentario", "silver.recomendacao"):
-        aresta(om, tabela(origem), tabela("qualidade.resultado"), "Testes de qualidade por execucao e fonte.",
+        aresta(om, tabela(origem), tabela("qualidade.resultado"), "Testes de qualidade por execução e fonte.",
                pipes["qualidade"])
     for origem, destino in (("silver.conteudo", "gold.dim_conteudo"), ("silver.usuario_mestre", "gold.dim_usuario"),
                             ("silver.interacao", "gold.fato_interacao"), ("silver.usuario_correspondencia", "gold.fato_interacao"),
@@ -360,25 +384,25 @@ def main() -> None:
                             ("gold.fato_interacao", "gold.kpi_usuarios_ativos_mensal"), ("gold.dim_conteudo", "gold.kpi_taxa_conclusao"),
                             ("gold.fato_recomendacao", "gold.kpi_conversao_recomendacao"), ("gold.dim_conteudo", "gold.kpi_conversao_recomendacao"),
                             ("gold.fato_interacao", "gold.kpi_avaliacao"), ("gold.dim_conteudo", "gold.kpi_avaliacao")):
-        aresta(om, tabela(origem), tabela(destino), "Publicado por gold.publicar() numa transacao.", pipes["gold"])
+        aresta(om, tabela(origem), tabela(destino), "Publicado por gold.publicar() numa transação.", pipes["gold"])
 
     # KPI com linhagem ate a coluna: de onde vem cada valor de taxa_conclusao_pct
     kpi = f"{DB}.gold.kpi_taxa_conclusao"
     aresta(om, tabela("gold.fato_interacao"), tabela("gold.kpi_taxa_conclusao"),
-           "Pares (pessoa, conteudo) com consumo e concluidos; taxa = 100 * concluidos / consumo.", pipes["gold"], [
+           "Pares (pessoa, conteúdo) com consumo e concluídos; taxa = 100 * concluídos / consumo.", pipes["gold"], [
                {"fromColumns": [f"{DB}.gold.fato_interacao.{c}" for c in ("usuario_pseudo", "conteudo_id", "tipo_interacao")],
                 "toColumn": f"{kpi}.pares_consumo", "function": "count(DISTINCT (usuario_pseudo, conteudo_id))"},
                {"fromColumns": [f"{DB}.gold.fato_interacao.{c}" for c in ("tipo_interacao", "percentual_conclusao")],
                 "toColumn": f"{kpi}.pares_concluidos", "function": "bool_or(tipo_interacao = 'conclusão' OR percentual_conclusao >= 100)"},
                {"fromColumns": [f"{DB}.gold.fato_interacao.{c}" for c in ("tipo_interacao", "percentual_conclusao")],
                 "toColumn": f"{kpi}.taxa_conclusao_pct", "function": "100 * pares_concluidos / pares_consumo"}])
-    aresta(om, tabela("gold.dim_conteudo"), tabela("gold.kpi_taxa_conclusao"), "Atributos do conteudo.", pipes["gold"], [
+    aresta(om, tabela("gold.dim_conteudo"), tabela("gold.kpi_taxa_conclusao"), "Atributos do conteúdo.", pipes["gold"], [
         {"fromColumns": [f"{DB}.gold.dim_conteudo.{c}"], "toColumn": f"{kpi}.{c}"} for c in ("categoria", "tipo", "nivel")])
-    aresta(om, tabela("silver.interacao"), tabela("gold.fato_interacao"), "Interacoes por pessoa.", pipes["gold"], [
+    aresta(om, tabela("silver.interacao"), tabela("gold.fato_interacao"), "Interações por pessoa.", pipes["gold"], [
         {"fromColumns": [f"{DB}.silver.interacao.{c}"], "toColumn": f"{DB}.gold.fato_interacao.{c}"}
         for c in ("tipo_interacao", "percentual_conclusao", "conteudo_id")])
 
-    print("governanca aplicada: responsaveis, classificacoes, glossario e linhagem")
+    print("governança aplicada: responsáveis, classificações, glossário e linhagem")
 
 
 if __name__ == "__main__":

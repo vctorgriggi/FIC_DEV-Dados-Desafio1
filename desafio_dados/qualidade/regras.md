@@ -31,12 +31,14 @@ Cada resultado grava o operador, o limite e a severidade **vigentes quando o tes
 | **Q05** Completude dos usuários | completude | `silver.usuario` | 100 × usuários com cidade, data de cadastro e faixa etária ÷ usuários | ≥ 95 | média | Etapa com ressalvas; faixas ausentes enfraquecem as análises por perfil |
 | **Q06** Consistência temporal | consistência | `silver.interacao`, `silver.comentario` | 100 × eventos entre a publicação do conteúdo e o momento da execução ÷ eventos | = 100 | **crítica** | Interrompe o fluxo: a regra `DATA_ANTES_PUBLICACAO` ou `DATA_FUTURA` deixou passar um evento impossível |
 | **Q07** Cobertura dos dados mestres | integridade referencial | `silver.usuario` → `silver.usuario_correspondencia` | 100 × usuários com pessoa associada ÷ usuários | = 100 | **crítica** | Interrompe o fluxo: sem o mestre, a Gold contaria ids em vez de pessoas (RF30) |
+| **Q08** Validade por arquivo | validade | cada arquivo de origem (`_origem`) | 100 × (lidos − pendentes na quarentena) ÷ lidos, por arquivo | ≥ 50 | **crítica** | Interrompe o fluxo: mais da metade de um arquivo rejeitada é defeito de estrutura (coluna faltando ou deslocada, arquivo trocado), não registros isolados. Conferir o cabeçalho e a origem e reprocessar |
 
-As cinco dimensões pedidas estão cobertas: completude (Q04, Q05), validade (Q01), unicidade (Q03), consistência (Q06) e integridade referencial (Q02, Q07).
+As cinco dimensões pedidas estão cobertas: completude (Q04, Q05), validade (Q01, Q08), unicidade (Q03), consistência (Q06) e integridade referencial (Q02, Q07).
 
 **Por que os limites são esses:**
 
-- **Q01 ≥ 90%:** o lote 2 tem 46 anomalias propositais e o Desafio 1 já tinha 77 interações e 52 comentários anteriores à publicação. Nesse cenário a rejeição normal fica entre 0 e 7% (interações: 6,2%). Passar de 10% indica um arquivo inteiro com problema, como uma coluna deslocada.
+- **Q01 ≥ 90%:** o lote 2 tem 46 anomalias propositais e o Desafio 1 já tinha 77 interações e 52 comentários anteriores à publicação. Nesse cenário a rejeição normal por fonte fica entre 0 e 7% (interações: 6,2%). Passar de 10% indica uma fonte inteira degradada. O Q01 **não** pega um arquivo pequeno quebrado: ele soma os arquivos da fonte, e os 50 conteúdos do lote 2 são 5% do catálogo. Por isso existe o Q08.
+- **Q08 ≥ 50%:** por arquivo, a menor validade normal é a dos usuários do lote 2 (83,3%, com anomalias de propósito). Um arquivo com coluna deslocada fica perto de 0%. O limite de 50% separa com folga as duas situações.
 - **Q02 ≥ 99%:** órfãos isolados são esperados (o usuário 999 do lote 2), mas não em massa.
 - **Q03, Q06 e Q07 = 100%:** não são estatísticas, são invariantes. Qualquer falha é um defeito das regras da Silver, e não do dado.
 
@@ -52,9 +54,9 @@ O bloqueio acontece em dois lugares independentes:
 1. **Workflow:** `qualidade.hwf` verifica que não há teste crítico reprovado na execução (action `Evaluate rows number in a table`). Se houver, aborta, e o `principal.hwf` não chega à Gold.
 2. **Banco:** `gold.publicar(execucao)` recusa publicar se a qualidade da execução não foi avaliada ou se há teste crítico reprovado. Mesmo uma chamada manual, fora do Hop, não passa.
 
-## Resultados da execução final (`5696f833`)
+## Resultados da execução de referência (`943c1278`)
 
-Os 18 resultados (7 testes × fontes) foram aprovados:
+Os 27 resultados (8 testes × fontes ou arquivos) foram aprovados:
 
 | Teste | catálogo | usuários | interações | comentários | recomendações |
 | --- | --- | --- | --- | --- | --- |
@@ -66,9 +68,19 @@ Os 18 resultados (7 testes × fontes) foram aprovados:
 | Q06 Consistência temporal (= 100) | — | — | 100,00 | 100,00 | — |
 | Q07 Cobertura dos mestres (= 100) | — | 100,00 | — | — | — |
 
+Q08, validade por arquivo (≥ 50):
+
+| Arquivo | Valor | Arquivo | Valor |
+| --- | --- | --- | --- |
+| `catalogo.csv` | 100,00 | `lote_2/catalogo.csv` | 92,00 |
+| `usuarios.csv` | 100,00 | `lote_2/usuarios.csv` | 83,33 |
+| `interacoes.json` | 92,30 | `lote_2/interacoes.json` | 97,36 |
+| `comentarios.json` | 94,80 | `lote_2/comentarios.json` | 95,80 |
+| `recomendacoes_desafio1.json` | 100,00 | | |
+
 ## Evolução entre execuções
 
-Seis execuções completas do workflow, com a triagem da quarentena entre elas ([`hop/evidencias/triagem_quarentena.sql`](../hop/evidencias/triagem_quarentena.sql)):
+Sete execuções completas do workflow no banco de referência, com a triagem da quarentena entre elas ([`hop/evidencias/triagem_quarentena.sql`](../hop/evidencias/triagem_quarentena.sql)):
 
 | Execução | O que mudou antes dela | Q01 catálogo | Q01 interações | Q01 comentários | Q02 interações | Reprovados | Gold |
 | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -77,17 +89,18 @@ Seis execuções completas do workflow, com a triagem da quarentena entre elas (
 | C `7dbd4209` | triagem 2: `L2-K09` corrigido com data válida | 99,62 | 93,79 | 94,91 | 99,86 | 0 | publicada |
 | D `a98b2a5a` | **demonstração do bloqueio**: limite do Q01 elevado para 99 | 99,62 | 93,79 ✗ | 94,91 ✗ | 99,86 | **3** | **bloqueada** |
 | E `a2f8a3b3` | limite restaurado (`db-init`) | 99,62 | 93,79 | 94,91 | 99,86 | 0 | publicada |
-| F `5696f833` | execução final de referência | 99,62 | 93,79 | 94,91 | 99,86 | 0 | publicada |
+| F `5696f833` | sem mudança nos dados | 99,62 | 93,79 | 94,91 | 99,86 | 0 | publicada |
+| G `943c1278` | Q08 acrescentado; **execução de referência** | 99,62 | 93,79 | 94,91 | 99,86 | 0 | publicada |
 
 Como ler a evolução:
 
-- **Q01 catálogo, de 99,33 para 99,62:** o conteúdo 1041 foi corrigido e duas cópias foram descartadas. Um registro descartado deixa de contar como rejeitado.
+- **Q01 catálogo, de 99,33 para 99,62:** o conteúdo 1041 foi corrigido e duas cópias foram descartadas. Um registro descartado deixa de contar como rejeitado. Essa parte da melhora é, portanto, uma decisão de triagem, e não um dado melhor: a métrica mede o que ficou pendente, e o descarte é auditável em [`dados/quarentena/correcoes.csv`](../dados/quarentena/correcoes.csv).
 - **Q01 e Q02 interações:** a interação `L2-I13` entrou sozinha quando o conteúdo 1041, do qual dependia, foi corrigido.
 - **Q01 comentários, de 94,73 para 94,91, em dois passos:**
   - Na execução B, a primeira correção do `L2-K09` (31/09 → 30/09) ainda era uma data futura. O registro voltou a `pendente` com a regra nova, e a melhora dessa execução veio só do descarte da cópia do `L2-K08`.
   - Na execução C, a data foi corrigida para 20/09 e o comentário entrou.
 
-O dashboard de exploração mostra essa série no gráfico "Evolução da validade das fontes (Q01) por execução" (`superset/exportacao_e_evidencias/02_exploracao.png`).
+O dashboard de exploração mostra duas métricas ao longo das execuções, cada uma com a linha do seu limite: "Evolução da validade das fontes (Q01)" e "Evolução da integridade referencial (Q02)" (`superset/exportacao_e_evidencias/02_exploracao.png`). O Q08 começa na execução G, então ainda não tem série.
 
 ## Demonstração do bloqueio da Gold (execução D)
 
@@ -118,6 +131,18 @@ SELECT gold.publicar('<execucao>');   -- ERROR: teste critico reprovado na execu
 ROLLBACK;
 ```
 
+## Segunda demonstração: arquivo com a estrutura errada (ambiente limpo)
+
+A execução D mostra o mecanismo mexendo no limite. Esta mostra o caso real que o Q08 existe para pegar. Num ambiente limpo e isolado, o `lote_2/catalogo.csv` foi trocado por [`dados/brutos/falhas/catalogo_sem_coluna_categoria.csv`](../dados/brutos/falhas/catalogo_sem_coluna_categoria.csv): o cabeçalho não tem a coluna `categoria`, então os valores se deslocam.
+
+| Teste | Valor | Resultado |
+| --- | --- | --- |
+| Q01 catálogo (fonte inteira) | 98,04 | aprovado: o arquivo quebrado é pequeno perto do catálogo do Desafio 1 |
+| **Q08 `lote_2/catalogo.csv`** | **0,00** | **reprovado (crítico): Gold bloqueada** |
+| Q02 interações | 98,73 | reprovado (alta): as interações do lote 2 apontam para conteúdos que não entraram |
+
+Evidências: [`hop/evidencias/ambiente_limpo/06_falha_estrutura_do_arquivo.log`](../hop/evidencias/ambiente_limpo/06_falha_estrutura_do_arquivo.log) e [`testes_reprovados.csv`](../hop/evidencias/ambiente_limpo/testes_reprovados.csv).
+
 ## Consultas úteis
 
 ```sql
@@ -134,3 +159,4 @@ SELECT executado_em, fonte, valor_medido FROM qualidade.vw_resultado
 
 - O Q01 mede a rejeição da execução inteira, que relê o Desafio 1 e o lote 2 a cada vez. As 77 interações do Desafio 1 anteriores à publicação pesam em todas as execuções: a métrica é da carga acumulada, não do lote novo.
 - Os testes rodam sobre a Silver publicada da execução. Um problema que a Silver deixa passar e que nenhum teste cobre chega à Gold. Os testes críticos (Q03, Q06, Q07) existem para pegar as falhas das próprias regras.
+- Um arquivo inteiro quebrado ainda é detectado depois da Silver, pelo Q08, e não antes da Bronze: o `CSV file input` do Hop lê por posição, sem conferir o cabeçalho. O arquivo quebrado fica na Bronze e na quarentena, mas não chega à Gold.

@@ -138,8 +138,40 @@ PAGINAS_OM = [
     ("08_termo_taxa_de_conclusao.png", "/glossary/plataforma_conteudos.taxa_de_conclusao"),
     ("09_classificacao_lgpd.png", "/tags/LGPD"),
     ("10_dashboard_storytelling_linhagem.png", "/dashboard/superset_desafio.1/lineage"),
-    ("11_pipelines_hop.png", "/service/pipelineServices/apache_hop/pipelines"),
+    ("11_pipelines_hop.png", "/service/pipelineServices/apache_hop"),
+    # do arquivo de origem ao dashboard: 4 niveis a montante do KPI (fato, silver, bronze, arquivo), 2 a jusante
+    ("12_linhagem_ponta_a_ponta.png", "/table/postgres_desafio.desafio.gold.kpi_taxa_conclusao/lineage", (2400, 1600)),
+    ("13_linhagem_por_coluna.png", "/table/postgres_desafio.desafio.gold.kpi_taxa_conclusao/lineage"),
 ]
+
+
+def profundidade(page: Page, montante: int, jusante: int) -> None:
+    """Configuracao da linhagem (engrenagem): quantos niveis mostrar antes e depois do ativo."""
+    page.get_by_test_id("lineage-config").click()
+    time.sleep(1)
+    for campo, valor in (("field-upstream", montante), ("field-downstream", jusante)):
+        page.get_by_test_id(campo).fill(str(valor))
+    page.locator(".ant-modal button.ant-btn-primary").click()
+    time.sleep(6)
+
+
+def camada_de_colunas(page: Page) -> None:
+    """Camada "Colunas" da linhagem: mostra as arestas entre colunas registradas."""
+    page.get_by_test_id("lineage-layer-btn").click()
+    time.sleep(1)
+    page.get_by_test_id("lineage-layer-column-btn").click()
+    page.keyboard.press("Escape")
+    time.sleep(4)
+
+
+def aba_pipelines(page: Page) -> None:
+    page.get_by_role("tab", name=re.compile("Gasodutos|Pipelines")).click()
+    time.sleep(4)
+
+
+ACOES_OM = {"11_pipelines_hop.png": aba_pipelines,
+            "12_linhagem_ponta_a_ponta.png": lambda page: profundidade(page, 4, 2),
+            "13_linhagem_por_coluna.png": camada_de_colunas}
 
 
 def capturar_pagina_om(arquivo: str, caminho: str, tela: tuple = TELA_OM) -> None:
@@ -157,6 +189,8 @@ def capturar_pagina_om(arquivo: str, caminho: str, tela: tuple = TELA_OM) -> Non
                 break
             time.sleep(1)
         time.sleep(4)
+        if arquivo in ACOES_OM:
+            ACOES_OM[arquivo](page)
         if caminho.endswith("/lineage"):
             # grafo inteiro no quadro: botao "ajustar a tela" do proprio grafo (React Flow)
             ajustar = page.locator(".react-flow__controls-fitview, [data-testid='fit-screen'], [data-testid='fit-view']")
@@ -198,14 +232,23 @@ def openmetadata() -> None:
     print(f"capturas em {destino.relative_to(RAIZ)}")
 
 
+def spark(page: Page) -> None:
+    """Interface do Spark master depois dos jobs do Beam (RF25): workers, cores, memoria e aplicacoes concluidas."""
+    destino = RAIZ / "beam" / "evidencias"
+    page.goto("http://spark-master:8080/")
+    page.wait_for_load_state("networkidle")
+    page.screenshot(path=destino / "spark_master_aplicacoes.png", full_page=True)
+    print(f"captura em {destino.relative_to(RAIZ)}")
+
+
 def main() -> None:
     alvo = sys.argv[1] if len(sys.argv) > 1 else "superset"
     if alvo == "openmetadata":  # cada pagina abre o proprio navegador, num processo separado
         openmetadata()
         return
-    alvos = {"superset": superset, "alerta": alerta}
+    alvos = {"superset": superset, "alerta": alerta, "spark": spark}
     if alvo not in alvos:
-        raise SystemExit(f"alvo desconhecido: {alvo} (superset, alerta, openmetadata)")
+        raise SystemExit(f"alvo desconhecido: {alvo} (superset, alerta, openmetadata, spark)")
     with sync_playwright() as p:
         navegador = p.chromium.launch(args=["--disable-dev-shm-usage"])
         contexto = navegador.new_context(viewport={"width": 1600, "height": 1000}, locale="pt-BR")

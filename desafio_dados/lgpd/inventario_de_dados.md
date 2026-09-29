@@ -8,6 +8,8 @@ Todos os dados pessoais do projeto são **fictícios** e gerados por `ferramenta
 
 Os testes em `tests/test_gerar_dados.py` garantem essas três propriedades.
 
+Por serem fictícios e gerados de forma determinística, os arquivos de origem com dados pessoais (`dados/brutos/usuarios.csv` e `lote_2/usuarios.csv`) ficam no repositório: são a fonte que o pipeline lê. Já as amostras exportadas das camadas não levam as colunas pessoais (`dados/bronze/usuarios_sem_dados_pessoais.csv`), e as da Silver não levam o pseudônimo. Com dados reais, os arquivos de origem ficariam fora do repositório.
+
 O inventário segue o fluxo do dado: fonte → Bronze → Silver → Gold. Cada campo está classificado no OpenMetadata com as tags da classificação `LGPD` e com as tags padrão `PII.Sensitive` e `PII.NonSensitive` (`openmetadata/provisionar.py`).
 
 ## Categorias usadas

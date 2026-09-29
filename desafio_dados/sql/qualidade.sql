@@ -76,7 +76,24 @@ VALUES
  '>=', 100, 'critica',
  'Interrompe o fluxo: sem o mestre, a Gold contaria ids em vez de pessoas (RF30).',
  $q$SELECT 'usuarios', count(*), count(*) FILTER (WHERE c.usuario_id IS NULL)
-      FROM silver.usuario u LEFT JOIN silver.usuario_correspondencia c USING (usuario_id)$q$)
+      FROM silver.usuario u LEFT JOIN silver.usuario_correspondencia c USING (usuario_id)$q$),
+
+-- Q01 soma os arquivos de uma fonte (Desafio 1 + lote 2): um arquivo pequeno inteiro rejeitado quase nao
+-- mexe no percentual. Q08 olha cada arquivo: mais da metade rejeitada e defeito estrutural (coluna faltando
+-- ou deslocada, arquivo trocado), nao registros isolados.
+('Q08_VALIDADE_POR_ARQUIVO',
+ 'Registros aprovados na validacao, por arquivo de origem', 'validade', 'bronze.* por _origem -> silver.*',
+ '100 * (lidos - pendentes na quarentena) / lidos, por arquivo, nesta execucao',
+ '>=', 50, 'critica',
+ 'Interrompe o fluxo antes da Gold: mais da metade de um arquivo rejeitada indica defeito na estrutura do arquivo. Conferir o cabecalho e a origem do arquivo e reprocessar.',
+ $q$SELECT replace(l._origem, 'dados/brutos/', ''), l.lidos,
+           (SELECT count(*) FROM quarentena.registro q
+             WHERE q.origem = l._origem AND q.status = 'pendente' AND q.ultima_execucao_id = $1)
+      FROM (SELECT _origem, count(*) AS lidos FROM bronze.catalogo WHERE _execucao_id = $1 GROUP BY 1
+            UNION ALL SELECT _origem, count(*) FROM bronze.usuarios WHERE _execucao_id = $1 GROUP BY 1
+            UNION ALL SELECT _origem, count(*) FROM bronze.interacoes WHERE _execucao_id = $1 GROUP BY 1
+            UNION ALL SELECT _origem, count(*) FROM bronze.comentarios WHERE _execucao_id = $1 GROUP BY 1
+            UNION ALL SELECT _origem, count(*) FROM bronze.recomendacoes WHERE _execucao_id = $1 GROUP BY 1) l$q$)
 ON CONFLICT (teste_id) DO UPDATE
    SET nome = EXCLUDED.nome, dimensao = EXCLUDED.dimensao, alvo = EXCLUDED.alvo, formula = EXCLUDED.formula,
        operador = EXCLUDED.operador, limite_aceitavel = EXCLUDED.limite_aceitavel,
@@ -126,7 +143,9 @@ UPDATE qualidade.resultado r
 CREATE OR REPLACE VIEW qualidade.vw_resultado AS
 SELECT r.execucao_id, e.inicio AS executado_em, e.modo, r.teste_id, t.nome, t.dimensao, r.severidade,
        r.fonte, r.total_registros, r.registros_falhos, r.valor_medido,
-       r.operador || ' ' || r.limite_aceitavel AS limite, r.aprovado
+       r.operador || ' ' || r.limite_aceitavel AS limite, r.aprovado,
+       -- rotulo ordenavel de cada execucao (UTC), para os graficos de evolucao terem um ponto por execucao
+       to_char(e.inicio AT TIME ZONE 'UTC', 'YYYY-MM-DD HH24:MI:SS') AS execucao
   FROM qualidade.resultado r
   JOIN qualidade.teste t USING (teste_id)
   JOIN controle.execucao e USING (execucao_id);

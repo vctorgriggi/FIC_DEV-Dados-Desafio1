@@ -2,7 +2,7 @@
 
 Parte do Estudante 2. A Silver sai do PostgreSQL para Parquet (RF24), e um pipeline Apache Beam lê esse Parquet e calcula o engajamento mensal por categoria no DirectRunner e num cluster Spark (RF25). O resultado do Beam é conferido, grupo a grupo, contra a mesma regra calculada em SQL na Gold.
 
-Os números abaixo são da execução de referência `5696f833` (29/09/2026, UTC). Cada script regrava a sua evidência ao rodar:
+Os números abaixo são da execução de referência `943c1278` (29/09/2026, UTC). Cada script regrava a sua evidência ao rodar:
 
 - `beam/evidencias/rf24_medicoes.json`: tamanhos, tempos e tipos lidos.
 - `beam/evidencias/rf25_<entrada>_<runner>.json`: volume, tempo, configuração e conferências.
@@ -64,29 +64,29 @@ O mesmo recorte foi gravado em Parquet particionado, CSV e JSON Lines. Cada form
 
 | Formato | Tamanho | Arquivos | Leitura completa | Leitura seletiva |
 | --- | --- | --- | --- | --- |
-| Parquet | 71,6 KB | 9 | 4,0 ms | 1,9 ms |
-| CSV | 225,4 KB | 1 | 2,6 ms | 1,7 ms |
-| JSON | 499,4 KB | 1 | 2,9 ms | 2,6 ms |
+| Parquet | 71,6 KB | 9 | 4,3 ms | 1,5 ms |
+| CSV | 225,4 KB | 1 | 7,4 ms | 1,6 ms |
+| JSON | 499,4 KB | 1 | 2,4 ms | 2,5 ms |
 
 **Volume sintético (200 mil interações):**
 
 | Formato | Tamanho | Arquivos | Leitura completa | Leitura seletiva |
 | --- | --- | --- | --- | --- |
-| Parquet | 4,8 MB | 20 | 30,2 ms | **3,6 ms** |
-| CSV | 29,2 MB (6× o Parquet) | 1 | 18,7 ms | 18,7 ms (5×) |
-| JSON | 69,6 MB (14× o Parquet) | 1 | 46,2 ms | 45,3 ms (13×) |
+| Parquet | 4,8 MB | 20 | 23,5 ms | **4,2 ms** |
+| CSV | 29,2 MB (6× o Parquet) | 1 | 19,7 ms | 18,1 ms (4×) |
+| JSON | 69,6 MB (14× o Parquet) | 1 | 53,2 ms | 48,4 ms (11×) |
 
 ### Leitura dos resultados
 
 - **Tamanho:** o Parquet é 3 a 14 vezes menor em todos os casos. A compressão por coluna aproveita a repetição de `tipo_interacao`, `_origem` e `_execucao_id`.
 - **Leitura seletiva:** é onde o Parquet se paga. Ele lê 1 de 20 partições e 3 de 12 colunas. O CSV e o JSON leem o arquivo inteiro para depois filtrar, por isso a leitura seletiva custa o mesmo que a completa.
 - **Leitura completa:** o CSV foi mais rápido que o Parquet. Com 20 arquivos pequenos, abrir cada um e ler os metadados custa mais que o leitor multithread do pyarrow percorrer um único CSV. Ganhar do CSV na leitura completa não é a vantagem do Parquet. As vantagens são o tamanho, a leitura seletiva e os tipos.
-- **Na Silver real**, com 1327 linhas, todas as leituras ficam abaixo de 5 ms, e as diferenças de tempo não são significativas. O volume sintético existe para mostrar a tendência.
+- **Na Silver real**, com 1327 linhas, todas as leituras ficam abaixo de 8 ms, e as diferenças de tempo não são significativas: a ordem entre os formatos muda de uma rodada para outra. O volume sintético existe para mostrar a tendência.
 
 ### Limitações do experimento
 
 - É uma única máquina, com os arquivos no disco local e o cache do sistema operacional aquecido depois da primeira leitura. Não mede I/O de rede nem armazenamento em nuvem, onde ler menos bytes pesa ainda mais.
-- Os tempos variam entre rodadas; a leitura completa do volume oscilou entre 20 e 30 ms. A mediana de 7 leituras reduz o ruído, mas as comparações valem pela ordem de grandeza, não pelo milissegundo.
+- Os tempos variam entre rodadas; a leitura completa do volume em Parquet oscilou entre 20 e 30 ms, e a vantagem na leitura seletiva, entre 4 e 5 vezes sobre o CSV. A mediana de 7 leituras reduz o ruído, mas as comparações valem pela ordem de grandeza, não pelo milissegundo.
 - O volume sintético repete a distribuição do lote real. Dados mais variados comprimiriam menos.
 - O Parquet usa a compressão padrão do pyarrow (Snappy); não foram comparados codecs nem tamanhos de *row group*.
 
@@ -133,10 +133,12 @@ A configuração efetiva do cluster é lida da API do Spark master no momento da
 
 | Entrada | Runner | Interações lidas | Grupos (mês × categoria) | Tempo | Igual ao outro runner | Igual à Gold |
 | --- | --- | --- | --- | --- | --- | --- |
-| Silver | Direct | 1327 | 72 | 0,7 s | sim | **sim (72 de 72)** |
-| Silver | Spark | 1327 | 72 | 44,6 s | sim | **sim (72 de 72)** |
-| Volume | Direct | 200 000 | 160 | 1,7 s | sim | não se aplica |
-| Volume | Spark | 200 000 | 160 | 40,4 s | sim | não se aplica |
+| Silver | Direct | 1327 | 72 | 0,5 s | sim | **sim (72 de 72)** |
+| Silver | Spark | 1327 | 72 | 47,1 s | sim | **sim (72 de 72)** |
+| Volume | Direct | 200 000 | 160 | 1,8 s | sim | não se aplica |
+| Volume | Spark | 200 000 | 160 | 43,1 s | sim | não se aplica |
+
+A captura [`beam/evidencias/spark_master_aplicacoes.png`](../beam/evidencias/spark_master_aplicacoes.png) mostra a interface do Spark master depois dos dois jobs: 1 worker vivo (2 cores, 2 GB) e as duas aplicações do Beam concluídas (`FINISHED`, 45 s e 42 s).
 
 Conferências automáticas, gravadas em cada evidência:
 
@@ -146,7 +148,7 @@ Conferências automáticas, gravadas em cada evidência:
 
 ### Por que o Spark foi mais lento
 
-O tempo no Spark quase não muda entre 1327 e 200 mil interações: 44,6 s e 40,4 s. Quase todo ele é custo fixo:
+O tempo no Spark quase não muda entre 1327 e 200 mil interações: 47,1 s e 43,1 s. Quase todo ele é custo fixo:
 
 - enviar o pipeline ao job server;
 - publicar os artefatos;
