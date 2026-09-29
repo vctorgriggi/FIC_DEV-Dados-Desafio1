@@ -11,7 +11,7 @@ normalizando), **dados mestres** (consolidar registros da mesma entidade), **rep
 | Código | Arquivo | Chave | Anomalia | Tratamento esperado |
 | --- | --- | --- | --- | --- |
 | L2-C01 | `lote_2/catalogo.csv` | conteudo_id=1005 | linha repetida idêntica | quarentena (duplicado) |
-| L2-C02 | `lote_2/catalogo.csv` | conteudo_id=1010 | mesmo id duas vezes com nível e carga diferentes | dados mestres (regra de sobrevivência entre as duas versões) |
+| L2-C02 | `lote_2/catalogo.csv` | conteudo_id=1010 | mesmo id duas vezes com nível e carga diferentes | sobrevivência: vale a última ocorrência; a anterior vai para a quarentena (CONFLITO_VERSAO) para revisão |
 | L2-C03 | `lote_2/catalogo.csv` | conteudo_id=7 | conteúdo do Desafio 1 reenviado com título revisado, espaços extras e caixa diferente em tipo e categoria | padronizar; versão do lote 2 sobrevive à do Desafio 1 |
 | L2-C04 | `lote_2/catalogo.csv` | conteudo_id=1041 | carga_horaria_min negativa (-45) | quarentena; corrigir para 45 e reprocessar (destrava L2-I13) |
 | L2-C05 | `lote_2/catalogo.csv` | conteudo_id=1042 | tipo fora do domínio ('Webinar') | quarentena |

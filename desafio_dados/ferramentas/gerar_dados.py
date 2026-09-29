@@ -197,7 +197,7 @@ def gerar_catalogo_lote2(rng, catalogo, an: Anomalias) -> tuple[list[dict], dict
     conflito["carga_horaria_min"] = str(int(conflito["carga_horaria_min"]) + 120)
     linhas.append(conflito)
     an.add("L2-C02", arq, "conteudo_id=1010", "mesmo id duas vezes com nível e carga diferentes",
-           "dados mestres (regra de sobrevivência entre as duas versões)")
+           "sobrevivência: vale a última ocorrência; a anterior vai para a quarentena (CONFLITO_VERSAO) para revisão")
 
     atual = next(r for r in catalogo if r["conteudo_id"] == "7")
     linhas.append({**atual, "titulo": f"  {atual['titulo']}  (edição revisada)", "tipo": atual["tipo"].lower(),
@@ -406,10 +406,13 @@ def gerar_falhas(catalogo, interacoes) -> None:
                [{k: r[k] for k in campos} for r in catalogo[:20]])
     (FALHAS / "LEIAME.md").write_text(
         "# Arquivos defeituosos (RF23)\n\n"
-        "Fora do fluxo normal; aponte a ingestão para eles só para demonstrar falha de arquivo.\n\n"
+        "Fora do fluxo normal. Para demonstrar uma falha de arquivo, copie um deles por cima da fonte correspondente "
+        "em `lote_2/` e restaure depois (`git checkout -- dados/brutos/lote_2/`).\n\n"
         "| Arquivo | Defeito |\n| --- | --- |\n"
         "| `interacoes_truncado.json` | JSON cortado no meio (não faz parse) |\n"
-        "| `catalogo_sem_coluna_categoria.csv` | cabeçalho sem a coluna obrigatória `categoria` |\n\n"
+        "| `catalogo_sem_coluna_categoria.csv` | cabeçalho sem a coluna obrigatória `categoria`. O Hop lê CSV por posição, "
+        "então a Bronze aceita o arquivo e a Silver rejeita as linhas; o teste crítico Q08 (validade por arquivo) bloqueia a Gold. "
+        "Veja `hop/evidencias/ambiente_limpo/06_falha_estrutura_do_arquivo.log` |\n\n"
         "Falha de conexão simulada: rodar uma etapa com `PG_PORT` apontando para uma porta sem serviço, "
         "ou com o `postgres` parado (`docker compose stop postgres`).\n",
         encoding="utf-8")
